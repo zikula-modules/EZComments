@@ -28,7 +28,7 @@
  * @subpackage  EZComments
  */
 
- 
+
 /**
  * Return to index page
  * 
@@ -64,12 +64,8 @@ function EZComments_user_view($args)
 
     if (!pnSecAuthAction(0, 'EZComments::', "$modname:$objectid: ", ACCESS_OVERVIEW)) {
         return _EZCOMMENTS_NOAUTH;
-    } 
-
-    if (!pnModAPILoad('EZComments', 'user')) {
-        return _LOADFAILED;
     }
-    
+
     $items = pnModAPIFunc('EZComments',
                           'user',
                           'getall',
@@ -78,7 +74,7 @@ function EZComments_user_view($args)
     if ($items === false) {
         return _EZCOMMENTS_FAILED;
     }     
-    
+
     $comments = EZComments_prepareCommentsForDisplay($items);
 
     // create the pnRender object
@@ -86,7 +82,7 @@ function EZComments_user_view($args)
 
     // don't use caching (for now...)
     $pnRender->caching=false;
-    
+
     $pnRender->assign('comments',   $comments);
     $pnRender->assign('allowadd',   pnSecAuthAction(0, 'EZComments::', "$modname:$objectid: ", ACCESS_COMMENT));
     if (!is_array($args['extrainfo'])) {
@@ -110,7 +106,6 @@ function EZComments_user_view($args)
     $template = isset($args['template']) ? $args['template'] : 'ezcomments_user_view.htm';
     return $pnRender->fetch(pnModGetVar('EZComments', 'template') . '/'. $template);
 } 
-
 
 /**
  * Display a comment form 
@@ -145,20 +140,21 @@ function EZComments_user_comment($args)
                                                      'EZComments_template');
 
     extract($args);
-    
-    if (!pnModAPILoad('EZComments', 'user')) {
-        return _LOADFAILED;
-    }
+
+	// check if commenting is setup for the input module
+	if (!pnModAvailable($EZComments_modname) || !pnModIsHooked('EZComments', $EZComments_modname)) {
+		return _EZCOMMENTS_NOAUTH;
+	}
 
     $items = pnModAPIFunc('EZComments',
                           'user',
                           'getall',
-                           array('modname'  => $EZComments_modname, 
+                           array('modname'  => $EZComments_modname,
                                  'objectid' => $EZComments_objectid));
 
     if ($items === false) {
         return _EZCOMMENTS_FAILED;
-    } 
+    }
 
     $comments = EZComments_prepareCommentsForDisplay($items);
 
@@ -180,11 +176,17 @@ function EZComments_user_comment($args)
 	// assign all module vars (they may be useful...)
 	$pnRender->assign(pnModGetVar('EZComments'));
 
+	// check for some useful hooks
+	if (pnModIsHooked('pn_bbcode', 'EZComments')) {
+		$pnRender->assign('bbcode', true);
+	}
+	if (pnModIsHooked('pn_bbsmile', 'EZComments')) {
+		$pnRender->assign('smilies', true);
+	}
+
     $template = isset($EZComments_template) ? $EZComments_template : 'ezcomments_user_comment.htm';
     return $pnRender->fetch(pnModGetVar('EZComments', 'template') . '/'. $template);
 }
-
-
 
 /**
  * Create a comment for a specific item
@@ -218,12 +220,6 @@ function EZComments_user_create($args)
         pnSessionSetVar('errormsg', _BADAUTHKEY);
         pnRedirect($EZComments_redirect);
         return true;
-    } 
-    // Load API
-    if (!pnModAPILoad('EZComments', 'user')) {
-        pnSessionSetVar('errormsg', _LOADFAILED);
-        pnRedirect($EZComments_redirect);
-        return false;
     } 
 
     $id = pnModAPIFunc('EZComments',
@@ -291,7 +287,6 @@ function EZComments_prepareCommentsForDisplay($items)
     return $comments;
 }
 
-
 /**
  * Sort comments by thread
  * 
@@ -304,7 +299,6 @@ function EZComments_threadComments($comments)
 {
     return EZComments_displayChildren($comments, -1, 0);
 }
-
 
 /**
  * Get all child comments
