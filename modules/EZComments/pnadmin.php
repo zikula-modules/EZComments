@@ -477,14 +477,10 @@ function EZComments_admin_cleanup()
         return _EZCOMMENTS_LOADFAILED;
     } 
 
-    $usermods = pnModGetUserMods();
-    $adminmods = pnModGetAdminMods(); 
     // build a simple array of all available modules
+    $mods = pnModGetAllMods();
     $allmods = array();
-    foreach ($usermods as $mod) {
-        $allmods[] = $mod['name'];
-    } 
-    foreach ($adminmods as $mod) {
+    foreach ($mods as $mod) {
         $allmods[] = $mod['name'];
     } 
 
@@ -492,33 +488,21 @@ function EZComments_admin_cleanup()
 
     $orphanedmods = array_diff($usedmods, $allmods);
 
-    $output = new pnHTML();
-    $output->SetInputMode(_PNH_VERBATIMINPUT);
-
     if (!$orphanedmods) {
-        $output->Text(_EZCOMMENTS_CLEANUP_NOTHINGTODO);
-        $output->Linebreak(2);
-        $output->URL(pnModURL('EZComments', 'admin'), _EZCOMMENTS_CLEANUP_GOBACK);
-        return $output->GetOutput();
+    	pnSessionSetVar('statusmsg', _EZCOMMENTS_CLEANUP_NOTHINGTODO);
+    	pnRedirect(pnModURL('EZComments', 'admin', 'main'));
+        return true;
     } 
 
     $selectitems = array();
     foreach ($orphanedmods as $mod) {
-        $selectitems[] = array('id'       => $mod,
-                               'name'     => $mod,
-                               'selected' => false);
-    } 
+        $selectitems[$mod] = $mod;
+    }
 
-    $output->Text(_EZCOMMENTS_CLEANUP_EXPLAIN);
-    $output->Linebreak(2);
-    $output->FormStart(pnModURL('EZComments', 'admin', 'cleanup_go'));
-    $output->FormHidden('authid', pnSecGenAuthKey());
-    $output->Text(_EZCOMMENTS_CLEANUP_LABEL . ' ');
-    $output->FormSelectMultiple('EZComments_module', $selectitems, false);
-    $output->Text(' ');
-    $output->FormSubmit(_EZCOMMENTS_CLEANUP_GO);
-    $output->FormEnd();
-    return $output->GetOutput();
+	$pnRender =& new pnRender('EZComments');
+	$pnRender->assign('selectitems', $selectitems);
+
+    return $pnRender->fetch('ezcomments_admin_cleanup.htm');
 } 
 
 
