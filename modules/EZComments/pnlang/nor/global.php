@@ -29,6 +29,7 @@ define('_EZCCOMMENTSCREATED', 			'Kommentar lagt til');
 define('_EZCCOMMENTSDELETED', 			'Kommentar slettet');
 define('_EZCOMMENTS_FAILED',   			'Intern feil');
 define('_EZCOMMENTS_NODIRECTACCESS',	'No direct access to this module'); // Translate me!
+define('_EZCOMMENTS_RULES',				'Define the rules for your comments here');  // Translate me
 
 define('_EZCOMMENTS_ADMIN',				'EZComments Administration');           // Translate me!
 define('_EZCOMMENTS_SMARTYPATH',		'Path to your installation of SMARTY'); // Translate me!
@@ -44,4 +45,8 @@ define('_EZCOMMENTS_FAILED2', 			'Feil ved opprettelse av tilknytning (hook)');
 define('_EZCOMMENTS_FAILED3', 			'Feil ved sletting av tabell');
 define('_EZCOMMENTS_FAILED4', 			'Feil ved sletting av tilknytning (hook)');
 define('_EZCOMMENTS_FAILED5', 			'Oppdatering av tabell mislyktes');
+
+define('_EZCOMMENTS_MAILSUBJECT',		'A new comment was entered');  // Translate me
+define('_EZCOMMENTS_MAILBODY',  		'A new comment was entered');  // Translate me
+
 ?>

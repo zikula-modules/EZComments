@@ -29,6 +29,7 @@ define('_EZCCOMMENTSCREATED',           'Commento aggiunto');
 define('_EZCCOMMENTSDELETED',           'Commento cancellato');
 define('_EZCOMMENTS_FAILED',            'Erroreinterno');
 define('_EZCOMMENTS_NODIRECTACCESS',	'No direct access to this module'); // Translate me!
+define('_EZCOMMENTS_RULES',				'Define the rules for your comments here');  // Translate me
 
 define('_EZCOMMENTS_ADMIN',             'Gestione di EZComments');
 define('_EZCOMMENTS_SMARTYPATH',        'Percorso a Smarty');
@@ -44,5 +45,8 @@ define('_EZCOMMENTS_FAILED2',           'Errore nel creare l\'hook');
 define('_EZCOMMENTS_FAILED3',           'Errore nel cancellare la tabella');
 define('_EZCOMMENTS_FAILED4',           'Errore nel cancellare l\'hook');
 define('_EZCOMMENTS_FAILED5',           'Errore nell\'aggiornare il campo');
+
+define('_EZCOMMENTS_MAILSUBJECT',		'A new comment was entered');  // Translate me
+define('_EZCOMMENTS_MAILBODY',  		'A new comment was entered');  // Translate me
 
 ?>

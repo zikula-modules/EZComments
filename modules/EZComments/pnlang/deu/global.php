@@ -45,4 +45,8 @@ define('_EZCOMMENTS_FAILED2', 			'Registrierung des Hooks fehlgeschlagen');
 define('_EZCOMMENTS_FAILED3', 			'Löschen der Tabelle fehlgeschlagen');
 define('_EZCOMMENTS_FAILED4', 			'Löschen des Hooks fehlgeschlagen');
 define('_EZCOMMENTS_FAILED5', 			'Update der Tabellen fehlgeschlagen');
+
+define('_EZCOMMENTS_MAILSUBJECT',		'Neuer Kommentar'); 
+define('_EZCOMMENTS_MAILBODY',  		'Ein neuer Kommentar wurde eingegeben'); 
+
 ?>

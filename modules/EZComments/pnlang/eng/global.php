@@ -29,6 +29,7 @@ define('_EZCCOMMENTSCREATED',			'Comment added');
 define('_EZCCOMMENTSDELETED', 			'Comment deleted');
 define('_EZCOMMENTS_FAILED',   			'Internal Error');
 define('_EZCOMMENTS_NODIRECTACCESS',	'No direct access to this module');
+define('_EZCOMMENTS_RULES',				'Define the rules for your comments here');
 
 define('_EZCOMMENTS_ADMIN',				'EZComments Administration');
 define('_EZCOMMENTS_SMARTYPATH',		'Path to your installation of SMARTY');
@@ -44,5 +45,8 @@ define('_EZCOMMENTS_FAILED2', 			'Error creating hook');
 define('_EZCOMMENTS_FAILED3', 			'Error deleting table');
 define('_EZCOMMENTS_FAILED4', 			'Error deleting hook');
 define('_EZCOMMENTS_FAILED5', 			'Table update failed');
+
+define('_EZCOMMENTS_MAILSUBJECT',		'A new comment was entered'); 
+define('_EZCOMMENTS_MAILBODY',  		'A new comment was entered'); 
 
 ?>

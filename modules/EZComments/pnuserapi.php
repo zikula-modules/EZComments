@@ -167,11 +167,12 @@ function EZComments_userapi_create($args)
 		// Who wants to receive as well?
 		//$headers .= "cc: birthdayarchive@php.net\n";
 
+		$subject = _EZCOMMENTS_MAILSUBJECT;
+		$body    = _EZCOMMENTS_MAILBODY . ":\n" . $comment . "\n\n\nLink:" . $url;
 		pnmail(pnConfigGetVar('adminmail'), 
-		       'Neuer Kommentar', 
-		       'Neuer Kommentar: ' . $comment, 
-			   $headers);
-    		
+               $subject,
+			   $body, 
+	       	   $headers);
 	}
 	
 	// pnModCallHooks('item', 'create', $tid, 'tid');
