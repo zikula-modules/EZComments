@@ -1,0 +1,20 @@
+<!--[*  $Id$  *]-->
+<!-- start comments nav bar -->
+<div class="ezcomments_navbar">
+	<form action="<!--[pngetcurrenturi]-->" method="post" enctype="application/x-www-form-urlencoded">
+	<div>
+		<!--[pnml name=_EZCOMMENTS_DISPLAY]-->
+		<select name="ezcomments_template">
+			<option value="AllOnOnePage" <!--[if $template eq AllOnOnePage]-->selected="selected"<!--[/if]-->><!--[pnml name=_EZCOMMENTS_FLAT]--></option>
+			<option value="Threaded" <!--[if $template eq Threaded]-->selected="selected"<!--[/if]-->><!--[pnml name=_EZCOMMENTS_THREADED]--></option>
+		</select>
+		<!--[pnml name=_EZCOMMENTS_ORDER]-->
+		<select name="ezcomments_order">
+			<option value="0" <!--[if $order eq 0]-->selected="selected"<!--[/if]-->><!--[pnml name=_EZCOMMENTS_OLDESTFIRST]--></option>
+			<option value="1" <!--[if $order eq 1]-->selected="selected"<!--[/if]-->><!--[pnml name=_EZCOMMENTS_NEWESTFIRST]--></option>
+		</select>
+		<input type="submit" name="submit" value="<!--[pnml name=_SUBMIT]-->" />
+	</div>
+	</form>
+</div>
+<!-- end comments nav bar -->
