@@ -78,7 +78,7 @@ function EZComments_user_view($args)
 		return _EZCOMMENTS_FAILED;
 	} 
 
-	$comments = EZComments_prepareCommentsForDisplay($items);
+	$comments = EZComments_prepareCommentsForDisplay($items, $modname, $objectid);
 
 	require_once dirname(__FILE__) . '/ezcsmarty.php';
 	$smarty = new EZComments_Smarty;
@@ -145,7 +145,7 @@ function EZComments_user_comment($args)
 		return _EZCOMMENTS_FAILED;
 	} 
 
-	$comments = EZComments_prepareCommentsForDisplay($items);
+	$comments = EZComments_prepareCommentsForDisplay($items, $modname, $objectid);
 
 	require_once dirname(__FILE__) . '/ezcsmarty.php';
 	$smarty = new EZComments_Smarty;
@@ -280,10 +280,12 @@ function EZComments_user_delete($args)
  * data) drom other modules.
  * 
  * @param    $items    An array of comment items as returned from the API
+ * @param    $modname  The name of the module (used for permission checking)
+ * @param    $objectid The item ID (used for permission checking)
  * @return   array     An array to display (augmented information / perm. check)
  * @since    0.2
  */
-function EZComments_prepareCommentsForDisplay($items)
+function EZComments_prepareCommentsForDisplay($items, $modname, $objectid)
 {
 	$comments = array();
 	foreach ($items as $item) {
