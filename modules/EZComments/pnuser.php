@@ -1,20 +1,34 @@
 <?php 
-// $Id$
+/**
+ * $Id$
+ * 
+ * * EZComments *
+ * 
+ * Attach comments to any module calling hooks
+ * 
+ * 
+ * * License *
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License (GPL)
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ *
+ * @author      Joerg Napp <jnapp@users.sourceforge.net>
+ * @version     0.2
+ * @link        http://lottasophie.sourceforge.net Support and documentation
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU General Public License
+ * @package     Postnuke
+ * @subpackage  EZComments
+ */
 
-// LICENSE
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License (GPL)
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-// This program is distributed in the hope that it will be useful,
-// but WIthOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// To read the license please visit http://www.gnu.org/copyleft/gpl.html
-// ----------------------------------------------------------------------
-// Original Author of file: Jörg Napp, http://postnuke.lottasophie.de
-// ----------------------------------------------------------------------
-
+ 
 /**
  * Return to index page
  * 
@@ -28,16 +42,16 @@ function EZComments_user_main($args)
 	return true;
 }
 
+
 /**
  * Display comments for a specific item
  * 
  * This function provides the main user interface to the comments
  * module. 
  * 
- * @param $args['objectid'] ID of the item to display comments for
- * @param $args['extrainfo'] URL to return to if user chooses to comment
- * @returns output
- * @return output the comments
+ * @param    $args['objectid']     ID of the item to display comments for
+ * @param    $args['extrainfo']    URL to return to if user chooses to comment
+ * @return   output                the comments
  */
 function EZComments_user_view($args)
 {
@@ -61,31 +75,8 @@ function EZComments_user_view($args)
 		return _EZCOMMENTS_FAILED;
 	} 
 
-	// modify the returned array to be passed to the template.
-	// maybe we should move this into the API!
-	$comments = array();
-	foreach ($items as $item) {
-		if (pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:$item[id]", ACCESS_READ)) {
-			$comment = $item;
+	$comments = EZComments_prepareCommentsForDisplay($items);
 
-			if ($item['uid'] > 0) {
-				$userinfo = pnUserGetVars($item['uid']);
-				$comment['uname'] = $userinfo['uname'];
-			} else {
-				$comment['uname'] = pnConfigGetVar('Anonymous');
-			}
-
-			list($item['comment']) = pnModCallHooks('item', 'transform', 'x', array($item['comment']));
-			//echo $comment;
-			
-			
-			$comment['comment'] = pnVarPrepHTMLDisplay(pnVarCensor(nl2br($item['comment'])));
-			$comment['del'] = (pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:$item[id]", ACCESS_DELETE));
-			
-			$comments[] = $comment;
-		} 
-	}
-	
 	require_once dirname(__FILE__) . '/ezcsmarty.php';
 	$smarty = new EZComments_Smarty;
 
@@ -113,10 +104,11 @@ function EZComments_user_view($args)
  * 
  * Displays a comment form
  * 
- * @param $EZComments_comment the comment (taken from HTTP put)
- * @param $EZComments_modname the name of the module the comment is for (taken from HTTP put)
- * @param $EZComments_objectid ID of the item the comment is for (taken from HTTP put)
- * @param $EZComments_redirect URL to return to (taken from HTTP put)
+ * @param    $EZComments_comment     the comment (taken from HTTP put)
+ * @param    $EZComments_modname     the name of the module the comment is for (taken from HTTP put)
+ * @param    $EZComments_objectid    ID of the item the comment is for (taken from HTTP put)
+ * @param    $EZComments_redirect    URL to return to (taken from HTTP put)
+ * @todi     Check out it this function can be merged with _view!
  */
 function EZComments_user_comment($args)
 {
@@ -126,9 +118,26 @@ function EZComments_user_comment($args)
                         					 		 'EZComments_objectid',
                         					 		 'EZComments_redirect');
 													 
+	if (!pnModAPILoad('EZComments', 'user')) {
+		return _LOADFAILED;
+	}
+
+	$items = pnModAPIFunc('EZComments',
+			              'user',
+			              'getall',
+			               array('modname'  => $EZComments_modname, 
+						         'objectid' => $EZComments_objectid));
+
+	if ($items === false) {
+		return _EZCOMMENTS_FAILED;
+	} 
+
+	$comments = EZComments_prepareCommentsForDisplay($items);
+
 	require_once dirname(__FILE__) . '/ezcsmarty.php';
 	$smarty = new EZComments_Smarty;
 
+	$smarty->assign('comments',     $comments);
 	$smarty->assign('authid',   pnSecGenAuthKey('EZComments'));
 	$smarty->assign('allowadd', pnSecAuthAction(0, 'EZComments::', "$modname:$objectid: ", ACCESS_COMMENT));
 	$smarty->assign('addurl',   pnModURL('EZComments', 'user', 'create'));
@@ -151,10 +160,10 @@ function EZComments_user_comment($args)
  * This is a standard function that is called with the results of the
  * form supplied by EZComments_user_view to create a new item
  * 
- * @param $EZComments_comment the comment (taken from HTTP put)
- * @param $EZComments_modname the name of the module the comment is for (taken from HTTP put)
- * @param $EZComments_objectid ID of the item the comment is for (taken from HTTP put)
- * @param $EZComments_redirect URL to return to (taken from HTTP put)
+ * @param    $EZComments_comment     the comment (taken from HTTP put)
+ * @param    $EZComments_modname     the name of the module the comment is for (taken from HTTP put)
+ * @param    $EZComments_objectid    ID of the item the comment is for (taken from HTTP put)
+ * @param    $EZComments_redirect    URL to return to (taken from HTTP put)
  */
 function EZComments_user_create($args)
 {
@@ -195,6 +204,7 @@ function EZComments_user_create($args)
 	return true;
 } 
 
+
 /**
  * Delete a comment
  * 
@@ -208,7 +218,7 @@ function EZComments_user_delete($args)
 {
 	list($EZComments_id,
 	 $EZComments_redirect) = pnVarCleanFromInput('EZComments_id',
-						 'EZComments_redirect'); 
+                        						 'EZComments_redirect'); 
 
 	// Confirm authorisation code.
 	if (!pnSecConfirmAuthKey()) {
@@ -222,9 +232,9 @@ function EZComments_user_delete($args)
 		return false;
 	} 
 	$id = pnModAPIFunc('EZComments',
-			   'user',
-			   'delete',
-			   array('id' => $EZComments_id));
+              		   'user',
+			           'delete',
+        			   array('id' => $EZComments_id));
 
 	if ($id != false) {
 		pnSessionSetVar('statusmsg', _EZCCOMMENTSDELETED);
@@ -235,4 +245,40 @@ function EZComments_user_delete($args)
 } 
 
 
+
+/**
+ * Prepare comments to be displayed
+ * 
+ * We loop through the "raw data" returned from the API to prepare these data
+ * to be displayed. 
+ * We check for necessary rights, and derive additional information (e.g. user
+ * data) drom other modules.
+ * 
+ * @param    $items    An array of comment items as returned from the API
+ * @return   array     An array to display (augmented information / perm. check)
+ */
+function EZComments_prepareCommentsForDisplay($items)
+{
+	$comments = array();
+	foreach ($items as $item) {
+		if (pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:$item[id]", ACCESS_READ)) {
+			$comment = $item;
+
+			if ($item['uid'] > 0) {
+				$userinfo = pnUserGetVars($item['uid']);
+				$comment['uname'] = $userinfo['uname'];
+			} else {
+				$comment['uname'] = pnConfigGetVar('Anonymous');
+			}
+
+			list($item['comment']) = pnModCallHooks('item', 'transform', 'x', array($item['comment']));
+
+			$comment['comment'] = pnVarPrepHTMLDisplay(pnVarCensor(nl2br($item['comment'])));
+			$comment['del'] = (pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:$item[id]", ACCESS_DELETE));
+			
+			$comments[] = $comment;
+		} 
+	}
+	return $comments;
+}
 ?>
