@@ -89,7 +89,7 @@ function EZComments_init()
 
 	// register the module delete hook
 	if (!pnModRegisterHook('module',
-                		   'delete',
+                		   'remove',
 						   'API',
 						   'EZComments',
 						   'admin',
@@ -207,7 +207,7 @@ function EZComments_upgrade($oldversion)
 		// get all modules hooked to ezcomments
 		$hookedmodules = pnModAPIFunc('Modules', 'admin', 'gethookedmodules', array('hookmodname'=> 'EZComments'));
 		if (!pnModRegisterHook('module',
-		                       'delete',
+		                       'remove',
 							   'API',
 							   'EZComments',
 							   'admin',
@@ -266,7 +266,7 @@ function EZComments_delete()
 	}
 
     if (!pnModUnregisterHook('module',
-                             'delete',
+                             'remove',
                              'API',
                              'EZComments',
                              'admin',
