@@ -2,20 +2,20 @@
 <!--[foreach from=$comments item=comment]-->
 	<li>
 		<!--[if $comment.subject neq '']-->
-			<a href="<!--[$comment.url]-->"><!--[$comment.subject]--></a>
+			<a href="<!--[$comment.url|pnvarprepfordisplay]-->"><!--[$comment.subject]--></a>
 		<!--[else]-->
-			<a href="<!--[$comment.url]-->"><!--[$comment.comment|truncate:30]--></a>
+			<a href="<!--[$comment.url|pnvarprepfordisplay]-->"><!--[$comment.comment|truncate:30]--></a>
 		<!--[/if]-->
 		<!--[if $showusername]-->
 			<!--[pnml name=_BY]-->
 			<!--[if $linkusername]-->
-				<a href="'user.php?op=userinfo&amp;uname=<!--[$comment.uname]-->"><!--[$comment.uname]--></a>
+				<a href="'user.php?op=userinfo&amp;uname=<!--[$comment.uname|pnvarprepfordisplay]-->"><!--[$comment.uname|pnvarprepfordisplay]--></a>
 			<!--[else]-->
-				<!--[$comment.uname]-->
+				<!--[$comment.uname|pnvarprepfordisplay]-->
 			<!--[/if]-->
 		<!--[/if]-->
 		<!--[if $showdate]-->
-		<!--[pnml name=_ON]-->&nbsp;<!--[$comment.date|pndate_format]-->
+		<!--[pnml name=_ON]-->&nbsp;<!--[$comment.date|pndate_format|pnvarprephtmldisplay]-->
 		<!--[/if]-->
 	</li>
 <!--[/foreach]-->
