@@ -261,7 +261,9 @@ function EZComments_admin_migrate_go()
 
 	// Eintrag in Datenbank
 	$migrated=unserialize(pnModGetVar('EZComments', 'migrated'));
+
 	// don't issue a warning when the file does not exist!
+	// TIPP: While testing new migration plugins, set this to require!
 	@include "modules/EZComments/migrate/$migrate";
 	if (function_exists('EZComments_migrate'))
 	{
@@ -387,8 +389,10 @@ function EZComments_adminmenu()
 {
     $output = new pnHTML();
     $output->SetInputMode(_PNH_VERBATIMINPUT);
+    $output->Text(pnGetStatusMsg());
+	$output->Linebreak();
     $output->Title(_EZCOMMENTS_ADMIN);
-    $output->Linebreak();
+	$output->Linebreak();
     $output->Text('<div style="text-align:center;">');
     $output->Text('[ ');
     $output->URL(pnModURL('EZComments', 'admin'), _EZCOMMENTS_ADMIN_MAIN);
@@ -400,7 +404,7 @@ function EZComments_adminmenu()
     $output->Text('</div>');
     $output->Linebreak(2);
 
-	return $output->GetOutput();
+    return $output->GetOutput();
 } 
 
 
