@@ -80,41 +80,6 @@ function EZComments_user_view($args)
 
 	$comments = EZComments_prepareCommentsForDisplay($items);
 
-	// include pnRender as long as it's not in the core...
-	if (!defined('_XANTHIA_ROOT_PATH')) {
-		$xanthiarootpath = pnModGetVar('Xanthia','rootpath');
-		define('_XANTHIA_ROOT_PATH', $xanthiarootpath);
-	}
-	if (!function_exists('pnTplStart')) {
-    	include_once ''._XANTHIA_ROOT_PATH.'/Xanthia/pnincludes/pnRender.php';
- 	}
-	
-	// Determine which Theme to use
-    if (pnUserLoggedIn()) {
-        $theme = pnUserGetTheme();
-    } else {
-        $theme = pnConfigGetVar('Default_Theme');
-    }
-	// determine which template to use
-    if (file_exists("themes/$theme/templates/modules/EZComments/templates/$modname.htm")
-	 || file_exists("modules/EZComments/pntemplates/$modname.htm")) {
-		$template = $modname;
-	} else {
-		$template = 'default';
-	}
-	
-	pnTplStart('EZComments', $template);
-	pnTplAssign('comments',   $comments);
-	pnTplAssign('authid',     pnSecGenAuthKey('EZComments'));
-	pnTplAssign('allowadd',   pnSecAuthAction(0, 'EZComments::', "$modname:$objectid: ", ACCESS_COMMENT));
-	pnTplAssign('delurl',     pnModURL('EZComments', 'user', 'delete'));
-	pnTplAssign('addurl',     pnModURL('EZComments', 'user', 'create'));
-	pnTplAssign('commenturl', pnModURL('EZComments', 'user', 'comment'));
-	pnTplAssign('redirect',   pnVarPrepForDisplay($args['extrainfo']));
-	pnTplAssign('modname',    pnVarPrepForDisplay($modname));
-	pnTplAssign('objectid',   pnVarPrepForDisplay($objectid));
-	return pnTplFetch($template);
-	/*
 	require_once dirname(__FILE__) . '/ezcsmarty.php';
 	$smarty = new EZComments_Smarty;
 
@@ -133,7 +98,7 @@ function EZComments_user_view($args)
 	} else {
 		return $smarty->fetch('default.htm');
 	}
-	*/
+
 } 
 
 
