@@ -54,7 +54,7 @@ function EZComments_user_view($args)
 	// maybe we should move this into the API!
 	$comments = array();
 	foreach ($items as $item) {
-		if (pnSecAuthAction(0, 'EZComments::', "$module:$objectid:$item[id]", ACCESS_READ)) {
+		if (pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:$item[id]", ACCESS_READ)) {
 			$comment = $item;
 
 			if ($item['uid'] > 0) {
