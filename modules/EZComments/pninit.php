@@ -75,12 +75,6 @@ function EZComments_init()
 		return false;
 	} 
 	
-	// Note that filenames may contain backslashes as separators. 
-	// We need to convert them to slashes before doing anything else...
-	pnModSetVar('EZComments', 'smartypath', dirname(__FILE__) 
-						. DIRECTORY_SEPARATOR . 'pnclass'
-						. DIRECTORY_SEPARATOR . 'Smarty'
-						. DIRECTORY_SEPARATOR);
 	pnModSetVar('EZComments', 'MailToAdmin', false);
 	pnModSetVar('EZComments', 'migrated', serialize(array()));
 	// Initialisation successful
@@ -131,6 +125,10 @@ function EZComments_upgrade($oldversion)
 
 		$oldversion = '0.2';
 	}
+    
+    if ($oldversion == '0.2') {
+        pnModDelVar('EZComments', 'smartypath');
+    }
 	return true;
 } 
 
@@ -155,15 +153,14 @@ function EZComments_delete()
 	} 
 
 	if (!pnModUnregisterHook('item',
-				 'display',
-				 'GUI',
-				 'EZComments',
-				 'user',
-				 'view')) {
+				             'display',
+            				 'GUI',
+			            	 'EZComments',
+            				 'user',
+            				 'view')) {
 		pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED4);
 		return false;
 	} 
-	pnModDelVar('EZComments', 'smartypath');
 	pnModDelVar('EZComments', 'MailToAdmin');
 	pnModDelVar('EZComments', 'migrated');
 	

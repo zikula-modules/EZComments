@@ -36,7 +36,6 @@ define('_EZCOMMENTS_RULES',				'Hier sollten die Regeln für die Benutzung der Ko
 
 define('_EZCOMMENTS_ADMIN',				'EZComments Administration');
 define('_EZCOMMENTS_ADMIN_MAIN',		'Hauptmenü');
-define('_EZCOMMENTS_SMARTYPATH',		'Pfad zur SMARTY-Installation');
 define('_EZCOMMENTS_SENDINFOMAIL',		'Mail bei neuen Kommentaren verschicken');
 define('_EZCOMMENTS_OK', 				'Bestätigen');
 define('_EZCOMMENTS_LASTCOMMENTS', 		'Die letzten Kommentare');

@@ -36,7 +36,6 @@ define('_EZCOMMENTS_RULES',	            'Define the rules for your comments here
 
 define('_EZCOMMENTS_ADMIN',				'EZComments Administration');
 define('_EZCOMMENTS_ADMIN_MAIN',		'Main EZComments Administration');
-define('_EZCOMMENTS_SMARTYPATH',		'Path to your installation of SMARTY');
 define('_EZCOMMENTS_SENDINFOMAIL',		'send mail on new comment');
 define('_EZCOMMENTS_OK', 				'Accept');
 define('_EZCOMMENTS_LASTCOMMENTS', 		'The last comments');

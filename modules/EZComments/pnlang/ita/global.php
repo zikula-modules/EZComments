@@ -36,7 +36,6 @@ define('_EZCOMMENTS_RULES',				'Definisci le regole per i tuoi commenti qui');
 
 define('_EZCOMMENTS_ADMIN',             'Gestione di EZComments');
 define('_EZCOMMENTS_ADMIN_MAIN',		'Main EZComments Administration');    // Translate me!
-define('_EZCOMMENTS_SMARTYPATH',        'Percorso a Smarty');
 define('_EZCOMMENTS_SENDINFOMAIL',		'invia una email per i nuovi commenti');
 define('_EZCOMMENTS_OK',                'Accetta');
 define('_EZCOMMENTS_LASTCOMMENTS',      'Ultimi commenti');

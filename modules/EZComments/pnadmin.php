@@ -48,8 +48,6 @@ function EZComments_admin_main() {
 
 	$output->FormStart(pnModURL('EZComments', 'admin', 'update'));
 	$output->FormHidden('authid', pnSecGenAuthKey());
-	$output->Text(_EZCOMMENTS_SMARTYPATH . ': ');
-	$output->FormText('smartypath', pnVarPrepForDisplay(pnModGetVar('EZComments', 'Smartypath')), 80, 256);
 	$output->Linebreak();
 	$output->Text(_EZCOMMENTS_SENDINFOMAIL . ' ');
     $output->FormCheckbox('MailToAdmin', pnVarPrepForDisplay(pnModGetVar('EZComments', 'MailToAdmin')));	
@@ -146,7 +144,7 @@ function EZComments_admin_main() {
  * This is the function that is called with the results of the
  * form supplied by EZComments_admin_main to alter the admin settings
  * 
- * @param $smartypath full pathname of Smarty class
+ * @param $MailToAdmin full pathname of Smarty class
  */
 function EZComments_admin_update($args)
 {
@@ -156,25 +154,14 @@ function EZComments_admin_update($args)
 		return true;
 	} 
 
-	list($smartypath, 
-	     $MailToAdmin) = pnVarCleanFromInput('smartypath', 
-		                                    'MailToAdmin');
+    $MailToAdmin = pnVarCleanFromInput('MailToAdmin');
 	extract($args);
 
-	
-    if (empty($smartypath)) {
-		$smartypath = dirname(__FILE__) 
-					  . DIRECTORY_SEPARATOR . 'pnclass'
-					  . DIRECTORY_SEPARATOR . 'Smarty'
-					  . DIRECTORY_SEPARATOR;
-	}
-						
     if (!isset($MailToAdmin)) {
         $MailToAdmin = 0;
     }
 
 	pnModSetVar('EZComments', 'MailToAdmin', $MailToAdmin);
-	pnModSetVar('EZComments', 'smartypath',  $smartypath);
 	pnRedirect(pnModURL('EZComments', 'admin', 'main'));
 	return true;
 }

@@ -36,7 +36,6 @@ define('_EZCOMMENTS_RULES',				'Definér reglene for dine kommentarer her');
 
 define('_EZCOMMENTS_ADMIN',				'EZComments administrasjon');
 define('_EZCOMMENTS_ADMIN_MAIN',		'EZComments hoved-administrasjon');
-define('_EZCOMMENTS_SMARTYPATH',		'Filsti til din SMARTY-installasjon');
 define('_EZCOMMENTS_SENDINFOMAIL',		'send e-post ved ny kommentar');
 define('_EZCOMMENTS_OK', 				'Godta');
 define('_EZCOMMENTS_LASTCOMMENTS', 		'De seneste kommentarene');
