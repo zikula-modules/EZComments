@@ -103,7 +103,14 @@
 					<input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect]-->" /> 
 					<input type="hidden" name="EZComments_modname" id="EZComments_modname" value="<!--[pnmodgetname]-->" /> 
 					<input type="hidden" name="EZComments_objectid" id="EZComments_objectid" value="<!--[$objectid]-->" /> 
-					<textarea name="message" id="message" cols="60" rows="10"></textarea>
+					<div>
+						<label for="subject"><!--[pnml name=_EZCOMMENTS_SUBJECT]--></label>
+						<input type="text" name="EZComments_subject" id="subject" size="50" maxlength="255" />
+					</div>
+					<div>
+						<label for="mesage"><!--[pnml name=_EZCOMMENTS_COMMENT]--></label>
+						<textarea name="EZComments_comment" id="comment" cols="60" rows="10"></textarea>
+					</div>
 					<input type="submit" value="<!--[pnml name=_EZCOMMENTS_ADD]-->" />
 				</div>
 				</form>
