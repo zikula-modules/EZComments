@@ -77,4 +77,6 @@ define('_EZCOMMENTS_PROFILE',  			'Profile');
 define('_EZCOMMENTS_SEND_PM',  			'send PM'); 
 define('_EZCOMMENTS_FROM',  			'Location'); 
 
+define('_EZCOMMENTS_SUBJECT',           'Subject');
+define('_EZCOMMENTS_EDIT',              'Edit Comment');
 ?>

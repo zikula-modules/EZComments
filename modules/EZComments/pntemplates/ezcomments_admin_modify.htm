@@ -1,0 +1,24 @@
+<!--[*  $Id$  *]-->
+<!--[include file="ezcomments_admin_menu.htm"]-->
+<h2><!--[pnml name="_EZCOMMENTS_EDIT"]--></h2>
+<form class="pn-adminform" action="<!--[pnmodurl modname="EZComments" type="admin" func="update"]-->" method="post" enctype="application/x-www-form-urlencoded">
+<div>
+	<input type="hidden" name="authid" value="<!--[pnsecgenauthkey module="EZComments"]-->" />
+	<input type="hidden" name="tid" value="<!--[$id|pnvarprepfordisplay]-->" />
+	<div class="pn-adminformrow">
+		<label for="ezcomments_name"><!--[pnml name="_EZCOMMENTS_SUBJECT"]--></label>
+		<input id="ezcomments_name" name="subject" type="text" size="32" maxlength="32" value="<!--[$subject|pnvarprepfordisplay]-->" />
+	</div>
+	<div class="pn-adminformrow">
+		<label for="ezcomments_number"><!--[pnml name="_EZCOMMENTS_COMMENT"]--></label>
+		<textarea id="ezcomments_number" name="comment" rows="5" cols="50"><!--[$comment|pnvarprepfordisplay]--></textarea>
+	</div>
+	<div class="pn-adminformrow">
+		<!--[pnmodcallhooks hookobject=item hookaction=modify hookid=$tid module=EZComments]-->
+	</div>
+	<div class="pn-adminformrow">
+		<input name="submit" type="submit" value="<!--[pnml name="_UPDATE"]-->" />
+	</div>
+	<div style="clear:both"></div>
+</div>
+</form>
