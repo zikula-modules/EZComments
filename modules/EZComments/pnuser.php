@@ -303,7 +303,35 @@ function EZComments_prepareCommentsForDisplay($items)
 
             if ($item['uid'] > 0) {
                 $userinfo = pnUserGetVars($item['uid']);
-                $comment['uname'] = $userinfo['uname'];
+				//print_r ($userinfo);
+
+                $comment['uname'] 	= $userinfo['uname'];
+				$comment['regdate'] = $userinfo['pn_user_regdate'];
+				$comment['sig'] 	= $userinfo['pn_user_sig'];
+				if($userinfo['user_avatar']){
+                $comment['avatar'] = "images/avatar/" . $userinfo['user_avatar'];				
+				}
+				
+
+				$dbconn =& pnDBGetConn(true);
+				$pntable =& pnDBGetTables();
+				$activetime = time() - (pnConfigGetVar('secinactivemins') * 60);
+				$userhack = "SELECT pn_uid
+                         FROM ".$pntable['session_info']."
+
+                         WHERE pn_uid = '".$userinfo['pn_uid']."'
+
+                         AND pn_lastused > '".pnVarPrepForStore($activetime)."'";
+				$userresult = $dbconn->Execute($userhack);
+	            $online_state = $userresult->GetRowAssoc(false);
+                $comment['online'] = false;
+                if($online_state['pn_uid'] == $item['uid']) {
+                $comment['online'] = true;
+				$userresult->Close();
+            }
+
+            
+				
             } else {
                 $comment['uname'] = pnConfigGetVar('Anonymous');
             }
