@@ -51,6 +51,13 @@ define('_EZCOMMENTS_CLEANUP_LABEL',       'Modul auswählen:');
 define('_EZCOMMENTS_CLEANUP_GO',          'Alle Kommentare zu diesem Modul löschen');
 define('_EZCOMMENTS_CLEANUP',             'Verwaiste Kommentare löschen');
 
+define('_EZCOMMENTS_MIGRATE_EXPLAIN',     'Hiermit können Kommentare aus bestehenden Modulen importiert werden.');
+define('_EZCOMMENTS_MIGRATE_NOTHINGTODO', 'Es gibt keine zu migrierenden Module');
+define('_EZCOMMENTS_MIGRATE_GOBACK',      'Zurück');
+define('_EZCOMMENTS_MIGRATE_LABEL',       'Migration von:');
+define('_EZCOMMENTS_MIGRATE_GO',          'Migration starten');
+define('_EZCOMMENTS_MIGRATE',             'Kommentare migrieren');
+
 define('_EZCOMMENTS_FAILED1', 			'Erstellung der Tabelle fehlgeschlagen');
 define('_EZCOMMENTS_FAILED2', 			'Registrierung des Hooks fehlgeschlagen');
 define('_EZCOMMENTS_FAILED3', 			'Löschen der Tabelle fehlgeschlagen');

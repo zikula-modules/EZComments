@@ -52,6 +52,14 @@ define('_EZCOMMENTS_CLEANUP_LABEL',       'Select module:');
 define('_EZCOMMENTS_CLEANUP_GO',          'Delete all comments for this module');
 define('_EZCOMMENTS_CLEANUP',             'Delete orphanded comments');
 
+// Translate Me
+define('_EZCOMMENTS_MIGRATE_EXPLAIN',     'Import comments from other modules');
+define('_EZCOMMENTS_MIGRATE_NOTHINGTODO', 'No migration plugins available');
+define('_EZCOMMENTS_MIGRATE_GOBACK',      'Back');
+define('_EZCOMMENTS_MIGRATE_LABEL',       'Migrate:');
+define('_EZCOMMENTS_MIGRATE_GO',          'Start migration');
+define('_EZCOMMENTS_MIGRATE',             'Migrate Comments');
+
 define('_EZCOMMENTS_FAILED1', 			'Feil ved opprettelse av tabell');
 define('_EZCOMMENTS_FAILED2', 			'Feil ved opprettelse av tilknytning (hook)');
 define('_EZCOMMENTS_FAILED3', 			'Feil ved sletting av tabell');

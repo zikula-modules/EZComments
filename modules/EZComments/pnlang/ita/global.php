@@ -44,13 +44,21 @@ define('_EZCOMMENTS_USERNAME',          'Utente');
 define('_EZCOMMENTS_MODULE',            'Modulo');
 define('_EZCOMMENTS_COMMENT',           'Commento');
 
-// Translate M
+// Translate Me
 define('_EZCOMMENTS_CLEANUP_NOTHINGTODO', 'No orphaned comments'); 
 define('_EZCOMMENTS_CLEANUP_GOBACK',      'Back');
 define('_EZCOMMENTS_CLEANUP_EXPLAIN',     'This functionality allows you to delete comments that are in the database for removed modules.');
 define('_EZCOMMENTS_CLEANUP_LABEL',       'Select module:');
 define('_EZCOMMENTS_CLEANUP_GO',          'Delete all comments for this module');
 define('_EZCOMMENTS_CLEANUP',             'Delete orphanded comments');
+
+// Translate Me
+define('_EZCOMMENTS_MIGRATE_EXPLAIN',     'Import comments from other modules');
+define('_EZCOMMENTS_MIGRATE_NOTHINGTODO', 'No migration plugins available');
+define('_EZCOMMENTS_MIGRATE_GOBACK',      'Back');
+define('_EZCOMMENTS_MIGRATE_LABEL',       'Migrate:');
+define('_EZCOMMENTS_MIGRATE_GO',          'Start migration');
+define('_EZCOMMENTS_MIGRATE',             'Migrate Comments');
 
 define('_EZCOMMENTS_FAILED1',           'Errore nel creare la tabella');
 define('_EZCOMMENTS_FAILED2',           'Errore nel creare l\'hook');
