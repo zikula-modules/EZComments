@@ -109,17 +109,24 @@ function EZComments_user_view($args)
  * @param    $EZComments_modname     the name of the module the comment is for (taken from HTTP put)
  * @param    $EZComments_objectid    ID of the item the comment is for (taken from HTTP put)
  * @param    $EZComments_redirect    URL to return to (taken from HTTP put)
+ * @param    $EZComments_subject     The subject of the comment (if any) (taken from HTTP put)
+ * @param    $EZComments_replyto     The ID of the comment for which this an anser to (taken from HTTP put)
  * @todo     Check out it this function can be merged with _view!
  */
 function EZComments_user_comment($args)
 {
-	list($EZComments_comment,
-		 $EZComments_modname,
+	list($EZComments_modname,
 		 $EZComments_objectid,
-		 $EZComments_redirect) = pnVarCleanFromInput('EZComments_comment',
-                        					 		 'EZComments_modname',
-                        					 		 'EZComments_objectid',
-                        					 		 'EZComments_redirect');
+		 $EZComments_redirect,
+		 $EZComments_comment,
+		 $EZComments_subject,
+		 $EZComments_replyto) = pnVarCleanFromInput('EZComments_modname',
+                        					 		'EZComments_objectid',
+                        					 		'EZComments_redirect',
+													'EZComments_comment',
+													'EZComments_subject',
+													'EZComments_replyto');
+
 	if (!pnModAPILoad('EZComments', 'user')) {
 		return _LOADFAILED;
 	}
@@ -139,14 +146,16 @@ function EZComments_user_comment($args)
 	require_once dirname(__FILE__) . '/ezcsmarty.php';
 	$smarty = new EZComments_Smarty;
 
-	$smarty->assign('comments',     $comments);
+	$smarty->assign('comments', $comments);
 	$smarty->assign('authid',   pnSecGenAuthKey('EZComments'));
 	$smarty->assign('allowadd', pnSecAuthAction(0, 'EZComments::', "$modname:$objectid: ", ACCESS_COMMENT));
 	$smarty->assign('addurl',   pnModURL('EZComments', 'user', 'create'));
 	$smarty->assign('redirect', $EZComments_redirect);
 	$smarty->assign('modname',  pnVarPrepForDisplay($EZComments_modname));
 	$smarty->assign('objectid', pnVarPrepForDisplay($EZComments_objectid));
-	
+	$smarty->assign('subject',  pnVarPrepForDisplay($EZComments_subject));
+	$smarty->assign('replyto',  pnVarPrepForDisplay($EZComments_replyto));
+
 	if ($smarty->template_exists($EZComments_modname . '_comment.htm')) {
 		return $smarty->fetch($EZComments_modname . '_comment.htm');
 	} else {
