@@ -230,6 +230,10 @@ function EZComments_user_create($args)
         pnSessionSetVar('statusmsg', _EZCCOMMENTSCREATED);
     } 
 
+    // decoding the URL. Credits to tmyhre for fixing.
+    $EZComments_redirect = rawurldecode($EZComments_redirect);
+    $EZComments_redirect = str_replace('&amp;', '&', $EZComments_redirect);
+
     pnRedirect($EZComments_redirect);
     return true;
 } 
@@ -271,6 +275,8 @@ function EZComments_user_delete($args)
         pnSessionSetVar('statusmsg', _EZCCOMMENTSDELETED);
     } 
 
+    $EZComments_redirect = rawurldecode($EZComments_redirect);
+    $EZComments_redirect = str_replace('&amp;', '&', $EZComments_redirect);
     pnRedirect($EZComments_redirect);
     return true;
 } 
