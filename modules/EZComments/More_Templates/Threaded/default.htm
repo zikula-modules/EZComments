@@ -1,0 +1,40 @@
+<!--[assign var=comments value=$comments|@EZComments_threadComments]-->
+
+<div class="ezcomments">
+  <div class="pn-title">
+    <!--[$smarty.const._EZCOMMENTS]-->
+  </div>
+  <!--[section name=comments loop=$comments]-->
+
+  <div class="pn-normal" style="margin-left : <!--[$comments[comments].level]-->00px;">
+    von <!--[$comments[comments].uname]-->
+    am <!--[$comments[comments].date|date_format:"%d.%m.%y, %H:%M"]-->
+
+    <br />
+    <br />
+     <!--[$comments[comments].comment]-->
+
+  <!--[if $allowadd]-->
+    <br />
+    <br />
+		<a href="<!--[$commenturl]-->&authid=<!--[$authid]-->&EZComments_redirect=<!--[$redirect|rawurlencode ]-->&EZComments_modname=<!--[$modname]-->&EZComments_objectid=<!--[$objectid]-->&EZComments_replyto=<!--[$comments[comments].id]-->"><!--[$smarty.const._EZCOMMENTS_COMMENT_ADD]--></a>
+  <!--[/if]-->
+
+    <!--[if $comments[comments].del]-->
+		<br />
+		<a href="<!--[$delurl]-->&authid=<!--[$authid]-->&EZComments_redirect=<!--[$redirect|rawurlencode]-->&EZComments_id=<!--[$comments[comments].id]-->"><!--[$smarty.const._EZCOMMENTS_DEL]--></a>
+    <!--[/if]-->
+  </div>
+    <!--[/section]-->
+
+    <!--[if $allowadd]-->
+    <form action="<!--[$commenturl]-->" method="post">
+      <input type="hidden" name="authid" id="authid" value="<!--[$authid]-->" /> 
+			<input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect]-->" />
+			<input type="hidden" name="EZComments_modname" id="EZComments_modname" value="<!--[$modname]-->" />
+			<input type="hidden" name="EZComments_objectid" id="EZComments_objectid" value="<!--[$objectid]-->" /> 
+			<input type="submit" value="<!--[$smarty.const._EZCOMMENTS_COMMENT_ADD]-->" />
+    </form>
+    <!--[/if]-->
+</div>
+
