@@ -29,7 +29,7 @@ define('_EZCCOMMENTSCREATED',			'Comment added');
 define('_EZCCOMMENTSDELETED', 			'Comment deleted');
 define('_EZCOMMENTS_FAILED',   			'Internal Error');
 define('_EZCOMMENTS_NODIRECTACCESS',	'No direct access to this module');
-define('_EZCOMMENTS_RULES',				'Define the rules for your comments here');
+define('_EZCOMMENTS_RULES',	            'Define the rules for your comments here');
 
 define('_EZCOMMENTS_ADMIN',				'EZComments Administration');
 define('_EZCOMMENTS_SMARTYPATH',		'Path to your installation of SMARTY');
