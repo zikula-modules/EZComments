@@ -243,6 +243,66 @@ function EZComments_adminapi_deletebyitem($args)
 } 
 
 /**
+ * delete an item
+ * 
+ * @param    $args['id']    ID of the item
+ * @return   bool           true on success, false on failure
+ */
+function EZComments_adminapi_delete($args)
+{
+    // Get arguments from argument array 
+    extract($args);
+
+    // Argument check - make sure that all required arguments are present,
+    // if not then set an appropriate error message and return
+    if ((isset($id) && !is_numeric($id))) {
+        pnSessionSetVar('errormsg', _MODARGSERROR);
+        return false;
+    }
+
+    // The user API function is called.
+    $item = pnModAPIFunc('EZComments', 'user', 'get', array('id' => $id));
+
+    if (!$item) {
+        pnSessionSetVar('errormsg', _NOSUCHITEM);
+        return false;
+    }
+
+    // Security check 
+    if (!pnSecAuthAction(0, 'EZComments::', "::$id", ACCESS_DELETE)) {
+        pnSessionSetVar('errormsg', _MODULENOAUTH);
+        return false;
+    }
+
+    // Get datbase setup
+    $dbconn =& pnDBGetConn(true);
+    $pntable =& pnDBGetTables();
+    $table = $pntable['EZComments'];
+    $column = &$pntable['EZComments_column'];
+
+    // Delete the item - the formatting here is not mandatory, but it does
+    // make the SQL statement relatively easy to read.  Also, separating
+    // out the sql statement from the Execute() command allows for simpler
+    // debug operation if it is ever needed
+    $sql = "DELETE FROM $table
+            WHERE $column[id] = '" . (int)pnVarPrepForStore($id) ."'";
+    $dbconn->Execute($sql);
+
+    // Check for an error with the database code, and if so set an
+    // appropriate error message and return
+    if ($dbconn->ErrorNo() != 0) {
+        pnSessionSetVar('errormsg', _DELETEFAILED);
+        return false;
+    }
+
+    // Let any hooks know that we have deleted an item.
+    pnModCallHooks('item', 'delete', $id, array('module' => 'EZComments'));
+
+    // Let the calling process know that we have finished successfully
+    return true;
+}
+
+/**
  * update an item
  * 
  * @param    $args['id']         the ID of the item

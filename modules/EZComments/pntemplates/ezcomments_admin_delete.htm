@@ -1,0 +1,16 @@
+<!--[*  $Id$  *]-->
+<!--[include file="ezcomments_admin_menu.htm"]-->
+<h2><!--[pnml name="_EZCOMMENTS_DELETE"]--></h2>
+<form class="pn-adminform" action="<!--[pnmodurl modname="EZComments" type="admin" func="delete"]-->" method="post" enctype="application/x-www-form-urlencoded">
+<div>
+    <input type="hidden" name="authid" value="<!--[pnsecgenauthkey module="EZComments"]-->" />
+    <input type="hidden" name="confirmation" value="1" />
+    <input type="hidden" name="id" value="<!--[$id|pnvarprepfordisplay]-->" />
+	<div class="pn-adminformrow">
+		<label for="ezcomments_submit"><!--[pnml name="_CONFIRMDELETE"]--></label>
+		<input id="ezcomments_submit" name="submit" type="submit" value="<!--[pnml name="_DELETE"]-->" />
+	</div>
+	<div style="clear:both"></div>
+</div>
+</form>
+<a href="<!--[pnmodurl modname="EZComments" type="admin" func="view"]-->"><!--[pnml name="_CANCELDELETE"]--></a>
