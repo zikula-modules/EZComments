@@ -2,7 +2,7 @@
 <!--[* Here we show the given comments *]-->
 
 
-<!--[ pndebug ]-->
+<!--[* pndebug *]-->
 
 
 <!--[if $allowadd eq true or $comments eq true]-->
@@ -31,7 +31,8 @@
 		</tr>
         <tr style="background-color:none;text-align:left;">
             <td headers="col_0" style="background-color:<!--[ pnthemegetvar name=bgcolor3 ]-->;" valign="top">
-				<a href="user.php?op=userinfo&amp;uname=<!--[$comments[comments].uname]-->"><img src="images/avatar/<!--[$comments[comments].user_avatar]-->" alt="<!--[$comments[comments].uname]-->'s Avatar" /></a>
+				<!--[if $comments[comments].uname != "Anonymous" ]--> 
+				<!--[if $comments[comments].user_avatar]--><a href="user.php?op=userinfo&amp;uname=<!--[$comments[comments].uname]-->"><img src="images/avatar/<!--[$comments[comments].user_avatar]-->" alt="<!--[$comments[comments].uname]-->'s Avatar" /></a><!--[ /if ]-->
                 <br />
                 <br />
 				<div style="border-top-style: solid; border-top-width: 1px;">
@@ -41,6 +42,7 @@
 				<!--[ /if ]-->
 				</div>
 				<br /><!--[ pnml name='_EZCOMMENTS_STATUS' ]-->:&nbsp;<!--[ if $comments[comments].online  ]--><!--[ pnml name='_EZCOMMENTS_ONLINE' ]--><!--[ else ]--><!--[ pnml name='_EZCOMMENTS_OFFLINE' ]--><!--[ /if ]-->
+				<!--[ /if ]-->
             </td>
             <td colspan="2" style="vertical-align:top;background-color:<!--[ pnthemegetvar name=bgcolor1 ]-->;" headers="col_1">
 				<!--[$comments[comments].comment|pnmodcallhooks:"EZComments"]-->
