@@ -21,7 +21,7 @@
 function EZComments_pntables()
 {
     $pntable = array();
-    $EZComments = pnConfigGetVar('prefix') . '_EZComments';
+    $EZComments = pnConfigGetVar('prefix') . '_ezcomments';
     $pntable['EZComments'] = $EZComments;
     $pntable['EZComments_column'] = array('id'       => $EZComments . '.id',
                                           'modname'  => $EZComments . '.modname',

@@ -75,10 +75,24 @@ function EZComments_init()
  */
 function EZComments_upgrade($oldversion)
 { 
-    switch($oldversion) {
-		case '0.1':
-			pnModSetVar('EZComments', 'MailToAdmin', false);
-        	break;
+    if ($oldversion == '0.1') {
+		// new functionality: MailToAdmin
+		pnModSetVar('EZComments', 'MailToAdmin', false);
+
+		list($dbconn) = pnDBGetConn();
+		$pntable = pnDBGetTables();
+
+		// Rename the table fom nuke_EZComments to nuke_ezcomments
+		$EZCommentstable = $pntable['EZComments'];
+		$oldtable = pnConfigGetVar('prefix') . '_EZComments';
+		$sql = "ALTER TABLE $oldtable RENAME $EZCommentstable";
+		$dbconn->Execute($sql);
+		if ($dbconn->ErrorNo() != 0) {
+			pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED5 . ': ' . $dbconn->ErrorMsg());
+			return false;
+		} 		
+
+		$oldversion = '0.2';
 	}
 	return true;
 } 
