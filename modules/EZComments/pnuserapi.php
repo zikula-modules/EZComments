@@ -153,7 +153,7 @@ function EZComments_userapi_create($args)
 		return false;
 	} 
 	// Get the ID of the item that we inserted.
-	$tid = $dbconn->PO_Insert_ID($EZCommentstable, $EZCommentscolumn['id']); 
+	$id = $dbconn->PO_Insert_ID($EZCommentstable, $EZCommentscolumn['id']); 
 	// pnModCallHooks('item', 'create', $tid, 'tid');
 	return $id;
 } 
@@ -164,7 +164,6 @@ function EZComments_userapi_create($args)
  * This function deletes a given comment. Access checking is done.
  * 
  * @param $args['id'] ID of the comment to delete
- * @returns bool
  * @return true on success, false on failure
  */  
 function EZComments_userapi_delete($args)
@@ -175,6 +174,18 @@ function EZComments_userapi_delete($args)
 		pnSessionSetVar('errormsg', _MODARGSERROR);
 		return false;
 	} 
+
+	//credits to markwest for providing this 
+	$CommentDetails = pnModAPIFunc('EZComments',
+					 			   'user',
+			  					   'get',
+								   compact('id'));
+	if (!$CommentDetails) {
+		pnSessionSetVar('errormsg', _MODARGSERROR);
+		return false;
+	}
+	extract($CommentDetails);
+
 	// Security check
 	if (!pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:$id", ACCESS_DELETE)) {
 		pnSessionSetVar('errormsg', _EZCOMMENTS_NOAUTH);
@@ -197,6 +208,76 @@ function EZComments_userapi_delete($args)
 	} 
 	// pnModCallHooks('item', 'delete', $tid, ''); 
 	return true;
+} 
+
+/**
+ * get comments for a specific item inside a module
+ * 
+ * This function provides the main user interface to the comments
+ * module. 
+ * 
+ * @param $args['id'] ID of the comment
+ * @returns array
+ * @return details, or false on failure
+ */ 
+function EZComments_userapi_get($args)
+{
+	extract($args);
+	if (!isset($id)) {
+		pnSessionSetVar('errormsg', _MODARGSERROR);
+		return false;
+	} 
+	// Get datbase setup
+	list($dbconn) = pnDBGetConn();
+	$pntable = pnDBGetTables();
+
+	$EZCommentstable = $pntable['EZComments'];
+	$EZCommentscolumn = &$pntable['EZComments_column']; 
+	// Get items
+	$sql = "SELECT $EZCommentscolumn[modname],
+                   $EZCommentscolumn[objectid],
+                   $EZCommentscolumn[url],
+                   $EZCommentscolumn[date],
+                   $EZCommentscolumn[uid],
+                   $EZCommentscolumn[comment]
+            FROM $EZCommentstable
+            WHERE $EZCommentscolumn[id] = '$id'";
+
+	$result = $dbconn->Execute($sql); 
+	// Check for an error with the database code, and if so set an appropriate
+	// error message and return
+	if ($dbconn->ErrorNo() != 0) {
+		pnSessionSetVar('errormsg', _GETFAILED);
+		return false;
+	} 
+
+	if ($result->EOF) {
+		pnSessionSetVar('errormsg', _GETFAILED);
+		return false;
+	} 
+	// Put items into result array.  Note that each item is checked
+	// individually to ensure that the user is allowed access to it before it
+	// is added to the results array
+	list($modname, 
+		 $objectid,
+		 $url,
+	     $date, 
+		 $uid, 
+		 $comment) = $result->fields;
+	if (!pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:$id", ACCESS_READ)) {
+		return false;
+	} 
+	 
+	// All successful database queries produce a result set, and that result
+	// set should be closed when it has been finished with
+	$result->Close(); 
+	// Return the items
+	return compact('modname', 
+		           'objectid',
+		           'url',
+	               'date', 
+		           'uid', 
+		           'comment');
 } 
 
 ?>
