@@ -268,7 +268,7 @@ function EZComments_admin_domigrate()
  * 
  * @return output the cleanup interface
  */
-function EZComments_admin_orphaned()
+function EZComments_admin_cleanup()
 {
     if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
         return _EZCOMMENTS_NOAUTH;
@@ -312,7 +312,7 @@ function EZComments_admin_orphaned()
 
     $output->Text(_EZCOMMENTS_CLEANUP_EXPLAIN);
     $output->Linebreak(2);
-    $output->FormStart(pnModURL('EZComments', 'admin', 'orphaned_go'));
+    $output->FormStart(pnModURL('EZComments', 'admin', 'cleanup_go'));
     $output->FormHidden('authid', pnSecGenAuthKey());
     $output->Text(_EZCOMMENTS_CLEANUP_LABEL . ' ');
     $output->FormSelectMultiple('EZComments_module', $selectitems, false);
@@ -331,7 +331,7 @@ function EZComments_admin_orphaned()
  * 
  * @param  $EZComments_module The Module to delete for
  */
-function EZComments_admin_orphaned_go()
+function EZComments_admin_cleanup_go()
 { 
     // Permissions
     if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
@@ -355,7 +355,7 @@ function EZComments_admin_orphaned_go()
         return _EZCOMMENTS_GENERALFAILIURE;
     } 
 
-    pnRedirect(pnModURL('EZComments', 'admin', 'orphaned'));
+    pnRedirect(pnModURL('EZComments', 'admin', 'cleanup'));
     return true;
 } 
 
@@ -376,7 +376,7 @@ function EZComments_adminmenu()
     $output->Text('[ ');
     $output->URL(pnModURL('EZComments', 'admin'), _EZCOMMENTS_ADMIN_MAIN);
     $output->Text(' | ');
-    $output->URL(pnModURL('EZComments', 'admin', 'orphaned'), _EZCOMMENTS_CLEANUP);
+    $output->URL(pnModURL('EZComments', 'admin', 'cleanup'), _EZCOMMENTS_CLEANUP);
 //    $output->Text(' | ');
 //    $output->URL(pnModURL('EZComments', 'admin', 'migrate'), _EZCOMMENTS_MIGRATE);
     $output->Text(' ]');
