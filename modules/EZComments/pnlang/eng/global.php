@@ -96,4 +96,7 @@ define('_EZCOMMENTS_ALLOWANONUSERSETINFO', 'Allow unregistered users to set user
 define('_EZCOMMENTS_ANONNAME',             'Name');
 define('_EZCOMMENTS_ANONMAIL',             'E-mail address'); 
 
+define('_EZCOMMENTS_SEARCH',               'Search comments');
+define('_EZCOMMENTS_NOCOMMENTSFOUND',      'No comments matched your search');
+
 ?>
