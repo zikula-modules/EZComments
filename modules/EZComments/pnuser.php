@@ -66,13 +66,13 @@ function EZComments_user_view($args)
 	} 
 
 	// create the pnRender object
-	$smarty =& new pnRender('EZComments');
+	$pnRender =& new pnRender('EZComments');
 
 	// we use the module name as cache ID
 	$pnRender->cache_id = $modname;
 	
 	// find out which template to use
-	if ($smarty->template_exists($modname . '.htm')) {
+	if ($pnRender->template_exists($modname . '.htm')) {
 		$template = $modname . '.htm';
 	} else {
 		$template = 'default.htm';
@@ -95,18 +95,18 @@ function EZComments_user_view($args)
 	
 		$comments = EZComments_prepareCommentsForDisplay($items);
 	
-		$smarty->assign('comments',     $comments);
-		$smarty->assign('authid',       pnSecGenAuthKey('EZComments'));
-		$smarty->assign('allowadd',     pnSecAuthAction(0, 'EZComments::', "$modname:$objectid: ", ACCESS_COMMENT));
-		$smarty->assign('delurl',       pnModURL('EZComments', 'user', 'delete'));
-		$smarty->assign('addurl',       pnModURL('EZComments', 'user', 'create'));
-		$smarty->assign('commenturl',   pnModURL('EZComments', 'user', 'comment'));
-		$smarty->assign('redirect',     pnVarPrepForDisplay($args['extrainfo']));
-		$smarty->assign('modname',      pnVarPrepForDisplay($modname));
-		$smarty->assign('objectid',     pnVarPrepForDisplay($objectid));
+		$pnRender->assign('comments',     $comments);
+		$pnRender->assign('authid',       pnSecGenAuthKey('EZComments'));
+		$pnRender->assign('allowadd',     pnSecAuthAction(0, 'EZComments::', "$modname:$objectid: ", ACCESS_COMMENT));
+		$pnRender->assign('delurl',       pnModURL('EZComments', 'user', 'delete'));
+		$pnRender->assign('addurl',       pnModURL('EZComments', 'user', 'create'));
+		$pnRender->assign('commenturl',   pnModURL('EZComments', 'user', 'comment'));
+		$pnRender->assign('redirect',     pnVarPrepForDisplay($args['extrainfo']));
+		$pnRender->assign('modname',      pnVarPrepForDisplay($modname));
+		$pnRender->assign('objectid',     pnVarPrepForDisplay($objectid));
 	}
 	
-	return $smarty->fetch($template);
+	return $pnRender->fetch($template);
 } 
 
 
@@ -155,22 +155,22 @@ function EZComments_user_comment($args)
 
 	$comments = EZComments_prepareCommentsForDisplay($items);
 
-	$smarty =& new pnRender('EZComments');
+	$pnRender =& new pnRender('EZComments');
 
-	$smarty->assign('comments', $comments);
-	$smarty->assign('authid',   pnSecGenAuthKey('EZComments'));
-	$smarty->assign('allowadd', pnSecAuthAction(0, 'EZComments::', "$modname:$objectid: ", ACCESS_COMMENT));
-	$smarty->assign('addurl',   pnModURL('EZComments', 'user', 'create'));
-	$smarty->assign('redirect', $EZComments_redirect);
-	$smarty->assign('modname',  pnVarPrepForDisplay($EZComments_modname));
-	$smarty->assign('objectid', pnVarPrepForDisplay($EZComments_objectid));
-	$smarty->assign('subject',  pnVarPrepForDisplay($EZComments_subject));
-	$smarty->assign('replyto',  pnVarPrepForDisplay($EZComments_replyto));
+	$pnRender->assign('comments', $comments);
+	$pnRender->assign('authid',   pnSecGenAuthKey('EZComments'));
+	$pnRender->assign('allowadd', pnSecAuthAction(0, 'EZComments::', "$modname:$objectid: ", ACCESS_COMMENT));
+	$pnRender->assign('addurl',   pnModURL('EZComments', 'user', 'create'));
+	$pnRender->assign('redirect', $EZComments_redirect);
+	$pnRender->assign('modname',  pnVarPrepForDisplay($EZComments_modname));
+	$pnRender->assign('objectid', pnVarPrepForDisplay($EZComments_objectid));
+	$pnRender->assign('subject',  pnVarPrepForDisplay($EZComments_subject));
+	$pnRender->assign('replyto',  pnVarPrepForDisplay($EZComments_replyto));
 
-	if ($smarty->template_exists($EZComments_modname . '_comment.htm')) {
-		return $smarty->fetch($EZComments_modname . '_comment.htm');
+	if ($pnRender->template_exists($EZComments_modname . '_comment.htm')) {
+		return $pnRender->fetch($EZComments_modname . '_comment.htm');
 	} else {
-		return $smarty->fetch('default_comment.htm');
+		return $pnRender->fetch('default_comment.htm');
 	}
 }
 
