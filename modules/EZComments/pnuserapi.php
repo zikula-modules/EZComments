@@ -146,7 +146,6 @@ function EZComments_userapi_create($args)
 	// Get next ID in table
 	$nextId = $dbconn->GenId($EZCommentstable);
 
-	$uid = pnUserGetVar('uid');
 
 	list($modname, 
 	     $objectid,

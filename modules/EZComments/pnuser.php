@@ -217,7 +217,8 @@ function EZComments_user_create($args)
       			        	 'url'	    => $EZComments_redirect,
               				 'comment'  => $EZComments_comment,
 							 'subject'  => $EZComments_subject,
-							 'replyto'  => $EZComments_replyto));
+							 'replyto'  => $EZComments_replyto,
+							 'uid'      => pnUserGetVar('uid')));
 
 	if ($id != false) {
 		// Success
