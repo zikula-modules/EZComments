@@ -86,13 +86,7 @@ function EZComments_init()
 		pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED2);
 		return false;
 	}
-	
-	// Note that filenames may contain backslashes as separators. 
-	// We need to convert them to slashes before doing anything else...
-	pnModSetVar('EZComments', 'smartypath', dirname(__FILE__) 
-						. DIRECTORY_SEPARATOR . 'pnclass'
-						. DIRECTORY_SEPARATOR . 'Smarty'
-						. DIRECTORY_SEPARATOR);
+
 	pnModSetVar('EZComments', 'MailToAdmin', false);
 	pnModSetVar('EZComments', 'migrated', serialize(array()));
 	// Initialisation successful
@@ -202,7 +196,6 @@ function EZComments_delete()
         return false;
 	}
 
-	pnModDelVar('EZComments', 'smartypath');
 	pnModDelVar('EZComments', 'MailToAdmin');
 	pnModDelVar('EZComments', 'migrated');
 	
