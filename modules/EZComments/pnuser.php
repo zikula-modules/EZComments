@@ -60,53 +60,48 @@ function EZComments_user_view($args)
 {
 	$modname = pnModGetName();
 	$objectid = $args['objectid'];
-
+    
 	if (!pnSecAuthAction(0, 'EZComments::', "$modname:$objectid: ", ACCESS_OVERVIEW)) {
 		return _EZCOMMENTS_NOAUTH;
 	} 
 
+    if (!pnModAPILoad('EZComments', 'user')) {
+		return _LOADFAILED;
+	}
+	
+	$items = pnModAPIFunc('EZComments',
+			              'user',
+			              'getall',
+		    	           compact('modname', 'objectid'));
+
+	if ($items === false) {
+		return _EZCOMMENTS_FAILED;
+	} 	
+	
+	$comments = EZComments_prepareCommentsForDisplay($items);
+
 	// create the pnRender object
 	$pnRender =& new pnRender('EZComments');
 
-	// we use the module name as cache ID
-	$pnRender->cache_id = $modname;
+	// don't use caching (for now...)
+	$pnRender->caching=false;
+	
+	$pnRender->assign('comments',     $comments);
+	$pnRender->assign('authid',       pnSecGenAuthKey('EZComments'));
+	$pnRender->assign('allowadd',     pnSecAuthAction(0, 'EZComments::', "$modname:$objectid: ", ACCESS_COMMENT));
+	$pnRender->assign('delurl',       pnModURL('EZComments', 'user', 'delete'));
+	$pnRender->assign('addurl',       pnModURL('EZComments', 'user', 'create'));
+	$pnRender->assign('commenturl',   pnModURL('EZComments', 'user', 'comment'));
+	$pnRender->assign('redirect',     pnVarPrepForDisplay($args['extrainfo']));
+	$pnRender->assign('modname',      pnVarPrepForDisplay($modname));
+	$pnRender->assign('objectid',     pnVarPrepForDisplay($objectid));
 	
 	// find out which template to use
 	if ($pnRender->template_exists($modname . '.htm')) {
-		$template = $modname . '.htm';
+		return $pnRender->fetch($modname . '.htm');
 	} else {
-		$template = 'default.htm';
+		return $pnRender->fetch('default.htm');
 	}
-
-	// check out if the contents are cached.
-	if (!$pnRender->is_cached($template)) {
-		if (!pnModAPILoad('EZComments', 'user')) {
-			return _LOADFAILED;
-		}
-	
-		$items = pnModAPIFunc('EZComments',
-				              'user',
-				              'getall',
-			    	           compact('modname', 'objectid'));
-
-		if ($items === false) {
-			return _EZCOMMENTS_FAILED;
-		} 	
-	
-		$comments = EZComments_prepareCommentsForDisplay($items);
-	
-		$pnRender->assign('comments',     $comments);
-		$pnRender->assign('authid',       pnSecGenAuthKey('EZComments'));
-		$pnRender->assign('allowadd',     pnSecAuthAction(0, 'EZComments::', "$modname:$objectid: ", ACCESS_COMMENT));
-		$pnRender->assign('delurl',       pnModURL('EZComments', 'user', 'delete'));
-		$pnRender->assign('addurl',       pnModURL('EZComments', 'user', 'create'));
-		$pnRender->assign('commenturl',   pnModURL('EZComments', 'user', 'comment'));
-		$pnRender->assign('redirect',     pnVarPrepForDisplay($args['extrainfo']));
-		$pnRender->assign('modname',      pnVarPrepForDisplay($modname));
-		$pnRender->assign('objectid',     pnVarPrepForDisplay($objectid));
-	}
-	
-	return $pnRender->fetch($template);
 } 
 
 
@@ -139,6 +134,8 @@ function EZComments_user_comment($args)
 													'EZComments_subject',
 													'EZComments_replyto');
 
+    extract($array);
+    
 	if (!pnModAPILoad('EZComments', 'user')) {
 		return _LOADFAILED;
 	}
@@ -156,6 +153,9 @@ function EZComments_user_comment($args)
 	$comments = EZComments_prepareCommentsForDisplay($items);
 
 	$pnRender =& new pnRender('EZComments');
+
+	// don't use caching (for now...)
+	$pnRender->caching=false;
 
 	$pnRender->assign('comments', $comments);
 	$pnRender->assign('authid',   pnSecGenAuthKey('EZComments'));

@@ -218,10 +218,6 @@ function EZComments_userapi_create($args)
 	       	   $mailheaders);
 	}
 	
-	// The item has been created, so we clear all cached pages of this item.
-    $pnRender =& new pnRender('EZComments');
-	$pnRender->clear_cache(null, pnModGetName());
-
 	// pnModCallHooks('item', 'create', $tid, 'tid');
 	return $id;
 } 
@@ -276,10 +272,6 @@ function EZComments_userapi_delete($args)
 		pnSessionSetVar('errormsg', _DELETEFAILED);
 		return false;
 	} 
-
-	// The item has been deleted, so we clear all cached pages of this item.
-    $pnRender =& new pnRender('EZComments');
-	$pnRender->clear_cache(null, pnModGetName());
 
 	// pnModCallHooks('item', 'delete', $tid, ''); 
 	return true;
@@ -357,10 +349,6 @@ function EZComments_userapi_modify($args)
 			   $mailbody, 
 	       	   $mailheaders);
 	}
-
-	// The item has been modified, so we clear all cached pages of this item.
-    $pnRender =& new pnRender('EZComments');
-	$pnRender->clear_cache(null, pnModGetName());
 
 	return $id;
 } 
