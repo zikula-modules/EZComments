@@ -99,4 +99,7 @@ define('_EZCOMMENTS_ANONMAIL',             'E-mail address');
 define('_EZCOMMENTS_SEARCH',               'Search comments');
 define('_EZCOMMENTS_NOCOMMENTSFOUND',      'No comments matched your search');
 
+define('_EZCOMMENTS_TOP',                  'Top');
+define('_EZCOMMENTS_BOTTOM',               'Bottom');
+
 ?>
