@@ -134,7 +134,7 @@ function EZComments_user_comment($args)
 													'EZComments_subject',
 													'EZComments_replyto');
 
-    extract($array);
+    extract($args);
     
 	if (!pnModAPILoad('EZComments', 'user')) {
 		return _LOADFAILED;
@@ -159,7 +159,7 @@ function EZComments_user_comment($args)
 
 	$pnRender->assign('comments', $comments);
 	$pnRender->assign('authid',   pnSecGenAuthKey('EZComments'));
-	$pnRender->assign('allowadd', pnSecAuthAction(0, 'EZComments::', "$modname:$objectid: ", ACCESS_COMMENT));
+	$pnRender->assign('allowadd', pnSecAuthAction(0, 'EZComments::', "$EZComments_modname:$EZComments_objectid: ", ACCESS_COMMENT));
 	$pnRender->assign('addurl',   pnModURL('EZComments', 'user', 'create'));
 	$pnRender->assign('redirect', $EZComments_redirect);
 	$pnRender->assign('modname',  pnVarPrepForDisplay($EZComments_modname));
