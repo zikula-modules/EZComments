@@ -3,26 +3,45 @@ $Id$
 
 Changelog
 
-0.2  - New feature:
-       The administrator can check that new mail is sent 
+0.2  - The administrator can check that new mail is sent 
        when a new comment is made.
 
-       New translation variables:
-        _EZCOMMENTS_SENDINFOMAIL
+       Migration plugin functionality
+       Available now is a plugin to migrate from the original NS-Comments
+       Module to EZComments
+
+       Cleanup functionality to erase 
+       This is needed after the deletion of a module. EZComments does not
+       recognize this deletion. With the Cleanup you can wipe out all comments
+       for the module in question.
+
+       Comments can be displayed threaded (depending on the template)
+
+       Comments can have their own subject (depending on the template)
 
        Templates uses .htm as suffix
        Templates uses <!--[ and ]--> as smarty delimiters
        Added a lot of Templates in the MoreTemplates directory
 
-       Comments can be displayed threaded (depending on the Template)
+       Added a pager to the admin panel so you do not see all comments on 
+       one page (important for sites with lot of comments)
+
+       Transform hooks
+       EZComments calls transform hooks. The hooks must be activated for
+       the "parent" module (say, you want EZComments for News, so you must
+       activete the transform hooks for News, not for EZComments)
+
+       A lot of new translation variables. 
 
 
 0.1b - another bugfix release
        Should work with open_basedir restrictions
        Italian translations by Stefano Garuti included
 
+
 0.1a - bugfix release
        Bugfixes provided by markwest
-       Checks if Smarty class is already defined in eczsmarty.php		
+       Checks if Smarty class is already defined in eczsmarty.php	
+	
 
 0.1 -- initial Release
