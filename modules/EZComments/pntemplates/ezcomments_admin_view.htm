@@ -6,12 +6,22 @@
 		<th><!--[pnml name=_EZCOMMENTS_USERNAME]--></th>
 		<th><!--[pnml name=_EZCOMMENTS_MODULE]--></th>
 		<th><!--[pnml name=_EZCOMMENTS_COMMENT]--></th>
+		<th><!--[pnml name=_OPTIONS]--></th>
 	</tr>
 	<!--[foreach from=$items item=item]-->
 		<tr class="<!--[cycle values=pn-odd,pn-even]-->">
 			<td><!--[pnusergetvar name=uname uid=$item.uid]--><br /><!--[$item.date|pndate_format]--></td>
 			<td><a href="<!--[$item.url]-->"><!--[$item.modname]--></a></td>
 			<td><!--[$item.comment|strip_tags|truncate:80]--></td>
+			<td>
+				<!--[assign var="options" value=$item.options]-->
+				<!--[strip]-->
+				[<!--[section name=options loop=$options]-->
+					<a href="<!--[$options[options].url|pnvarprepfordisplay]-->"><!--[pnml name=$options[options].title]--></a> 
+					<!--[if !$smarty.section.options.last]--> | <!--[/if]-->
+				<!--[/section]-->]
+				<!--[/strip]-->
+			</td>
 		</tr>
 	<!--[/foreach]-->
 </table>

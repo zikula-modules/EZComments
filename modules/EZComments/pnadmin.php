@@ -66,8 +66,23 @@ function EZComments_admin_main()
 		return _EZCOMMENTS_FAILED;
 	} 
 
+	// loop through each item adding the relevant links
+	$comments = array();
+	foreach ($items as $item) {
+		if (pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:$id", ACCESS_EDIT)) {
+			$options[] = array('url'   => pnModURL('EZComments', 'admin', 'modify', array('id' => $item['id'])),
+							   'title' => _EDIT);
+			if (pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:$id", ACCESS_DELETE)) {
+                $options[] = array('url'   => pnModURL('EZComments', 'admin', 'delete', array('id' => $item['id'])),
+                                   'title' => _DELETE);
+			}
+		}
+		$item['options'] = $options;
+		$comments[] = $item;
+	}
+
 	// assign the items to the template
-	$pnRender->assign('items', $items);
+	$pnRender->assign('items', $comments);
 
     // assign the values for the smarty plugin to produce a pager in case of there
     // being many items to display.
