@@ -283,4 +283,44 @@ function EZComments_adminapi_update($args)
     return true;
 }
 
+/**
+ * clean up comments for a removed module
+ * 
+ * @param    $args['extrainfo']   array extrainfo array
+ * @return   array extrainfo array
+ */
+function EZComments_adminapi_deletemodule($args)
+{
+    // Get arguments from argument array - all arguments to this function
+    // should be obtained from the $args array, getting them from other
+    // places such as the environment is not allowed, as that makes
+    // assumptions that will not hold in future versions of PostNuke
+    extract($args);
+
+    // optional arguments
+    if (!isset($extrainfo)) {
+        $extrainfo = array();
+    }
+
+    // When called via hooks, the module name may be empty, so we get it from
+    // the current module
+    if (empty($extrainfo['module'])) {
+        $modname = pnModGetName();
+    } else {
+        $modname = $extrainfo['module'];
+    }
+
+    // Database information
+    $dbconn =& pnDBGetConn(true);
+    $pntable =& pnDBGetTables();
+	$EZCommentstable = $pntable['EZComments'];
+	$EZCommentscolumn = &$pntable['EZComments_column']; 
+
+    // Get items
+    $sql = "DELETE FROM $EZCommentstable
+            WHERE $EZCommentscolumn[modname] = '" . pnVarPrepForStore($modname) . "'";
+    $result =& $dbconn->Execute($sql);
+
+	return $extrainfo;
+}
 ?>
