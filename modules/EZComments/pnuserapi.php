@@ -47,10 +47,10 @@ function EZComments_userapi_getall($args)
 {
 	extract($args);
 
-    if (!isset($startnum)) {
+        if (!isset($startnum) || !is_numeric($startnum)) {
         $startnum = 1;
     }
-    if (!isset($numitems)) {
+        if (!isset($numitems) || !is_numeric($numitems)) {
         $numitems = -1;
     }
 	$items = array(); 
