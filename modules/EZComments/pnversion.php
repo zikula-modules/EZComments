@@ -33,7 +33,7 @@ $modversion['changelog']   = 'pndocs/changelog.txt';
 $modversion['license']     = 'pndocs/license.txt';
 $modversion['official']    = 0;
 $modversion['author']      = 'Joerg Napp';
-$modversion['contact']     = 'http://postnuke.lottasophie.de/';
+$modversion['contact']     = 'http://lottasophie.sourceforge.net/';
 
 // This one adds the info to the DB, so that users can click on the 
 // headings in the permission moduls

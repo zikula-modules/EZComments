@@ -8,7 +8,11 @@ Changelog
        when a new comment is made.
 
        New translation variables:
-        _EZCOMMENTS_SENDINFOMAIL	
+        _EZCOMMENTS_SENDINFOMAIL
+
+       Templates uses .htm as suffix
+       Templates uses <!--[ and ]--> as smarty delimiters
+       Added a lot of Templates in the MoreTemplates directory	
 
 
 0.1b - another bugfix release

@@ -2,6 +2,8 @@ $Id$
 
 Credits to:
 
+Everybody who uses this module and gave feedback, especially to the following kind persons:
+
 Mark West
   -- for looking through the code and provining a lot of bugfixes
 
@@ -16,7 +18,6 @@ Stefano Garuti
 
 Steffen Voss 
   -- for doing the first beta tests on the module
-
 
 My wife and my daughter
   -- I love you!
