@@ -102,22 +102,24 @@ function EZComments_user_view($args)
 /**
  * Display a comment form 
  * 
- * Displays a comment form
+ * This function displays a comment form, if you do not want users to
+ * comment on the same page as the item is.
  * 
  * @param    $EZComments_comment     the comment (taken from HTTP put)
  * @param    $EZComments_modname     the name of the module the comment is for (taken from HTTP put)
  * @param    $EZComments_objectid    ID of the item the comment is for (taken from HTTP put)
  * @param    $EZComments_redirect    URL to return to (taken from HTTP put)
- * @todi     Check out it this function can be merged with _view!
+ * @todo     Check out it this function can be merged with _view!
  */
 function EZComments_user_comment($args)
 {
-	list($EZComments_modname,
+	list($EZComments_comment,
+		 $EZComments_modname,
 		 $EZComments_objectid,
-		 $EZComments_redirect) = pnVarCleanFromInput('EZComments_modname',
+		 $EZComments_redirect) = pnVarCleanFromInput('EZComments_comment',
+                        					 		 'EZComments_modname',
                         					 		 'EZComments_objectid',
                         					 		 'EZComments_redirect');
-													 
 	if (!pnModAPILoad('EZComments', 'user')) {
 		return _LOADFAILED;
 	}
@@ -145,8 +147,8 @@ function EZComments_user_comment($args)
 	$smarty->assign('modname',  pnVarPrepForDisplay($EZComments_modname));
 	$smarty->assign('objectid', pnVarPrepForDisplay($EZComments_objectid));
 	
-	if ($smarty->template_exists($modname_comment . '.htm')) {
-		return $smarty->fetch($modname_comment . '.htm');
+	if ($smarty->template_exists($EZComments_modname . '_comment.htm')) {
+		return $smarty->fetch($EZComments_modname . '_comment.htm');
 	} else {
 		return $smarty->fetch('default_comment.htm');
 	}
@@ -164,16 +166,22 @@ function EZComments_user_comment($args)
  * @param    $EZComments_modname     the name of the module the comment is for (taken from HTTP put)
  * @param    $EZComments_objectid    ID of the item the comment is for (taken from HTTP put)
  * @param    $EZComments_redirect    URL to return to (taken from HTTP put)
+ * @param    $EZComments_subject     The subject of the comment (if any) (taken from HTTP put)
+ * @param    $EZComments_replyto     The ID of the comment for which this an anser to (taken from HTTP put)
  */
 function EZComments_user_create($args)
 {
-	list($EZComments_comment,
-		 $EZComments_modname,
+	list($EZComments_modname,
 		 $EZComments_objectid,
-		 $EZComments_redirect) = pnVarCleanFromInput('EZComments_comment',
-                        					 		 'EZComments_modname',
+		 $EZComments_redirect,
+		 $EZComments_comment,
+		 $EZComments_subject,
+		 $EZComments_replyto) = pnVarCleanFromInput('EZComments_modname',
                         					 		 'EZComments_objectid',
-                        					 		 'EZComments_redirect');
+                        					 		 'EZComments_redirect',
+													 'EZComments_comment',
+													 'EZComments_subject',
+													 'EZComments_replyto');
 	// Confirm authorisation code.
 	if (!pnSecConfirmAuthKey()) {
 		pnSessionSetVar('errormsg', _BADAUTHKEY);
@@ -193,7 +201,9 @@ function EZComments_user_create($args)
         			   array('modname'  => $EZComments_modname,
       	        			 'objectid' => $EZComments_objectid,
       			        	 'url'	    => $EZComments_redirect,
-              				 'comment'  => $EZComments_comment));
+              				 'comment'  => $EZComments_comment,
+							 'subject'  => $EZComments_subject,
+							 'replyto'  => $EZComments_replyto));
 
 	if ($id != false) {
 		// Success
