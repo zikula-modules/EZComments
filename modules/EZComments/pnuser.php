@@ -35,6 +35,8 @@
  * This is the default function called when EZComments is called 
  * as a module. As we do not intend to output anything, we just 
  * redirect to the start page.
+ * 
+ * @since    0.2
  */
 function EZComments_user_main($args)
 {
@@ -52,6 +54,7 @@ function EZComments_user_main($args)
  * @param    $args['objectid']     ID of the item to display comments for
  * @param    $args['extrainfo']    URL to return to if user chooses to comment
  * @return   output                the comments
+ * @since    0.1
  */
 function EZComments_user_view($args)
 {
@@ -112,6 +115,7 @@ function EZComments_user_view($args)
  * @param    $EZComments_subject     The subject of the comment (if any) (taken from HTTP put)
  * @param    $EZComments_replyto     The ID of the comment for which this an anser to (taken from HTTP put)
  * @todo     Check out it this function can be merged with _view!
+ * @since    0.2
  */
 function EZComments_user_comment($args)
 {
@@ -177,6 +181,7 @@ function EZComments_user_comment($args)
  * @param    $EZComments_redirect    URL to return to (taken from HTTP put)
  * @param    $EZComments_subject     The subject of the comment (if any) (taken from HTTP put)
  * @param    $EZComments_replyto     The ID of the comment for which this an anser to (taken from HTTP put)
+ * @since    0.1
  */
 function EZComments_user_create($args)
 {
@@ -230,8 +235,9 @@ function EZComments_user_create($args)
  * This is a standard function that is called with the results of the
  * form supplied by EZComments_user_view to delete a comment
  * 
- * @param $EZComments_id ID of the the comment to delete (taken from HTTP put)
- * @param $EZComments_redirect URL to return to (taken from HTTP put)
+ * @param    $EZComments_id         ID of the the comment to delete (taken from HTTP put)
+ * @param    $EZComments_redirect   URL to return to (taken from HTTP put)
+ * @since    0.1
  */
 function EZComments_user_delete($args)
 {
@@ -264,7 +270,6 @@ function EZComments_user_delete($args)
 } 
 
 
-
 /**
  * Prepare comments to be displayed
  * 
@@ -275,6 +280,7 @@ function EZComments_user_delete($args)
  * 
  * @param    $items    An array of comment items as returned from the API
  * @return   array     An array to display (augmented information / perm. check)
+ * @since    0.2
  */
 function EZComments_prepareCommentsForDisplay($items)
 {
@@ -291,8 +297,8 @@ function EZComments_prepareCommentsForDisplay($items)
 			}
 
 			list($item['comment']) = pnModCallHooks('item', 'transform', 'x', array($item['comment']));
-
 			$comment['comment'] = pnVarPrepHTMLDisplay(pnVarCensor(nl2br($item['comment'])));
+			
 			$comment['del'] = (pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:$item[id]", ACCESS_DELETE));
 			
 			$comments[] = $comment;
@@ -300,4 +306,47 @@ function EZComments_prepareCommentsForDisplay($items)
 	}
 	return $comments;
 }
+
+
+/**
+ * Sort comments by thread
+ * 
+ * 
+ * @param    $comments    An array of comments
+ * @return   array        The sorted array
+ * @since    0.2
+ */
+function EZComments_threadComments($comments)
+{
+	return EZComments_displayChildren($comments, -1, 0);
+}
+
+
+/**
+ * Get all child comments
+ * 
+ * This function returns all child comments to a given comment.
+ * It is called recursively
+ * 
+ * @param    $comments    An array of comments
+ * @param    $id          The id of the parent comment
+ * @param    $level       The indentation level 
+ * @return   array        The sorted array
+ * @access   private
+ * @since    0.2
+ */
+function EZComments_displayChildren($comments, $id, $level)
+{
+	$comments2 = array();
+	foreach ($comments as $comment) {
+		if ($comment['replyto'] == $id) {
+			$comment['level'] = $level;
+			$comments2[] = $comment;
+			$comments2 = array_merge($comments2, 
+			                         EZComments_displayChildren($comments, $comment['id'], $level+1));
+		}
+	}
+	return $comments2;
+}
+
 ?>
