@@ -59,14 +59,19 @@ function EZComments_admin_main() {
 	$output->Linebreak(3);
 
 
+	// presentation values
+	// Hardcoded -- move this to an module variable?!?
+	$itemsperpage = 10;
+    $startnum = pnVarCleanFromInput('startnum');
+
 	if (!pnModAPILoad('EZComments', 'admin')) {
 		return _EZCOMMENTS_LOADFAILED;
 	}
 	$items = pnModAPIFunc('EZComments',
-			  'admin',
-			  'getall',
-			  array('startnum' => 1,
-				'numitems' => -1));
+            			  'admin',
+            			  'getall',
+                          array('startnum' => $startnum,
+                                'numitems' => $itemsperpage));
 
 	if ($items === false) {
 		return _EZCOMMENTS_FAILED;
@@ -97,7 +102,6 @@ function EZComments_admin_main() {
 		} else {
 			$username = pnConfigGetVar('Anonymous');
 		} 
-
 		$output->Text("<tr>");
 
 		$output->Text("<td width=\"20%\" valign=\"top\">");
@@ -117,6 +121,18 @@ function EZComments_admin_main() {
 		$output->Text("</tr>");
 	} 
 	$output->Text("</table>"); 	
+
+	// add a pager to the page
+	$output->Linebreak(2);
+	$output->Text('<center>');
+    $output->Pager($startnum,
+                   pnModAPIFunc('EZComments', 'admin', 'countitems'),
+                   pnModURL('EZComments',
+                            'admin',
+                            'main',
+                            array('startnum' => '%%')),
+	               $itemsperpage);
+	$output->Text('</center>');
 	
 	// Return the output
 	return $output->GetOutput();

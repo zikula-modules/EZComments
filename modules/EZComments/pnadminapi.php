@@ -92,4 +92,30 @@ function EZComments_adminapi_getall($args)
 	// Return the items
 	return $items;
 } 
+
+
+function EZComments_adminapi_countitems()
+{
+	if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_OVERVIEW)) {
+		return false;
+	} 
+	
+	// Get datbase setup
+	list($dbconn) = pnDBGetConn();
+	$pntable = pnDBGetTables();
+
+	$EZCommentstable = $pntable['EZComments'];
+    $sql = "SELECT COUNT(1)
+            FROM $EZCommentstable";
+    $result = $dbconn->Execute($sql);
+
+    if ($dbconn->ErrorNo() != 0) {
+        return false;
+    }
+    list($numitems) = $result->fields;
+    $result->Close();
+    return $numitems;
+}
+
+
 ?>
