@@ -96,6 +96,9 @@ function EZComments_user_view($args)
     }
     $pnRender->assign('objectid',   $objectid);
 
+	// assign all module vars (they may be useful...)
+	$pnRender->assign(pnModGetVar('EZComments'));
+
 	// check for some useful hooks
 	if (pnModIsHooked('pn_bbcode', 'EZComments')) {
 		$pnRender->assign('bbcode', true);
@@ -173,6 +176,9 @@ function EZComments_user_comment($args)
     $pnRender->assign('objectid', pnVarPrepForDisplay($EZComments_objectid));
     $pnRender->assign('subject',  pnVarPrepForDisplay($EZComments_subject));
     $pnRender->assign('replyto',  pnVarPrepForDisplay($EZComments_replyto));
+
+	// assign all module vars (they may be useful...)
+	$pnRender->assign(pnModGetVar('EZComments'));
 
     $template = isset($EZComments_template) ? $EZComments_template : 'ezcomments_user_comment.htm';
     return $pnRender->fetch(pnModGetVar('EZComments', 'template') . '/'. $template);
