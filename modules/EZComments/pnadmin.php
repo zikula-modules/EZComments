@@ -38,7 +38,7 @@ function EZComments_admin_main() {
 	$output->FormText('smartypath', pnVarPrepForDisplay(pnModGetVar('EZComments', 'Smartypath')), 80);
 	$output->Linebreak();
 	$output->FormSubmit(_EZCOMMENTS_OK);
-	$output->FormEnd;
+	$output->FormEnd();
 	
 	$output->Linebreak(3);
 
