@@ -54,8 +54,8 @@ function EZComments_migrate()
 	} 
 
 	// Get datbase setup
-	list($dbconn) = pnDBGetConn();
-	$pntable = pnDBGetTables();
+	$dbconn =& pnDBGetConn(true);
+	$pntable =& pnDBGetTables();
 
 	$EZCommentstable  = $pntable['EZComments'];
 	$EZCommentscolumn = &$pntable['EZComments_column']; 
@@ -76,7 +76,7 @@ function EZComments_migrate()
              FROM  $Commentstable LEFT JOIN $Usertable
 			   ON $Commentscolumn[name] = $Usercolumn[uname]";
 
-	$result = $dbconn->Execute($sql); 
+	$result =& $dbconn->Execute($sql); 
 	if ($dbconn->ErrorNo() != 0) {
 		pnSessionSetVar('errormsg', 'News migration: DB Error');
 		return false;
@@ -117,7 +117,7 @@ function EZComments_migrate()
 			           SET $EZCommentscolumn[replyto]=" . $comments[$v['pid']]['newid'] . "
 			         WHERE $EZCommentscolumn[id]=$v[newid]";
 		
-			$result = $dbconn->Execute($sql); 
+			$result =& $dbconn->Execute($sql); 
 		}
 	}
 	pnSessionSetVar('errormsg', 'News migration successful');

@@ -54,8 +54,8 @@ function EZComments_userapi_getall($args)
 		return $items;
 	} 
 	// Get datbase setup
-	list($dbconn) = pnDBGetConn();
-	$pntable = pnDBGetTables();
+	$dbconn =& pnDBGetConn(true);
+	$pntable =& pnDBGetTables();
 
 	$EZCommentstable = $pntable['EZComments'];
 	$EZCommentscolumn = &$pntable['EZComments_column']; 
@@ -74,7 +74,7 @@ function EZComments_userapi_getall($args)
               AND $EZCommentscolumn[objectid] = '$queryobjectid'
             ORDER BY $EZCommentscolumn[date]";
 
-	$result = $dbconn->Execute($sql); 
+	$result =& $dbconn->Execute($sql); 
 	// Check for an error with the database code, and if so set an appropriate
 	// error message and return
 	if ($dbconn->ErrorNo() != 0) {
@@ -145,8 +145,8 @@ function EZComments_userapi_create($args)
 	} 
 
 	// Get datbase setup
-	list($dbconn) = pnDBGetConn();
-	$pntable = pnDBGetTables();
+	$dbconn =& pnDBGetConn(true);
+	$pntable =& pnDBGetTables();
 
 	$EZCommentstable = $pntable['EZComments'];
 	$EZCommentscolumn = &$pntable['EZComments_column']; 
@@ -257,8 +257,8 @@ function EZComments_userapi_delete($args)
 		return false;
 	} 
 
-	list($dbconn) = pnDBGetConn();
-	$pntable = pnDBGetTables();
+	$dbconn =& pnDBGetConn(true);
+	$pntable =& pnDBGetTables();
 
 	$EZCommentstable = $pntable['EZComments'];
 	$EZCommentscolumn = &$pntable['EZComments_column']; 
@@ -315,8 +315,8 @@ function EZComments_userapi_modify($args)
 		return false;
 	} 
 
-	list($dbconn) = pnDBGetConn();
-	$pntable = pnDBGetTables();
+	$dbconn =& pnDBGetConn(true);
+	$pntable =& pnDBGetTables();
 
 	$EZCommentstable = $pntable['EZComments'];
 	$EZCommentscolumn = &$pntable['EZComments_column']; 
@@ -372,8 +372,8 @@ function EZComments_userapi_get($args)
 		return false;
 	} 
 	// Get datbase setup
-	list($dbconn) = pnDBGetConn();
-	$pntable = pnDBGetTables();
+	$dbconn =& pnDBGetConn(true);
+	$pntable =& pnDBGetTables();
 
 	$EZCommentstable = $pntable['EZComments'];
 	$EZCommentscolumn = &$pntable['EZComments_column']; 
@@ -389,7 +389,7 @@ function EZComments_userapi_get($args)
             FROM $EZCommentstable
             WHERE $EZCommentscolumn[id] = '$id'";
 
-	$result = $dbconn->Execute($sql); 
+	$result =& $dbconn->Execute($sql); 
 	// Check for an error with the database code, and if so set an appropriate
 	// error message and return
 	if ($dbconn->ErrorNo() != 0) {
@@ -452,8 +452,8 @@ function EZComments_userapi_count($args)
 		return false;
 	} 
 	// Get datbase setup
-	list($dbconn) = pnDBGetConn();
-	$pntable = pnDBGetTables();
+	$dbconn =& pnDBGetConn(true);
+	$pntable =& pnDBGetTables();
 
 	$EZCommentstable = $pntable['EZComments'];
 	$EZCommentscolumn = &$pntable['EZComments_column']; 
@@ -466,7 +466,7 @@ function EZComments_userapi_count($args)
             WHERE $EZCommentscolumn[modname] = '$querymodname'
               AND $EZCommentscolumn[objectid] = '$queryobjectid'";
 
-	$result = $dbconn->Execute($sql); 
+	$result =& $dbconn->Execute($sql); 
 	// Check for an error with the database code, and if so set an appropriate
 	// error message and return
 	if ($dbconn->ErrorNo() != 0) {

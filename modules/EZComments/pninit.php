@@ -40,8 +40,8 @@
 function EZComments_init()
 { 
 	// Create tables
-	list($dbconn) = pnDBGetConn();
-	$pntable = pnDBGetTables();
+	$dbconn =& pnDBGetConn(true);
+	$pntable =& pnDBGetTables();
 
 	$EZCommentstable = $pntable['EZComments'];
 	$EZCommentscolumn = &$pntable['EZComments_column'];
@@ -110,8 +110,8 @@ function EZComments_upgrade($oldversion)
 		// new functionality: Migration
 		pnModSetVar('EZComments', 'migrated', serialize(array()));
 
-		list($dbconn) = pnDBGetConn();
-		$pntable = pnDBGetTables();
+		$dbconn =& pnDBGetConn(true);
+		$pntable =& pnDBGetTables();
 
 		$EZCommentstable = $pntable['EZComments'];
 		$EZCommentscolumn = &$pntable['EZComments_column'];
@@ -198,8 +198,8 @@ function EZComments_upgrade($oldversion)
  */
 function EZComments_delete()
 {
-	list($dbconn) = pnDBGetConn();
-	$pntable = pnDBGetTables();
+	$dbconn =& pnDBGetConn(true);
+	$pntable =& pnDBGetTables();
 	$sql = "DROP TABLE $pntable[EZComments]";
 	$dbconn->Execute($sql);
 	if ($dbconn->ErrorNo() != 0) {
