@@ -24,7 +24,7 @@ define('_EZCOMMENTS_ONLYREG',   		'Only logged in users are allowed to comment.'
 define('_EZCOMMENTS_GOTOREG',   		'register/log in');		// Translate me!
 define('_EZCOMMENTS_ADD',               'Aggiungi');
 define('_EZCOMMENTS_DEL',               'Cancella questo commento');
-define('_EZCOMMENTS_COMMENT_ADD',       'Aggiungi un nuovo commento:');
+define('_EZCOMMENTS_COMMENT_ADD',       'Aggiungi un nuovo commento');
 define('_EZCCOMMENTSCREATED',           'Commento aggiunto');
 define('_EZCCOMMENTSDELETED',           'Commento cancellato');
 define('_EZCOMMENTS_FAILED',            'Erroreinterno');

@@ -24,7 +24,7 @@ define('_EZCOMMENTS_ONLYREG',   		'Nur angemeldete Benutzer dürfen Kommentare ve
 define('_EZCOMMENTS_GOTOREG',   		'Zur Registrierung/Anmeldung');
 define('_EZCOMMENTS_ADD', 	  			'Hinzufügen');
 define('_EZCOMMENTS_DEL', 	  			'Diesen Kommentar löschen');
-define('_EZCOMMENTS_COMMENT_ADD', 		'Einen Kommentar hinzufügen:');
+define('_EZCOMMENTS_COMMENT_ADD', 		'Einen Kommentar hinzufügen');
 define('_EZCCOMMENTSCREATED', 			'Kommentar hinzugefügt');
 define('_EZCCOMMENTSDELETED', 			'Kommentar gelöscht');
 define('_EZCOMMENTS_FAILED',   			'Interner Fehler');
