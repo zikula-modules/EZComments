@@ -428,4 +428,57 @@ function EZComments_userapi_get($args)
 				   'replyto');
 } 
 
+
+/**
+ * count comments for a specific item inside a module
+ * 
+ * This function provides the main user interface to the comments
+ * module. 
+ * 
+ * @param     $args['module']    Name of the module to get comments for
+ * @param     $args['objectid']  ID of the item to get comments for
+ * @return    array              array of items, or false on failure
+ */ 
+function EZComments_userapi_count($args)
+{
+	extract($args);
+
+	if (!isset($module) || !isset($objectid)) {
+		pnSessionSetVar('errormsg', _MODARGSERROR);
+		return false;
+	} 
+
+	if (!pnSecAuthAction(0, 'EZComments::', "$module:$objectid:", ACCESS_READ)) {
+		return false;
+	} 
+	// Get datbase setup
+	list($dbconn) = pnDBGetConn();
+	$pntable = pnDBGetTables();
+
+	$EZCommentstable = $pntable['EZComments'];
+	$EZCommentscolumn = &$pntable['EZComments_column']; 
+	
+	$querymodname = pnVarPrepForStore($module);
+	$queryobjectid = pnVarPrepForStore($objectid);
+	// Get items
+	$sql = "SELECT count(1)
+            FROM $EZCommentstable
+            WHERE $EZCommentscolumn[modname] = '$querymodname'
+              AND $EZCommentscolumn[objectid] = '$queryobjectid'";
+
+	$result = $dbconn->Execute($sql); 
+	// Check for an error with the database code, and if so set an appropriate
+	// error message and return
+	if ($dbconn->ErrorNo() != 0) {
+		pnSessionSetVar('errormsg', _GETFAILED);
+		return false;
+	} 
+
+    list($count) = $result->fields;
+	$result->Close(); 
+	// Return the items
+	return $count;
+} 
+
+
 ?>
