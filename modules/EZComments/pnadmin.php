@@ -176,4 +176,83 @@ function EZComments_admin_update($args)
 	pnRedirect(pnModURL('EZComments', 'admin', 'main'));
 	return true;
 }
+
+
+
+/**
+ * Migration functionality
+ * 
+ * This function provides a common interface to migration scripts.
+ * The migration scripts will upgrade from different other modules 
+ * (like NS-Comments, Reviews, My_eGallery, ...) to EZComments.
+ * 
+ * This is experimantal at the moment and hidden from the main admin
+ * menu!
+ * 
+ * @return output the migration interface
+ */
+function EZComments_admin_migrate()
+{
+	if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
+		return _EZCOMMENTS_NOAUTH;
+	} 
+
+	$output = new pnHTML();
+	$output->SetInputMode(_PNH_VERBATIMINPUT);
+	$output->Title(_EZCOMMENTS_ADMIN);
+
+	$output->FormStart(pnModURL('EZComments', 'admin', 'domigrate'));
+	$output->FormHidden('authid', pnSecGenAuthKey());
+	$output->Text('<select name="migrate">');
+
+	$d = opendir('modules/EZComments/migrate');
+	while($f = readdir($d)) {
+    	if(substr($f, -3, 3) == 'php') {
+// TODO: add a meaningful check if the migration has already been run.		
+			if (false) {
+				$disabled=' disabled';
+			} else {
+				$disabled='';}
+				$output->Text("<option$disabled>$f</option>\n");
+	    }
+	}
+	closedir($d);
+	$output->Text('</select>');
+	$output->FormSubmit(_EZCOMMENTS_MIGRATE);
+	$output->FormEnd();
+	return $output->GetOutput();
+}
+
+
+/**
+ * Do the migration
+ * 
+ * This is the function that is called to do the actual
+ * migration.
+ * 
+ * @param $migrate The plugin to do the migration
+ */
+function EZComments_admin_domigrate()
+{
+	if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
+		return _EZCOMMENTS_NOAUTH;
+	} 
+
+	$migrate = pnVarCleanFromInput('migrate');
+	if (!isset($migrate))
+	{ 
+		return false;
+	}
+	
+	// don't issue a warning when the file does not exist!
+	@include "modules/EZComments/migrate/$migrate";
+	if (function_exists('EZComments_migrate'))
+	{
+		if (EZComments_migrate()) {
+			// Eintrag in Datenbank
+		}
+	}
+	pnRedirect(pnModURL('EZComments', 'admin', 'migrate'));
+	return true;
+}
 ?>
