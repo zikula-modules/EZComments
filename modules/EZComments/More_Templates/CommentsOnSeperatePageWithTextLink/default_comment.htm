@@ -1,0 +1,25 @@
+<!--[* $Id$ *]-->
+<!--[* This is the form to comment. It is shown only, when the user is allowed to. *]-->
+
+<div class="pn-title"><!--[$smarty.const._EZCOMMENTS]--></div>
+<br />
+<br />
+<!--[$smarty.const._EZCOMMENTS_RULES]-->
+<br />
+<br />
+<br />
+<br />
+<!--[if $allowadd]-->
+  <form action="<!--[$addurl]-->" method="post">
+    <input type="hidden" name="authid" id="authid" value="<!--[$authid]-->" /> 
+    <input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect]-->" /> 
+	  <input type="hidden" name="EZComments_modname" id="EZComments_modname" value="<!--[$modname]-->" /> 
+  	<input type="hidden" name="EZComments_objectid" id="EZComments_objectid" value="<!--[$objectid]-->" /> 
+	  <textarea name="EZComments_comment" id="EZComments_comment" wrap="soft" cols="80" rows="10"></textarea>
+    <br />
+    <br />
+    <input type="submit" value="<!--[$smarty.const._EZCOMMENTS_ADD]-->" />
+<!--[else]-->
+  <!--[$smarty.const._EZCOMMENTS_ONLYREG]-->
+	<a href="user.php"><!--[$smarty.const._EZCOMMENTS_GOTOREG]--></a>
+<!--[/if]-->
