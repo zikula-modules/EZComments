@@ -1,11 +1,7 @@
-<?php /* Smarty version 2.5.0, created on 2003-07-23 00:03:15
+<?php /* Smarty version 2.5.0, created on 2003-07-23 00:02:30
          compiled from ContentExpress.htm */ ?>
 <?php $this->_load_plugins(array(
-array('modifier', 'date_format', 'ContentExpress.htm', 17, false),)); ?>
-<br />
-<br />
-
-
+array('modifier', 'date_format', 'ContentExpress.htm', 13, false),)); ?>
 <table bgcolor="<?php echo $this->_tpl_vars['bgcolor2']; ?>
 " border="0" cellpadding="5" cellspacing="2" align="center" valign="top" width="99%">
   <tr>
@@ -74,17 +70,10 @@ $this->_sections['comments']['last']       = ($this->_sections['comments']['iter
   <?php endfor; endif; ?>
   <?php if ($this->_tpl_vars['allowadd']): ?>
 
-
-
   <tr>
     <td bgcolor="<?php echo $this->_tpl_vars['bgcolor4']; ?>
-" valign="top"><?php echo @constant('_EZCOMMENTS_COMMENT_ADD'); ?>
-
-    </td>
-
-    <td bgcolor="<?php echo $this->_tpl_vars['bgcolor4']; ?>
-" valign="top">
-      <form action="<?php echo $this->_tpl_vars['addurl']; ?>
+" valign="top" colspan="2">
+      <form action="<?php echo $this->_tpl_vars['commenturl']; ?>
 " method="post">
         <input type="hidden" name="authid" id="authid" value="<?php echo $this->_tpl_vars['authid']; ?>
 " /> 
@@ -94,25 +83,10 @@ $this->_sections['comments']['last']       = ($this->_sections['comments']['iter
 " /> 
 				<input type="hidden" name="EZComments_objectid" id="EZComments_objectid" value="<?php echo $this->_tpl_vars['objectid']; ?>
 " /> 
-				<textarea name="EZComments_comment" id="EZComments_comment" wrap="soft" cols="80" rows="10">
-        </textarea>
-        <br />
-        <br />
-        <input type="submit" value="<?php echo @constant('_EZCOMMENTS_ADD'); ?>
+        <input type="submit" value="<?php echo @constant('_EZCOMMENTS_COMMENT_ADD'); ?>
 " />
       </form>
     </td>
   </tr>
-  <?php else: ?>
-
-  <tr>
-    <td bgcolor="<?php echo $this->_tpl_vars['bgcolor4']; ?>
-" colspan="2"><?php echo @constant('_EZCOMMENTS_ONLYREG'); ?>
-
-		  <a href="user.php"><?php echo @constant('_EZCOMMENTS_GOTOREG'); ?>
-</a>
-		</td>
-  </tr>
   <?php endif; ?>
 </table>
-

@@ -1,23 +1,10 @@
 <!--[* $Id$ *]-->
 <table bgcolor="<!--[$bgcolor2]-->" border="0" cellpadding="5" cellspacing="2" align="center" valign="top" width="99%">
   <tr>
-    <td bgcolor="<!--[$bgcolor2]-->" valign="top" width="100%" colspan="2">
-		  <table border="0" cellpadding="0" cellspacing="0" width="100%">
-  			<tr>
-          <td valign="top" align="left" class="pn-title">
-					  <!--[$smarty.const._EZCOMMENTS]-->
-          </td>
-          <td valign="top" align="right" class="pn-tiny">
-  <!--[if $allowadd]-->
-					  <img src="modules/EZComments/pnimages/comment.gif">
-		        <a href="<!--[$commenturl]-->&EZComments_redirect=<!--[$redirect|rawurlencode ]-->&EZComments_modname=<!--[$modname]-->&EZComments_objectid=<!--[$objectid]-->"><!--[$smarty.const._EZCOMMENTS_COMMENT_ADD]--></a>
-  <!--[/if]-->
-      		</td>
-				</tr>
-	    </table>
-		</td>
+    <td bgcolor="<!--[$bgcolor2]-->" valign="top" width="100%" colspan="2" align="center" class="pn-title">
+    <!--[$smarty.const._EZCOMMENTS]-->
+    </td>
   </tr>
-	
   <!--[section name=comments loop=$comments]-->
 
   <tr>
@@ -42,4 +29,18 @@
     </td>
   </tr>
   <!--[/section]-->
+  <!--[if $allowadd]-->
+
+  <tr>
+    <td bgcolor="<!--[$bgcolor4]-->" valign="top" colspan="2">
+      <form action="<!--[$commenturl]-->" method="post">
+        <input type="hidden" name="authid" id="authid" value="<!--[$authid]-->" /> 
+				<input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect]-->" /> 
+				<input type="hidden" name="EZComments_modname" id="EZComments_modname" value="<!--[$modname]-->" /> 
+				<input type="hidden" name="EZComments_objectid" id="EZComments_objectid" value="<!--[$objectid]-->" /> 
+        <input type="submit" value="<!--[$smarty.const._EZCOMMENTS_COMMENT_ADD]-->" />
+      </form>
+    </td>
+  </tr>
+  <!--[/if]-->
 </table>
