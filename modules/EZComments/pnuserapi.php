@@ -128,7 +128,15 @@ function EZComments_userapi_create($args)
 
 	if (!$replyto) {
 	    $replyto = -1;
-	}	
+	}
+	if (!$uid) {
+		$uid = pnUserGetVar('uid');
+	}
+	if (!$date) {
+		$date = 'NOW()';
+	} else {
+		$date= "'" . pnVarPrepForStore($date) . "'";
+	}
 	
 	// Security check
 	if (!pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:", ACCESS_COMMENT)) {
@@ -150,13 +158,13 @@ function EZComments_userapi_create($args)
 	list($modname, 
 	     $objectid,
 		 $url,
-		 $uid, 
+		 $uid,
 		 $comment,
 		 $subject,
 		 $replyto) = pnVarPrepForStore($modname, 
 		                               $objectid, 
 									   $url,
-									   $uid, 
+									   $uid,
 									   $comment,
 		                               $subject,
 		                               $replyto); 
@@ -177,7 +185,7 @@ function EZComments_userapi_create($args)
 			  '$modname',
 			  '$objectid',
 			  '$url',
-			  now(),
+			  $date,
 			  '$uid',
 			  '$comment',
 			  '$subject',
