@@ -69,10 +69,10 @@ function EZComments_admin_main()
 	$comments = array();
 	foreach ($items as $item) {
 		$options = array();
-		if (pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:$id", ACCESS_EDIT)) {
+		if (pnSecAuthAction(0, 'EZComments::', "$item[modname]:$item[objectid]:$item[id]", ACCESS_EDIT)) {
 			$options[] = array('url'   => pnModURL('EZComments', 'admin', 'modify', array('id' => $item['id'])),
 							   'title' => _EDIT);
-			if (pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:$id", ACCESS_DELETE)) {
+			if (pnSecAuthAction(0, 'EZComments::', "$item[modname]:$item[objectid]:$item[id]", ACCESS_DELETE)) {
                 $options[] = array('url'   => pnModURL('EZComments', 'admin', 'delete', array('id' => $item['id'])),
                                    'title' => _DELETE);
 			}

@@ -60,10 +60,11 @@ function EZComments_userapi_getall($args)
     	if (!pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:", ACCESS_READ)) {
     		return $items;
     	} 
+		list($querymodname, $queryobjectid) = pnVarPrepForStore($modname, $objectid);
 	} else {
     	if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_OVERVIEW)) {
     		return $items;
-    	} 
+    	}
 	}
 
 	// Get datbase setup
@@ -73,8 +74,6 @@ function EZComments_userapi_getall($args)
 	$EZCommentstable = $pntable['EZComments'];
 	$EZCommentscolumn = &$pntable['EZComments_column']; 
 	
-	list($querymodname, $queryobjectid) = pnVarPrepForStore($modname, $objectid);
-
 	// form where clause
 	$wherestring = '';
 	if (isset($modname) && isset($objectid)) {
