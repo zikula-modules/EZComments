@@ -21,11 +21,11 @@
 		<!--[section name=comments loop=$comments]-->
 		<tr style="background-color:<!--[pnthemegetvar name=bgcolor3]-->;">
 			<td align="left">
-                <a href="user.php?op=userinfo&amp;uname=<!--[$comments[comments].uname]-->"><strong><!--[$comments[comments].uname]--></strong></a>
+                <a href="user.php?op=userinfo&amp;uname=<!--[$comments[comments].uname|pnvarprepfordisplay]-->"><strong><!--[$comments[comments].uname|pnvarprepfordisplay]--></strong></a>
 			</td>
 			<td>
 				<!--[if $comments[comments].subject neq '']-->
-				<strong><!--[pnml name=_EZCOMMENTS_SUBJECT]-->:</strong>&nbsp;<!--[$comments[comments].subject]-->
+				<strong><!--[pnml name=_EZCOMMENTS_SUBJECT]-->:</strong>&nbsp;<!--[$comments[comments].subject|pnvarprepfordisplay]-->
 				<!--[/if]-->
 				<strong><!--[ pnml name='_EZCOMMENTS_POSTED' ]-->:</strong>&nbsp;<!--[$comments[comments].date|pndate_format:"%d.%m.%y, %H:%M"]-->
 			</td>
@@ -33,13 +33,13 @@
         <tr style="background-color:none;text-align:left;">
             <td headers="col_0" style="background-color:<!--[ pnthemegetvar name=bgcolor3 ]-->;" valign="top">
 				<!--[if $comments[comments].uname != "Anonymous" ]--> 
-					<!--[if $comments[comments].user_avatar]--><a href="user.php?op=userinfo&amp;uname=<!--[$comments[comments].uname]-->"><img src="images/avatar/<!--[$comments[comments].user_avatar]-->" alt="<!--[$comments[comments].uname]-->'s Avatar" /></a><!--[ /if ]-->
+					<!--[if $comments[comments].user_avatar]--><a href="user.php?op=userinfo&amp;uname=<!--[$comments[comments].uname|pnvarprepfordisplay]-->"><img src="images/avatar/<!--[$comments[comments].user_avatar]-->" alt="<!--[$comments[comments].uname]-->'s Avatar" /></a><!--[ /if ]-->
 						<br />
 						<br />
 						<div style="border-top-style: solid; border-top-width: 1px;">
-						<!--[ pnml name='_EZCOMMENTS_REG_SINCE' ]-->:&nbsp;<!--[ $comments[comments].pn_user_regdate|date_format:"%b. %Y"  ]-->
+						<!--[ pnml name='_EZCOMMENTS_REG_SINCE' ]-->:&nbsp;<!--[ $comments[comments].pn_user_regdate|date_format:"%b. %Y"|pnvarprepfordisplay  ]-->
 						<!--[ if $comments[comments].pn_user_from != "" ]-->
-						<br /><!--[ pnml name='_EZCOMMENTS_FROM' ]-->:&nbsp;<!--[ $comments[comments].pn_user_from ]-->
+						<br /><!--[ pnml name='_EZCOMMENTS_FROM' ]-->:&nbsp;<!--[ $comments[comments].pn_user_from|pnvarprepfordisplay ]-->
 					<!--[ /if ]-->
 					</div>
 					<!--[if $comments[comments].onlinestatus]-->
@@ -48,13 +48,13 @@
 				<!--[ /if ]-->
             </td>
             <td style="vertical-align:top;background-color:<!--[ pnthemegetvar name=bgcolor1 ]-->;" headers="col_1">
-				<!--[$comments[comments].comment|pnmodcallhooks:EZComments]-->
+				<!--[$comments[comments].comment|pnmodcallhooks:EZComments|pnvarprephtmldisplay]-->
 				<!--[if $comments[comments].pn_user_sig != ""]-->
 				<br />
 				<br />
 				<br />
 				--<br />
-				<!--[$comments[comments].pn_user_sig|pnmodcallhooks:EZComments]-->
+				<!--[$comments[comments].pn_user_sig|pnmodcallhooks:EZComments|pnvarprephtmldisplay]-->
 				<!--[/if]-->
 			</td>
         </tr>
@@ -90,11 +90,11 @@
 	<tbody>
 		<!--[* This is the form to comment. It is shown only, when the user is allowed to. *]-->
 		<tr>
-			<td bgcolor="<!--[pnthemegetvar name=bgcolor3]-->" valign="top">
+			<td style="background-color:<!--[pnthemegetvar name=bgcolor3]-->" valign="top">
 				<!--[pnml name=_EZCOMMENTS_COMMENT_ADD]-->
 				<a id="bottom">&nbsp;</a>
 			</td>
-			<td bgcolor="<!--[pnthemegetvar name=bgcolor3]-->" valign="top">
+			<td style="background-color:<!--[pnthemegetvar name=bgcolor3]-->" valign="top">
 				<!--[if $bbcode]-->
 					<!--[pnmodfunc modname=pn_bbcode func=bbcodes images=true]-->
 				<!--[/if]-->
@@ -109,7 +109,7 @@
 						<input type="text" name="EZComments_subject" id="subject" size="50" maxlength="255" />
 					</div>
 					<div>
-						<label for="mesage"><!--[pnml name=_EZCOMMENTS_COMMENT]--></label>
+						<label for="message"><!--[pnml name=_EZCOMMENTS_COMMENT]--></label>
 						<textarea name="EZComments_comment" id="message" cols="60" rows="10"></textarea>
 					</div>
 					<input type="submit" value="<!--[pnml name=_EZCOMMENTS_ADD]-->" />
