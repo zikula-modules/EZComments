@@ -35,6 +35,7 @@ define('_EZCOMMENTS_NODIRECTACCESS',	'Kein direkter Zugriff auf dieses Modul');
 define('_EZCOMMENTS_RULES',				'Hier sollten die Regeln für die Benutzung der Kommentaren hinterlegt werden.');
 
 define('_EZCOMMENTS_ADMIN',				'EZComments Administration');
+define('_EZCOMMENTS_ADMIN_MAIN',		'Hauptmenü');
 define('_EZCOMMENTS_SMARTYPATH',		'Pfad zur SMARTY-Installation');
 define('_EZCOMMENTS_SENDINFOMAIL',		'Mail bei neuen Kommentaren verschicken');
 define('_EZCOMMENTS_OK', 				'Bestätigen');
@@ -42,6 +43,13 @@ define('_EZCOMMENTS_LASTCOMMENTS', 		'Die letzten Kommentare');
 define('_EZCOMMENTS_USERNAME', 			'Benutzer');
 define('_EZCOMMENTS_MODULE', 			'Modul');
 define('_EZCOMMENTS_COMMENT', 			'Kommentar');
+
+define('_EZCOMMENTS_CLEANUP_NOTHINGTODO', 'Es gibt keine verwaisten Kommentare');
+define('_EZCOMMENTS_CLEANUP_GOBACK',      'Zurück');
+define('_EZCOMMENTS_CLEANUP_EXPLAIN',     'Mit dieser Funktionalität können Kommentare zu Modulen, die entfernt wurden, gelöscht werden.');
+define('_EZCOMMENTS_CLEANUP_LABEL',       'Modul auswählen:');
+define('_EZCOMMENTS_CLEANUP_GO',          'Alle Kommentare zu diesem Modul löschen');
+define('_EZCOMMENTS_CLEANUP',             'Verwaiste Kommentare löschen');
 
 define('_EZCOMMENTS_FAILED1', 			'Erstellung der Tabelle fehlgeschlagen');
 define('_EZCOMMENTS_FAILED2', 			'Registrierung des Hooks fehlgeschlagen');

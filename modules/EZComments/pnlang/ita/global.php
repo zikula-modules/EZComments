@@ -35,6 +35,7 @@ define('_EZCOMMENTS_NODIRECTACCESS',	'Non è possibile accedere direttamente a qu
 define('_EZCOMMENTS_RULES',				'Definisci le regole per i tuoi commenti qui');
 
 define('_EZCOMMENTS_ADMIN',             'Gestione di EZComments');
+define('_EZCOMMENTS_ADMIN_MAIN',		'Main EZComments Administration');    // Translate me!
 define('_EZCOMMENTS_SMARTYPATH',        'Percorso a Smarty');
 define('_EZCOMMENTS_SENDINFOMAIL',		'invia una email per i nuovi commenti');
 define('_EZCOMMENTS_OK',                'Accetta');
@@ -42,6 +43,14 @@ define('_EZCOMMENTS_LASTCOMMENTS',      'Ultimi commenti');
 define('_EZCOMMENTS_USERNAME',          'Utente');
 define('_EZCOMMENTS_MODULE',            'Modulo');
 define('_EZCOMMENTS_COMMENT',           'Commento');
+
+// Translate M
+define('_EZCOMMENTS_CLEANUP_NOTHINGTODO', 'No orphaned comments'); 
+define('_EZCOMMENTS_CLEANUP_GOBACK',      'Back');
+define('_EZCOMMENTS_CLEANUP_EXPLAIN',     'This functionality allows you to delete comments that are in the database for removed modules.');
+define('_EZCOMMENTS_CLEANUP_LABEL',       'Select module:');
+define('_EZCOMMENTS_CLEANUP_GO',          'Delete all comments for this module');
+define('_EZCOMMENTS_CLEANUP',             'Delete orphanded comments');
 
 define('_EZCOMMENTS_FAILED1',           'Errore nel creare la tabella');
 define('_EZCOMMENTS_FAILED2',           'Errore nel creare l\'hook');

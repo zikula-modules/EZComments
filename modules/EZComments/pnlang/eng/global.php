@@ -35,6 +35,7 @@ define('_EZCOMMENTS_NODIRECTACCESS',	'No direct access to this module');
 define('_EZCOMMENTS_RULES',	            'Define the rules for your comments here');
 
 define('_EZCOMMENTS_ADMIN',				'EZComments Administration');
+define('_EZCOMMENTS_ADMIN_MAIN',		'Main EZComments Administration');
 define('_EZCOMMENTS_SMARTYPATH',		'Path to your installation of SMARTY');
 define('_EZCOMMENTS_SENDINFOMAIL',		'send mail on new comment');
 define('_EZCOMMENTS_OK', 				'Accept');
@@ -42,6 +43,13 @@ define('_EZCOMMENTS_LASTCOMMENTS', 		'The last comments');
 define('_EZCOMMENTS_USERNAME', 			'User');
 define('_EZCOMMENTS_MODULE', 			'Module');
 define('_EZCOMMENTS_COMMENT', 			'Comment');
+
+define('_EZCOMMENTS_CLEANUP_NOTHINGTODO', 'No orphaned comments');
+define('_EZCOMMENTS_CLEANUP_GOBACK',      'Back');
+define('_EZCOMMENTS_CLEANUP_EXPLAIN',     'This functionality allows you to delete comments that are in the database for removed modules.');
+define('_EZCOMMENTS_CLEANUP_LABEL',       'Select module:');
+define('_EZCOMMENTS_CLEANUP_GO',          'Delete all comments for this module');
+define('_EZCOMMENTS_CLEANUP',             'Delete orphanded comments');
 
 define('_EZCOMMENTS_FAILED1', 			'Error creating table');
 define('_EZCOMMENTS_FAILED2', 			'Error creating hook');
