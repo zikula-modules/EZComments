@@ -59,13 +59,14 @@ function EZComments_user_main($args)
  */
 function EZComments_user_view($args)
 {
-    if (!pnSecAuthAction(0, 'EZComments::', "$modname:$objectid: ", ACCESS_OVERVIEW)) {
-        return _EZCOMMENTS_NOAUTH;
-    }
-
 	// work out the input from the hook
     $modname = pnModGetName();
     $objectid = $args['objectid'];
+
+	// security check
+    if (!pnSecAuthAction(0, 'EZComments::', "$modname:$objectid: ", ACCESS_OVERVIEW)) {
+        return _EZCOMMENTS_NOAUTH;
+    }
 
 	// we may get some input in from the navigation bar
 	list ($ezcomments_template, $ezcomments_order) = pnVarCleanFromInput('ezcomments_template', 'ezcomments_order');
@@ -314,7 +315,7 @@ function EZComments_prepareCommentsForDisplay($items)
 		} else {
 			$comment['uname'] = pnConfigGetVar('Anonymous');
 		}
-		$comment['del'] = (pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:$item[id]", ACCESS_DELETE));
+		$comment['del'] = (pnSecAuthAction(0, 'EZComments::', "$comment[modname]:$comment[objectid]:$comment[id]", ACCESS_DELETE));
 		$comments[] = $comment;
     }
     return $comments;
