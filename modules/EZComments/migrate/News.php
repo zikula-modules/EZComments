@@ -97,7 +97,8 @@ function EZComments_migrate()
       			            	 'url'	    => 'modules.php?op=modload&name=News&file=article&sid=' . $sid,
               				     'comment'  => $comment,
     							 'subject'  => $subject,
-		    					 'uid'      => $uid));
+		    					 'uid'      => $uid,
+								 'date'     => $date));
 
     	if (!$id) {
 			pnSessionSetVar('errormsg', 'News migration: Error creating comment');
