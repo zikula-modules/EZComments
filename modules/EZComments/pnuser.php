@@ -89,7 +89,6 @@ function EZComments_user_view($args)
     
     $pnRender->assign('comments',   $comments);
     $pnRender->assign('allowadd',   pnSecAuthAction(0, 'EZComments::', "$modname:$objectid: ", ACCESS_COMMENT));
-    $pnRender->assign('commenturl', pnModURL('EZComments', 'user', 'comment'));
     $pnRender->assign('redirect',   pnVarPrepForDisplay($args['extrainfo']));
     $pnRender->assign('objectid',   pnVarPrepForDisplay($objectid));
 
@@ -322,12 +321,9 @@ function EZComments_prepareCommentsForDisplay($items)
 	            $online_state = $userresult->GetRowAssoc(false);
                 $comment['online'] = false;
                 if($online_state['pn_uid'] == $item['uid']) {
-                $comment['online'] = true;
-				$userresult->Close();
-            }
-
-            
-				
+                    $comment['online'] = true;
+    				$userresult->Close();
+	            }
             } else {
                 $comment['uname'] = pnConfigGetVar('Anonymous');
             }
