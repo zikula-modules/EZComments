@@ -39,7 +39,7 @@ function EZComments_admin_main() {
 	$output->FormStart(pnModURL('EZComments', 'admin', 'update'));
 	$output->FormHidden('authid', pnSecGenAuthKey());
 	$output->Text(_EZCOMMENTS_SMARTYPATH . ': ');
-	$output->FormText('smartypath', pnVarPrepForDisplay(pnModGetVar('EZComments', 'Smartypath')), 80);
+	$output->FormText('smartypath', pnVarPrepForDisplay(pnModGetVar('EZComments', 'Smartypath')), 80, 256);
 	$output->Linebreak();
 	$output->Text(_EZCOMMENTS_SENDINFOMAIL . ' ');
     $output->FormCheckbox('MailToAdmin', pnVarPrepForDisplay(pnModGetVar('EZComments', 'MailToAdmin')));	
