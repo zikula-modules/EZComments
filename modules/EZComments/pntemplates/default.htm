@@ -1,9 +1,7 @@
 <!--[* $Id$ *]-->
 <!--[* Here we show the given comments *]-->
 
-
 <!--[* pndebug *]-->
-
 
 <!--[if $allowadd eq true or $comments eq true]-->
 	<h3><!--[pnml name="_EZCOMMENTS"]--></h3>
@@ -13,20 +11,17 @@
     <!--[/if]-->
 	<a id="top" title="<!--[ pnml name='_EZCOMMENTS_BOTTOM' ]-->" href="#bottom"><!--[ pnimg src="go_down.gif" alt="_EZCOMMENTS_BOTTOM" altml=true ]--></a>&nbsp;
 	<table border="0" cellpadding="5" cellspacing="0" width="100%">
-	   <thead>
+		<thead>
 	    <tr style="background-color:<!--[ $bgcolor2 ]-->;text-align:left;">
-
-        <th id="col_0" abbr="<!--[ pnml name='_EZCOMMENTS_AUTHOR' ]-->" style="width:20%;"></th>
-
-        <th id="col_1" abbr="<!--[ pnml name='_EZCOMMENTS_TOPIC' ]-->" colspan="2" style="width:80%;"></th>
-</thead>
- <tbody>
-	</tr>
+			<th id="col_0" abbr="<!--[ pnml name='_EZCOMMENTS_AUTHOR' ]-->" style="width:20%;"></th>
+			<th id="col_1" abbr="<!--[ pnml name='_EZCOMMENTS_TOPIC' ]-->" colspan="2" style="width:80%;"></th>
+		</tr>
+		</thead>
+		<tbody>
 		<!--[section name=comments loop=$comments]-->
-		
 		<tr style="background-color:<!--[pnthemegetvar name=bgcolor3]-->;">
 			<td align="left">
-                	<a href="user.php?op=userinfo&amp;uname=<!--[$comments[comments].uname]-->"><strong><!--[$comments[comments].uname]--></strong></a>
+                <a href="user.php?op=userinfo&amp;uname=<!--[$comments[comments].uname]-->"><strong><!--[$comments[comments].uname]--></strong></a>
 			</td>
 			<td style="text-align:right;" colspan="2">
 				<strong><!--[ pnml name='_EZCOMMENTS_POSTED' ]-->:</strong>&nbsp;<!--[$comments[comments].date|pndate_format:"%d.%m.%y, %H:%M"]-->
@@ -35,26 +30,26 @@
         <tr style="background-color:none;text-align:left;">
             <td headers="col_0" style="background-color:<!--[ pnthemegetvar name=bgcolor3 ]-->;" valign="top">
 				<!--[if $comments[comments].uname != "Anonymous" ]--> 
-				<!--[if $comments[comments].user_avatar]--><a href="user.php?op=userinfo&amp;uname=<!--[$comments[comments].uname]-->"><img src="images/avatar/<!--[$comments[comments].user_avatar]-->" alt="<!--[$comments[comments].uname]-->'s Avatar" /></a><!--[ /if ]-->
-                <br />
-                <br />
-				<div style="border-top-style: solid; border-top-width: 1px;">
-				<!--[ pnml name='_EZCOMMENTS_REG_SINCE' ]-->:&nbsp;<!--[ $comments[comments].pn_user_regdate|date_format:"%b. %Y"  ]-->
-				<!--[ if $comments[comments].pn_user_from != "" ]-->
-				<br /><!--[ pnml name='_EZCOMMENTS_FROM' ]-->:&nbsp;<!--[ $comments[comments].pn_user_from ]-->
-				<!--[ /if ]-->
-				</div>
-				<br /><!--[ pnml name='_EZCOMMENTS_STATUS' ]-->:&nbsp;<!--[ if $comments[comments].online  ]--><!--[ pnml name='_EZCOMMENTS_ONLINE' ]--><!--[ else ]--><!--[ pnml name='_EZCOMMENTS_OFFLINE' ]--><!--[ /if ]-->
+					<!--[if $comments[comments].user_avatar]--><a href="user.php?op=userinfo&amp;uname=<!--[$comments[comments].uname]-->"><img src="images/avatar/<!--[$comments[comments].user_avatar]-->" alt="<!--[$comments[comments].uname]-->'s Avatar" /></a><!--[ /if ]-->
+						<br />
+						<br />
+						<div style="border-top-style: solid; border-top-width: 1px;">
+						<!--[ pnml name='_EZCOMMENTS_REG_SINCE' ]-->:&nbsp;<!--[ $comments[comments].pn_user_regdate|date_format:"%b. %Y"  ]-->
+						<!--[ if $comments[comments].pn_user_from != "" ]-->
+						<br /><!--[ pnml name='_EZCOMMENTS_FROM' ]-->:&nbsp;<!--[ $comments[comments].pn_user_from ]-->
+					<!--[ /if ]-->
+					</div>
+					<br /><!--[ pnml name='_EZCOMMENTS_STATUS' ]-->:&nbsp;<!--[ if $comments[comments].online  ]--><!--[ pnml name='_EZCOMMENTS_ONLINE' ]--><!--[ else ]--><!--[ pnml name='_EZCOMMENTS_OFFLINE' ]--><!--[ /if ]-->
 				<!--[ /if ]-->
             </td>
             <td colspan="2" style="vertical-align:top;background-color:<!--[ pnthemegetvar name=bgcolor1 ]-->;" headers="col_1">
-				<!--[$comments[comments].comment|pnmodcallhooks]-->
+				<!--[$comments[comments].comment|pnmodcallhooks:EZComments]-->
 				<!--[if $comments[comments].pn_user_sig != ""]-->
 				<br />
 				<br />
 				<br />
 				--<br />
-				<!--[$comments[comments].pn_user_sig|pnmodcallhooks]-->
+				<!--[$comments[comments].pn_user_sig|pnmodcallhooks:EZComments]-->
 				<!--[/if]-->
 			</td>
         </tr>
@@ -74,13 +69,14 @@
 		</tr>
 		<tr style="height:5px;">
 			<td colspan="3"><!--[if $comments[comments].del]-->
-						<form action="<!--[$delurl]-->" method="post">
-							<input type="hidden" name="authid" id="EZComments_authid" value="<!--[$authid]-->" /> 
-							<input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect]-->" /> 
-							<input type="hidden" name="EZComments_id" id="EZComments_id" value="<!--[$comments[comments].id]-->" /> 
-							<input type="submit" value="<!--[pnml name=_EZCOMMENTS_DEL]-->" />
-						</form>
-				<!--[/if]--></td>
+				<form action="<!--[pnmodurl modname=EZComments func=delete]-->" method="post">
+					<input type="hidden" name="authid" id="EZComments_authid" value="<!--[pnsecgenauthkey modname=EZComments]-->" /> 
+					<input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect]-->" /> 
+					<input type="hidden" name="EZComments_id" id="EZComments_id" value="<!--[$comments[comments].id]-->" /> 
+					<input type="submit" value="<!--[pnml name=_EZCOMMENTS_DEL]-->" />
+				</form>
+				<!--[/if]-->
+			</td>
 		</tr>
 		<!--[/section]-->
 		<!--[if $allowadd]-->
@@ -91,24 +87,23 @@
 					<a id="bottom">&nbsp;</a>
 				</td>
 				<td bgcolor="<!--[pnthemegetvar name=bgcolor3]-->" valign="top">
-					<!--[include file="bbcode.htm"]-->
-					<form action="<!--[$addurl]-->" method="post">
-					<input type="hidden" name="authid" id="authid" value="<!--[$authid]-->" /> 
+					<!--[if $bbcode]-->
+						<!--[include file="bbcode.htm"]-->
+					<!--[/if]-->
+					<form action="<!--[pnmodurl modname=EZComments func=create]-->" method="post">
+					<input type="hidden" name="authid" id="authid" value="<!--[pnsecgenauthkey modname=EZComments]-->" /> 
 					<input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect]-->" /> 
 					<input type="hidden" name="EZComments_modname" id="EZComments_modname" value="<!--[$modname]-->" /> 
 					<input type="hidden" name="EZComments_objectid" id="EZComments_objectid" value="<!--[$objectid]-->" /> 
 					<textarea name="EZComments_comment" id="EZComments_comment" cols="60" rows="10"></textarea>
-					
 					<input type="submit" value="<!--[pnml name=_EZCOMMENTS_ADD]-->" />
 					</form>
-					<!--[include file="smilies.htm"]-->
-					
-					
+					<!--[if $smilies]-->
+						<!--[include file="smilies.htm"]-->
+					<!--[/if]-->
 				</td>
 			</tr>
-		
-		 
-  <!--[/if]-->
-   </tbody>
+		<!--[/if]-->
+		</tbody>
 	</table>
 <!--[/if]-->
