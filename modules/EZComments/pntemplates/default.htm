@@ -13,17 +13,16 @@
     <!--[/if]-->
 	<a id="top" title="<!--[ pnml name='_EZCOMMENTS_BOTTOM' ]-->" href="#bottom"><!--[ pnimg src="go_down.gif" alt="_EZCOMMENTS_BOTTOM" altml=true ]--></a>&nbsp;
 	<table border="0" cellpadding="5" cellspacing="0" width="100%">
-	   <thead>
+	    <thead>
 	    <tr style="background-color:<!--[ $bgcolor2 ]-->;text-align:left;">
 
         <th id="col_0" abbr="<!--[ pnml name='_EZCOMMENTS_AUTHOR' ]-->" style="width:20%;"></th>
 
         <th id="col_1" abbr="<!--[ pnml name='_EZCOMMENTS_TOPIC' ]-->" colspan="2" style="width:80%;"></th>
-</thead>
- <tbody>
-	</tr>
+		</tr>
+		</thead>
+		<tbody>
 		<!--[section name=comments loop=$comments]-->
-		
 		<tr style="background-color:<!--[pnthemegetvar name=bgcolor3]-->;">
 			<td align="left">
                 	<a href="user.php?op=userinfo&amp;uname=<!--[$comments[comments].uname]-->"><strong><!--[$comments[comments].uname]--></strong></a>
@@ -100,13 +99,9 @@
 					<input type="submit" value="<!--[pnml name=_EZCOMMENTS_ADD]-->" />
 					</form>
 					<!--[include file="smilies.htm"]-->
-					
-					
 				</td>
 			</tr>
-		
-		 
-  <!--[/if]-->
-   </tbody>
+		<!--[/if]-->
+	</tbody>
 	</table>
 <!--[/if]-->
