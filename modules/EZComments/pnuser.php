@@ -70,7 +70,7 @@ function EZComments_user_view($args)
 		} 
 	}
 	
-	require 'ezcsmarty.php';
+	require_once dirname(__FILE__) . '/ezcsmarty.php';
 	$smarty = new EZComments_Smarty;
 
 	$smarty->assign('comments', $comments);
