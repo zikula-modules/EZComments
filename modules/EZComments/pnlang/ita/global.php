@@ -25,6 +25,9 @@ define('_EZCOMMENTS_GOTOREG',   		'Entra');
 define('_EZCOMMENTS_ADD',               'Aggiungi');
 define('_EZCOMMENTS_DEL',               'Cancella questo commento');
 define('_EZCOMMENTS_COMMENT_ADD',       'Aggiungi un nuovo commento');
+define('_EZCOMMENTS_COMMENT_ANSWER', 	'Answer');  // Translate me!
+define('_EZCOMMENTS_COMMENT_FROM',  	'by');      // Translate me!  Meaning: the autor of the comment
+define('_EZCOMMENTS_COMMENT_ON',    	'on');      // Translate me!  Meaning: the date of the comment   "by foobar on 11-11-2003"
 define('_EZCCOMMENTSCREATED',           'Commento aggiunto');
 define('_EZCCOMMENTSDELETED',           'Commento cancellato');
 define('_EZCOMMENTS_FAILED',            'Erroreinterno');

@@ -25,6 +25,9 @@ define('_EZCOMMENTS_GOTOREG',   		'register/log in');		// Translate me!
 define('_EZCOMMENTS_ADD',      			'Legg til');
 define('_EZCOMMENTS_DEL', 	 			'Slett denne kommentarent');
 define('_EZCOMMENTS_COMMENT_ADD', 		'Legg til en kommentar');
+define('_EZCOMMENTS_COMMENT_ANSWER', 	'Answer');  // Translate me!
+define('_EZCOMMENTS_COMMENT_FROM',  	'by');      // Translate me!  Meaning: the autor of the comment
+define('_EZCOMMENTS_COMMENT_ON',    	'on');      // Translate me!  Meaning: the date of the comment   "by foobar on 11-11-2003"
 define('_EZCCOMMENTSCREATED', 			'Kommentar lagt til');
 define('_EZCCOMMENTSDELETED', 			'Kommentar slettet');
 define('_EZCOMMENTS_FAILED',   			'Intern feil');
