@@ -3,6 +3,14 @@ $Id$
 
 Changelog
 
+0.2  - New feature:
+       The administrator can check that new mail is sent 
+       when a new comment is made.
+
+       New translation variables:
+        _EZCOMMENTS_SENDINFOMAIL	
+
+
 0.1b - another bugfix release
        Should work with open_basedir restrictions
        Italian translations by Stefano Garuti included

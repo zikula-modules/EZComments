@@ -1,17 +1,21 @@
 <?php
 // $Id$
+// ----------------------------------------------------------------------
+// EZComments
+// Attach comments to any module calling hooks
+// ----------------------------------------------------------------------
+// Author: Jörg Napp, http://postnuke.lottasophie.de
+// ----------------------------------------------------------------------
 // LICENSE
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License (GPL)
 // as published by the Free Software Foundation; either version 2
 // of the License, or (at your option) any later version.
 // This program is distributed in the hope that it will be useful,
-// but WIthOUT ANY WARRANTY; without even the implied warranty of
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
-// ----------------------------------------------------------------------
-// Original Author of file: Jörg Napp, http://postnuke.lottasophie.de
 // ----------------------------------------------------------------------
 
 /**
@@ -34,8 +38,11 @@ function EZComments_admin_main() {
 
 	$output->FormStart(pnModURL('EZComments', 'admin', 'update'));
 	$output->FormHidden('authid', pnSecGenAuthKey());
-	$output->Text(_EZCOMMENTS_SMARTYPATH . ": ");
+	$output->Text(_EZCOMMENTS_SMARTYPATH . ': ');
 	$output->FormText('smartypath', pnVarPrepForDisplay(pnModGetVar('EZComments', 'Smartypath')), 80);
+	$output->Linebreak();
+	$output->Text(_EZCOMMENTS_SENDINFOMAIL . ' ');
+    $output->FormCheckbox('MailToAdmin', pnVarPrepForDisplay(pnModGetVar('EZComments', 'MailToAdmin')));	
 	$output->Linebreak();
 	$output->FormSubmit(_EZCOMMENTS_OK);
 	$output->FormEnd();
@@ -122,10 +129,25 @@ function EZComments_admin_update($args)
 		return true;
 	} 
 
-	$smartypath = pnVarCleanFromInput('smartypath');
+	list($smartypath, 
+	     $MailToAdmin) = pnVarCleanFromInput('smartypath', 
+		                                    'MailToAdmin');
 	extract($args);
 
-	pnModSetVar('EZComments', 'smartypath', $smartypath);
+	
+    if (empty($smartypath)) {
+		$smartypath = dirname(__FILE__) 
+					  . DIRECTORY_SEPARATOR . 'pnclass'
+					  . DIRECTORY_SEPARATOR . 'Smarty'
+					  . DIRECTORY_SEPARATOR;
+	}
+						
+    if (!isset($MailToAdmin)) {
+        $MailToAdmin = 0;
+    }
+
+	pnModSetVar('EZComments', 'MailToAdmin', $MailToAdmin);
+	pnModSetVar('EZComments', 'smartypath',  $smartypath);
 	pnRedirect(pnModURL('EZComments', 'admin', 'main'));
 	return true;
 }

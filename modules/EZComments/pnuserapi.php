@@ -1,17 +1,21 @@
 <?php 
 // $Id$
+// ----------------------------------------------------------------------
+// EZComments
+// Attach comments to any module calling hooks
+// ----------------------------------------------------------------------
+// Author: Jörg Napp, http://postnuke.lottasophie.de
+// ----------------------------------------------------------------------
 // LICENSE
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License (GPL)
 // as published by the Free Software Foundation; either version 2
 // of the License, or (at your option) any later version.
 // This program is distributed in the hope that it will be useful,
-// but WIthOUT ANY WARRANTY; without even the implied warranty of
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
-// ----------------------------------------------------------------------
-// Original Author of file: Jörg Napp, http://postnuke.lottasophie.de
 // ----------------------------------------------------------------------
 
 /**
@@ -154,6 +158,22 @@ function EZComments_userapi_create($args)
 	} 
 	// Get the ID of the item that we inserted.
 	$id = $dbconn->PO_Insert_ID($EZCommentstable, $EZCommentscolumn['id']); 
+	
+	// Inform admin about new comment
+	if (pnModGetVar('EZComments', 'MailToAdmin')) {
+		$headers =  'From:' . pnConfigGetVar('sitename') . '<' . pnConfigGetVar('adminmail') . ">\n";
+		// Send it as HTML mail
+    	$headers .= "Content-Type: text/html; charset=iso-8859-1\n";
+		// Who wants to receive as well?
+		//$headers .= "cc: birthdayarchive@php.net\n";
+
+		pnmail(pnConfigGetVar('adminmail'), 
+		       'Neuer Kommentar', 
+		       'Neuer Kommentar: ' . $comment, 
+			   $headers);
+    		
+	}
+	
 	// pnModCallHooks('item', 'create', $tid, 'tid');
 	return $id;
 } 
