@@ -61,7 +61,7 @@ function EZComments_user_view($args)
 {
     $modname = pnModGetName();
     $objectid = $args['objectid'];
-    
+
     if (!pnSecAuthAction(0, 'EZComments::', "$modname:$objectid: ", ACCESS_OVERVIEW)) {
         return _EZCOMMENTS_NOAUTH;
     } 
@@ -89,7 +89,11 @@ function EZComments_user_view($args)
     
     $pnRender->assign('comments',   $comments);
     $pnRender->assign('allowadd',   pnSecAuthAction(0, 'EZComments::', "$modname:$objectid: ", ACCESS_COMMENT));
-    $pnRender->assign('redirect',   pnVarPrepForDisplay($args['extrainfo']));
+    if (!is_array($args['extrainfo'])) {
+    	$pnRender->assign('redirect',   pnVarPrepForDisplay($args['extrainfo']));
+    } else {
+		$pnRender->assign('redirect',   pnVarPrepForDisplay($args['extrainfo']['returnurl']));
+    }
     $pnRender->assign('objectid',   pnVarPrepForDisplay($objectid));
 
 	// check for some useful hooks
