@@ -99,6 +99,9 @@ function EZComments_admin_modifyconfig()
 	// assign the module vars
 	$pnRender->assign(pnModGetVar('EZComments'));
 
+	// assign all available template sets
+	$pnRender->assign('templates', pnModAPIFunc('EZComments', 'user', 'gettemplates'));
+
 	// Return the output
 	return $pnRender->fetch('ezcomments_admin_modifyconfig.htm');
 }
@@ -119,14 +122,19 @@ function EZComments_admin_updateconfig($args)
 		return true;
 	} 
 
-    $MailToAdmin = pnVarCleanFromInput('MailToAdmin');
+    list($MailToAdmin, $template) = pnVarCleanFromInput('MailToAdmin', 'template');
 	extract($args);
 
     if (!isset($MailToAdmin)) {
         $MailToAdmin = 0;
     }
-
 	pnModSetVar('EZComments', 'MailToAdmin', $MailToAdmin);
+	
+	if (!isset($template)) {
+		$template = 'AllOnOnePage';
+	}
+	pnModSetVar('EZComments', 'template', $template);
+
 	pnRedirect(pnModURL('EZComments', 'admin', 'main'));
 	return true;
 }

@@ -101,7 +101,7 @@ function EZComments_user_view($args)
 	}
     // find out which template to use
     $template = isset($args['template']) ? $args['template'] : 'ezcomments_user_view.htm';
-    return $pnRender->fetch($template);
+    return $pnRender->fetch(pnModGetVar('EZComments', 'template') . '/'. $template);
 } 
 
 
@@ -170,8 +170,8 @@ function EZComments_user_comment($args)
     $pnRender->assign('subject',  pnVarPrepForDisplay($EZComments_subject));
     $pnRender->assign('replyto',  pnVarPrepForDisplay($EZComments_replyto));
 
-    $template = isset($EZComments_template) ? $EZComments_template : 'default_comment.htm';
-    return $pnRender->fetch($template);
+    $template = isset($EZComments_template) ? $EZComments_template : 'ezcomments_user_comment.htm';
+    return $pnRender->fetch(pnModGetVar('EZComments', 'template') . '/'. $template);
 }
 
 

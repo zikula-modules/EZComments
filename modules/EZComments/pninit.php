@@ -89,6 +89,7 @@ function EZComments_init()
 
 	pnModSetVar('EZComments', 'MailToAdmin', false);
 	pnModSetVar('EZComments', 'migrated', serialize(array()));
+	pnModSetVar('EZComments', 'template', 'AllOnOnePage');
 	// Initialisation successful
 	return true;
 } 
@@ -183,7 +184,11 @@ function EZComments_upgrade($oldversion)
 			// re-enable the hooks for this module
 			pnModAPIFunc('Modules', 'admin', 'enablehooks', array('callermodname' => $modname, 'hookmodname' => 'EZComments'));
 		}
+		$oldversion = '0.4';
 	}
+	if ($oldversion == '0.4') {
+		pnModSetVar('EZComments', 'template', 'AllOnOnePage');
+	}	
 	return true;
 } 
 
@@ -229,7 +234,7 @@ function EZComments_delete()
 
 	pnModDelVar('EZComments', 'MailToAdmin');
 	pnModDelVar('EZComments', 'migrated');
-	
+	pnModDelVar('EZComments', 'template');	
 	// Deletion successful
 	return true;
 } 

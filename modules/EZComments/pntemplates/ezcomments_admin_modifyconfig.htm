@@ -13,6 +13,12 @@
 		<!--[/if]-->
 	</div>
 	<div class="pn-adminformrow">
+		<label for="ezcomments_template"><!--[pnml name="_EZCOMMENTS_TEMPLATE"]--></label>
+		<select id="ezcomments_template" name="template">
+			<!--[html_options values=$templates output=$templates selected=$template]-->
+		</select>
+	</div>
+	<div class="pn-adminformrow">
 		<!--[pnmodcallhooks hookobject="module" hookaction="modifyconfig" hookid="EZComments" module="EZComments"]-->
 	</div>
 	<div class="pn-adminformrow">

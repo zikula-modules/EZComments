@@ -481,4 +481,25 @@ function EZComments_userapi_count($args)
 } 
 
 
+function EZComments_userapi_gettemplates()
+{
+	if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_READ)) {
+		return false;
+	} 
+
+	$modinfo = pnModGetInfo(pnModGetIDFromName('EZComments'));
+
+	$templates = array();
+    $handle = opendir('modules/'.$modinfo['directory'].'/pntemplates/');
+    while ($f = readdir($handle)) {
+	    if ($f != '.' && $f != '..' && $f != 'CVS' && !ereg("[.]", $f) && $f != 'plugins') {
+	    	$templates[] = $f;
+		}
+    } 
+    closedir($handle); 
+
+    return $templates;
+
+}
+
 ?>

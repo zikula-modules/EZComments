@@ -42,6 +42,7 @@ define('_EZCOMMENTS_LASTCOMMENTS', 		'The last comments');
 define('_EZCOMMENTS_USERNAME', 			'User');
 define('_EZCOMMENTS_MODULE', 			'Module');
 define('_EZCOMMENTS_COMMENT', 			'Comment');
+define('_EZCOMMENTS_TEMPLATE',          'Default template');
 
 define('_EZCOMMENTS_CLEANUP_NOTHINGTODO', 'No orphaned comments');
 define('_EZCOMMENTS_CLEANUP_GOBACK',      'Back');
