@@ -1,0 +1,25 @@
+<table border="0" width="100%" cellpadding="0" cellspacing="0">
+<!--[foreach from=$comments item=comment]-->
+	<tr>
+		<td valign="top"><strong><big>&middot;&nbsp;</big></strong></td>
+		<td>
+			<!--[if $comment.subject neq '']-->
+				<a href="<!--[$comment.url]-->"><!--[$comment.subject]--></a>
+			<!--[else]-->
+				<a href="<!--[$comment.url]-->"><!--[$comment.comment|truncate:30]--></a>
+			<!--[/if]-->
+			<!--[if $showusername]-->
+				<!--[pnml name=_BY]-->
+				<!--[if $linkusername]-->
+					<a href="'user.php?op=userinfo&amp;uname=<!--[$comment.uname]-->"><!--[$comment.uname]--></a>
+				<!--[else]-->
+					<!--[$comment.uname]-->
+				<!--[/if]-->
+			<!--[/if]-->
+			<!--[if $showdate]-->
+			<!--[pnml name=_ON]-->&nbsp;<!--[$comment.date|pndate_format]-->
+			<!--[/if]-->
+		</td>
+	</tr>
+<!--[/foreach]-->
+</table>
