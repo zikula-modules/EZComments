@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.4.2, created on 2003-04-15 20:30:16
+<?php /* Smarty version 2.5.0, created on 2003-07-22 16:11:32
          compiled from default.tpl */ ?>
 <?php $this->_load_plugins(array(
 array('modifier', 'date_format', 'default.tpl', 12, false),)); ?>
@@ -7,33 +7,33 @@ array('modifier', 'date_format', 'default.tpl', 12, false),)); ?>
 <tr>
 <td bgcolor="<?php echo $this->_tpl_vars['bgcolor2']; ?>
 " valign="top" width="100%" colspan="2" align="center" class="pn-title">
-<?php echo defined('_EZCOMMENTS') ? _EZCOMMENTS : null; ?>
+<?php echo @constant('_EZCOMMENTS'); ?>
 
 </td>
 </tr>
-<?php if (isset($this->_sections["comments"])) unset($this->_sections["comments"]);
-$this->_sections["comments"]['name'] = "comments";
-$this->_sections["comments"]['loop'] = is_array($this->_tpl_vars['comments']) ? count($this->_tpl_vars['comments']) : max(0, (int)$this->_tpl_vars['comments']);
-$this->_sections["comments"]['show'] = true;
-$this->_sections["comments"]['max'] = $this->_sections["comments"]['loop'];
-$this->_sections["comments"]['step'] = 1;
-$this->_sections["comments"]['start'] = $this->_sections["comments"]['step'] > 0 ? 0 : $this->_sections["comments"]['loop']-1;
-if ($this->_sections["comments"]['show']) {
-    $this->_sections["comments"]['total'] = $this->_sections["comments"]['loop'];
-    if ($this->_sections["comments"]['total'] == 0)
-        $this->_sections["comments"]['show'] = false;
+<?php if (isset($this->_sections['comments'])) unset($this->_sections['comments']);
+$this->_sections['comments']['name'] = 'comments';
+$this->_sections['comments']['loop'] = is_array($this->_tpl_vars['comments']) ? count($this->_tpl_vars['comments']) : max(0, (int)$this->_tpl_vars['comments']);
+$this->_sections['comments']['show'] = true;
+$this->_sections['comments']['max'] = $this->_sections['comments']['loop'];
+$this->_sections['comments']['step'] = 1;
+$this->_sections['comments']['start'] = $this->_sections['comments']['step'] > 0 ? 0 : $this->_sections['comments']['loop']-1;
+if ($this->_sections['comments']['show']) {
+    $this->_sections['comments']['total'] = $this->_sections['comments']['loop'];
+    if ($this->_sections['comments']['total'] == 0)
+        $this->_sections['comments']['show'] = false;
 } else
-    $this->_sections["comments"]['total'] = 0;
-if ($this->_sections["comments"]['show']):
+    $this->_sections['comments']['total'] = 0;
+if ($this->_sections['comments']['show']):
 
-            for ($this->_sections["comments"]['index'] = $this->_sections["comments"]['start'], $this->_sections["comments"]['iteration'] = 1;
-                 $this->_sections["comments"]['iteration'] <= $this->_sections["comments"]['total'];
-                 $this->_sections["comments"]['index'] += $this->_sections["comments"]['step'], $this->_sections["comments"]['iteration']++):
-$this->_sections["comments"]['rownum'] = $this->_sections["comments"]['iteration'];
-$this->_sections["comments"]['index_prev'] = $this->_sections["comments"]['index'] - $this->_sections["comments"]['step'];
-$this->_sections["comments"]['index_next'] = $this->_sections["comments"]['index'] + $this->_sections["comments"]['step'];
-$this->_sections["comments"]['first']      = ($this->_sections["comments"]['iteration'] == 1);
-$this->_sections["comments"]['last']       = ($this->_sections["comments"]['iteration'] == $this->_sections["comments"]['total']);
+            for ($this->_sections['comments']['index'] = $this->_sections['comments']['start'], $this->_sections['comments']['iteration'] = 1;
+                 $this->_sections['comments']['iteration'] <= $this->_sections['comments']['total'];
+                 $this->_sections['comments']['index'] += $this->_sections['comments']['step'], $this->_sections['comments']['iteration']++):
+$this->_sections['comments']['rownum'] = $this->_sections['comments']['iteration'];
+$this->_sections['comments']['index_prev'] = $this->_sections['comments']['index'] - $this->_sections['comments']['step'];
+$this->_sections['comments']['index_next'] = $this->_sections['comments']['index'] + $this->_sections['comments']['step'];
+$this->_sections['comments']['first']      = ($this->_sections['comments']['iteration'] == 1);
+$this->_sections['comments']['last']       = ($this->_sections['comments']['iteration'] == $this->_sections['comments']['total']);
 ?>
 <tr>
 <td bgcolor="<?php echo $this->_tpl_vars['bgcolor4']; ?>
@@ -57,7 +57,7 @@ $this->_sections["comments"]['last']       = ($this->_sections["comments"]['iter
 ">
 <input type="hidden" name="EZComments_id" id="EZComments_id" value="<?php echo $this->_tpl_vars['comments'][$this->_sections['comments']['index']]['id']; ?>
 ">
-<input type="submit" value="<?php echo defined('_EZCOMMENTS_DEL') ? _EZCOMMENTS_DEL : null; ?>
+<input type="submit" value="<?php echo @constant('_EZCOMMENTS_DEL'); ?>
 ">
 </form>
 <?php endif; ?>
@@ -67,7 +67,7 @@ $this->_sections["comments"]['last']       = ($this->_sections["comments"]['iter
 <tr>
 <td bgcolor="<?php echo $this->_tpl_vars['bgcolor4']; ?>
 " valign="top">
-<?php echo defined('_EZCOMMENTS_COMMENT_ADD') ? _EZCOMMENTS_COMMENT_ADD : null; ?>
+<?php echo @constant('_EZCOMMENTS_COMMENT_ADD'); ?>
 
 </td>
 <td bgcolor="<?php echo $this->_tpl_vars['bgcolor4']; ?>
@@ -84,7 +84,7 @@ $this->_sections["comments"]['last']       = ($this->_sections["comments"]['iter
 ">
 <textarea name="EZComments_comment" id="EZComments_comment" wrap="soft" cols="80" rows="10">
 </textarea><br /><br />
-<input type="submit" value="<?php echo defined('_EZCOMMENTS_ADD') ? _EZCOMMENTS_ADD : null; ?>
+<input type="submit" value="<?php echo @constant('_EZCOMMENTS_ADD'); ?>
 ">
 </form>
 </td>
