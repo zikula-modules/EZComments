@@ -15,6 +15,18 @@
 // Original Author of file: Jörg Napp, http://postnuke.lottasophie.de
 // ----------------------------------------------------------------------
 
+/**
+ * Return to index page
+ * 
+ * This is the default function called when EZComments is called 
+ * as a module. As we do not intend to output anything, we just 
+ * output an error message
+ */
+function EZComments_user_main($args)
+{
+	return _EZCOMMENTS_NODIRECTACCESS;
+	//maybe anyone can tell me why pnredirect(pnGetBaseUrl()) is not working?
+}
 
 /**
  * Display comments for a specific item
@@ -73,14 +85,15 @@ function EZComments_user_view($args)
 	require_once dirname(__FILE__) . '/ezcsmarty.php';
 	$smarty = new EZComments_Smarty;
 
-	$smarty->assign('comments', $comments);
-	$smarty->assign('authid',   pnSecGenAuthKey('EZComments'));
-	$smarty->assign('allowadd', pnSecAuthAction(0, 'EZComments::', "$modname:$objectid: ", ACCESS_COMMENT));
-	$smarty->assign('delurl',   pnModURL('EZComments', 'user', 'delete'));
-	$smarty->assign('addurl',   pnModURL('EZComments', 'user', 'create'));
-	$smarty->assign('redirect', pnVarPrepForDisplay($args['extrainfo']));
-	$smarty->assign('modname',  pnVarPrepForDisplay($modname));
-	$smarty->assign('objectid', pnVarPrepForDisplay($objectid));
+	$smarty->assign('comments',     $comments);
+	$smarty->assign('authid',       pnSecGenAuthKey('EZComments'));
+	$smarty->assign('allowadd',     pnSecAuthAction(0, 'EZComments::', "$modname:$objectid: ", ACCESS_COMMENT));
+	$smarty->assign('delurl',       pnModURL('EZComments', 'user', 'delete'));
+	$smarty->assign('addurl',       pnModURL('EZComments', 'user', 'create'));
+	$smarty->assign('commenturl',   pnModURL('EZComments', 'user', 'comment'));
+	$smarty->assign('redirect',     pnVarPrepForDisplay($args['extrainfo']));
+	$smarty->assign('modname',      pnVarPrepForDisplay($modname));
+	$smarty->assign('objectid',     pnVarPrepForDisplay($objectid));
 	
 	if ($smarty->template_exists($modname . '.htm')) {
 		return $smarty->fetch($modname . '.htm');
@@ -89,6 +102,44 @@ function EZComments_user_view($args)
 	}
 
 } 
+
+
+/**
+ * Display a comment form 
+ * 
+ * Displays a comment form
+ * 
+ * @param $EZComments_comment the comment (taken from HTTP put)
+ * @param $EZComments_modname the name of the module the comment is for (taken from HTTP put)
+ * @param $EZComments_objectid ID of the item the comment is for (taken from HTTP put)
+ * @param $EZComments_redirect URL to return to (taken from HTTP put)
+ */
+function EZComments_user_comment($args)
+{
+	list($EZComments_modname,
+		 $EZComments_objectid,
+		 $EZComments_redirect) = pnVarCleanFromInput('EZComments_modname',
+                        					 		 'EZComments_objectid',
+                        					 		 'EZComments_redirect');
+													 
+	require_once dirname(__FILE__) . '/ezcsmarty.php';
+	$smarty = new EZComments_Smarty;
+
+	$smarty->assign('authid',   pnSecGenAuthKey('EZComments'));
+	$smarty->assign('allowadd', pnSecAuthAction(0, 'EZComments::', "$modname:$objectid: ", ACCESS_COMMENT));
+	$smarty->assign('addurl',   pnModURL('EZComments', 'user', 'create'));
+	$smarty->assign('redirect', pnVarPrepForDisplay($EZComments_redirect));
+	$smarty->assign('modname',  pnVarPrepForDisplay($EZComments_modname));
+	$smarty->assign('objectid', pnVarPrepForDisplay($EZComments_objectid));
+	
+	if ($smarty->template_exists($modname_comment . '.htm')) {
+		return $smarty->fetch($modname_comment . '.htm');
+	} else {
+		return $smarty->fetch('default_comment.htm');
+	}
+}
+
+
 
 /**
  * Create a comment for a specific item
@@ -107,9 +158,9 @@ function EZComments_user_create($args)
 		 $EZComments_modname,
 		 $EZComments_objectid,
 		 $EZComments_redirect) = pnVarCleanFromInput('EZComments_comment',
-					 		 'EZComments_modname',
-					 		 'EZComments_objectid',
-					 		 'EZComments_redirect');
+                        					 		 'EZComments_modname',
+                        					 		 'EZComments_objectid',
+                        					 		 'EZComments_redirect');
 	// Confirm authorisation code.
 	if (!pnSecConfirmAuthKey()) {
 		pnSessionSetVar('errormsg', _BADAUTHKEY);
@@ -124,17 +175,18 @@ function EZComments_user_create($args)
 	} 
 
 	$id = pnModAPIFunc('EZComments',
-			   'user',
-			   'create',
-			   array('modname'  => $EZComments_modname,
-				 'objectid' => $EZComments_objectid,
-				 'url'	  => $EZComments_redirect,
-				 'comment'  => $EZComments_comment));
+        			   'user',
+        			   'create',
+        			   array('modname'  => $EZComments_modname,
+      	        			 'objectid' => $EZComments_objectid,
+      			        	 'url'	    => $EZComments_redirect,
+              				 'comment'  => $EZComments_comment));
 
 	if ($id != false) {
 		// Success
 		pnSessionSetVar('statusmsg', _EZCCOMMENTSCREATED);
 	} 
+
 	pnRedirect($EZComments_redirect);
 	return true;
 } 
@@ -177,4 +229,6 @@ function EZComments_user_delete($args)
 	pnRedirect($EZComments_redirect);
 	return true;
 } 
+
+
 ?>
