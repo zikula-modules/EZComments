@@ -70,10 +70,12 @@
 		<tr style="height:5px;">
 			<td colspan="3"><!--[if $comments[comments].del]-->
 				<form action="<!--[pnmodurl modname=EZComments func=delete]-->" method="post">
+				<div>
 					<input type="hidden" name="authid" id="EZComments_authid" value="<!--[pnsecgenauthkey modname=EZComments]-->" /> 
 					<input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect]-->" /> 
 					<input type="hidden" name="EZComments_id" id="EZComments_id" value="<!--[$comments[comments].id]-->" /> 
 					<input type="submit" value="<!--[pnml name=_EZCOMMENTS_DEL]-->" />
+				</div>
 				</form>
 				<!--[/if]-->
 			</td>
@@ -93,15 +95,17 @@
 			</td>
 			<td bgcolor="<!--[pnthemegetvar name=bgcolor3]-->" valign="top">
 				<!--[if $bbcode]-->
-					<!--[include file="bbcode.htm"]-->
+					<!--[pnmodfunc modname=pn_bbcode func=bbcodes images=true]-->
 				<!--[/if]-->
-				<form action="<!--[pnmodurl modname=EZComments func=create]-->" method="post">
-				<input type="hidden" name="authid" id="authid" value="<!--[pnsecgenauthkey modname=EZComments]-->" /> 
-				<input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect]-->" /> 
-				<input type="hidden" name="EZComments_modname" id="EZComments_modname" value="<!--[pnmodgetname]-->" /> 
-				<input type="hidden" name="EZComments_objectid" id="EZComments_objectid" value="<!--[$objectid]-->" /> 
-				<textarea name="EZComments_comment" id="EZComments_comment" cols="60" rows="10"></textarea>
-				<input type="submit" value="<!--[pnml name=_EZCOMMENTS_ADD]-->" />
+				<form id="post" action="<!--[pnmodurl modname=EZComments func=create]-->" method="post">
+				<div>
+					<input type="hidden" name="authid" id="authid" value="<!--[pnsecgenauthkey modname=EZComments]-->" /> 
+					<input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect]-->" /> 
+					<input type="hidden" name="EZComments_modname" id="EZComments_modname" value="<!--[pnmodgetname]-->" /> 
+					<input type="hidden" name="EZComments_objectid" id="EZComments_objectid" value="<!--[$objectid]-->" /> 
+					<textarea name="message" id="message" cols="60" rows="10"></textarea>
+					<input type="submit" value="<!--[pnml name=_EZCOMMENTS_ADD]-->" />
+				</div>
 				</form>
 				<!--[if $smilies]-->
 					<!--[pnmodfunc modname=pn_bbsmile func=bbsmiles]-->
