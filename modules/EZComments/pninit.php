@@ -75,6 +75,24 @@ function EZComments_init()
 		return false;
 	} 
 	
+    // register  delete Hook (Timo)
+    // TODO: Check the Hook's name!
+    if (!pnModRegisterHook('item',
+                           'delete',
+                           'API',
+                           'EZComments_delete',
+                           'admin',
+                           'deletebyitem')) {
+		pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED2);
+		return false;
+	}
+	
+	// Note that filenames may contain backslashes as separators. 
+	// We need to convert them to slashes before doing anything else...
+	pnModSetVar('EZComments', 'smartypath', dirname(__FILE__) 
+						. DIRECTORY_SEPARATOR . 'pnclass'
+						. DIRECTORY_SEPARATOR . 'Smarty'
+						. DIRECTORY_SEPARATOR);
 	pnModSetVar('EZComments', 'MailToAdmin', false);
 	pnModSetVar('EZComments', 'migrated', serialize(array()));
 	// Initialisation successful
@@ -128,6 +146,18 @@ function EZComments_upgrade($oldversion)
     
     if ($oldversion == '0.2') {
         pnModDelVar('EZComments', 'smartypath');
+
+        // register  delete Hook (Timo)
+        // TODO: Check the Hook's name!
+        if (!pnModRegisterHook('item',
+                               'delete',
+                               'API',
+                               'EZComments_delete',
+                               'admin',
+                               'deletebyitem')) {
+    		pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED2);
+    		return false;
+    	}
     }
 	return true;
 } 
@@ -161,6 +191,18 @@ function EZComments_delete()
 		pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED4);
 		return false;
 	} 
+
+    if (!pnModUnregisterHook('item',
+                             'delete',
+                             'API',
+                             'EZComments_delete',
+                             'admin',
+                             'deletebyitem')) {
+        pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED4);
+        return false;
+	}
+
+	pnModDelVar('EZComments', 'smartypath');
 	pnModDelVar('EZComments', 'MailToAdmin');
 	pnModDelVar('EZComments', 'migrated');
 	

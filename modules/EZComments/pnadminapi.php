@@ -198,5 +198,48 @@ function EZComments_adminapi_deleteall($args)
 	return true;
 }
 
+/**
+ * EZComments_adminapi_deletebyitem()
+ *
+ * Delete all comments for a given item. Used to clean
+ * up orphaned comments.
+ *
+ * @author Timo (Numerobis)
+ * @since 0.3
+ * @param $args[module] the module for which to delete for
+ * @return boolean sucess status
+ **/
+function EZComments_adminapi_deletebyitem($args)
+{
+    $modname = pnModGetName();
+    if (!isset($args['objectid'])) {
+        return false;
+    } 
+
+    $objectid = $args['objectid'];
+    
+    if (!pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:", ACCESS_ADMIN)) {
+        return false;
+    } 
+
+    list($dbconn) = pnDBGetConn();
+    $pntable = pnDBGetTables();
+
+    $table = $pntable['EZComments'];
+    $column = &$pntable['EZComments_column'];
+
+    $sql = "DELETE FROM $table
+			WHERE $column[modname] = '$modname' AND $column[objectid] = '$objectid'";
+
+    $result = $dbconn->Execute($sql);
+
+    if ($dbconn->ErrorNo() != 0) {
+        echo $dbconn->ErrorMsg;
+        return false;
+    } 
+    $result->Close();
+
+    return true;
+} 
 
 ?>
