@@ -20,20 +20,20 @@
 
 define('_EZCOMMENTS',                   'Commenti');
 define('_EZCOMMENTS_NOAUTH',            'Impossibile accedere ai commenti');	
-define('_EZCOMMENTS_ONLYREG',   		'Only logged in users are allowed to comment.');	// Translate me!
-define('_EZCOMMENTS_GOTOREG',   		'register/log in');		// Translate me!
+define('_EZCOMMENTS_ONLYREG',   		'Solo gli utenti registrati possono inviare commenti');	
+define('_EZCOMMENTS_GOTOREG',   		'Entra');
 define('_EZCOMMENTS_ADD',               'Aggiungi');
 define('_EZCOMMENTS_DEL',               'Cancella questo commento');
 define('_EZCOMMENTS_COMMENT_ADD',       'Aggiungi un nuovo commento');
 define('_EZCCOMMENTSCREATED',           'Commento aggiunto');
 define('_EZCCOMMENTSDELETED',           'Commento cancellato');
 define('_EZCOMMENTS_FAILED',            'Erroreinterno');
-define('_EZCOMMENTS_NODIRECTACCESS',	'No direct access to this module'); // Translate me!
-define('_EZCOMMENTS_RULES',				'Define the rules for your comments here');  // Translate me
+define('_EZCOMMENTS_NODIRECTACCESS',	'Non è possibile accedere direttamente a questo modulo');
+define('_EZCOMMENTS_RULES',				'Definisci le regole per i tuoi commenti qui');
 
 define('_EZCOMMENTS_ADMIN',             'Gestione di EZComments');
 define('_EZCOMMENTS_SMARTYPATH',        'Percorso a Smarty');
-define('_EZCOMMENTS_SENDINFOMAIL',		'send mail on new comment');        // Translate me!
+define('_EZCOMMENTS_SENDINFOMAIL',		'invia una email per i nuovi commenti');
 define('_EZCOMMENTS_OK',                'Accetta');
 define('_EZCOMMENTS_LASTCOMMENTS',      'Ultimi commenti');
 define('_EZCOMMENTS_USERNAME',          'Utente');
@@ -46,7 +46,7 @@ define('_EZCOMMENTS_FAILED3',           'Errore nel cancellare la tabella');
 define('_EZCOMMENTS_FAILED4',           'Errore nel cancellare l\'hook');
 define('_EZCOMMENTS_FAILED5',           'Errore nell\'aggiornare il campo');
 
-define('_EZCOMMENTS_MAILSUBJECT',		'A new comment was entered');  // Translate me
-define('_EZCOMMENTS_MAILBODY',  		'A new comment was entered');  // Translate me
+define('_EZCOMMENTS_MAILSUBJECT',		'E\' stato inviato un nuovo commento');
+define('_EZCOMMENTS_MAILBODY',  		'E\' stato inviato un nuovo commento');
 
 ?>
