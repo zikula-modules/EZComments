@@ -7,14 +7,14 @@
 	<h3><!--[pnml name="_EZCOMMENTS"]--></h3>
 	<!--[if !$allowadd]-->
 		<!--[$smarty.const._EZCOMMENTS_ONLYREG]-->
-		  <a href="user.php"><!--[$smarty.const._EZCOMMENTS_GOTOREG]--></a>
+		  <a href="user.php"><!--[pnml name=_EZCOMMENTS_GOTOREG]--></a>
     <!--[/if]-->
 	<a id="top" title="<!--[ pnml name='_EZCOMMENTS_BOTTOM' ]-->" href="#bottom"><!--[ pnimg src="go_down.gif" alt="_EZCOMMENTS_BOTTOM" altml=true ]--></a>&nbsp;
 	<table border="0" cellpadding="5" cellspacing="0" width="100%">
 		<thead>
 	    <tr style="background-color:<!--[ $bgcolor2 ]-->;text-align:left;">
-			<th id="col_0" abbr="<!--[ pnml name='_EZCOMMENTS_AUTHOR' ]-->" style="width:20%;"></th>
-			<th id="col_1" abbr="<!--[ pnml name='_EZCOMMENTS_TOPIC' ]-->" colspan="2" style="width:80%;"></th>
+			<th id="col_0" style="width:20%;"><!--[ pnml name='_EZCOMMENTS_AUTHOR' ]--></th>
+			<th id="col_1" style="width:80%;"><!--[ pnml name='_EZCOMMENTS_COMMENT' ]--></th>
 		</tr>
 		</thead>
 		<tbody>
@@ -23,7 +23,10 @@
 			<td align="left">
                 <a href="user.php?op=userinfo&amp;uname=<!--[$comments[comments].uname]-->"><strong><!--[$comments[comments].uname]--></strong></a>
 			</td>
-			<td style="text-align:right;" colspan="2">
+			<td>
+				<!--[if $comments[comments].subject neq '']-->
+				<strong><!--[pnml name=_EZCOMMENTS_SUBJECT]-->:</strong>&nbsp;<!--[$comments[comments].subject]-->
+				<!--[/if]-->
 				<strong><!--[ pnml name='_EZCOMMENTS_POSTED' ]-->:</strong>&nbsp;<!--[$comments[comments].date|pndate_format:"%d.%m.%y, %H:%M"]-->
 			</td>
 		</tr>
@@ -42,7 +45,7 @@
 					<br /><!--[ pnml name='_EZCOMMENTS_STATUS' ]-->:&nbsp;<!--[ if $comments[comments].online  ]--><!--[ pnml name='_EZCOMMENTS_ONLINE' ]--><!--[ else ]--><!--[ pnml name='_EZCOMMENTS_OFFLINE' ]--><!--[ /if ]-->
 				<!--[ /if ]-->
             </td>
-            <td colspan="2" style="vertical-align:top;background-color:<!--[ pnthemegetvar name=bgcolor1 ]-->;" headers="col_1">
+            <td style="vertical-align:top;background-color:<!--[ pnthemegetvar name=bgcolor1 ]-->;" headers="col_1">
 				<!--[$comments[comments].comment|pnmodcallhooks:EZComments]-->
 				<!--[if $comments[comments].pn_user_sig != ""]-->
 				<br />
@@ -63,12 +66,9 @@
 					<a title="<!--[ pnml name='_EZCOMMENTS_SEND_PM' ]-->" href="index.php?name=Messages&amp;file=replypmsg&amp;send=1&amp;uname=<!--[ $comments[comments].uname ]-->"><!--[ pnimg src="sendpm.gif" alt='_EZCOMMENTS_SEND_PM' altml=true ]--></a>
 				<!--[ /if ]-->
 			</td>
-			<td headers="col_1" style="text-align:right;background-color:<!--[ pnthemegetvar name=bgcolor3 ]-->;">&nbsp;
-				
-			</td>
 		</tr>
 		<tr style="height:5px;">
-			<td colspan="3"><!--[if $comments[comments].del]-->
+			<td colspan="2"><!--[if $comments[comments].del]-->
 				<form action="<!--[pnmodurl modname=EZComments func=delete]-->" method="post">
 				<div>
 					<input type="hidden" name="authid" id="EZComments_authid" value="<!--[pnsecgenauthkey modname=EZComments]-->" /> 
