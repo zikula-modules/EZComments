@@ -82,10 +82,10 @@ function EZComments_user_view($args)
 	$smarty->assign('modname',  pnVarPrepForDisplay($modname));
 	$smarty->assign('objectid', pnVarPrepForDisplay($objectid));
 	
-	if ($smarty->template_exists($modname . '.tpl')) {
-		return $smarty->fetch($modname . '.tpl');
+	if ($smarty->template_exists($modname . '.htm')) {
+		return $smarty->fetch($modname . '.htm');
 	} else {
-		return $smarty->fetch('default.tpl');
+		return $smarty->fetch('default.htm');
 	}
 
 } 
