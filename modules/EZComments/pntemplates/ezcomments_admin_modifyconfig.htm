@@ -1,0 +1,23 @@
+<!--[*  $Id$  *]-->
+<!--[include file="ezcomments_admin_menu.htm"]-->
+<h2><!--[pnml name="_MODIFYCONFIG"]--></h2>
+<form class="pn-adminform" action="<!--[pnmodurl modname="EZComments" type="admin" func="updateconfig"]-->" method="post" enctype="application/x-www-form-urlencoded">
+<div>
+	<input type="hidden" name="authid" value="<!--[pnsecgenauthkey module="EZComments"]-->" />
+	<div class="pn-adminformrow">
+		<label for="ezcomments_email"><!--[pnml name="_EZCOMMENTS_SENDINFOMAIL"]--></label>
+		<!--[if $bold eq 1]-->
+		<input id="ezcomments_email" name="MailToAdmin" type="checkbox" value="1" checked="checked" />
+		<!--[else]-->
+		<input id="ezcomments_email" name="MailToAdmin" type="checkbox" value="1" />
+		<!--[/if]-->
+	</div>
+	<div class="pn-adminformrow">
+		<!--[pnmodcallhooks hookobject="module" hookaction="modifyconfig" hookid="EZComments" module="EZComments"]-->
+	</div>
+	<div class="pn-adminformrow">
+	<input name="submit" type="submit" value="<!--[pnml name="_EZCOMMENTS_OK"]-->" />
+	</div>
+	<div style="clear:both"></div>
+</div>
+</form>

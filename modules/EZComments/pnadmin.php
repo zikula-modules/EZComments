@@ -36,37 +36,26 @@
  * @returns output
  * @return output the admin interface
  */
-function EZComments_admin_main() {
+function EZComments_admin_main() 
+{
 	if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
 		return _EZCOMMENTS_NOAUTH;
 	} 
 
-	$output = new pnHTML();
-	$output->SetInputMode(_PNH_VERBATIMINPUT);
+    // Create output object
+    $pnRender =& new pnRender('EZComments');
 
-	$output->Text(EZComments_adminmenu());
+    // As admin output changes often, we do not want caching.
+    $pnRender->caching = false;
 
-	$output->FormStart(pnModURL('EZComments', 'admin', 'update'));
-	$output->FormHidden('authid', pnSecGenAuthKey());
-	$output->Linebreak();
-	$output->Text(_EZCOMMENTS_SENDINFOMAIL . ' ');
-    $output->FormCheckbox('MailToAdmin', pnVarPrepForDisplay(pnModGetVar('EZComments', 'MailToAdmin')));	
-	$output->Linebreak();
-	$output->FormSubmit(_EZCOMMENTS_OK);
-	$output->FormEnd();
-	
-	$output->Linebreak(3);
-
-	
-
+	// assign the module vars
+	$pnRender->assign(pnModGetVar('EZComments'));
 	// presentation values
 	// Hardcoded -- move this to an module variable?!?
 	$itemsperpage = 10;
     $startnum = pnVarCleanFromInput('startnum');
 
-	if (!pnModAPILoad('EZComments', 'admin')) {
-		return _EZCOMMENTS_LOADFAILED;
-	}
+	// call the api to get all current comments
 	$items = pnModAPIFunc('EZComments',
             			  'admin',
             			  'getall',
@@ -76,66 +65,44 @@ function EZComments_admin_main() {
 	if ($items === false) {
 		return _EZCOMMENTS_FAILED;
 	} 
-	
-	$output->Title(_EZCOMMENTS_LASTCOMMENTS);
 
-	$output->Text("<table width=\"99%\" border=\"1\" cellpadding=\"5\" cellspacing=\"2\">\n");
-	$output->Text("<tr>");
-	$output->Text("<th width=\"20%\">");
-	$output->Text(_EZCOMMENTS_USERNAME);
-	$output->Text("</th>");
-	$output->Text("<th width=\"20%\">");
-	$output->Text(_EZCOMMENTS_MODULE);
-	$output->Text("</th>");
-	$output->Text("<th width=\"60%\">");
-	$output->Text(_EZCOMMENTS_COMMENT);
-	$output->Text("</th>");
-	$output->Text("</tr>");
-	
-	
-	// Loop through each item and display it.
-	foreach ($items as $item) {
-		$datetime = ml_ftime(_DATETIMEBRIEF, GetUserTime(strtotime($item['date'])));
-		if ($item['uid'] > 0) {
-			$userinfo = pnUserGetVars($item['uid']);
-			$username = $userinfo['uname'];
-		} else {
-			$username = pnConfigGetVar('Anonymous');
-		} 
-		$output->Text("<tr>");
+	// assign the items to the template
+	$pnRender->assign('items', $items);
 
-		$output->Text("<td width=\"20%\" valign=\"top\">");
-		$output->Text($username);
-		$output->Linebreak();
-		$output->Text($datetime);
-		$output->Text("</td>");
+//		$datetime = ml_ftime(_DATETIMEBRIEF, GetUserTime(strtotime($item['date'])));
 
-		$output->Text("<td width=\"20%\" valign=\"top\">");
-		$output->URL($item['url'], $item['modname']);
-		$output->Text("</td>");
+    // assign the values for the smarty plugin to produce a pager in case of there
+    // being many items to display.
+    //
+    // Note that this function includes another user API function.  The
+    // function returns a simple count of the total number of items in the item
+    // table so that the pager function can do its job properly
+    $pnRender->assign('pager', array('numitems'     => pnModAPIFunc('EZComments',
+                                                                    'admin',
+                                                                    'countitems'),
+                                     'itemsperpage' => $itemsperpage));
 
-		$output->Text("<td width=\"60%\" valign=\"top\">");
-		$output->Text(pnVarPrepHTMLDisplay($item['comment']));
-		$output->Text("</td>");
-
-		$output->Text("</tr>");
-	} 
-	$output->Text("</table>"); 	
-
-	// add a pager to the page
-	$output->Linebreak(2);
-	$output->Text('<center>');
-    $output->Pager($startnum,
-                   pnModAPIFunc('EZComments', 'admin', 'countitems'),
-                   pnModURL('EZComments',
-                            'admin',
-                            'main',
-                            array('startnum' => '%%')),
-	               $itemsperpage);
-	$output->Text('</center>');
-	
 	// Return the output
-	return $output->GetOutput();
+	return $pnRender->fetch('ezcomments_admin_view.htm');
+}
+
+function EZComments_admin_modifyconfig() 
+{
+	if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
+		return _EZCOMMENTS_NOAUTH;
+	} 
+
+    // Create output object
+    $pnRender =& new pnRender('EZComments');
+
+    // As admin output changes often, we do not want caching.
+    $pnRender->caching = false;
+
+	// assign the module vars
+	$pnRender->assign(pnModGetVar('EZComments'));
+
+	// Return the output
+	return $pnRender->fetch('ezcomments_admin_modifyconfig.htm');
 }
 
 /**
@@ -146,7 +113,7 @@ function EZComments_admin_main() {
  * 
  * @param $MailToAdmin full pathname of Smarty class
  */
-function EZComments_admin_update($args)
+function EZComments_admin_updateconfig($args)
 {
 	if (!pnSecConfirmAuthKey()) {
 		pnSessionSetVar('errormsg', _BADAUTHKEY);
@@ -199,7 +166,6 @@ function EZComments_admin_migrate()
 
 	$output = new pnHTML();
 	$output->SetInputMode(_PNH_VERBATIMINPUT);
-	$output->Text(EZComments_adminmenu());
     $output->Text(_EZCOMMENTS_MIGRATE_EXPLAIN);
     $output->Linebreak(2);
 
@@ -300,7 +266,6 @@ function EZComments_admin_cleanup()
 
     $output = new pnHTML();
     $output->SetInputMode(_PNH_VERBATIMINPUT);
-	$output->Text(EZComments_adminmenu());
 
     if (!$orphanedmods) {
         $output->Text(_EZCOMMENTS_CLEANUP_NOTHINGTODO);
@@ -364,35 +329,5 @@ function EZComments_admin_cleanup_go()
     pnRedirect(pnModURL('EZComments', 'admin', 'cleanup'));
     return true;
 } 
-
-/**
- * EZComments_adminmenu()
- * 
- * Create a common header menu for all admin panels
- * 
- * @return output The header menu
- */
-function EZComments_adminmenu()
-{
-    $output = new pnHTML();
-    $output->SetInputMode(_PNH_VERBATIMINPUT);
-    $output->Text(pnGetStatusMsg());
-	$output->Linebreak();
-    $output->Title(_EZCOMMENTS_ADMIN);
-	$output->Linebreak();
-    $output->Text('<div style="text-align:center;">');
-    $output->Text('[ ');
-    $output->URL(pnModURL('EZComments', 'admin'), _EZCOMMENTS_ADMIN_MAIN);
-    $output->Text(' | ');
-    $output->URL(pnModURL('EZComments', 'admin', 'cleanup'), _EZCOMMENTS_CLEANUP);
-    $output->Text(' | ');
-    $output->URL(pnModURL('EZComments', 'admin', 'migrate'), _EZCOMMENTS_MIGRATE);
-    $output->Text(' ]');
-    $output->Text('</div>');
-    $output->Linebreak(2);
-
-    return $output->GetOutput();
-} 
-
 
 ?>
