@@ -1,0 +1,6 @@
+$Id$
+
+Copy to your modules folder, initialize, activate
+Edit the modules you want to have comments for, and activate EZComments
+
+Full documentation and forum can be found on http://postnuke.lottasophie.de
