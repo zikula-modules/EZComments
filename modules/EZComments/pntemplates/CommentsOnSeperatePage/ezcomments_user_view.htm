@@ -21,47 +21,41 @@
 <!--[*  page (the link is a button)                                            *]-->
 <!--[*  ---------------------------------------------------------------------- *]-->
 
-<table bgcolor="<!--[$bgcolor2]-->" border="0" cellpadding="5" cellspacing="2" align="center" valign="top" width="99%">
-  <tr>
-    <td bgcolor="<!--[$bgcolor2]-->" valign="top" width="100%" colspan="2" align="center" class="pn-title">
-    <!--[$smarty.const._EZCOMMENTS]-->
-    </td>
-  </tr>
-  <!--[section name=comments loop=$comments]-->
-
-  <tr>
-    <td bgcolor="<!--[$bgcolor4]-->" valign="top" width="20%"><!--[$comments[comments].uname]-->
-    <br />
-    <!--[$comments[comments].date|date_format:"%d.%m.%y, %H:%M"]-->
-    </td>
-
-    <td bgcolor="<!--[$bgcolor4]-->" valign="top" width="80%">
-      <!--[$comments[comments].comment]-->
-      <!--[if $comments[comments].del]-->
-
-      <br />
-
-      <form action="<!--[$delurl]-->" method="post">
-        <input type="hidden" name="authid" id="authid" value="<!--[$authid]-->" /> 
-				<input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect]-->" /> 
-				<input type="hidden" name="EZComments_id" id="EZComments_id" value="<!--[$comments[comments].id]-->" /> 
-				<input type="submit" value="<!--[$smarty.const._EZCOMMENTS_DEL]-->" />
-      </form>
-      <!--[/if]-->
-    </td>
-  </tr>
-  <!--[/section]-->
-  <!--[if $allowadd]-->
-  <tr>
-    <td bgcolor="<!--[$bgcolor4]-->" valign="top" colspan="2">
-      <form action="<!--[$commenturl]-->" method="post">
-        <input type="hidden" name="authid" id="authid" value="<!--[$authid]-->" /> 
-				<input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect]-->" /> 
-				<input type="hidden" name="EZComments_modname" id="EZComments_modname" value="<!--[$modname]-->" /> 
-				<input type="hidden" name="EZComments_objectid" id="EZComments_objectid" value="<!--[$objectid]-->" /> 
-        <input type="submit" value="<!--[$smarty.const._EZCOMMENTS_COMMENT_ADD]-->" />
-      </form>
-    </td>
-  </tr>
-  <!--[/if]-->
-</table>
+<!--[if $comments eq true or $allowadd eq true]-->
+	<h3><!--[pnml name="_EZCOMMENTS"]--></h3>
+<!--[/if]-->
+<!--[if $comments eq true]-->
+	<table border="0" cellpadding="5" cellspacing="0" width="100%">
+	<!--[section name=comments loop=$comments]-->
+	<tr>
+	    <td style="background-color:<!--[pnthemegetvar name=bgcolor4]-->" valign="top" width="20%"><!--[$comments[comments].uname]-->
+		    <br />
+		    <!--[$comments[comments].date|date_format:"%d.%m.%y, %H:%M"]-->
+	    </td>
+		<td style="background-color:<!--[pnthemegetvar name=bgcolor4]-->" valign="top" width="80%">
+			<!--[$comments[comments].comment|pnvarprephtmldisplay]-->
+			<!--[if $comments[comments].del]-->
+				<br />
+				<form action="<!--[pnmodurl modname=EZComments type=admin func=delete id=$comments[comments].id]-->" method="post">
+				<div>
+					<input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" /> 
+					<input type="submit" value="<!--[pnml name=_EZCOMMENTS_DEL]-->" />
+				</div>
+				</form>
+			<!--[/if]-->
+		</td>
+	</tr>
+	<!--[/section]-->
+	</table>
+<!--[/if]-->
+<!--[if $allowadd]-->
+	<form action="<!--[pnmodurl modname=EZComments type=user func=comment]-->" method="post">
+	<div>
+		<input type="hidden" name="authid" id="authid" value="<!--[pnsecgenauthkey module=EZComments]-->" /> 
+		<input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" /> 
+		<input type="hidden" name="EZComments_modname" id="EZComments_modname" value="<!--[pnmodgetname]-->" /> 
+		<input type="hidden" name="EZComments_objectid" id="EZComments_objectid" value="<!--[$objectid|pnvarprepfordisplay]-->" /> 
+		<input type="submit" value="<!--[pnml name=_EZCOMMENTS_COMMENT_ADD]-->" />
+	</div>
+	</form>
+<!--[/if]-->
