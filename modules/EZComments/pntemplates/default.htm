@@ -43,13 +43,13 @@
 				<br /><!--[ pnml name='_EZCOMMENTS_STATUS' ]-->:&nbsp;<!--[ if $comments[comments].online  ]--><!--[ pnml name='_EZCOMMENTS_ONLINE' ]--><!--[ else ]--><!--[ pnml name='_EZCOMMENTS_OFFLINE' ]--><!--[ /if ]-->
             </td>
             <td colspan="2" style="vertical-align:top;background-color:<!--[ pnthemegetvar name=bgcolor1 ]-->;" headers="col_1">
-				<!--[$comments[comments].comment|pnmodcallhooks]-->
+				<!--[$comments[comments].comment|pnmodcallhooks:"EZComments"]-->
 				<!--[if $comments[comments].pn_user_sig != ""]-->
 				<br />
 				<br />
 				<br />
 				--<br />
-				<!--[$comments[comments].pn_user_sig|pnmodcallhooks]-->
+				<!--[$comments[comments].pn_user_sig|pnmodcallhooks:"EZComments"]-->
 				<!--[/if]-->
 			</td>
         </tr>
