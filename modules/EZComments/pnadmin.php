@@ -200,7 +200,7 @@ function EZComments_admin_migrate()
     $selectitems = array();
 	while($f = readdir($d)) {
     	if(substr($f, -3, 3) == 'php') {
-			if (!$migrated[$f]) {
+			if (!isset($migrated[$f]) || !$migrated[$f]) {
 		        $selectitems[] = array('id'       => $f,
                                        'name'     => substr($f, 0, strlen($f) -4),
                                        'selected' => false);
