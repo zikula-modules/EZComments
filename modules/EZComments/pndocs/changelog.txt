@@ -12,7 +12,9 @@ Changelog
 
        Templates uses .htm as suffix
        Templates uses <!--[ and ]--> as smarty delimiters
-       Added a lot of Templates in the MoreTemplates directory	
+       Added a lot of Templates in the MoreTemplates directory
+
+       Comments can be displayed threaded (depending on the Template)
 
 
 0.1b - another bugfix release
