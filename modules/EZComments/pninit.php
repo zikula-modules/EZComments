@@ -66,11 +66,11 @@ function EZComments_init()
 	} 
 	// register Hook
 	if (!pnModRegisterHook('item',
-				'display',
-			  	'GUI',
-				'EZComments',
-				'user',
-				'view')) {
+            	           'display',
+			  	           'GUI',
+                           'EZComments',
+				           'user',
+				           'view')) {
 		pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED2);
 		return false;
 	} 
@@ -100,6 +100,8 @@ function EZComments_upgrade($oldversion)
     if ($oldversion == '0.1') {
 		// new functionality: MailToAdmin
 		pnModSetVar('EZComments', 'MailToAdmin', false);
+		// new functionality: Migration
+		pnModSetVar('EZComments', 'migrated', serialize(array()));
 
 		list($dbconn) = pnDBGetConn();
 		$pntable = pnDBGetTables();

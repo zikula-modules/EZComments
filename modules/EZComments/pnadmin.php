@@ -188,9 +188,6 @@ function EZComments_admin_update($args)
  * The migration scripts will upgrade from different other modules 
  * (like NS-Comments, Reviews, My_eGallery, ...) to EZComments.
  * 
- * This is experimantal at the moment and hidden from the main admin
- * menu!
- * 
  * @return output the migration interface
  */
 function EZComments_admin_migrate()
@@ -198,31 +195,42 @@ function EZComments_admin_migrate()
 	if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
 		return _EZCOMMENTS_NOAUTH;
 	} 
-
-	$output = new pnHTML();
-	$output->SetInputMode(_PNH_VERBATIMINPUT);
-
-	$output->Text(EZComments_adminmenu());
-
-	$output->FormStart(pnModURL('EZComments', 'admin', 'domigrate'));
-	$output->FormHidden('authid', pnSecGenAuthKey());
-	$output->Text('<select name="migrate">');
-
+	$migrated=unserialize(pnModGetVar('EZComments', 'migrated'));
 	$d = opendir('modules/EZComments/migrate');
+    $selectitems = array();
 	while($f = readdir($d)) {
     	if(substr($f, -3, 3) == 'php') {
-// TODO: add a meaningful check if the migration has already been run.		
-			if (false) {
-				$disabled=' disabled';
-			} else {
-				$disabled='';}
-				$output->Text("<option$disabled>$f</option>\n");
+			if (!$migrated[$f]) {
+		        $selectitems[] = array('id'       => $f,
+                                       'name'     => substr($f, 0, strlen($f) -4),
+                                       'selected' => false);
+			}
 	    }
 	}
 	closedir($d);
-	$output->Text('</select>');
-	$output->FormSubmit(_EZCOMMENTS_MIGRATE);
-	$output->FormEnd();
+
+
+	$output = new pnHTML();
+	$output->SetInputMode(_PNH_VERBATIMINPUT);
+	$output->Text(EZComments_adminmenu());
+    $output->Text(_EZCOMMENTS_MIGRATE_EXPLAIN);
+    $output->Linebreak(2);
+
+    if (!$selectitems) {
+        $output->Text(_EZCOMMENTS_MIGRATE_NOTHINGTODO);
+        $output->Linebreak(2);
+        $output->URL(pnModURL('EZComments', 'admin'), _EZCOMMENTS_MIGRATE_GOBACK);
+        return $output->GetOutput();
+    } 
+
+	$output->FormStart(pnModURL('EZComments', 'admin', 'migrate_go'));
+    $output->FormHidden('authid', pnSecGenAuthKey());
+    $output->Text(_EZCOMMENTS_MIGRATE_LABEL . ' ');
+    $output->FormSelectMultiple('EZComments_migrate', $selectitems, false);
+    $output->Text(' ');
+    $output->FormSubmit(_EZCOMMENTS_MIGRATE_GO);
+    $output->FormEnd();
+    $output->Text(' ');
 	return $output->GetOutput();
 }
 
@@ -235,29 +243,38 @@ function EZComments_admin_migrate()
  * 
  * @param $migrate The plugin to do the migration
  */
-function EZComments_admin_domigrate()
+function EZComments_admin_migrate_go()
 {
-	if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
-		return _EZCOMMENTS_NOAUTH;
-	} 
-
-	$migrate = pnVarCleanFromInput('migrate');
-	if (!isset($migrate))
-	{ 
-		return false;
+    // Permissions
+    if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
+        return _EZCOMMENTS_NOAUTH;
+    } 
+    // Authentication key
+    if (!pnSecConfirmAuthKey()) {
+        // return _EZCOMMENTS_NOAUTH;
+    } 
+	// Parameter
+	$migrate = pnVarCleanFromInput('EZComments_migrate');
+	if (!isset($migrate)){ 
+        return _EZCOMMENTS_MODSARGSERROR;
 	}
-	
+
+	// Eintrag in Datenbank
+	$migrated=unserialize(pnModGetVar('EZComments', 'migrated'));
 	// don't issue a warning when the file does not exist!
 	@include "modules/EZComments/migrate/$migrate";
 	if (function_exists('EZComments_migrate'))
 	{
 		if (EZComments_migrate()) {
-			// Eintrag in Datenbank
+			$migrated[$migrate] = true;
+			pnModSetVar('EZComments', 'migrated', serialize($migrated));
 		}
 	}
 	pnRedirect(pnModURL('EZComments', 'admin', 'migrate'));
 	return true;
 }
+
+
 /**
  * Cleanup functionality
  * 
@@ -305,9 +322,9 @@ function EZComments_admin_cleanup()
 
     $selectitems = array();
     foreach ($orphanedmods as $mod) {
-        $selectitems[] = array('id' => $mod,
-            'name' => $mod,
-            'selected' => false);
+        $selectitems[] = array('id'       => $mod,
+                               'name'     => $mod,
+                               'selected' => false);
     } 
 
     $output->Text(_EZCOMMENTS_CLEANUP_EXPLAIN);
@@ -377,8 +394,8 @@ function EZComments_adminmenu()
     $output->URL(pnModURL('EZComments', 'admin'), _EZCOMMENTS_ADMIN_MAIN);
     $output->Text(' | ');
     $output->URL(pnModURL('EZComments', 'admin', 'cleanup'), _EZCOMMENTS_CLEANUP);
-//    $output->Text(' | ');
-//    $output->URL(pnModURL('EZComments', 'admin', 'migrate'), _EZCOMMENTS_MIGRATE);
+    $output->Text(' | ');
+    $output->URL(pnModURL('EZComments', 'admin', 'migrate'), _EZCOMMENTS_MIGRATE);
     $output->Text(' ]');
     $output->Text('</div>');
     $output->Linebreak(2);
