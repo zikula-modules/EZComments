@@ -20,12 +20,12 @@
  * 
  * This is the default function called when EZComments is called 
  * as a module. As we do not intend to output anything, we just 
- * output an error message
+ * redirect to the start page.
  */
 function EZComments_user_main($args)
 {
-	return _EZCOMMENTS_NODIRECTACCESS;
-	//maybe anyone can tell me why pnredirect(pnGetBaseUrl()) is not working?
+	pnredirect(pnGetBaseUrl());
+	return true;
 }
 
 /**
@@ -74,6 +74,10 @@ function EZComments_user_view($args)
 			} else {
 				$comment['uname'] = pnConfigGetVar('Anonymous');
 			}
+
+			list($item['comment']) = pnModCallHooks('item', 'transform', 'x', array($item['comment']));
+			//echo $comment;
+			
 			
 			$comment['comment'] = pnVarPrepHTMLDisplay(pnVarCensor(nl2br($item['comment'])));
 			$comment['del'] = (pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:$item[id]", ACCESS_DELETE));
