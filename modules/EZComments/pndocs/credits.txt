@@ -2,8 +2,21 @@ $Id$
 
 Credits to:
 
-markwest, for looking through the code and provining a lot of bugfixes
-Andreas Stratmann, for pointing me to the php function class_exists -- good for Smarty
-Øivind Skau, for providing norwegian translations
-ArschMitOhren, for doing the first beta tests on the module
-My wife and my daughter -- I love you!
+Mark West
+  -- for looking through the code and provining a lot of bugfixes
+
+Andreas Stratmann
+  -- for pointing me to the php function class_exists -- good for Smarty
+
+Øivind Skau
+  -- for providing norwegian translations
+
+Stefano Garuti
+  -- for providing italian translations
+
+Steffen Voss 
+  -- for doing the first beta tests on the module
+
+
+My wife and my daughter
+  -- I love you!

@@ -3,6 +3,10 @@ $Id$
 
 Changelog
 
+0.1b - another bugfix release
+       Should work with open_basedir restrictions
+       Italian translations by Stefano Garuti included
+
 0.1a - bugfix release
        Bugfixes provided by markwest
        Checks if Smarty class is already defined in eczsmarty.php		
