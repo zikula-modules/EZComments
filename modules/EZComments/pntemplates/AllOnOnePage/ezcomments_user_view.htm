@@ -42,7 +42,9 @@
 						<br /><!--[ pnml name='_EZCOMMENTS_FROM' ]-->:&nbsp;<!--[ $comments[comments].pn_user_from ]-->
 					<!--[ /if ]-->
 					</div>
+					<!--[if $comments[comments].onlinestatus]-->
 					<br /><!--[ pnml name='_EZCOMMENTS_STATUS' ]-->:&nbsp;<!--[ if $comments[comments].online  ]--><!--[ pnml name='_EZCOMMENTS_ONLINE' ]--><!--[ else ]--><!--[ pnml name='_EZCOMMENTS_OFFLINE' ]--><!--[ /if ]-->
+					<!--[/if]-->
 				<!--[ /if ]-->
             </td>
             <td style="vertical-align:top;background-color:<!--[ pnthemegetvar name=bgcolor1 ]-->;" headers="col_1">
@@ -67,16 +69,15 @@
 				<!--[ /if ]-->
 			</td>
 		</tr>
-		<tr style="height:5px;">
-			<td colspan="2"><!--[if $comments[comments].del]-->
-				<form action="<!--[pnmodurl modname=EZComments func=delete]-->" method="post">
-				<div>
-					<input type="hidden" name="authid" id="EZComments_authid" value="<!--[pnsecgenauthkey modname=EZComments]-->" /> 
-					<input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect]-->" /> 
-					<input type="hidden" name="EZComments_id" id="EZComments_id" value="<!--[$comments[comments].id]-->" /> 
-					<input type="submit" value="<!--[pnml name=_EZCOMMENTS_DEL]-->" />
-				</div>
-				</form>
+		<tr>
+			<td colspan="2">
+				<!--[if $comments[comments].del]-->
+					<form action="<!--[pnmodurl modname=EZComments type=admin func=delete id=$comments[comments].id]-->" method="post">
+					<div>
+						<input type="hidden" name="redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" /> 
+						<input type="submit" value="<!--[pnml name=_EZCOMMENTS_DEL]-->" />
+					</div>
+					</form>
 				<!--[/if]-->
 			</td>
 		</tr>
@@ -100,9 +101,9 @@
 				<form id="post" action="<!--[pnmodurl modname=EZComments func=create]-->" method="post">
 				<div>
 					<input type="hidden" name="authid" id="authid" value="<!--[pnsecgenauthkey modname=EZComments]-->" /> 
-					<input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect]-->" /> 
+					<input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" /> 
 					<input type="hidden" name="EZComments_modname" id="EZComments_modname" value="<!--[pnmodgetname]-->" /> 
-					<input type="hidden" name="EZComments_objectid" id="EZComments_objectid" value="<!--[$objectid]-->" /> 
+					<input type="hidden" name="EZComments_objectid" id="EZComments_objectid" value="<!--[$objectid|pnvarprepfordisplay]-->" /> 
 					<div>
 						<label for="subject"><!--[pnml name=_EZCOMMENTS_SUBJECT]--></label>
 						<input type="text" name="EZComments_subject" id="subject" size="50" maxlength="255" />

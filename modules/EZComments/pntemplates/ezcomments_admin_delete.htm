@@ -6,6 +6,7 @@
     <input type="hidden" name="authid" value="<!--[pnsecgenauthkey module="EZComments"]-->" />
     <input type="hidden" name="confirmation" value="1" />
     <input type="hidden" name="id" value="<!--[$id|pnvarprepfordisplay]-->" />
+    <input type="hidden" name="redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" />
 	<div class="pn-adminformrow">
 		<label for="ezcomments_submit"><!--[pnml name="_CONFIRMDELETE"]--></label>
 		<input id="ezcomments_submit" name="submit" type="submit" value="<!--[pnml name="_DELETE"]-->" />
@@ -13,4 +14,8 @@
 	<div style="clear:both"></div>
 </div>
 </form>
+<!--[if $redirect neq '']-->
+<a href="<!--[$redirect|pnvarprepfordisplay]-->"><!--[pnml name="_CANCELDELETE"]--></a>
+<!--[else]-->
 <a href="<!--[pnmodurl modname="EZComments" type="admin" func="view"]-->"><!--[pnml name="_CANCELDELETE"]--></a>
+<!--[/if]-->

@@ -90,11 +90,11 @@ function EZComments_user_view($args)
     $pnRender->assign('comments',   $comments);
     $pnRender->assign('allowadd',   pnSecAuthAction(0, 'EZComments::', "$modname:$objectid: ", ACCESS_COMMENT));
     if (!is_array($args['extrainfo'])) {
-    	$pnRender->assign('redirect',   pnVarPrepForDisplay($args['extrainfo']));
+    	$pnRender->assign('redirect',   $args['extrainfo']);
     } else {
-		$pnRender->assign('redirect',   pnVarPrepForDisplay($args['extrainfo']['returnurl']));
+		$pnRender->assign('redirect',   $args['extrainfo']['returnurl']);
     }
-    $pnRender->assign('objectid',   pnVarPrepForDisplay($objectid));
+    $pnRender->assign('objectid',   $objectid);
 
 	// check for some useful hooks
 	if (pnModIsHooked('pn_bbcode', 'EZComments')) {
@@ -243,50 +243,6 @@ function EZComments_user_create($args)
     pnRedirect($EZComments_redirect);
     return true;
 } 
-
-
-/**
- * Delete a comment
- * 
- * This is a standard function that is called with the results of the
- * form supplied by EZComments_user_view to delete a comment
- * 
- * @param    $EZComments_id         ID of the the comment to delete (taken from HTTP put)
- * @param    $EZComments_redirect   URL to return to (taken from HTTP put)
- * @since    0.1
- */
-function EZComments_user_delete($args)
-{
-    list($EZComments_id,
-     $EZComments_redirect) = pnVarCleanFromInput('EZComments_id',
-                                                 'EZComments_redirect'); 
-
-    // Confirm authorisation code.
-    if (!pnSecConfirmAuthKey()) {
-        pnSessionSetVar('errormsg', _BADAUTHKEY);
-        pnRedirect($return_url);
-        return true;
-    } 
-    // Load API
-    if (!pnModAPILoad('EZComments', 'user')) {
-        pnSessionSetVar('errormsg', _LOADFAILED);
-        return false;
-    } 
-    $id = pnModAPIFunc('EZComments',
-                       'user',
-                       'delete',
-                       array('id' => $EZComments_id));
-
-    if ($id != false) {
-        pnSessionSetVar('statusmsg', _EZCCOMMENTSDELETED);
-    } 
-
-    $EZComments_redirect = rawurldecode($EZComments_redirect);
-    $EZComments_redirect = str_replace('&amp;', '&', $EZComments_redirect);
-    pnRedirect($EZComments_redirect);
-    return true;
-} 
-
 
 /**
  * Prepare comments to be displayed
