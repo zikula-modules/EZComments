@@ -5,6 +5,10 @@
 <div>
 	<input type="hidden" name="authid" value="<!--[pnsecgenauthkey module="EZComments"]-->" />
 	<div class="pn-adminformrow">
+		<label for="ezcomments_itemsperpage"><!--[pnml name="_EZCOMMENTS_ITEMSPERPAGE"]--></label>
+		<input id="ezcomments_itemsperpage" name="itemsperpage" type="text" value="<!--[$itemsperpage|pnvarprepfordisplay]-->" />
+	</div>
+	<div class="pn-adminformrow">
 		<label for="ezcomments_email"><!--[pnml name="_EZCOMMENTS_SENDINFOMAIL"]--></label>
 		<!--[if $MailToAdmin eq 1]-->
 		<input id="ezcomments_email" name="MailToAdmin" type="checkbox" value="1" checked="checked" />

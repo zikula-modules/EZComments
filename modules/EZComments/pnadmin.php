@@ -51,8 +51,7 @@ function EZComments_admin_main()
 	// assign the module vars
 	$pnRender->assign(pnModGetVar('EZComments'));
 	// presentation values
-	// Hardcoded -- move this to an module variable?!?
-	$itemsperpage = 10;
+	$itemsperpage = pnModGetVar('EZComments', 'itemsperpage');
     $startnum = pnVarCleanFromInput('startnum');
 
 	// call the api to get all current comments
@@ -347,7 +346,8 @@ function EZComments_admin_updateconfig($args)
 		return true;
 	} 
 
-    list($MailToAdmin, $template) = pnVarCleanFromInput('MailToAdmin', 'template');
+    list($MailToAdmin, $template, $itemsperpage) = 
+	    pnVarCleanFromInput('MailToAdmin', 'template', 'itemsperpage');
 	extract($args);
 
     if (!isset($MailToAdmin)) {
@@ -359,6 +359,11 @@ function EZComments_admin_updateconfig($args)
 		$template = 'AllOnOnePage';
 	}
 	pnModSetVar('EZComments', 'template', $template);
+
+	if (!isset($itemsperpage)) {
+		$itemsperpage = 25;
+	}
+	pnModSetVar('EZComments', 'itemsperpage', $itemsperpage);
 
 	pnRedirect(pnModURL('EZComments', 'admin', 'main'));
 	return true;
