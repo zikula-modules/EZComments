@@ -316,11 +316,9 @@ function EZComments_prepareCommentsForDisplay($items)
 				$pntable =& pnDBGetTables();
 				$activetime = time() - (pnConfigGetVar('secinactivemins') * 60);
 				$userhack = "SELECT pn_uid
-                         FROM ".$pntable['session_info']."
-
-                         WHERE pn_uid = '".$userinfo['pn_uid']."'
-
-                         AND pn_lastused > '".pnVarPrepForStore($activetime)."'";
+                             FROM ".$pntable['session_info']."
+	                         WHERE pn_uid = '".$userinfo['pn_uid']."'
+                             AND pn_lastused > '".pnVarPrepForStore($activetime)."'";
 				$userresult = $dbconn->Execute($userhack);
 	            $online_state = $userresult->GetRowAssoc(false);
                 $comment['online'] = false;
@@ -331,12 +329,8 @@ function EZComments_prepareCommentsForDisplay($items)
             } else {
                 $comment['uname'] = pnConfigGetVar('Anonymous');
             }
-
-            list($item['comment']) = pnModCallHooks('item', 'transform', 'x', array($item['comment']));
-            $comment['comment'] = pnVarPrepHTMLDisplay(pnVarCensor(nl2br($item['comment'])));
-            
             $comment['del'] = (pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:$item[id]", ACCESS_DELETE));
-            
+
             $comments[] = $comment;
         } 
     }
