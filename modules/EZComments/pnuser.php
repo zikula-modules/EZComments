@@ -101,7 +101,7 @@ function EZComments_user_view($args)
 		$pnRender->assign('smilies', true);
 	}
     // find out which template to use
-    $template = isset($args['template']) ? $args['template'] : 'default.htm';
+    $template = isset($args['template']) ? $args['template'] : 'ezcomments_user_view.htm';
     return $pnRender->fetch($template);
 } 
 
