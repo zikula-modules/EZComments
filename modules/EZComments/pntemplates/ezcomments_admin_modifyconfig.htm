@@ -17,6 +17,14 @@
 		<!--[/if]-->
 	</div>
 	<div class="pn-adminformrow">
+		<label for="ezcomments_anonusersinfo"><!--[pnml name="_EZCOMMENTS_ALLOWANONUSERSETINFO"]--></label>
+		<!--[if $anonusersinfo eq 1]-->
+		<input id="ezcomments_anonusersinfo" name="anonusersinfo" type="checkbox" value="1" checked="checked" />
+		<!--[else]-->
+		<input id="ezcomments_anonusersinfo" name="anonusersinfo" type="checkbox" value="1" />
+		<!--[/if]-->
+	</div>
+	<div class="pn-adminformrow">
 		<label for="ezcomments_template"><!--[pnml name="_EZCOMMENTS_TEMPLATE"]--></label>
 		<select id="ezcomments_template" name="template">
 			<!--[html_options values=$templates output=$templates selected=$template]-->

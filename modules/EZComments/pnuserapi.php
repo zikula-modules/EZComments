@@ -104,7 +104,9 @@ function EZComments_userapi_getall($args)
                    $EZCommentscolumn[uid],
                    $EZCommentscolumn[comment],
                    $EZCommentscolumn[subject],
-                   $EZCommentscolumn[replyto]
+                   $EZCommentscolumn[replyto],
+			  	   $EZCommentscolumn[anonname],
+			       $EZCommentscolumn[anonmail]
             FROM $EZCommentstable
             $wherestring $orderstring $orderby";
     $result = $dbconn->SelectLimit($sql, $numitems, $startnum-1);			
@@ -120,7 +122,7 @@ function EZComments_userapi_getall($args)
 	// individually to ensure that the user is allowed access to it before it
 	// is added to the results array
 	for (; !$result->EOF; $result->MoveNext()) {
-		list($id, $modname, $objectid, $url, $date, $uid, $comment, $subject, $replyto) = $result->fields;
+		list($id, $modname, $objectid, $url, $date, $uid, $comment, $subject, $replyto, $anonname, $anonmail) = $result->fields;
 		if (pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:$id", ACCESS_READ)) {
 			$items[] = compact('id',
 			                   'modname',
@@ -130,7 +132,9 @@ function EZComments_userapi_getall($args)
 							   'uid',
 							   'comment',
 							   'subject',
-							   'replyto');
+							   'replyto',
+							   'anonname',
+							   'anonmail');
 		} 
 	} 
 	$result->Close();
@@ -198,13 +202,17 @@ function EZComments_userapi_create($args)
 		 $uid,
 		 $comment,
 		 $subject,
-		 $replyto) = pnVarPrepForStore($modname, 
-		                               $objectid, 
-									   $url,
-									   $uid,
-									   $comment,
-		                               $subject,
-		                               $replyto); 
+		 $replyto,
+		 $anonname,
+		 $anonmail) = pnVarPrepForStore($modname, 
+		                                $objectid, 
+									    $url,
+									    $uid,
+									    $comment,
+		                                $subject,
+		                                $replyto,
+										$anonname,
+										$anonmail); 
 									   
 	// Add item
 	$sql = "INSERT INTO $EZCommentstable (
@@ -216,7 +224,9 @@ function EZComments_userapi_create($args)
               $EZCommentscolumn[uid],
               $EZCommentscolumn[comment],
 			  $EZCommentscolumn[subject],
-			  $EZCommentscolumn[replyto])
+			  $EZCommentscolumn[replyto],
+			  $EZCommentscolumn[anonname],
+			  $EZCommentscolumn[anonmail])
             VALUES (
               '$nextId',
 			  '$modname',
@@ -226,7 +236,9 @@ function EZComments_userapi_create($args)
 			  '$uid',
 			  '$comment',
 			  '$subject',
-			  '$replyto')";
+			  '$replyto',
+			  '$anonname',
+			  '$anonmail')";
 	$dbconn->Execute($sql); 
 
 	// Check for an error with the database code
@@ -422,7 +434,9 @@ function EZComments_userapi_get($args)
                    $EZCommentscolumn[uid],
                    $EZCommentscolumn[comment],
                    $EZCommentscolumn[subject],
-                   $EZCommentscolumn[replyto]
+                   $EZCommentscolumn[replyto],
+			  	   $EZCommentscolumn[anonname],
+			       $EZCommentscolumn[anonmail]
             FROM $EZCommentstable
             WHERE $EZCommentscolumn[id] = '$id'";
 

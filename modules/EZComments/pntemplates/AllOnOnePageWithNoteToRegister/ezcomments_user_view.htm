@@ -30,7 +30,11 @@
 		<!--[section name=comments loop=$comments]-->
 		<tr>
 			<td style="background-color:<!--[pnthemegetvar name=bgcolor2]-->" valign="top" width="20%">
-				<!--[$comments[comments].uname|pnvarprepfordisplay]-->
+				<!--[if $comments[comments].anonname neq '']-->
+				<!--[$comments[comments].anonname|pnvarprepfordisplay]-->
+				<!--[else]-->
+                <!--[$comments[comments].uname|pnvarprepfordisplay]-->
+				<!--[/if]-->
 				<br />
 				<!--[$comments[comments].date|date_format:"%d.%m.%y, %H:%M"]-->
 			</td>
@@ -64,6 +68,16 @@
 			<label for="subject"><!--[pnml name=_EZCOMMENTS_SUBJECT]--></label>
 			<input type="text" name="EZComments_subject" id="subject" size="50" maxlength="255" />
 		</div>
+		<!--[if $loggeded neq true]-->
+		<div>
+			<label for="anonname"><!--[pnml name=_EZCOMMENTS_ANONNAME]--></label>
+			<input type="text" name="EZComments_anonname" id="anonname" size="50" maxlength="255" />
+		</div>
+		<div>
+			<label for="anonmail"><!--[pnml name=_EZCOMMENTS_ANONMAIL]--></label>
+			<input type="text" name="EZComments_anonmail" id="anonmail" size="50" maxlength="255" />
+		</div>
+		<!--[/if]-->
 		<div>
 			<label for="message"><!--[pnml name=_EZCOMMENTS_COMMENT]--></label>
 			<textarea name="EZComments_comment" id="message" cols="60" rows="10"></textarea>

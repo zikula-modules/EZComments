@@ -37,7 +37,14 @@
 		<div style="margin-left: <!--[math equation="x * 2" x=$comments[comments].level]-->em">	
 			<div style="width:99%; background-color:<!--[$bgcolor1]-->; padding:4px;">
 				<strong><!--[$comments[comments].subject]--></strong>
-				<div><!--[pnml name=_EZCOMMENTS_COMMENT_FROM]--> <!--[$comments[comments].uname]--></div>
+				<div>
+					<!--[pnml name=_EZCOMMENTS_COMMENT_FROM]--> 
+					<!--[if $comments[comments].anonname neq '']-->
+					<!--[$comments[comments].anonname|pnvarprepfordisplay]-->
+					<!--[else]-->
+					<!--[$comments[comments].uname|pnvarprepfordisplay]-->
+					<!--[/if]-->
+				</div>
 				<div class="pn-sub"><!--[pnml name=_EZCOMMENTS_COMMENT_ON]--> <!--[$comments[comments].date|date_format:"%d.%m.%y, %H:%M"]--></div>
 				<div class="pn-sub"> 
 					[ <a class="pn-sub" href="<!--[$url_userinfo|pnvarprepfordisplay]-->"><!--[pnml name=_USERINFO]--></a> ]

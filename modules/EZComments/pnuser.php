@@ -95,6 +95,7 @@ function EZComments_user_view($args)
     $pnRender->assign('comments',   $comments);
 	$pnRender->assign('order',      $ezcomments_order);
     $pnRender->assign('allowadd',   pnSecAuthAction(0, 'EZComments::', "$modname:$objectid: ", ACCESS_COMMENT));
+	$pnRender->assign('loggedin',   pnUserLoggedIn());
     if (!is_array($args['extrainfo'])) {
     	$pnRender->assign('redirect',   $args['extrainfo']);
     } else {
@@ -187,6 +188,7 @@ function EZComments_user_comment($args)
     $pnRender->assign('authid',   pnSecGenAuthKey('EZComments'));
     $pnRender->assign('allowadd', pnSecAuthAction(0, 'EZComments::', "$EZComments_modname:$EZComments_objectid: ", ACCESS_COMMENT));
     $pnRender->assign('addurl',   pnModURL('EZComments', 'user', 'create'));
+	$pnRender->assign('loggedin', pnUserLoggedIn());
     $pnRender->assign('redirect', $EZComments_redirect);
     $pnRender->assign('modname',  pnVarPrepForDisplay($EZComments_modname));
     $pnRender->assign('objectid', pnVarPrepForDisplay($EZComments_objectid));
@@ -224,23 +226,33 @@ function EZComments_user_comment($args)
  */
 function EZComments_user_create($args)
 {
-    list($EZComments_modname,
-         $EZComments_objectid,
-         $EZComments_redirect,
-         $EZComments_comment,
-         $EZComments_subject,
-         $EZComments_replyto) = pnVarCleanFromInput('EZComments_modname',
-                                                      'EZComments_objectid',
-                                                      'EZComments_redirect',
-                                                     'EZComments_comment',
-                                                     'EZComments_subject',
-                                                     'EZComments_replyto');
     // Confirm authorisation code.
     if (!pnSecConfirmAuthKey()) {
         pnSessionSetVar('errormsg', _BADAUTHKEY);
         pnRedirect($EZComments_redirect);
         return true;
     } 
+
+    list($EZComments_modname,
+         $EZComments_objectid,
+         $EZComments_redirect,
+         $EZComments_comment,
+         $EZComments_subject,
+         $EZComments_replyto) = pnVarCleanFromInput('EZComments_modname',
+                                                    'EZComments_objectid',
+                                                    'EZComments_redirect',
+                                                    'EZComments_comment',
+                                                    'EZComments_subject',
+                                                    'EZComments_replyto');
+
+	// check if the user logged in and if we're allowing anon users to 
+	// set a name and e-mail address
+	if (!pnUserLoggedIn()) {
+		list($EZComments_anonname, $EZComments_anonmail) = pnVarCleanFromInput('EZComments_anonname', 'EZComments_anonmail');
+	} else {
+		$EZComments_anonname = '';
+		$EZComments_anonmail = '';
+	}
 
     $id = pnModAPIFunc('EZComments',
                        'user',
@@ -251,7 +263,9 @@ function EZComments_user_create($args)
                              'comment'  => $EZComments_comment,
                              'subject'  => $EZComments_subject,
                              'replyto'  => $EZComments_replyto,
-                             'uid'      => pnUserGetVar('uid')));
+                             'uid'      => pnUserGetVar('uid'),
+							 'anonname' => $EZComments_anonname,
+							 'anonmail' => $EZComments_anonmail));
 
     if ($id != false) {
         // Success

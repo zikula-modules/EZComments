@@ -40,6 +40,16 @@
 			<label for="subject"><!--[pnml name=_EZCOMMENTS_SUBJECT]--></label>
 			<input type="text" name="EZComments_subject" id="subject" size="50" maxlength="255" value="<!--[$subject|pnvarprepfordisplay]-->" />
 		</div>
+		<!--[if $loggeded neq true]-->
+		<div>
+			<label for="anonname"><!--[pnml name=_EZCOMMENTS_ANONNAME]--></label>
+			<input type="text" name="EZComments_anonname" id="anonname" size="50" maxlength="255" />
+		</div>
+		<div>
+			<label for="anonmail"><!--[pnml name=_EZCOMMENTS_ANONMAIL]--></label>
+			<input type="text" name="EZComments_anonmail" id="anonmail" size="50" maxlength="255" />
+		</div>
+		<!--[/if]-->
 		<div>
 			<label for="message"><!--[pnml name=_EZCOMMENTS_COMMENT]--></label>
 			<textarea name="EZComments_comment" id="message" cols="60" rows="10"></textarea>

@@ -36,7 +36,7 @@ define('_EZCOMMENTS_RULES',	            'Define the rules for your comments here
 
 define('_EZCOMMENTS_ADMIN',				'EZComments Administration');
 define('_EZCOMMENTS_ADMIN_MAIN',		'Main EZComments Administration');
-define('_EZCOMMENTS_SENDINFOMAIL',		'send mail on new comment');
+define('_EZCOMMENTS_SENDINFOMAIL',		'Send mail on new comment');
 define('_EZCOMMENTS_OK', 				'Accept');
 define('_EZCOMMENTS_LASTCOMMENTS', 		'The last comments');
 define('_EZCOMMENTS_USERNAME', 			'User');
@@ -92,4 +92,9 @@ define('_EZCOMMENTS_NEWESTFIRST',        'Newest First');
 define('_EZCOMMENTS_OLDESTFIRST',        'Oldest First');
 define('_EZCOMMENTS_ORDER',              'Order');
 define('_EZCOMMENTS_THREADED',           'Threaded');
+
+define('_EZCOMMENTS_ALLOWANONUSERSETINFO', 'Allow unregistered users to set user information');
+define('_EZCOMMENTS_ANONNAME',             'Name');
+define('_EZCOMMENTS_ANONMAIL',             'E-mail address'); 
+
 ?>

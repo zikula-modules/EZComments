@@ -47,15 +47,17 @@ function EZComments_init()
 	$EZCommentscolumn = &$pntable['EZComments_column'];
 
 	$sql = "CREATE TABLE $EZCommentstable (
-              $EZCommentscolumn[id]       int(11)     NOT NULL auto_increment,
-              $EZCommentscolumn[modname]  varchar(64) NOT NULL default '',
-              $EZCommentscolumn[objectid] text        NOT NULL default '',
-              $EZCommentscolumn[url]      text        NOT NULL default '',
-              $EZCommentscolumn[date]     datetime    default NULL,
-              $EZCommentscolumn[uid]      int(11)     default '0',
-              $EZCommentscolumn[comment]  text        NOT NULL,
-		      $EZCommentscolumn[subject]  text        NOT NULL default '',
-			  $EZCommentscolumn[replyto]  int(11)     NOT NULL default '-1',
+              $EZCommentscolumn[id]        int(11)      NOT NULL auto_increment,
+              $EZCommentscolumn[modname]   varchar(64)  NOT NULL default '',
+              $EZCommentscolumn[objectid]  text         NOT NULL default '',
+              $EZCommentscolumn[url]       text         NOT NULL default '',
+              $EZCommentscolumn[date]      datetime     default NULL,
+              $EZCommentscolumn[uid]       int(11)      default '0',
+              $EZCommentscolumn[comment]   text         NOT NULL,
+		      $EZCommentscolumn[subject]   text         NOT NULL default '',
+			  $EZCommentscolumn[replyto]   int(11)      NOT NULL default '-1',
+              $EZCommentscolumn[anonname]  varchar(255) NOT NULL default '',
+              $EZCommentscolumn[anonmail]  varchar(255) NOT NULL default '',
               PRIMARY KEY(id)
               ) COMMENT='Table for EZComments'";
 	$dbconn->Execute($sql);
@@ -101,6 +103,7 @@ function EZComments_init()
 	pnModSetVar('EZComments', 'migrated', serialize(array()));
 	pnModSetVar('EZComments', 'template', 'AllOnOnePage');
 	pnModSetVar('EZComments', 'itemsperpage', 25);
+	pnModSetVar('EZComments', 'anonusersinfo', false);
 
 	// Initialisation successful
 	return true;
@@ -117,17 +120,17 @@ function EZComments_init()
  */
 function EZComments_upgrade($oldversion)
 { 
+	// setup the db connection
+	$dbconn =& pnDBGetConn(true);
+	$pntable =& pnDBGetTables();
+	$EZCommentstable = $pntable['EZComments'];
+	$EZCommentscolumn = &$pntable['EZComments_column'];
+
     if ($oldversion == '0.1') {
 		// new functionality: MailToAdmin
 		pnModSetVar('EZComments', 'MailToAdmin', false);
 		// new functionality: Migration
 		pnModSetVar('EZComments', 'migrated', serialize(array()));
-
-		$dbconn =& pnDBGetConn(true);
-		$pntable =& pnDBGetTables();
-
-		$EZCommentstable = $pntable['EZComments'];
-		$EZCommentscolumn = &$pntable['EZComments_column'];
 
 		// Rename the table fom nuke_EZComments to nuke_ezcomments
 		$oldtable = pnConfigGetVar('prefix') . '_EZComments';
@@ -220,7 +223,19 @@ function EZComments_upgrade($oldversion)
 			// re-enable the hooks for this module
 			pnModAPIFunc('Modules', 'admin', 'enablehooks', array('callermodname' => $modname, 'hookmodname' => 'EZComments'));
 		}
-
+		$oldversion = '0.6';
+	}
+	if ($oldversion == '0.6') {
+		pnModSetVar('EZComments', 'anonusersinfo', false);
+		// Add additional for unregistered users info
+		$sql = "ALTER TABLE $EZCommentstable 
+		                ADD $EZCommentscolumn[anonname] varchar(255) NOT NULL default '',
+						ADD $EZCommentscolumn[anonmail] varchar(255) NOT NULL default ''";
+		$dbconn->Execute($sql);
+		if ($dbconn->ErrorNo() != 0) {
+			pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED5 . ': ' . $dbconn->ErrorMsg());
+			return false;
+		}
 	}
 	return true;
 } 
@@ -283,4 +298,5 @@ function EZComments_delete()
 	// Deletion successful
 	return true;
 } 
+
 ?>

@@ -356,8 +356,8 @@ function EZComments_admin_updateconfig($args)
 		return true;
 	} 
 
-    list($MailToAdmin, $template, $itemsperpage) = 
-	    pnVarCleanFromInput('MailToAdmin', 'template', 'itemsperpage');
+    list($MailToAdmin, $template, $itemsperpage, $anonusersinfo) =
+	    pnVarCleanFromInput('MailToAdmin', 'template', 'itemsperpage', 'anonusersinfo');
 	extract($args);
 
     if (!isset($MailToAdmin)) {
@@ -375,6 +375,12 @@ function EZComments_admin_updateconfig($args)
 	}
 	pnModSetVar('EZComments', 'itemsperpage', $itemsperpage);
 
+	if (!isset($anonusersinfo)) {
+		$anonusersinfo = 0;
+	}
+	pnModSetVar('EZComments', 'anonusersinfo', $anonusersinfo);
+
+	pnSessionSetVar('statusmsg', _CONFIGUPDATED);
 	pnRedirect(pnModURL('EZComments', 'admin', 'main'));
 	return true;
 }

@@ -29,7 +29,12 @@
 	<table border="0" cellpadding="5" cellspacing="0" width="100%">
 	<!--[section name=comments loop=$comments]-->
 	<tr>
-	    <td style="background-color:<!--[pnthemegetvar name=bgcolor4]-->" valign="top" width="20%"><!--[$comments[comments].uname]-->
+	    <td style="background-color:<!--[pnthemegetvar name=bgcolor4]-->" valign="top" width="20%">
+			<!--[if $comments[comments].anonname neq '']-->
+			<!--[$comments[comments].anonname|pnvarprepfordisplay]-->
+			<!--[else]-->
+			<!--[$comments[comments].uname|pnvarprepfordisplay]-->
+			<!--[/if]-->
 		    <br />
 		    <!--[$comments[comments].date|date_format:"%d.%m.%y, %H:%M"]-->
 	    </td>
