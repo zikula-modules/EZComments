@@ -15,17 +15,15 @@
 	<table border="0" cellpadding="5" cellspacing="0" width="100%">
 	    <thead>
 	    <tr style="background-color:<!--[ $bgcolor2 ]-->;text-align:left;">
-
-        <th id="col_0" abbr="<!--[ pnml name='_EZCOMMENTS_AUTHOR' ]-->" style="width:20%;"></th>
-
-        <th id="col_1" abbr="<!--[ pnml name='_EZCOMMENTS_TOPIC' ]-->" colspan="2" style="width:80%;"></th>
+			<th id="col_0" abbr="<!--[ pnml name='_EZCOMMENTS_AUTHOR' ]-->" style="width:20%;"></th>
+			<th id="col_1" abbr="<!--[ pnml name='_EZCOMMENTS_TOPIC' ]-->" colspan="2" style="width:80%;"></th>
 		</tr>
 		</thead>
 		<tbody>
 		<!--[section name=comments loop=$comments]-->
 		<tr style="background-color:<!--[pnthemegetvar name=bgcolor3]-->;">
 			<td align="left">
-                	<a href="user.php?op=userinfo&amp;uname=<!--[$comments[comments].uname]-->"><strong><!--[$comments[comments].uname]--></strong></a>
+                <a href="user.php?op=userinfo&amp;uname=<!--[$comments[comments].uname]-->"><strong><!--[$comments[comments].uname]--></strong></a>
 			</td>
 			<td style="text-align:right;" colspan="2">
 				<strong><!--[ pnml name='_EZCOMMENTS_POSTED' ]-->:</strong>&nbsp;<!--[$comments[comments].date|pndate_format:"%d.%m.%y, %H:%M"]-->
@@ -71,12 +69,12 @@
 		</tr>
 		<tr style="height:5px;">
 			<td colspan="3"><!--[if $comments[comments].del]-->
-						<form action="<!--[$delurl]-->" method="post">
-							<input type="hidden" name="authid" id="EZComments_authid" value="<!--[$authid]-->" /> 
-							<input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect]-->" /> 
-							<input type="hidden" name="EZComments_id" id="EZComments_id" value="<!--[$comments[comments].id]-->" /> 
-							<input type="submit" value="<!--[pnml name=_EZCOMMENTS_DEL]-->" />
-						</form>
+				<form action="<!--[pnmodurl modname=EZComments func=delete]-->" method="post">
+					<input type="hidden" name="authid" id="EZComments_authid" value="<!--[pnsecgenauthkey modname=EZComments]-->" /> 
+					<input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect]-->" /> 
+					<input type="hidden" name="EZComments_id" id="EZComments_id" value="<!--[$comments[comments].id]-->" /> 
+					<input type="submit" value="<!--[pnml name=_EZCOMMENTS_DEL]-->" />
+				</form>
 				<!--[/if]--></td>
 		</tr>
 		<!--[/section]-->
@@ -89,14 +87,13 @@
 				</td>
 				<td bgcolor="<!--[pnthemegetvar name=bgcolor3]-->" valign="top">
 					<!--[include file="bbcode.htm"]-->
-					<form action="<!--[$addurl]-->" method="post">
-					<input type="hidden" name="authid" id="authid" value="<!--[$authid]-->" /> 
-					<input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect]-->" /> 
-					<input type="hidden" name="EZComments_modname" id="EZComments_modname" value="<!--[$modname]-->" /> 
-					<input type="hidden" name="EZComments_objectid" id="EZComments_objectid" value="<!--[$objectid]-->" /> 
-					<textarea name="EZComments_comment" id="EZComments_comment" cols="60" rows="10"></textarea>
-					
-					<input type="submit" value="<!--[pnml name=_EZCOMMENTS_ADD]-->" />
+					<form action="<!--[pnmodurl modname=EZComments func=create]-->" method="post">
+						<input type="hidden" name="authid" id="authid" value="<!--[pnsecgenauthkey modname=EZComments]-->" /> 
+						<input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect]-->" /> 
+						<input type="hidden" name="EZComments_modname" id="EZComments_modname" value="<!--[pnmodgetname]-->" /> 
+						<input type="hidden" name="EZComments_objectid" id="EZComments_objectid" value="<!--[$objectid]-->" /> 
+						<textarea name="EZComments_comment" id="EZComments_comment" cols="60" rows="10"></textarea>
+						<input type="submit" value="<!--[pnml name=_EZCOMMENTS_ADD]-->" />
 					</form>
 					<!--[include file="smilies.htm"]-->
 				</td>

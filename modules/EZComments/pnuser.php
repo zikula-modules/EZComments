@@ -88,13 +88,9 @@ function EZComments_user_view($args)
     $pnRender->caching=false;
     
     $pnRender->assign('comments',   $comments);
-    $pnRender->assign('authid',     pnSecGenAuthKey('EZComments'));
     $pnRender->assign('allowadd',   pnSecAuthAction(0, 'EZComments::', "$modname:$objectid: ", ACCESS_COMMENT));
-    $pnRender->assign('delurl',     pnModURL('EZComments', 'user', 'delete'));
-    $pnRender->assign('addurl',     pnModURL('EZComments', 'user', 'create'));
     $pnRender->assign('commenturl', pnModURL('EZComments', 'user', 'comment'));
     $pnRender->assign('redirect',   pnVarPrepForDisplay($args['extrainfo']));
-    $pnRender->assign('modname',    pnVarPrepForDisplay($modname));
     $pnRender->assign('objectid',   pnVarPrepForDisplay($objectid));
     
     // find out which template to use
@@ -304,8 +300,14 @@ function EZComments_prepareCommentsForDisplay($items)
             if ($item['uid'] > 0) {
                 $userinfo = pnUserGetVars($item['uid']);
 			 	//print_r ($userinfo);
-				$comment = array_merge ($comment, $userinfo);
-					
+				$comment['from']	= $userinfo['pn_user_from'];
+                $comment['uname'] 	= $userinfo['uname'];
+				$comment['regdate'] = $userinfo['pn_user_regdate'];
+				$comment['sig'] 	= $userinfo['pn_user_sig'];
+				if($userinfo['user_avatar']){
+                $comment['avatar'] = "images/avatar/" . $userinfo['user_avatar'];				
+				}
+				
 
 				$dbconn =& pnDBGetConn(true);
 				$pntable =& pnDBGetTables();
