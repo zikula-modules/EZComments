@@ -132,7 +132,7 @@ function EZComments_user_comment($args)
 	$smarty->assign('authid',   pnSecGenAuthKey('EZComments'));
 	$smarty->assign('allowadd', pnSecAuthAction(0, 'EZComments::', "$modname:$objectid: ", ACCESS_COMMENT));
 	$smarty->assign('addurl',   pnModURL('EZComments', 'user', 'create'));
-	$smarty->assign('redirect', pnVarPrepForDisplay($EZComments_redirect));
+	$smarty->assign('redirect', $EZComments_redirect);
 	$smarty->assign('modname',  pnVarPrepForDisplay($EZComments_modname));
 	$smarty->assign('objectid', pnVarPrepForDisplay($EZComments_objectid));
 	
