@@ -80,7 +80,7 @@ function EZComments_init()
     if (!pnModRegisterHook('item',
                            'delete',
                            'API',
-                           'EZComments_delete',
+                           'EZComments',
                            'admin',
                            'deletebyitem')) {
 		pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED2);
@@ -134,7 +134,6 @@ function EZComments_upgrade($oldversion)
 			pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED5 . ': ' . $dbconn->ErrorMsg());
 			return false;
 		}
-
 		$oldversion = '0.2';
 	}
     
@@ -152,7 +151,39 @@ function EZComments_upgrade($oldversion)
     		pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED2);
     		return false;
     	}
+		$oldversion = '0.3 CVS';
     }
+	if ($oldversion == '0.3' || $oldversion = '0.3 CVS') {
+		// the hook bug for different hook types has been resolved so lets fix that
+		// in this version. We need to unregister the old delete hook, register the
+		// new hook and re-create the hooks for all modules hooked to EZComments.
+		// get all modules hooked to ezcomments
+		$hookedmodules = pnModAPIFunc('Modules', 'admin', 'gethookedmodules', array('hookmodname'=> 'EZComments'));
+		if (!pnModUnregisterHook('item',
+								 'delete',
+								 'API',
+								 'EZComments_delete',
+								 'admin',
+								 'deletebyitem')) {
+			pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED4);
+			return false;
+		}
+		if (!pnModRegisterHook('item',
+							   'delete',
+							   'API',
+							   'EZComments',
+							   'admin',
+							   'deletebyitem')) {
+			pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED2);
+			return false;
+		}
+		foreach ($hookedmodules as $modname => $hooktype) {
+			// disable the hooks for this module
+			pnModAPIFunc('Modules', 'admin', 'disablehooks', array('callermodname' => $modname, 'hookmodname' => 'EZComments'));
+			// re-enable the hooks for this module
+			pnModAPIFunc('Modules', 'admin', 'enablehooks', array('callermodname' => $modname, 'hookmodname' => 'EZComments'));
+		}
+	}
 	return true;
 } 
 
