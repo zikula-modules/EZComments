@@ -303,8 +303,8 @@ function EZComments_prepareCommentsForDisplay($items)
 
             if ($item['uid'] > 0) {
                 $userinfo = pnUserGetVars($item['uid']);
-				//print_r ($userinfo);
-
+			 	//print_r ($userinfo);
+				$comment['from']	= $userinfo['pn_user_from'];
                 $comment['uname'] 	= $userinfo['uname'];
 				$comment['regdate'] = $userinfo['pn_user_regdate'];
 				$comment['sig'] 	= $userinfo['pn_user_sig'];

@@ -73,5 +73,6 @@ define('_EZCOMMENTS_OFFLINE',  			'Offline');
 define('_EZCOMMENTS_ONLINE',  			'Online'); 
 define('_EZCOMMENTS_PROFILE',  			'Profil'); 
 define('_EZCOMMENTS_SEND_PM',  			'PM sende'); 
+define('_EZCOMMENTS_FROM',  			'Wohnort'); 
 
 ?>
