@@ -304,35 +304,31 @@ function EZComments_prepareCommentsForDisplay($items)
 {
     $comments = array();
     foreach ($items as $item) {
-        if (pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:$item[id]", ACCESS_READ)) {
-            $comment = $item;
-
-            if ($item['uid'] > 0) {
-                $userinfo = pnUserGetVars($item['uid']);
-			 	//print_r ($userinfo);
-				$comment	= array_merge ($comment, $userinfo);
-                
-				$dbconn =& pnDBGetConn(true);
-				$pntable =& pnDBGetTables();
-				$activetime = time() - (pnConfigGetVar('secinactivemins') * 60);
-				$userhack = "SELECT pn_uid
-                             FROM ".$pntable['session_info']."
-	                         WHERE pn_uid = '".$userinfo['pn_uid']."'
-                             AND pn_lastused > '".pnVarPrepForStore($activetime)."'";
-				$userresult = $dbconn->Execute($userhack);
-	            $online_state = $userresult->GetRowAssoc(false);
-                $comment['online'] = false;
-                if($online_state['pn_uid'] == $item['uid']) {
-                    $comment['online'] = true;
-    				$userresult->Close();
-	            }
-            } else {
-                $comment['uname'] = pnConfigGetVar('Anonymous');
-            }
-            $comment['del'] = (pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:$item[id]", ACCESS_DELETE));
-
-            $comments[] = $comment;
-        } 
+		$comment = $item;
+		if ($item['uid'] > 0) {
+			$userinfo = pnUserGetVars($item['uid']);
+			//print_r ($userinfo);
+			$comment	= array_merge ($comment, $userinfo);
+			
+			$dbconn =& pnDBGetConn(true);
+			$pntable =& pnDBGetTables();
+			$activetime = time() - (pnConfigGetVar('secinactivemins') * 60);
+			$userhack = "SELECT pn_uid
+						 FROM ".$pntable['session_info']."
+						 WHERE pn_uid = '".$userinfo['pn_uid']."'
+						 AND pn_lastused > '".pnVarPrepForStore($activetime)."'";
+			$userresult = $dbconn->Execute($userhack);
+			$online_state = $userresult->GetRowAssoc(false);
+			$comment['online'] = false;
+			if($online_state['pn_uid'] == $item['uid']) {
+				$comment['online'] = true;
+				$userresult->Close();
+			}
+		} else {
+			$comment['uname'] = pnConfigGetVar('Anonymous');
+		}
+		$comment['del'] = (pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:$item[id]", ACCESS_DELETE));
+		$comments[] = $comment;
     }
     return $comments;
 }
