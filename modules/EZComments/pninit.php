@@ -294,6 +294,7 @@ function EZComments_delete()
 	pnModDelVar('EZComments', 'migrated');
 	pnModDelVar('EZComments', 'template');	
 	pnModDelVar('EZcomments', 'itemsperpage');
+	pnModDelVar('EZComments', 'anonusersinfo');
 
 	// Deletion successful
 	return true;
