@@ -6,7 +6,7 @@
 <table bgcolor="<!--[$bgcolor2]-->" border="0" cellpadding="5" cellspacing="2" align="center" valign="top" width="99%">
   <tr>
     <td bgcolor="<!--[$bgcolor2]-->" valign="top" width="100%" colspan="2" align="center" class="pn-title">
-    <!--[$smarty.const._EZCOMMENTS]-->
+    <!--[pnml name="_EZCOMMENTS"]-->
     </td>
   </tr>
   <!--[section name=comments loop=$comments]-->
@@ -27,7 +27,7 @@
         <input type="hidden" name="authid" id="authid" value="<!--[$authid]-->" /> 
 				<input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect]-->" /> 
 				<input type="hidden" name="EZComments_id" id="EZComments_id" value="<!--[$comments[comments].id]-->" /> 
-				<input type="submit" value="<!--[$smarty.const._EZCOMMENTS_DEL]-->" />
+				<input type="submit" value="<!--[pnml name=_EZCOMMENTS_DEL]-->" />
       </form>
       <!--[/if]-->
     </td>
@@ -38,7 +38,7 @@
 <!--[* This is the form to comment. It is shown only, when the user is allowed to. *]-->
 
   <tr>
-    <td bgcolor="<!--[$bgcolor4]-->" valign="top"><!--[$smarty.const._EZCOMMENTS_COMMENT_ADD]-->
+    <td bgcolor="<!--[$bgcolor4]-->" valign="top"><!--[pnml name=_EZCOMMENTS_COMMENT_ADD]-->
     </td>
 
     <td bgcolor="<!--[$bgcolor4]-->" valign="top">
@@ -50,7 +50,7 @@
 				<textarea name="EZComments_comment" id="EZComments_comment" wrap="soft" cols="80" rows="10"></textarea>
         <br />
         <br />
-        <input type="submit" value="<!--[$smarty.const._EZCOMMENTS_ADD]-->" />
+        <input type="submit" value="<!--[pnml name=_EZCOMMENTS_ADD]-->" />
       </form>
     </td>
   </tr>
