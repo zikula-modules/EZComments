@@ -40,16 +40,11 @@
  * @return   boolean   true on sucessful migration, false else
  * @since    0.2
  */
-function EZComments_migrate()
+function EZComments_migrateapi_news()
 {
 	// Security check
 	if (!pnSecAuthAction(0, 'EZComments::', "::", ACCESS_ADMIN)) {
 		pnSessionSetVar('errormsg', 'News migration: Not Admin');
-		return false;
-	} 
-	// Load API
-	if (!pnModAPILoad('EZComments', 'user')) {
-		pnSessionSetVar('errormsg', 'News migration: Unable to load API ');
 		return false;
 	} 
 
@@ -94,7 +89,7 @@ function EZComments_migrate()
         	    		   'create',
         		    	   array('modname'  => 'News',
       	        	    		 'objectid' => pnVarPrepForStore($sid),
-      			            	 'url'	    => 'modules.php?op=modload&name=News&file=article&sid=' . $sid,
+      			            	 'url'	    => 'index.php?name=News&file=article&sid=' . $sid,
               				     'comment'  => $comment,
     							 'subject'  => $subject,
 		    					 'uid'      => $uid,
@@ -120,7 +115,12 @@ function EZComments_migrate()
 			$result =& $dbconn->Execute($sql); 
 		}
 	}
+	
+	// activate the ezcomments hook for the news module
+	pnModAPIFunc('Modules', 'admin', 'enablehooks', array('callermodname' => 'News', 'hookmodname' => 'EZComments'));
+
 	pnSessionSetVar('errormsg', 'News migration successful');
     return true;
-} 
+}
+
 ?>

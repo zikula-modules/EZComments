@@ -384,12 +384,12 @@ function EZComments_admin_migrate()
 		return _EZCOMMENTS_NOAUTH;
 	} 
 	$migrated=unserialize(pnModGetVar('EZComments', 'migrated'));
-	$d = opendir('modules/EZComments/migrate');
+	$d = opendir('modules/EZComments/pnmigrateapi');
     $selectitems = array();
 	while($f = readdir($d)) {
     	if(substr($f, -3, 3) == 'php') {
-			if (!isset($migrated[$f]) || !$migrated[$f]) {
-		        $selectitems[$f] = substr($f, 0, strlen($f) -4);
+			if (!isset($migrated[substr($f, 0, strlen($f) -4)]) || !$migrated[substr($f, 0, strlen($f) -4)]) {
+		        $selectitems[substr($f, 0, strlen($f) -4)] = substr($f, 0, strlen($f) -4);
 			}
 	    }
 	}
@@ -443,15 +443,10 @@ function EZComments_admin_migrate_go()
 	// Eintrag in Datenbank
 	$migrated=unserialize(pnModGetVar('EZComments', 'migrated'));
 
-	// don't issue a warning when the file does not exist!
-	// TIPP: While testing new migration plugins, set this to require!
-	@include "modules/EZComments/migrate/$migrate";
-	if (function_exists('EZComments_migrate'))
-	{
-		if (EZComments_migrate()) {
-			$migrated[$migrate] = true;
-			pnModSetVar('EZComments', 'migrated', serialize($migrated));
-		}
+	// call the migration function
+	if (pnModAPIFunc('EZComments', 'migrate', $migrate)) {
+		$migrated[$migrate] = true;
+		pnModSetVar('EZComments', 'migrated', serialize($migrated));
 	}
 	pnRedirect(pnModURL('EZComments', 'admin', 'migrate'));
 	return true;
