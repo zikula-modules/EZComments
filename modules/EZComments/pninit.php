@@ -82,6 +82,7 @@ function EZComments_init()
 						. DIRECTORY_SEPARATOR . 'Smarty'
 						. DIRECTORY_SEPARATOR);
 	pnModSetVar('EZComments', 'MailToAdmin', false);
+	pnModSetVar('EZComments', 'migrated', serialize(array()));
 	// Initialisation successful
 	return true;
 } 
