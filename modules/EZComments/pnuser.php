@@ -65,39 +65,48 @@ function EZComments_user_view($args)
 		return _EZCOMMENTS_NOAUTH;
 	} 
 
-	if (!pnModAPILoad('EZComments', 'user')) {
-		return _LOADFAILED;
-	}
-
-	$items = pnModAPIFunc('EZComments',
-			              'user',
-			              'getall',
-			               compact('modname', 'objectid'));
-
-	if ($items === false) {
-		return _EZCOMMENTS_FAILED;
-	} 
-
-	$comments = EZComments_prepareCommentsForDisplay($items);
-
+	// create the pnRender object
 	$smarty =& new pnRender('EZComments');
 
-	$smarty->assign('comments',     $comments);
-	$smarty->assign('authid',       pnSecGenAuthKey('EZComments'));
-	$smarty->assign('allowadd',     pnSecAuthAction(0, 'EZComments::', "$modname:$objectid: ", ACCESS_COMMENT));
-	$smarty->assign('delurl',       pnModURL('EZComments', 'user', 'delete'));
-	$smarty->assign('addurl',       pnModURL('EZComments', 'user', 'create'));
-	$smarty->assign('commenturl',   pnModURL('EZComments', 'user', 'comment'));
-	$smarty->assign('redirect',     pnVarPrepForDisplay($args['extrainfo']));
-	$smarty->assign('modname',      pnVarPrepForDisplay($modname));
-	$smarty->assign('objectid',     pnVarPrepForDisplay($objectid));
+	// we use the module name as cache ID
+	$pnRender->cache_id = $modname;
 	
+	// find out which template to use
 	if ($smarty->template_exists($modname . '.htm')) {
-		return $smarty->fetch($modname . '.htm');
+		$template = $modname . '.htm';
 	} else {
-		return $smarty->fetch('default.htm');
+		$template = 'default.htm';
 	}
 
+	// check out if the contents are cached.
+	if (!$pnRender->is_cached($template)) {
+		if (!pnModAPILoad('EZComments', 'user')) {
+			return _LOADFAILED;
+		}
+	
+		$items = pnModAPIFunc('EZComments',
+				              'user',
+				              'getall',
+			    	           compact('modname', 'objectid'));
+
+		if ($items === false) {
+			return _EZCOMMENTS_FAILED;
+		} 	
+	
+		$comments = EZComments_prepareCommentsForDisplay($items);
+	
+		$smarty->assign('comments',     $comments);
+		$smarty->assign('authid',       pnSecGenAuthKey('EZComments'));
+		$smarty->assign('allowadd',     pnSecAuthAction(0, 'EZComments::', "$modname:$objectid: ", ACCESS_COMMENT));
+		$smarty->assign('delurl',       pnModURL('EZComments', 'user', 'delete'));
+		$smarty->assign('addurl',       pnModURL('EZComments', 'user', 'create'));
+		$smarty->assign('commenturl',   pnModURL('EZComments', 'user', 'comment'));
+		$smarty->assign('redirect',     pnVarPrepForDisplay($args['extrainfo']));
+		$smarty->assign('modname',      pnVarPrepForDisplay($modname));
+		$smarty->assign('objectid',     pnVarPrepForDisplay($objectid));
+	}
+	
+	return $smarty->fetch($template);
 } 
 
 
