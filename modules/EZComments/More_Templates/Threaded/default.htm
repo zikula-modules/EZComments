@@ -1,33 +1,81 @@
+<!--[*  $Id$               *]-->
+<!--[*  ---------------------------------------------------------------------- *]-->
+<!--[*  EZComments                                                             *]-->
+<!--[*  Attach comments to any module calling hooks                            *]-->
+<!--[*  ---------------------------------------------------------------------- *]-->
+<!--[*  Author: Jörg Napp, http:<!--[* postnuke.lottasophie.de                 *]-->
+<!--[*  ---------------------------------------------------------------------- *]-->
+<!--[*  LICENSE                                                                *]-->
+<!--[*  This program is free software; you can redistribute it and/or          *]-->
+<!--[*  modify it under the terms of the GNU General Public License (GPL)      *]-->
+<!--[*  as published by the Free Software Foundation; either version 2         *]-->
+<!--[*  of the License, or (at your option) any later version.                 *]-->
+<!--[*  This program is distributed in the hope that it will be useful,        *]-->
+<!--[*  but WITHOUT ANY WARRANTY; without even the implied warranty of         *]-->
+<!--[*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *]-->
+<!--[*  GNU General Public License for more details.                           *]-->
+<!--[*  To read the license please visit http://www.gnu.org/copyleft/gpl.html  *]-->
+<!--[*  ---------------------------------------------------------------------- *]-->
+<!--[*  Purpose of this template:                                              *]-->
+<!--[*  Show the comments in a "threaded" look, the way the original           *]-->
+<!--[*  comments module was.                                                   *]-->
+<!--[*  ---------------------------------------------------------------------- *]-->
+
+
+<!--[assign var="redirect"   value=$redirect|rawurlencode]-->
+
+<!--[*  Order the comments. This is done by the module. *]-->
 <!--[assign var=comments value=$comments|@EZComments_threadComments]-->
 
+<br>
+<br>
 <div class="ezcomments">
-  <div class="pn-title">
+  <div class="pn-title" style="width:99%; background-color:<!--[$bgcolor2]-->; text-align:center; padding:4px;">
     <!--[$smarty.const._EZCOMMENTS]-->
   </div>
+
+
+  <!--[*  Loop through the comments  *]-->
   <!--[section name=comments loop=$comments]-->
 
-  <div class="pn-normal" style="margin-left : <!--[$comments[comments].level]-->00px;">
-    von <!--[$comments[comments].uname]-->
-    am <!--[$comments[comments].date|date_format:"%d.%m.%y, %H:%M"]-->
-
-    <br />
-    <br />
-     <!--[$comments[comments].comment]-->
-
-  <!--[if $allowadd]-->
-    <br />
-    <br />
-		<a href="<!--[$commenturl]-->&authid=<!--[$authid]-->&EZComments_redirect=<!--[$redirect|rawurlencode ]-->&EZComments_modname=<!--[$modname]-->&EZComments_objectid=<!--[$objectid]-->&EZComments_replyto=<!--[$comments[comments].id]-->"><!--[$smarty.const._EZCOMMENTS_COMMENT_ADD]--></a>
-  <!--[/if]-->
-
-    <!--[if $comments[comments].del]-->
+    <!--[*  We assign these URLS here to keep the template easier to read *]-->
+    <!--[assign  var="url_userinfo"  value="user.php?op=userinfo&module=NS-User&uname=`$comments[comments].uname`"]-->
+    <!--[assign  var="url_message"   value="modules.php?op=modload&name=Messages&file=replypmsg&send=1&uname=`$comments[comments].uname`"]-->
+    <!--[assign  var="url_comment"   value="`$commenturl`&authid=`$authid`&EZComments_redirect=`$redirect`&EZComments_modname=`$modname`&EZComments_objectid=`$objectid`&EZComments_replyto=`$comments[comments].id`"]-->
+    <!--[assign  var="url_del"       value="`$delurl`&authid=`$authid`&EZComments_redirect=`$redirect`&EZComments_id=`$comments[comments].id`"]-->
+		
+    <div style="margin-left: <!--[math equation="x * 2" x=$comments[comments].level]-->em">	
+      <div style="width:99%; background-color:<!--[$bgcolor1]-->; padding:4px;">
+        <font class="pn-title"><!--[$comments[comments].subject]--></font>
+				<br> 
+				<font class="pn-normal"><!--[$smarty.const._EZCOMMENTS_COMMENT_FROM]--> <!--[$comments[comments].uname]--></font>
+				<br /> 
+				<font class="pn-sub"><!--[$smarty.const._EZCOMMENTS_COMMENT_ON]--> <!--[$comments[comments].date|date_format:"%d.%m.%y, %H:%M"]--></font>
+				<br />
+				<font class="pn-sub">( 
+				<a class="pn-sub" href="<!--[$url_userinfo]-->">Benutzerinfo</a>
+				|
+				<a class="pn-sub" href="<!--[$url_message]-->">Nachricht senden</a>
+				)</font>
+				<br />
+        <font class="pn-normal">
+        <!--[$comments[comments].comment]-->							
+				</font>
+        </div>
+        <br />
+        <div align="center">
+          <!--[if $allowadd]-->
+            <font class="pn-normal">[ <a class="pn-normal" href="<!--[$url_comment]-->"><!--[$smarty.const._EZCOMMENTS_COMMENT_ANSWER]--></a> ]</font>
+          <!--[/if]-->
+          <!--[if $comments[comments].del]-->
+            <font class="pn-normal">[ <a class="pn-normal" href="<!--[$url_del]-->"><!--[$smarty.const._EZCOMMENTS_DEL]--></a> ]</font>
+          <!--[/if]-->
+        </div>
+    </div>	
 		<br />
-		<a href="<!--[$delurl]-->&authid=<!--[$authid]-->&EZComments_redirect=<!--[$redirect|rawurlencode]-->&EZComments_id=<!--[$comments[comments].id]-->"><!--[$smarty.const._EZCOMMENTS_DEL]--></a>
-    <!--[/if]-->
-  </div>
     <!--[/section]-->
 
-    <!--[if $allowadd]-->
+  <!--[if $allowadd]-->
     <form action="<!--[$commenturl]-->" method="post">
       <input type="hidden" name="authid" id="authid" value="<!--[$authid]-->" /> 
 			<input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect]-->" />
@@ -35,6 +83,10 @@
 			<input type="hidden" name="EZComments_objectid" id="EZComments_objectid" value="<!--[$objectid]-->" /> 
 			<input type="submit" value="<!--[$smarty.const._EZCOMMENTS_COMMENT_ADD]-->" />
     </form>
-    <!--[/if]-->
+  <!--[else]-->
+    <!--[$smarty.const._EZCOMMENTS_ONLYREG]-->
+		<br />
+  	<a href="user.php"><!--[$smarty.const._EZCOMMENTS_GOTOREG]--></a>
+  <!--[/if]-->
 </div>
 
