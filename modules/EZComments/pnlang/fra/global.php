@@ -85,4 +85,16 @@ define('_EZCOMMENTS_ITEMSPERPAGE',      'Nombre de commentaires par page');
 
 define('_EZCOMMENTS_AUTHOR',            'Auteur');
 
+// navigation bar
+define('_EZCOMMENTS_DISPLAY',            'Affichage');
+define('_EZCOMMENTS_FLAT',               'A plat');
+define('_EZCOMMENTS_NEWESTFIRST',        'Les plus récents d\'abord');
+define('_EZCOMMENTS_OLDESTFIRST',        'Les plus anciens d\'abord');
+define('_EZCOMMENTS_ORDER',              'Ordre');
+define('_EZCOMMENTS_THREADED',           'Par discussions');
+
+define('_EZCOMMENTS_ALLOWANONUSERSETINFO', 'Permettre aux invités de laisser des informations personnelles');
+define('_EZCOMMENTS_ANONNAME',             'Nom');
+define('_EZCOMMENTS_ANONMAIL',             'Addresse E-mail'); 
+
 ?>
