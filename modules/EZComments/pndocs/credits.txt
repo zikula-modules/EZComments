@@ -18,6 +18,7 @@ Stefano Garuti
 
 Steffen Voss 
   -- for doing the first beta tests on the module
+  -- for small additions to the code and new default templates (pnForum look&feel)
 
 My wife and my daughter
   -- I love you!
