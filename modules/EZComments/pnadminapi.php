@@ -14,30 +14,6 @@
 // Original Author of file: Jörg Napp, http://postnuke.lottasophie.de
 // ----------------------------------------------------------------------
 
-function EZComments_adminapi_countitems()
-{
-	if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_OVERVIEW)) {
-		return false;
-	} 
-	
-	// Get datbase setup
-	$dbconn =& pnDBGetConn(true);
-	$pntable =& pnDBGetTables();
-
-	$EZCommentstable = $pntable['EZComments'];
-    $sql = "SELECT COUNT(1)
-            FROM $EZCommentstable";
-    $result =& $dbconn->Execute($sql);
-
-    if ($dbconn->ErrorNo() != 0) {
-        return false;
-    }
-    list($numitems) = $result->fields;
-    $result->Close();
-    return $numitems;
-}
-
-
 /**
  * EZComments_adminapi_getUsedModules()
  * 

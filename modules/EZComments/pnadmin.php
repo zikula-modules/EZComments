@@ -92,7 +92,7 @@ function EZComments_admin_main()
     // function returns a simple count of the total number of items in the item
     // table so that the pager function can do its job properly
     $pnRender->assign('pager', array('numitems'     => pnModAPIFunc('EZComments',
-                                                                    'admin',
+                                                                    'user',
                                                                     'countitems'),
                                      'itemsperpage' => $itemsperpage));
 
