@@ -29,6 +29,9 @@
  */
 function EZComments_user_view($args)
 {
+	$modname = pnModGetName();
+	$objectid = $args['objectid'];
+
 	if (!pnSecAuthAction(0, 'EZComments::', "$modname:$objectid: ", ACCESS_OVERVIEW)) {
 		return _EZCOMMENTS_NOAUTH;
 	} 
@@ -37,14 +40,10 @@ function EZComments_user_view($args)
 		return _LOADFAILED;
 	}
 
-	$modname = pnModGetName();
-	$objectid = $args['objectid'];
-	$extrainfo = $args['extrainfo'];
-
 	$items = pnModAPIFunc('EZComments',
-			  'user',
-			  'getall',
-			  compact('modname', 'objectid'));
+			              'user',
+			              'getall',
+			               compact('modname', 'objectid'));
 
 	if ($items === false) {
 		return _EZCOMMENTS_FAILED;
@@ -79,7 +78,7 @@ function EZComments_user_view($args)
 	$smarty->assign('allowadd', pnSecAuthAction(0, 'EZComments::', "$modname:$objectid: ", ACCESS_COMMENT));
 	$smarty->assign('delurl',   pnModURL('EZComments', 'user', 'delete'));
 	$smarty->assign('addurl',   pnModURL('EZComments', 'user', 'create'));
-	$smarty->assign('redirect', pnVarPrepForDisplay($extrainfo));
+	$smarty->assign('redirect', pnVarPrepForDisplay($args['extrainfo']));
 	$smarty->assign('modname',  pnVarPrepForDisplay($modname));
 	$smarty->assign('objectid', pnVarPrepForDisplay($objectid));
 	
