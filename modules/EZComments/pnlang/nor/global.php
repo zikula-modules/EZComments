@@ -20,6 +20,8 @@
 
 define('_EZCOMMENTS',         			'Kommentarer');
 define('_EZCOMMENTS_NOAUTH',   			'Ingen adgang til kommentarer.');
+define('_EZCOMMENTS_ONLYREG',   		'Only logged in users are allowed to comment.');	// Translate me!
+define('_EZCOMMENTS_GOTOREG',   		'register/log in');		// Translate me!
 define('_EZCOMMENTS_ADD',      			'Legg til');
 define('_EZCOMMENTS_DEL', 	 			'Slett denne kommentarent');
 define('_EZCOMMENTS_COMMENT_ADD', 		'Legg til en kommentar:');

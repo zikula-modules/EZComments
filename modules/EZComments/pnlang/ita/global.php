@@ -19,7 +19,9 @@
 // ----------------------------------------------------------------------
 
 define('_EZCOMMENTS',                   'Commenti');
-define('_EZCOMMENTS_NOAUTH',            'Impossibile accedere ai commenti');
+define('_EZCOMMENTS_NOAUTH',            'Impossibile accedere ai commenti');	
+define('_EZCOMMENTS_ONLYREG',   		'Only logged in users are allowed to comment.');	// Translate me!
+define('_EZCOMMENTS_GOTOREG',   		'register/log in');		// Translate me!
 define('_EZCOMMENTS_ADD',               'Aggiungi');
 define('_EZCOMMENTS_DEL',               'Cancella questo commento');
 define('_EZCOMMENTS_COMMENT_ADD',       'Aggiungi un nuovo commento:');

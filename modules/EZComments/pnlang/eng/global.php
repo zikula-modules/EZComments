@@ -20,6 +20,8 @@
 
 define('_EZCOMMENTS', 		  			'Comments');
 define('_EZCOMMENTS_NOAUTH',   			'No access to comments.');
+define('_EZCOMMENTS_ONLYREG',   		'Only logged in users are allowed to comment.');
+define('_EZCOMMENTS_GOTOREG',   		'register/log in');
 define('_EZCOMMENTS_ADD', 	  			'Add');
 define('_EZCOMMENTS_DEL',      			'Delete this comment');
 define('_EZCOMMENTS_COMMENT_ADD', 		'Add a new Comment:');
