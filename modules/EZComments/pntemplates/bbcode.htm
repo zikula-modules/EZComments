@@ -1,0 +1,136 @@
+<!--[* $Id$              *]-->
+<!--[*                                                                    *]-->
+<!--[* EZComments                                                         *]-->
+<!--[* Attach comments to any module calling hooks                        *]-->
+<!--[*                                                                    *]-->
+<!--[* Use this file to include it in your templates to show bbcodes      *]-->
+<!--[*                                                                    *]-->
+<!--[* This file was copied from the output of the pnforum                *]-->
+  
+  
+<script type="text/javascript">
+function x () {
+  return;
+}
+  
+function DoSmilie(SmilieCode) {
+	 var SmilieCode;
+ 	 var revisedMessage;
+ 	 var currentMessage = document.getElementById('EZComments_comment').value;
+ 	 revisedMessage = currentMessage+SmilieCode;
+ 	 document.getElementById('EZComments_comment').value=revisedMessage;
+ 	 document.getElementById('EZComments_comment').focus();
+   return;
+}
+  
+function DoPrompt(action) {
+  var revisedMessage;
+  var currentMessage = document.getElementById('EZComments_comment').value;
+  
+  if (action == "url") {
+    var thisURL = prompt("Enter the URL for the link you want to add:", "http://");
+    var thisTitle = prompt("Enter the web site title:", "Page title:");
+    var urlBBCode = "[URL="+thisURL+"]"+thisTitle+"[/URL]";
+    revisedMessage = currentMessage+urlBBCode;
+    document.getElementById('EZComments_comment').value=revisedMessage;
+    document.getElementById('EZComments_comment').focus();
+    return;
+  }
+  
+  if (action == "email") {
+    var thisEmail = prompt("Enter the email address you want to add:", "");
+    var emailBBCode = "[EMAIL]"+thisEmail+"[/EMAIL]";
+    revisedMessage = currentMessage+emailBBCode;
+    document.getElementById('EZComments_comment').value=revisedMessage;
+    document.getElementById('EZComments_comment').focus();
+    return;
+  }
+  
+  if (action == "bold") {
+    var thisBold = prompt("Enter the text that you want to make bold:", "");
+    var boldBBCode = "[B]"+thisBold+"[/B]";
+    revisedMessage = currentMessage+boldBBCode;
+    document.getElementById('EZComments_comment').value=revisedMessage;
+    document.getElementById('EZComments_comment').focus();
+    return;
+  }
+  
+  if (action == "italic") {
+    var thisItal = prompt("Enter the text that you want to make italic:", "");
+    var italBBCode = "[I]"+thisItal+"[/I]";
+    revisedMessage = currentMessage+italBBCode;
+    document.getElementById('EZComments_comment').value=revisedMessage;
+    document.getElementById('EZComments_comment').focus();
+    return;
+  }
+  
+  if (action == "image") {
+    var thisImage = prompt("Enter the URL for the image you want to display:", "http://");
+    var imageBBCode = "[IMG]"+thisImage+"[/IMG]";
+    revisedMessage = currentMessage+imageBBCode;
+    document.getElementById('EZComments_comment').value=revisedMessage;
+    document.getElementById('EZComments_comment').focus();
+    return;
+  }
+  
+  if (action == "quote") {
+    var quoteBBCode = "[QUOTE]  [/QUOTE]";
+    revisedMessage = currentMessage+quoteBBCode;
+    document.getElementById('EZComments_comment').value=revisedMessage;
+    document.getElementById('EZComments_comment').focus();
+    return;
+  }
+  
+  if (action == "code") {
+    var codeBBCode = "[CODE]  [/CODE]";
+    revisedMessage = currentMessage+codeBBCode;
+    document.getElementById('EZComments_comment').value=revisedMessage;
+    document.getElementById('EZComments_comment').focus();
+    return;
+  }
+  
+  if (action == "listopen") {
+    var liststartBBCode = "[LIST]";
+    revisedMessage = currentMessage+liststartBBCode;
+    document.getElementById('EZComments_comment').value=revisedMessage;
+    document.getElementById('EZComments_comment').focus();
+    return;
+  }
+  
+  if (action == "listclose") {
+    var listendBBCode = "[/LIST]";
+    revisedMessage = currentMessage+listendBBCode;
+    document.getElementById('EZComments_comment').value=revisedMessage;
+    document.getElementById('EZComments_comment').focus();
+    return;
+  }
+  
+  if (action == "listitem") {
+    var thisItem = prompt("Enter the new list item. Note that each list group must be preceeded by a List Open and must be ended with List Close:", "");
+    var itemBBCode = "[*]"+thisItem;
+    revisedMessage = currentMessage+itemBBCode;
+    document.getElementById('EZComments_comment').value=revisedMessage;
+    document.getElementById('EZComments_comment').focus();
+    return;
+  }
+
+}
+</script>
+
+<div id="bbcode">
+Click on the buttons to add <a href="modules.php?op=modload&amp;name=Messages&amp;file=bbcode_ref" target="_blank">BBCode</a> to your message:<br><br>
+
+<a href="javascript: x()" onClick="DoPrompt('url');"><img src="modules/EZComments/pnimages/bbcode/b_url.gif" width="59" height="18" border="0" alt="BBCode URL"></a>
+<a href="javascript: x()" onClick="DoPrompt('email');"><img src="modules/EZComments/pnimages/bbcode/b_email.gif" width="59" height="18" border="0" alt="BBCode: Email"></a>
+<a href="javascript: x()" onClick="DoPrompt('image');"><img src="modules/EZComments/pnimages/bbcode/b_image.gif" width="59" height="18" border="0" alt="BBCode: Bild Image"></a>
+<a href="javascript: x()" onClick="DoPrompt('bold');"><img src="modules/EZComments/pnimages/bbcode/b_bold.gif" width="59" height="18" border="0" alt="BBCode: bold"></a>
+
+<a href="javascript: x()" onClick="DoPrompt('italic');"><img src="modules/EZComments/pnimages/bbcode/b_italic.gif" width="59" height="18" border="0" alt="BBCode: italic"></a>
+<br/>
+
+<a href="javascript: x()" onClick="DoPrompt('quote');"><img src="modules/EZComments/pnimages/bbcode/b_quote.gif" width="59" height="18" border="0" alt="BBCode: Quote"></a>
+<a href="javascript: x()" onClick="DoPrompt('code');"><img src="modules/EZComments/pnimages/bbcode/b_code.gif" width="59" height="18" border="0" alt="BBCode: Code"></a>
+<a href="javascript: x()" onClick="DoPrompt('listopen');"><img src="modules/EZComments/pnimages/bbcode/b_listopen.gif" width="59" height="18" border="0" alt="BBCode: List open"></a>
+<a href="javascript: x()" onClick="DoPrompt('listitem');"><img src="modules/EZComments/pnimages/bbcode/b_listitem.gif" width="59" height="18" border="0" alt="BBCode: Listitem"></a>
+<a href="javascript: x()" onClick="DoPrompt('listclose');"><img src="modules/EZComments/pnimages/bbcode/b_listclose.gif" width="59" height="18" border="0" alt="BBCode: List close"></a>
+</div>
