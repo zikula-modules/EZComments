@@ -22,20 +22,21 @@
 $modversion['name']        = 'EZComments';
 $modversion['version']     = '0.2';
 $modversion['description'] = 'Attach comments to pages using hooks';
+
 // I suspect these are not respected as the should
 $modversion['admin']       = 1;
 $modversion['user']        = 0;
 
 // Information for the credits module
+$modversion['changelog']   = 'pndocs/changelog.txt';
 $modversion['credits']     = 'pndocs/credits.txt';
 $modversion['help']        = 'pndocs/install.txt';
-$modversion['changelog']   = 'pndocs/changelog.txt';
 $modversion['license']     = 'pndocs/license.txt';
 $modversion['official']    = 0;
 $modversion['author']      = 'Joerg Napp';
 $modversion['contact']     = 'http://lottasophie.sourceforge.net/';
 
 // This one adds the info to the DB, so that users can click on the 
-// headings in the permission moduls
+// headings in the permission module
 $modversion['securityschema'] = array('EZComments::' => 'Module:Item ID:Comment ID');
 ?>
