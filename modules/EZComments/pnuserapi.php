@@ -39,6 +39,8 @@
  * @param     $args['objectid']  ID of the item to get comments for
  * @param     $args['startnum']  First comment
  * @param     $args['numitems']  number of comments
+ * @param     $args['sortorder'] order to sort the comments
+ * @param     $args['sortby']    field to sort the comments by
  * @return    array              array of items, or false on failure
  */ 
 function EZComments_userapi_getall($args)
@@ -80,6 +82,19 @@ function EZComments_userapi_getall($args)
 		                AND $EZCommentscolumn[objectid] = '$queryobjectid'";
 	}
 
+	// form the order clause
+	$orderstring = '';
+	if (isset($sortby) && isset($EZCommentscolumn[$sortby])) {
+		$orderstring = "ORDER BY $EZCommentscolumn[$sortby]";
+	} else {
+		$orderstring = "ORDER BY $EZCommentscolumn[date]";
+	}
+
+	$orderby = 'DESC';
+	if (isset($sortorder) && (strtoupper($sortorder) == 'DESC' || strtoupper($sortorder) == 'ASC')) {
+		$orderby = $sortorder;
+	}
+
 	// Get items
 	$sql = "SELECT $EZCommentscolumn[id],
                    $EZCommentscolumn[modname],
@@ -91,8 +106,7 @@ function EZComments_userapi_getall($args)
                    $EZCommentscolumn[subject],
                    $EZCommentscolumn[replyto]
             FROM $EZCommentstable
-            $wherestring
-            ORDER BY $EZCommentscolumn[date] DESC";
+            $wherestring $orderstring $orderby";
     $result = $dbconn->SelectLimit($sql, $numitems, $startnum-1);			
 
 	// Check for an error with the database code, and if so set an appropriate

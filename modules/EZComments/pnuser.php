@@ -59,17 +59,26 @@ function EZComments_user_main($args)
  */
 function EZComments_user_view($args)
 {
-    $modname = pnModGetName();
-    $objectid = $args['objectid'];
-
     if (!pnSecAuthAction(0, 'EZComments::', "$modname:$objectid: ", ACCESS_OVERVIEW)) {
         return _EZCOMMENTS_NOAUTH;
     }
 
+	// work out the input from the hook
+    $modname = pnModGetName();
+    $objectid = $args['objectid'];
+
+	// we may get some input in from the navigation bar
+	list ($ezcomments_template, $ezcomments_order) = pnVarCleanFromInput('ezcomments_template', 'ezcomments_order');
+
+	if ($ezcomments_order == 1) {
+		$sortorder = 'DESC';
+	} else {
+		$sortorder = 'ASC';
+	}
     $items = pnModAPIFunc('EZComments',
                           'user',
                           'getall',
-                           compact('modname', 'objectid'));
+                           compact('modname', 'objectid','sortorder'));
 
     if ($items === false) {
         return _EZCOMMENTS_FAILED;
@@ -84,6 +93,7 @@ function EZComments_user_view($args)
     $pnRender->caching=false;
 
     $pnRender->assign('comments',   $comments);
+	$pnRender->assign('order',      $ezcomments_order);
     $pnRender->assign('allowadd',   pnSecAuthAction(0, 'EZComments::', "$modname:$objectid: ", ACCESS_COMMENT));
     if (!is_array($args['extrainfo'])) {
     	$pnRender->assign('redirect',   $args['extrainfo']);
@@ -102,9 +112,19 @@ function EZComments_user_view($args)
 	if (pnModIsHooked('pn_bbsmile', 'EZComments')) {
 		$pnRender->assign('smilies', true);
 	}
+
     // find out which template to use
-    $template = isset($args['template']) ? $args['template'] : 'ezcomments_user_view.htm';
-    return $pnRender->fetch(pnModGetVar('EZComments', 'template') . '/'. $template);
+	$template = pnModGetVar('EZComments', 'template');
+	if (!empty($ezcomments_template)) {
+		$template = $ezcomments_template;
+	} else if (isset($args['template'])) {
+		$template = $args['template'];
+	}
+	if (!$pnRender->template_exists(pnVarPrepForOS($template))) {
+		$template = pnModGetVar('EZComments', 'template');
+	}
+	$pnRender->assign('template', $template);
+    return $pnRender->fetch(pnVarPrepForOS($template) . '/ezcomments_user_view.htm');
 } 
 
 /**

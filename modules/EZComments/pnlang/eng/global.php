@@ -85,4 +85,11 @@ define('_EZCOMMENTS_ITEMSPERPAGE',      'Items per page');
 define('_EZCOMMENTS_AUTHOR',            'Author');
 define('_EZCOMMENTS_COMMENT',           'Comment');
 
+// navigation bar
+define('_EZCOMMENTS_DISPLAY',            'Display');
+define('_EZCOMMENTS_FLAT',               'Flat');
+define('_EZCOMMENTS_NEWESTFIRST',        'Newest First');
+define('_EZCOMMENTS_OLDESTFIRST',        'Oldest First');
+define('_EZCOMMENTS_ORDER',              'Order');
+define('_EZCOMMENTS_THREADED',           'Threaded');
 ?>
