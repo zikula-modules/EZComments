@@ -86,7 +86,9 @@
 					<a id="bottom">&nbsp;</a>
 				</td>
 				<td bgcolor="<!--[pnthemegetvar name=bgcolor3]-->" valign="top">
-					<!--[include file="bbcode.htm"]-->
+					<!--[if $bbcode]-->
+						<!--[include file="bbcode.htm"]-->
+					<!--[/if]-->
 					<form action="<!--[pnmodurl modname=EZComments func=create]-->" method="post">
 						<input type="hidden" name="authid" id="authid" value="<!--[pnsecgenauthkey modname=EZComments]-->" /> 
 						<input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect]-->" /> 
@@ -95,7 +97,9 @@
 						<textarea name="EZComments_comment" id="EZComments_comment" cols="60" rows="10"></textarea>
 						<input type="submit" value="<!--[pnml name=_EZCOMMENTS_ADD]-->" />
 					</form>
-					<!--[include file="smilies.htm"]-->
+					<!--[if $smilies]-->
+						<!--[include file="smilies.htm"]-->
+					<!--[/if]-->
 				</td>
 			</tr>
 		<!--[/if]-->

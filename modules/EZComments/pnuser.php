@@ -92,7 +92,14 @@ function EZComments_user_view($args)
     $pnRender->assign('commenturl', pnModURL('EZComments', 'user', 'comment'));
     $pnRender->assign('redirect',   pnVarPrepForDisplay($args['extrainfo']));
     $pnRender->assign('objectid',   pnVarPrepForDisplay($objectid));
-    
+
+	// check for some useful hooks
+	if (pnModIsHooked('pn_bbcode', 'EZComments')) {
+		$pnRender->assign('bbcode', true);
+	}
+	if (pnModIsHooked('pn_bbsmile', 'EZComments')) {
+		$pnRender->assign('smilies', true);
+	}
     // find out which template to use
     $template = isset($args['template']) ? $args['template'] : 'default.htm';
     return $pnRender->fetch($template);
