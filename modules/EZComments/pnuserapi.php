@@ -37,22 +37,33 @@
  * 
  * @param     $args['modname']   Name of the module to get comments for
  * @param     $args['objectid']  ID of the item to get comments for
+ * @param     $args['startnum']  First comment
+ * @param     $args['numitems']  number of comments
  * @return    array              array of items, or false on failure
  */ 
 function EZComments_userapi_getall($args)
 {
 	extract($args);
 
-	if (!isset($modname) || !isset($objectid)) {
-		pnSessionSetVar('errormsg', _MODARGSERROR);
-		return false;
-	} 
-
+    if (!isset($startnum)) {
+        $startnum = 1;
+    }
+    if (!isset($numitems)) {
+        $numitems = -1;
+    }
 	$items = array(); 
+
 	// Security check
-	if (!pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:", ACCESS_READ)) {
-		return $items;
-	} 
+	if (isset($modname) && isset($objectid)) {
+    	if (!pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:", ACCESS_READ)) {
+    		return $items;
+    	} 
+	} else {
+    	if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_OVERVIEW)) {
+    		return $items;
+    	} 
+	}
+
 	// Get datbase setup
 	$dbconn =& pnDBGetConn(true);
 	$pntable =& pnDBGetTables();
@@ -60,21 +71,30 @@ function EZComments_userapi_getall($args)
 	$EZCommentstable = $pntable['EZComments'];
 	$EZCommentscolumn = &$pntable['EZComments_column']; 
 	
-	$querymodname = pnVarPrepForStore($modname);
-	$queryobjectid = pnVarPrepForStore($objectid);
+	list($querymodname, $queryobjectid) = pnVarPrepForStore($modname, $objectid);
+
+	// form where clause
+	$wherestring = '';
+	if (isset($modname) && isset($objectid)) {
+		$wherestring = "WHERE $EZCommentscolumn[modname] = '$querymodname'
+		                AND $EZCommentscolumn[objectid] = '$queryobjectid'";
+	}
+
 	// Get items
 	$sql = "SELECT $EZCommentscolumn[id],
+                   $EZCommentscolumn[modname],
+                   $EZCommentscolumn[objectid],
+                   $EZCommentscolumn[url],
 				   $EZCommentscolumn[date],
                    $EZCommentscolumn[uid],
                    $EZCommentscolumn[comment],
                    $EZCommentscolumn[subject],
                    $EZCommentscolumn[replyto]
             FROM $EZCommentstable
-            WHERE $EZCommentscolumn[modname] = '$querymodname'
-              AND $EZCommentscolumn[objectid] = '$queryobjectid'
-            ORDER BY $EZCommentscolumn[date]";
+            $wherestring
+            ORDER BY $EZCommentscolumn[date] DESC";
+    $result = $dbconn->SelectLimit($sql, $numitems, $startnum-1);			
 
-	$result =& $dbconn->Execute($sql); 
 	// Check for an error with the database code, and if so set an appropriate
 	// error message and return
 	if ($dbconn->ErrorNo() != 0) {
@@ -86,9 +106,12 @@ function EZComments_userapi_getall($args)
 	// individually to ensure that the user is allowed access to it before it
 	// is added to the results array
 	for (; !$result->EOF; $result->MoveNext()) {
-		list($id, $date, $uid, $comment, $subject, $replyto) = $result->fields;
+		list($id, $modname, $objectid, $url, $date, $uid, $comment, $subject, $replyto) = $result->fields;
 		if (pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:$id", ACCESS_READ)) {
 			$items[] = compact('id',
+			                   'modname',
+			                   'objectid',
+			                   'url',
                 			   'date',
 							   'uid',
 							   'comment',
@@ -96,7 +119,7 @@ function EZComments_userapi_getall($args)
 							   'replyto');
 		} 
 	} 
-	$result->Close(); 
+	$result->Close();
 	// Return the items
 	return $items;
 } 

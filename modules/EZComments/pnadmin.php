@@ -57,7 +57,7 @@ function EZComments_admin_main()
 
 	// call the api to get all current comments
 	$items = pnModAPIFunc('EZComments',
-            			  'admin',
+            			  'user',
             			  'getall',
                           array('startnum' => $startnum,
                                 'numitems' => $itemsperpage));
