@@ -1,0 +1,16 @@
+<!--[*  $Id$  *]-->
+<!--[include file="ezcomments_admin_menu.htm"]-->
+<h2><!--[pnml name="_EZCOMMENTS_MIGRATE_EXPLAIN"]--></h2>
+<form class="pn-adminform" action="<!--[pnmodurl modname="EZComments" type="admin" func="migrate_go"]-->" method="post" enctype="application/x-www-form-urlencoded">
+<div>
+	<input type="hidden" name="authid" value="<!--[pnsecgenauthkey module="EZComments"]-->" />
+	<div class="pn-adminformrow">
+		<label for="ezcomments_migrate"><!--[pnml name="_EZCOMMENTS_MIGRATE_LABEL"]--></label>
+		<select id="ezcomments_migrate" name="EZComments_migrate"><!--[html_options options=$selectitems]--></select>
+	</div>
+	<div class="pn-adminformrow">
+	<input name="submit" type="submit" value="<!--[pnml name="_EZCOMMENTS_MIGRATE_GO"]-->" />
+	</div>
+	<div style="clear:both"></div>
+</div>
+</form>
