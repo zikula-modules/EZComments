@@ -14,5 +14,5 @@
 // Original Author of file: Jörg Napp, http://postnuke.lottasophie.de
 // ----------------------------------------------------------------------
 
-require_once 'global.php';
+require_once dirname(__FILE__) . '/' . 'global.php';
 ?>
