@@ -535,7 +535,7 @@ function EZComments_userapi_gettemplates()
 	$modinfo = pnModGetInfo(pnModGetIDFromName('EZComments'));
 
 	$templates = array();
-    $handle = opendir('modules/'.$modinfo['directory'].'/pntemplates/');
+    $handle = opendir('modules/'.pnVarPrepForOS($modinfo['directory']).'/pntemplates/');
     while ($f = readdir($handle)) {
 	    if ($f != '.' && $f != '..' && $f != 'CVS' && !ereg("[.]", $f) && $f != 'plugins') {
 	    	$templates[] = $f;
