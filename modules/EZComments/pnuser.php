@@ -63,7 +63,7 @@ function EZComments_user_view($args)
 				$comment['uname'] = pnConfigGetVar('Anonymous');
 			}
 			
-			$comment['comment'] = pnVarPrepHTMLDisplay(pnVarCensor($item['comment']));
+			$comment['comment'] = pnVarPrepHTMLDisplay(pnVarCensor(nl2br($item['comment'])));
 			$comment['del'] = (pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:$item[id]", ACCESS_DELETE));
 			
 			$comments[] = $comment;
