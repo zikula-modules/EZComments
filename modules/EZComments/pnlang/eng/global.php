@@ -81,4 +81,8 @@ define('_EZCOMMENTS_SUBJECT',           'Subject');
 define('_EZCOMMENTS_EDIT',              'Edit Comment');
 define('_EZCOMMENTS_DELETE',            'Delete Comment');
 define('_EZCOMMENTS_ITEMSPERPAGE',      'Items per page');
+
+define('_EZCOMMENTS_AUTHOR',            'Author');
+define('_EZCOMMENTS_COMMENT',           'Comment');
+
 ?>
