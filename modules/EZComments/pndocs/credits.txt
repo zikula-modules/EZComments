@@ -5,7 +5,7 @@ Credits to:
 Everybody who uses this module and gave feedback, especially to the following kind persons:
 
 Mark West
-  -- for looking through the code and provining a lot of bugfixes
+  -- for looking through the code and providing a lot of bugfixes
 
 Andreas Stratmann
   -- for pointing me to the php function class_exists -- good for Smarty
