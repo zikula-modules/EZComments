@@ -87,9 +87,21 @@ function EZComments_init()
 		return false;
 	}
 
+	// register the module delete hook
+	if (!pnModRegisterHook('module',
+                		   'delete',
+						   'API',
+						   'EZComments',
+						   'admin',
+						   'deletemodule')) {
+		pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED2);
+	}	
+
 	pnModSetVar('EZComments', 'MailToAdmin', false);
 	pnModSetVar('EZComments', 'migrated', serialize(array()));
 	pnModSetVar('EZComments', 'template', 'AllOnOnePage');
+	pnModSetVar('EZComments', 'itemsperpage', 25);
+
 	// Initialisation successful
 	return true;
 } 
@@ -188,7 +200,28 @@ function EZComments_upgrade($oldversion)
 	}
 	if ($oldversion == '0.4') {
 		pnModSetVar('EZComments', 'template', 'AllOnOnePage');
-	}	
+		$oldversion = '0.5';
+	}
+	if ($oldversion == '0.5') {
+		pnModSetVar('EZComments', 'itemsperpage', 25);
+		// get all modules hooked to ezcomments
+		$hookedmodules = pnModAPIFunc('Modules', 'admin', 'gethookedmodules', array('hookmodname'=> 'EZComments'));
+		if (!pnModRegisterHook('module',
+		                       'delete',
+							   'API',
+							   'EZComments',
+							   'admin',
+							   'deletemodule')) {
+			pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED2);
+		}	
+		foreach ($hookedmodules as $modname => $hooktype) {
+			// disable the hooks for this module
+			pnModAPIFunc('Modules', 'admin', 'disablehooks', array('callermodname' => $modname, 'hookmodname' => 'EZComments'));
+			// re-enable the hooks for this module
+			pnModAPIFunc('Modules', 'admin', 'enablehooks', array('callermodname' => $modname, 'hookmodname' => 'EZComments'));
+		}
+
+	}
 	return true;
 } 
 
@@ -232,9 +265,21 @@ function EZComments_delete()
         return false;
 	}
 
+    if (!pnModUnregisterHook('module',
+                             'delete',
+                             'API',
+                             'EZComments',
+                             'admin',
+                             'deletemodule')) {
+        pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED4);
+        return false;
+	}
+
 	pnModDelVar('EZComments', 'MailToAdmin');
 	pnModDelVar('EZComments', 'migrated');
 	pnModDelVar('EZComments', 'template');	
+	pnModDelVar('EZcomments', 'itemsperpage');
+
 	// Deletion successful
 	return true;
 } 
