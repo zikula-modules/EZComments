@@ -126,7 +126,7 @@ function EZComments_userapi_create($args)
 		return false;
 	} 
 
-	if (!isset($replyto)) {
+	if (!$replyto) {
 	    $replyto = -1;
 	}	
 	
