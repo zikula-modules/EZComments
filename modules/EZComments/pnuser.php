@@ -185,10 +185,9 @@ function EZComments_user_comment($args)
     $pnRender->caching=false;
 
     $pnRender->assign('comments', $comments);
-    $pnRender->assign('authid',   pnSecGenAuthKey('EZComments'));
     $pnRender->assign('allowadd', pnSecAuthAction(0, 'EZComments::', "$EZComments_modname:$EZComments_objectid: ", ACCESS_COMMENT));
     $pnRender->assign('addurl',   pnModURL('EZComments', 'user', 'create'));
-	$pnRender->assign('loggedin', pnUserLoggedIn());
+    $pnRender->assign('loggedin', pnUserLoggedIn());
     $pnRender->assign('redirect', $EZComments_redirect);
     $pnRender->assign('modname',  pnVarPrepForDisplay($EZComments_modname));
     $pnRender->assign('objectid', pnVarPrepForDisplay($EZComments_objectid));
