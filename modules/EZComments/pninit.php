@@ -220,7 +220,7 @@ function EZComments_delete()
     if (!pnModUnregisterHook('item',
                              'delete',
                              'API',
-                             'EZComments_delete',
+                             'EZComments',
                              'admin',
                              'deletebyitem')) {
         pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED4);
