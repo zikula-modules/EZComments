@@ -3,7 +3,7 @@
 
 <!--[* pndebug *]-->
 
-<!--[if $allowadd eq true or $comments eq true]-->
+<!--[if $comments eq true]-->
 	<h3><!--[pnml name="_EZCOMMENTS"]--></h3>
 	<!--[if !$allowadd]-->
 		<!--[$smarty.const._EZCOMMENTS_ONLYREG]-->
@@ -63,8 +63,8 @@
 					<a title="<!--[ pnml name='_EZCOMMENTS_SEND_PM' ]-->" href="index.php?name=Messages&amp;file=replypmsg&amp;send=1&amp;uname=<!--[ $comments[comments].uname ]-->"><!--[ pnimg src="sendpm.gif" alt='_EZCOMMENTS_SEND_PM' altml=true ]--></a>
 				<!--[ /if ]-->
 			</td>
-			<td headers="col_1" style="text-align:right;background-color:<!--[ pnthemegetvar name=bgcolor3 ]-->;">
-				&nbsp;
+			<td headers="col_1" style="text-align:right;background-color:<!--[ pnthemegetvar name=bgcolor3 ]-->;">&nbsp;
+				
 			</td>
 		</tr>
 		<tr style="height:5px;">
@@ -79,31 +79,35 @@
 			</td>
 		</tr>
 		<!--[/section]-->
-		<!--[if $allowadd]-->
-			<!--[* This is the form to comment. It is shown only, when the user is allowed to. *]-->
-			<tr>
-				<td bgcolor="<!--[pnthemegetvar name=bgcolor3]-->" valign="top">
-					<!--[pnml name=_EZCOMMENTS_COMMENT_ADD]-->
-					<a id="bottom">&nbsp;</a>
-				</td>
-				<td bgcolor="<!--[pnthemegetvar name=bgcolor3]-->" valign="top">
-					<!--[if $bbcode]-->
-						<!--[include file="bbcode.htm"]-->
-					<!--[/if]-->
-					<form action="<!--[pnmodurl modname=EZComments func=create]-->" method="post">
-					<input type="hidden" name="authid" id="authid" value="<!--[pnsecgenauthkey modname=EZComments]-->" /> 
-					<input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect]-->" /> 
-					<input type="hidden" name="EZComments_modname" id="EZComments_modname" value="<!--[pnmodgetname]-->" /> 
-					<input type="hidden" name="EZComments_objectid" id="EZComments_objectid" value="<!--[$objectid]-->" /> 
-					<textarea name="EZComments_comment" id="EZComments_comment" cols="60" rows="10"></textarea>
-					<input type="submit" value="<!--[pnml name=_EZCOMMENTS_ADD]-->" />
-					</form>
-					<!--[if $smilies]-->
-						<!--[include file="smilies.htm"]-->
-					<!--[/if]-->
-				</td>
-			</tr>
-		<!--[/if]-->
 		</tbody>
 	</table>
+<!--[/if]-->
+<!--[if $allowadd]-->
+<table border="0" cellpadding="5" cellspacing="0" width="100%">
+	<tbody>
+		<!--[* This is the form to comment. It is shown only, when the user is allowed to. *]-->
+		<tr>
+			<td bgcolor="<!--[pnthemegetvar name=bgcolor3]-->" valign="top">
+				<!--[pnml name=_EZCOMMENTS_COMMENT_ADD]-->
+				<a id="bottom">&nbsp;</a>
+			</td>
+			<td bgcolor="<!--[pnthemegetvar name=bgcolor3]-->" valign="top">
+				<!--[if $bbcode]-->
+					<!--[include file="bbcode.htm"]-->
+				<!--[/if]-->
+				<form action="<!--[pnmodurl modname=EZComments func=create]-->" method="post">
+				<input type="hidden" name="authid" id="authid" value="<!--[pnsecgenauthkey modname=EZComments]-->" /> 
+				<input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect]-->" /> 
+				<input type="hidden" name="EZComments_modname" id="EZComments_modname" value="<!--[pnmodgetname]-->" /> 
+				<input type="hidden" name="EZComments_objectid" id="EZComments_objectid" value="<!--[$objectid]-->" /> 
+				<textarea name="EZComments_comment" id="EZComments_comment" cols="60" rows="10"></textarea>
+				<input type="submit" value="<!--[pnml name=_EZCOMMENTS_ADD]-->" />
+				</form>
+				<!--[if $smilies]-->
+					<!--[include file="smilies.htm"]-->
+				<!--[/if]-->
+			</td>
+		</tr>
+	</tbody>
+</table>
 <!--[/if]-->
