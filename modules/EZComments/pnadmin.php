@@ -43,7 +43,8 @@ function EZComments_admin_main() {
 
 	$output = new pnHTML();
 	$output->SetInputMode(_PNH_VERBATIMINPUT);
-	$output->Title(_EZCOMMENTS_ADMIN);
+
+	$output->Text(EZComments_adminmenu());
 
 	$output->FormStart(pnModURL('EZComments', 'admin', 'update'));
 	$output->FormHidden('authid', pnSecGenAuthKey());
@@ -58,6 +59,7 @@ function EZComments_admin_main() {
 	
 	$output->Linebreak(3);
 
+	
 
 	// presentation values
 	// Hardcoded -- move this to an module variable?!?
@@ -199,7 +201,8 @@ function EZComments_admin_migrate()
 
 	$output = new pnHTML();
 	$output->SetInputMode(_PNH_VERBATIMINPUT);
-	$output->Title(_EZCOMMENTS_ADMIN);
+
+	$output->Text(EZComments_adminmenu());
 
 	$output->FormStart(pnModURL('EZComments', 'admin', 'domigrate'));
 	$output->FormHidden('authid', pnSecGenAuthKey());
@@ -255,4 +258,133 @@ function EZComments_admin_domigrate()
 	pnRedirect(pnModURL('EZComments', 'admin', 'migrate'));
 	return true;
 }
+/**
+ * Cleanup functionality
+ * 
+ * This is the interface to the Cleanup functionality.
+ * When a Module is deleted, EZComments doesn't know about
+ * this. Thus, any comments for this module stay in the database.
+ * With this functionality you can delete these comments.
+ * 
+ * @return output the cleanup interface
+ */
+function EZComments_admin_orphaned()
+{
+    if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
+        return _EZCOMMENTS_NOAUTH;
+    } 
+    if (!pnModAPILoad('EZComments', 'admin')) {
+        return _EZCOMMENTS_LOADFAILED;
+    } 
+
+    $usermods = pnModGetUserMods();
+    $adminmods = pnModGetAdminMods(); 
+    // build a simple array of all available modules
+    $allmods = array();
+    foreach ($usermods as $mod) {
+        $allmods[] = $mod['name'];
+    } 
+    foreach ($adminmods as $mod) {
+        $allmods[] = $mod['name'];
+    } 
+
+    $usedmods = pnModAPIFunc('EZComments', 'admin', 'getUsedModules');
+
+    $orphanedmods = array_diff($usedmods, $allmods);
+
+    $output = new pnHTML();
+    $output->SetInputMode(_PNH_VERBATIMINPUT);
+	$output->Text(EZComments_adminmenu());
+
+    if (!$orphanedmods) {
+        $output->Text(_EZCOMMENTS_CLEANUP_NOTHINGTODO);
+        $output->Linebreak(2);
+        $output->URL(pnModURL('EZComments', 'admin'), _EZCOMMENTS_CLEANUP_GOBACK);
+        return $output->GetOutput();
+    } 
+
+    $selectitems = array();
+    foreach ($orphanedmods as $mod) {
+        $selectitems[] = array('id' => $mod,
+            'name' => $mod,
+            'selected' => false);
+    } 
+
+    $output->Text(_EZCOMMENTS_CLEANUP_EXPLAIN);
+    $output->Linebreak(2);
+    $output->FormStart(pnModURL('EZComments', 'admin', 'orphaned_go'));
+    $output->FormHidden('authid', pnSecGenAuthKey());
+    $output->Text(_EZCOMMENTS_CLEANUP_LABEL . ' ');
+    $output->FormSelectMultiple('EZComments_module', $selectitems, false);
+    $output->Text(' ');
+    $output->FormSubmit(_EZCOMMENTS_CLEANUP_GO);
+    $output->FormEnd();
+    return $output->GetOutput();
+} 
+
+
+/**
+ * Do the migration
+ * 
+ * This is the function that is called to do the actual
+ * deletion of orphaned comments.
+ * 
+ * @param  $EZComments_module The Module to delete for
+ */
+function EZComments_admin_orphaned_go()
+{ 
+    // Permissions
+    if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
+        return _EZCOMMENTS_NOAUTH;
+    } 
+    // Authentication key
+    if (!pnSecConfirmAuthKey()) {
+        // return _EZCOMMENTS_NOAUTH;
+    } 
+    // API
+    if (!pnModAPILoad('EZComments', 'admin')) {
+        return _EZCOMMENTS_LOADFAILED;
+    } 
+
+    $module = pnVarCleanFromInput('EZComments_module');
+    if (!isset($module)) {
+        return _EZCOMMENTS_MODSARGSERROR;
+    } 
+
+    if (!pnModAPIFunc('EZComments', 'admin', 'deleteall', compact('module'))) {
+        return _EZCOMMENTS_GENERALFAILIURE;
+    } 
+
+    pnRedirect(pnModURL('EZComments', 'admin', 'orphaned'));
+    return true;
+} 
+
+/**
+ * EZComments_adminmenu()
+ * 
+ * Create a common header menu for all admin panels
+ * 
+ * @return output The header menu
+ */
+function EZComments_adminmenu()
+{
+    $output = new pnHTML();
+    $output->SetInputMode(_PNH_VERBATIMINPUT);
+    $output->Title(_EZCOMMENTS_ADMIN);
+    $output->Linebreak();
+    $output->Text('<div style="text-align:center;">');
+    $output->Text('[ ');
+    $output->URL(pnModURL('EZComments', 'admin'), _EZCOMMENTS_ADMIN_MAIN);
+    $output->Text(' | ');
+    $output->URL(pnModURL('EZComments', 'admin', 'orphaned'), _EZCOMMENTS_CLEANUP);
+//    $output->Text(' | ');
+//    $output->URL(pnModURL('EZComments', 'admin', 'migrate'), _EZCOMMENTS_MIGRATE);
+    $output->Text(' ]');
+    $output->Text('</div>');
+    $output->Linebreak(2);
+
+	return $output->GetOutput();
+} 
+
+
 ?>

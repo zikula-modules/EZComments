@@ -118,4 +118,85 @@ function EZComments_adminapi_countitems()
 }
 
 
+/**
+ * EZComments_adminapi_getUsedModules()
+ * 
+ * This function returns an array of the modules
+ * for which a comment is available. This is used
+ * for the "clean-up" feature that eliminates
+ * orphaned comments after a module is deletd.
+ * 
+ * @return list of all modules used 
+ */
+function EZComments_adminapi_getUsedModules()
+{
+	if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
+		return false;
+	} 
+	
+	list($dbconn) = pnDBGetConn();
+	$pntable = pnDBGetTables();
+
+	$table = $pntable['EZComments'];
+	$column = &$pntable['EZComments_column']; 
+
+    $sql = "SELECT    $column[modname]
+            FROM      $table
+			GROUP BY  $column[modname]";
+    $result = $dbconn->Execute($sql);
+
+    if ($dbconn->ErrorNo() != 0) {
+        return false;
+    }
+
+	$mods = array();
+	for (; !$result->EOF; $result->MoveNext()) {
+		list($mods[]) = $result->fields;
+	} 
+	$result->Close(); 
+
+	return $mods;
+}
+
+/**
+ * EZComments_adminapi_deleteall()
+ * 
+ * Delete all comments for a given module. Used to clean
+ * up orphaned comments.
+ * 
+ * @param $args[module] the module for which to delete for
+ * @return boolean sucess status
+ **/
+function EZComments_adminapi_deleteall($args)
+{
+	if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
+		return false;
+	} 
+
+	if (!isset($args['module'])) { 
+		return false;
+	}
+	
+	
+	list($dbconn) = pnDBGetConn();
+	$pntable = pnDBGetTables();
+
+	$table = $pntable['EZComments'];
+	$column = &$pntable['EZComments_column']; 
+
+    $sql = "DELETE FROM $table
+			WHERE $column[modname] = '$args[module]'";
+			
+    $result = $dbconn->Execute($sql);
+
+    if ($dbconn->ErrorNo() != 0) {
+	echo $dbconn->ErrorMsg;
+        return false;
+    }
+	$result->Close(); 
+
+	return true;
+}
+
+
 ?>
