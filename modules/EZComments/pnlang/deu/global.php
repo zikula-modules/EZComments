@@ -28,6 +28,8 @@ define('_EZCOMMENTS_COMMENT_ADD', 		'Einen Kommentar hinzufügen:');
 define('_EZCCOMMENTSCREATED', 			'Kommentar hinzugefügt');
 define('_EZCCOMMENTSDELETED', 			'Kommentar gelöscht');
 define('_EZCOMMENTS_FAILED',   			'Interner Fehler');
+define('_EZCOMMENTS_NODIRECTACCESS',	'Kein direkter Zugriff auf dieses Modul');
+define('_EZCOMMENTS_RULES',				'Hier sollten die Regeln für die Benutzung der Kommentaren hinterlegt werden.');
 
 define('_EZCOMMENTS_ADMIN',				'EZComments Administration');
 define('_EZCOMMENTS_SMARTYPATH',		'Pfad zur SMARTY-Installation');

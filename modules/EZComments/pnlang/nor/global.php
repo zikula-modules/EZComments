@@ -28,6 +28,7 @@ define('_EZCOMMENTS_COMMENT_ADD', 		'Legg til en kommentar:');
 define('_EZCCOMMENTSCREATED', 			'Kommentar lagt til');
 define('_EZCCOMMENTSDELETED', 			'Kommentar slettet');
 define('_EZCOMMENTS_FAILED',   			'Intern feil');
+define('_EZCOMMENTS_NODIRECTACCESS',	'No direct access to this module'); // Translate me!
 
 define('_EZCOMMENTS_ADMIN',				'EZComments Administration');           // Translate me!
 define('_EZCOMMENTS_SMARTYPATH',		'Path to your installation of SMARTY'); // Translate me!

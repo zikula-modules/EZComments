@@ -28,6 +28,7 @@ define('_EZCOMMENTS_COMMENT_ADD',       'Aggiungi un nuovo commento:');
 define('_EZCCOMMENTSCREATED',           'Commento aggiunto');
 define('_EZCCOMMENTSDELETED',           'Commento cancellato');
 define('_EZCOMMENTS_FAILED',            'Erroreinterno');
+define('_EZCOMMENTS_NODIRECTACCESS',	'No direct access to this module'); // Translate me!
 
 define('_EZCOMMENTS_ADMIN',             'Gestione di EZComments');
 define('_EZCOMMENTS_SMARTYPATH',        'Percorso a Smarty');
