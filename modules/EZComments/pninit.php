@@ -164,6 +164,7 @@ function EZComments_delete()
 	} 
 	pnModDelVar('EZComments', 'smartypath');
 	pnModDelVar('EZComments', 'MailToAdmin');
+	pnModDelVar('EZComments', 'migrated');
 	
 	// Deletion successful
 	return true;
