@@ -306,23 +306,19 @@ function EZComments_prepareCommentsForDisplay($items)
     foreach ($items as $item) {
 		$comment = $item;
 		if ($item['uid'] > 0) {
+			// get the user vars and merge into the comment array
 			$userinfo = pnUserGetVars($item['uid']);
-			//print_r ($userinfo);
-			$comment	= array_merge ($comment, $userinfo);
-			
-			$dbconn =& pnDBGetConn(true);
-			$pntable =& pnDBGetTables();
-			$activetime = time() - (pnConfigGetVar('secinactivemins') * 60);
-			$userhack = "SELECT pn_uid
-						 FROM ".$pntable['session_info']."
-						 WHERE pn_uid = '".$userinfo['pn_uid']."'
-						 AND pn_lastused > '".pnVarPrepForStore($activetime)."'";
-			$userresult = $dbconn->Execute($userhack);
-			$online_state = $userresult->GetRowAssoc(false);
+			$comment  = array_merge ($comment, $userinfo);
+
+			// work out if the user is online
 			$comment['online'] = false;
-			if($online_state['pn_uid'] == $item['uid']) {
-				$comment['online'] = true;
-				$userresult->Close();
+			if (pnModAvailable('Members_List')) {
+				if (pnModAPIFunc('Members_List', 'user', 'isonline', array('userid' => $userinfo['pn_uid']))) {
+					$comment['onlinestatus'] = true;
+					$comment['online'] = true;
+				}
+			} else {
+				$comment['onlinestatus'] = false;
 			}
 		} else {
 			$comment['uname'] = pnConfigGetVar('Anonymous');
