@@ -20,45 +20,43 @@
 
 define('_EZCOMMENTS',         			'Kommentarer');
 define('_EZCOMMENTS_NOAUTH',   			'Ingen adgang til kommentarer.');
-define('_EZCOMMENTS_ONLYREG',   		'Only logged in users are allowed to comment.');	// Translate me!
-define('_EZCOMMENTS_GOTOREG',   		'register/log in');		// Translate me!
+define('_EZCOMMENTS_ONLYREG',   		'Kun innloggede brukere har adgang til å kommentere.');
+define('_EZCOMMENTS_GOTOREG',   		'registrér deg/logg inn');
 define('_EZCOMMENTS_ADD',      			'Legg til');
-define('_EZCOMMENTS_DEL', 	 			'Slett denne kommentarent');
+define('_EZCOMMENTS_DEL', 	 			'Slett denne kommentaren');
 define('_EZCOMMENTS_COMMENT_ADD', 		'Legg til en kommentar');
-define('_EZCOMMENTS_COMMENT_ANSWER', 	'Answer');  // Translate me!
-define('_EZCOMMENTS_COMMENT_FROM',  	'by');      // Translate me!  Meaning: the autor of the comment
-define('_EZCOMMENTS_COMMENT_ON',    	'on');      // Translate me!  Meaning: the date of the comment   "by foobar on 11-11-2003"
+define('_EZCOMMENTS_COMMENT_ANSWER', 	'Svar'); 
+define('_EZCOMMENTS_COMMENT_FROM',  	'av');
+define('_EZCOMMENTS_COMMENT_ON',    	'den');
 define('_EZCCOMMENTSCREATED', 			'Kommentar lagt til');
 define('_EZCCOMMENTSDELETED', 			'Kommentar slettet');
 define('_EZCOMMENTS_FAILED',   			'Intern feil');
-define('_EZCOMMENTS_NODIRECTACCESS',	'No direct access to this module'); // Translate me!
-define('_EZCOMMENTS_RULES',				'Define the rules for your comments here');  // Translate me
+define('_EZCOMMENTS_NODIRECTACCESS',	'Ingen direkte adgang til denne modulen');
+define('_EZCOMMENTS_RULES',				'Definér reglene for dine kommentarer her');
 
-define('_EZCOMMENTS_ADMIN',				'EZComments Administration');           // Translate me!
-define('_EZCOMMENTS_ADMIN_MAIN',		'Main EZComments Administration');      // Translate me!
-define('_EZCOMMENTS_SMARTYPATH',		'Path to your installation of SMARTY'); // Translate me!
-define('_EZCOMMENTS_SENDINFOMAIL',		'send mail on new comment');            // Translate me!
-define('_EZCOMMENTS_OK', 				'Accept');                              // Translate me!
-define('_EZCOMMENTS_LASTCOMMENTS', 		'The last comments');                   // Translate me!
-define('_EZCOMMENTS_USERNAME', 			'User');                                // Translate me!
-define('_EZCOMMENTS_MODULE', 			'Module');                              // Translate me!
+define('_EZCOMMENTS_ADMIN',				'EZComments administrasjon');
+define('_EZCOMMENTS_ADMIN_MAIN',		'EZComments hoved-administrasjon');
+define('_EZCOMMENTS_SMARTYPATH',		'Filsti til din SMARTY-installasjon');
+define('_EZCOMMENTS_SENDINFOMAIL',		'send e-post ved ny kommentar');
+define('_EZCOMMENTS_OK', 				'Godta');
+define('_EZCOMMENTS_LASTCOMMENTS', 		'De seneste kommentarene');
+define('_EZCOMMENTS_USERNAME', 			'Bruker');
+define('_EZCOMMENTS_MODULE', 			'Modul');
 define('_EZCOMMENTS_COMMENT', 			'Kommentar');
 
-// Translate Me
-define('_EZCOMMENTS_CLEANUP_NOTHINGTODO', 'No orphaned comments'); 
-define('_EZCOMMENTS_CLEANUP_GOBACK',      'Back');
-define('_EZCOMMENTS_CLEANUP_EXPLAIN',     'This functionality allows you to delete comments that are in the database for removed modules.');
-define('_EZCOMMENTS_CLEANUP_LABEL',       'Select module:');
-define('_EZCOMMENTS_CLEANUP_GO',          'Delete all comments for this module');
-define('_EZCOMMENTS_CLEANUP',             'Delete orphanded comments');
+define('_EZCOMMENTS_CLEANUP_NOTHINGTODO', 'Ingen kommentarer tilknyttet fjernede moduler'); 
+define('_EZCOMMENTS_CLEANUP_GOBACK',      'Tilbake');
+define('_EZCOMMENTS_CLEANUP_EXPLAIN',     'Denne funksjonen lar deg slette kommentarer tilknyttet fjernede moduler.');
+define('_EZCOMMENTS_CLEANUP_LABEL',       'Velg modul:');
+define('_EZCOMMENTS_CLEANUP_GO',          'Slett alle kommentarer tilknyttet denne modulen');
+define('_EZCOMMENTS_CLEANUP',             'Slett kommentarer tilknyttet fjernede moduler');
 
-// Translate Me
-define('_EZCOMMENTS_MIGRATE_EXPLAIN',     'Import comments from other modules');
-define('_EZCOMMENTS_MIGRATE_NOTHINGTODO', 'No migration plugins available');
-define('_EZCOMMENTS_MIGRATE_GOBACK',      'Back');
-define('_EZCOMMENTS_MIGRATE_LABEL',       'Migrate:');
-define('_EZCOMMENTS_MIGRATE_GO',          'Start migration');
-define('_EZCOMMENTS_MIGRATE',             'Migrate Comments');
+define('_EZCOMMENTS_MIGRATE_EXPLAIN',     'Importér kommentarer fra andre moduler');
+define('_EZCOMMENTS_MIGRATE_NOTHINGTODO', 'Ingen flyttbare plugins tilgjengelige');
+define('_EZCOMMENTS_MIGRATE_GOBACK',      'Tilbake');
+define('_EZCOMMENTS_MIGRATE_LABEL',       'Flytt:');
+define('_EZCOMMENTS_MIGRATE_GO',          'Begynn flytting');
+define('_EZCOMMENTS_MIGRATE',             'Flytt kommentarer');
 
 define('_EZCOMMENTS_FAILED1', 			'Feil ved opprettelse av tabell');
 define('_EZCOMMENTS_FAILED2', 			'Feil ved opprettelse av tilknytning (hook)');
@@ -66,7 +64,7 @@ define('_EZCOMMENTS_FAILED3', 			'Feil ved sletting av tabell');
 define('_EZCOMMENTS_FAILED4', 			'Feil ved sletting av tilknytning (hook)');
 define('_EZCOMMENTS_FAILED5', 			'Oppdatering av tabell mislyktes');
 
-define('_EZCOMMENTS_MAILSUBJECT',		'A new comment was entered');  // Translate me
-define('_EZCOMMENTS_MAILBODY',  		'A new comment was entered');  // Translate me
+define('_EZCOMMENTS_MAILSUBJECT',		'En ny kommentar ble lagt inn');
+define('_EZCOMMENTS_MAILBODY',  		'En ny kommentar ble lagt inn');
 
 ?>
