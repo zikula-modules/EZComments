@@ -16,6 +16,9 @@ Andreas Stratmann
 Stefano Garuti
   -- for providing italian translations
 
+David Mach
+  -- for providing czech translations
+
 Steffen Voss 
   -- for doing the first beta tests on the module
   -- for small additions to the code and new default templates (pnForum look&feel)
