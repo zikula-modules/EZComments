@@ -221,7 +221,6 @@ function EZComments_userapi_create($args)
 		} else {
 			// check blacklisted words - exit silently if found
 			$blacklistedwords = explode("\n", pnModGetVar('EZComments', 'blacklist'));
-			print_r($blacklistedwords); 
 			foreach($blacklistedwords as $blacklistedword) {
 				$blacklistedword = trim($blacklistedword);
 				if (empty($blacklistedword)) continue;
