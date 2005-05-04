@@ -218,7 +218,8 @@ function EZComments_adminapi_update($args)
     // if not then set an appropriate error message and return
     if ((!isset($subject)) ||
         (!isset($comment)) ||
-        (isset($id) && !is_numeric($id))) {
+        (isset($id) && !is_numeric($id)) ||
+        (isset($status) && !is_numeric($status))) {
         pnSessionSetVar('errormsg', _MODARGSERROR);
         return false;
     }
@@ -257,7 +258,7 @@ function EZComments_adminapi_update($args)
 	// by the relevant pnVar*() functions to ensure that they are safe. 
 	// Failure to do this could result in opening security wholes at either 
 	// the web, filesystem, display, or database layers. 
-    list($subject, $comment, $id) = pnVarPrepForStore($subject, $comment, $id);
+    list($subject, $comment, $id, $status) = pnVarPrepForStore($subject, $comment, $id, $status);
 
     // Update the item - the formatting here is not mandatory, but it does
     // make the SQL statement relatively easy to read.  Also, separating
@@ -265,7 +266,8 @@ function EZComments_adminapi_update($args)
     // debug operation if it is ever needed
     $sql = "UPDATE $EZCommentstable
             SET $EZCommentscolumn[subject] = '".$subject."',
-                $EZCommentscolumn[comment] = '".$comment."'
+                $EZCommentscolumn[comment] = '".$comment."',
+				$EZCommentscolumn[status] = '".(int)$status."'
             WHERE $EZCommentscolumn[id] = '".(int)$id."'";
     $dbconn->Execute($sql);
 

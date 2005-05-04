@@ -52,7 +52,8 @@ function EZComments_pntables()
 										  'subject'   => $EZComments . '.subject',
 										  'replyto'   => $EZComments . '.replyto',
 										  'anonname'  => $EZComments . '.anonname',
-										  'anonmail'  => $EZComments . '.anonmail');
+										  'anonmail'  => $EZComments . '.anonmail',
+										  'status'    => $EZComments . '.status');
     return $pntable;
 }
 ?>

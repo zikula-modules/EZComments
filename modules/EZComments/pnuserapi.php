@@ -41,18 +41,23 @@
  * @param     $args['numitems']  number of comments
  * @param     $args['sortorder'] order to sort the comments
  * @param     $args['sortby']    field to sort the comments by
+ * @param     $args['status']    field to sort the comments by
  * @return    array              array of items, or false on failure
  */ 
 function EZComments_userapi_getall($args)
 {
 	extract($args);
 
-        if (!isset($startnum) || !is_numeric($startnum)) {
+	if (!isset($startnum) || !is_numeric($startnum)) {
         $startnum = 1;
     }
-        if (!isset($numitems) || !is_numeric($numitems)) {
+	if (!isset($numitems) || !is_numeric($numitems)) {
         $numitems = -1;
     }
+	if (!isset($status) || !is_numeric($status)) {
+        $status = -1;
+    }
+
 	$items = array(); 
 
 	// Security check
@@ -77,8 +82,15 @@ function EZComments_userapi_getall($args)
 	// form where clause
 	$wherestring = '';
 	if (isset($modname) && isset($objectid)) {
-		$wherestring = "WHERE $EZCommentscolumn[modname] = '$querymodname'
-		                AND $EZCommentscolumn[objectid] = '$queryobjectid'";
+		$whereclause[] = "$EZCommentscolumn[modname] = '$querymodname'";
+		$whereclause[] = "$EZCommentscolumn[objectid] = '$queryobjectid'";
+	}
+	if ($status != -1) {
+		$whereclause[] = "$EZCommentscolumn[status] = '$status'";
+	}
+	$wherestring = '';
+	if (!empty($whereclause)) {
+		$wherestring = 'WHERE ' . implode(' AND ', $whereclause);
 	}
 
 	// form the order clause
@@ -105,7 +117,8 @@ function EZComments_userapi_getall($args)
                    $EZCommentscolumn[subject],
                    $EZCommentscolumn[replyto],
 			  	   $EZCommentscolumn[anonname],
-			       $EZCommentscolumn[anonmail]
+			       $EZCommentscolumn[anonmail],
+			       $EZCommentscolumn[status]
             FROM $EZCommentstable
             $wherestring $orderstring $orderby";
     $result = $dbconn->SelectLimit($sql, $numitems, $startnum-1);			
@@ -121,7 +134,7 @@ function EZComments_userapi_getall($args)
 	// individually to ensure that the user is allowed access to it before it
 	// is added to the results array
 	for (; !$result->EOF; $result->MoveNext()) {
-		list($id, $modname, $objectid, $url, $date, $uid, $comment, $subject, $replyto, $anonname, $anonmail) = $result->fields;
+		list($id, $modname, $objectid, $url, $date, $uid, $comment, $subject, $replyto, $anonname, $anonmail, $status) = $result->fields;
 		if (pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:$id", ACCESS_READ)) {
 			$items[] = compact('id',
 			                   'modname',
@@ -133,7 +146,8 @@ function EZComments_userapi_getall($args)
 							   'subject',
 							   'replyto',
 							   'anonname',
-							   'anonmail');
+							   'anonmail',
+							   'status');
 		} 
 	} 
 	$result->Close();
@@ -194,7 +208,34 @@ function EZComments_userapi_create($args)
 	// Get next ID in table
 	$nextId = $dbconn->GenId($EZCommentstable);
 
-
+	// set the comment status - default to approved
+	$status = 0;
+	// check we should moderate the comments
+	if (pnModGetVar('EZComments', 'moderation')) {
+		// check if we should moderate all comments
+		if (pnModGetVar('EZComments', 'alwaysmoderate')) {
+			$status = 1;
+		} else {
+			// check blacklisted words - exit silently if found
+			$blacklistedwords = explode("\n", pnModGetVar('EZComments', 'blacklist'));
+			print_r($blacklistedwords); 
+			foreach($blacklistedwords as $blacklistedword) {
+				$blacklistedword = trim($blacklistedword);
+				if (empty($blacklistedword)) continue;
+				if (stristr($blacklistedword, $comment)) return false;
+				if (stristr($blacklistedword, $subject)) return false;
+			}
+			// check words to trigger a moderated comment
+			$modlistedwords = explode("\n", pnModGetVar('EZComments', 'modlist'));
+			foreach($modlistedwords as $modlistedword) {
+				$modlistedword = trim($modlistedword);
+				if (empty($modlistedword)) continue;
+				if (stristr($modlistedword, $comment)) $status = 1;
+				if (stristr($modlistedword, $subject)) $status = 1;
+			}
+			if (count(explode('http:', $comment)) >= pnModGetVar('EZComments', 'modlinkcount')) $status = 1;
+		}
+	}
 	list($modname, 
 	     $objectid,
 		 $url,
@@ -203,7 +244,8 @@ function EZComments_userapi_create($args)
 		 $subject,
 		 $replyto,
 		 $anonname,
-		 $anonmail) = pnVarPrepForStore($modname, 
+		 $anonmail,
+		 $status  ) = pnVarPrepForStore($modname, 
 		                                $objectid, 
 									    $url,
 									    $uid,
@@ -211,7 +253,8 @@ function EZComments_userapi_create($args)
 		                                $subject,
 		                                $replyto,
 										$anonname,
-										$anonmail); 
+										$anonmail,
+										$status); 
 									   
 	// Add item
 	$sql = "INSERT INTO $EZCommentstable (
@@ -225,7 +268,8 @@ function EZComments_userapi_create($args)
 			  $EZCommentscolumn[subject],
 			  $EZCommentscolumn[replyto],
 			  $EZCommentscolumn[anonname],
-			  $EZCommentscolumn[anonmail])
+			  $EZCommentscolumn[anonmail],
+			  $EZCommentscolumn[status])
             VALUES (
               '$nextId',
 			  '$modname',
@@ -237,7 +281,8 @@ function EZComments_userapi_create($args)
 			  '$subject',
 			  '$replyto',
 			  '$anonname',
-			  '$anonmail')";
+			  '$anonmail',
+			  '$status')";
 	$dbconn->Execute($sql); 
 
 	// Check for an error with the database code
@@ -251,13 +296,8 @@ function EZComments_userapi_create($args)
 	$id = $dbconn->PO_Insert_ID($EZCommentstable, $EZCommentscolumn['id']); 
 	
 	// Inform admin about new comment
-	if (pnModGetVar('EZComments', 'MailToAdmin')) {
+	if (pnModGetVar('EZComments', 'MailToAdmin') && $status == 0) {
 		$mailheaders =  'From:' . pnConfigGetVar('sitename') . '<' . pnConfigGetVar('adminmail') . ">\n";
-		// Send it as HTML mail
-    	//$headers .= "Content-Type: text/html; charset=iso-8859-1\n";
-		// Who wants to receive as well?
-		//$headers .= "cc: birthdayarchive@php.net\n";
-
 		$mailsubject = _EZCOMMENTS_MAILSUBJECT;
 		$mailbody    = _EZCOMMENTS_MAILBODY . ":\n" . $comment . "\n\n\nLink:" . $url;
 		pnmail(pnConfigGetVar('adminmail'), 
@@ -265,7 +305,15 @@ function EZComments_userapi_create($args)
 			   $mailbody, 
 	       	   $mailheaders);
 	}
-	
+	if (pnModGetVar('EZComments', 'moderationmail') && $status == 1) {
+		$mailheaders =  'From:' . pnConfigGetVar('sitename') . '<' . pnConfigGetVar('adminmail') . ">\n";
+		$mailsubject = _EZCOMMENTS_MODMAILSUBJECT;
+		$mailbody    = _EZCOMMENTS_MODMAILBODY . ":\n" . $comment . "\n\n\nLink:" . $url;
+		pnmail(pnConfigGetVar('adminmail'), 
+               $mailsubject,
+			   $mailbody, 
+	       	   $mailheaders);
+	}
 	// pnModCallHooks('item', 'create', $tid, 'tid');
 	return $id;
 } 
@@ -435,10 +483,10 @@ function EZComments_userapi_get($args)
                    $EZCommentscolumn[subject],
                    $EZCommentscolumn[replyto],
 			  	   $EZCommentscolumn[anonname],
-			       $EZCommentscolumn[anonmail]
+			       $EZCommentscolumn[anonmail],
+			       $EZCommentscolumn[status]
             FROM $EZCommentstable
             WHERE $EZCommentscolumn[id] = '$id'";
-
 	$result =& $dbconn->Execute($sql); 
 	// Check for an error with the database code, and if so set an appropriate
 	// error message and return
@@ -461,12 +509,15 @@ function EZComments_userapi_get($args)
 		 $uid, 
 		 $comment,
 		 $subject,
-		 $replyto) = $result->fields;
+		 $replyto,
+		 $anonname,
+		 $anonmail,
+		 $status) = $result->fields;
 	if (!pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:$id", ACCESS_READ)) {
 		return false;
 	} 
 	 
-	$result->Close(); 
+	$result->Close();
 	// Return the items
 	return compact('modname', 
 		           'objectid',
@@ -475,7 +526,10 @@ function EZComments_userapi_get($args)
 		           'uid', 
 		           'comment',
 				   'subject',
-				   'replyto');
+				   'replyto',
+				   'anonname',
+				   'anonmail',
+				   'status');
 } 
 
 

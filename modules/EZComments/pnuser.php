@@ -76,10 +76,11 @@ function EZComments_user_view($args)
 	} else {
 		$sortorder = 'ASC';
 	}
+	$status = 0;
     $items = pnModAPIFunc('EZComments',
                           'user',
                           'getall',
-                           compact('modname', 'objectid','sortorder'));
+                           compact('modname', 'objectid','sortorder','status'));
 
     if ($items === false) {
         return _EZCOMMENTS_FAILED;

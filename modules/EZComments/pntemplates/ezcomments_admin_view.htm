@@ -3,6 +3,7 @@
 <h2><!--[pnml name=_EZCOMMENTS_LASTCOMMENTS]--></h2>
 <table class="pn-admintable">
 	<tr>
+		<th><!--[pnml name=_EZCOMMENTS_STATUS]--></th>
 		<th><!--[pnml name=_EZCOMMENTS_USERNAME]--></th>
 		<th><!--[pnml name=_EZCOMMENTS_MODULE]--></th>
 		<th><!--[pnml name=_EZCOMMENTS_COMMENT]--></th>
@@ -10,6 +11,11 @@
 	</tr>
 	<!--[foreach from=$items item=item]-->
 		<tr class="<!--[cycle values=pn-odd,pn-even]-->">
+			<td>
+				<!--[if $item.status eq 0]--><!--[pnimg src=green.gif]--><!--[/if]-->
+				<!--[if $item.status eq 1]--><!--[pnimg src=yellow.gif]--><!--[/if]-->
+				<!--[if $item.status eq 2]--><!--[pnimg src=red.gif]--><!--[/if]-->
+			</td>
 			<td><!--[pnusergetvar name=uname uid=$item.uid]--><br /><!--[$item.date|pndate_format]--></td>
 			<td><a href="<!--[$item.url]-->"><!--[$item.modname]--></a></td>
 			<td><!--[$item.comment|strip_tags|truncate:80]--></td>

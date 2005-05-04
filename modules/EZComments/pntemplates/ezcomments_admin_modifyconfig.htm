@@ -4,35 +4,83 @@
 <form class="pn-adminform" action="<!--[pnmodurl modname="EZComments" type="admin" func="updateconfig"]-->" method="post" enctype="application/x-www-form-urlencoded">
 <div>
 	<input type="hidden" name="authid" value="<!--[pnsecgenauthkey module="EZComments"]-->" />
-	<div class="pn-adminformrow">
-		<label for="ezcomments_itemsperpage"><!--[pnml name="_EZCOMMENTS_ITEMSPERPAGE"]--></label>
-		<input id="ezcomments_itemsperpage" name="itemsperpage" type="text" value="<!--[$itemsperpage|pnvarprepfordisplay]-->" />
-	</div>
-	<div class="pn-adminformrow">
-		<label for="ezcomments_email"><!--[pnml name="_EZCOMMENTS_SENDINFOMAIL"]--></label>
-		<!--[if $MailToAdmin eq 1]-->
-		<input id="ezcomments_email" name="MailToAdmin" type="checkbox" value="1" checked="checked" />
-		<!--[else]-->
-		<input id="ezcomments_email" name="MailToAdmin" type="checkbox" value="1" />
-		<!--[/if]-->
-	</div>
-	<div class="pn-adminformrow">
-		<label for="ezcomments_anonusersinfo"><!--[pnml name="_EZCOMMENTS_ALLOWANONUSERSETINFO"]--></label>
-		<!--[if $anonusersinfo eq 1]-->
-		<input id="ezcomments_anonusersinfo" name="anonusersinfo" type="checkbox" value="1" checked="checked" />
-		<!--[else]-->
-		<input id="ezcomments_anonusersinfo" name="anonusersinfo" type="checkbox" value="1" />
-		<!--[/if]-->
-	</div>
-	<div class="pn-adminformrow">
-		<label for="ezcomments_template"><!--[pnml name="_EZCOMMENTS_TEMPLATE"]--></label>
-		<select id="ezcomments_template" name="template">
-			<!--[html_options values=$templates output=$templates selected=$template]-->
-		</select>
-	</div>
-	<div class="pn-adminformrow">
-		<!--[pnmodcallhooks hookobject="module" hookaction="modifyconfig" hookid="EZComments" module="EZComments"]-->
-	</div>
+	<fieldset>
+		<legend><!--[pnml name=_EZCOMMENTS_MISCSETTINGS]--></legend>
+		<div class="pn-adminformrow">
+			<label for="ezcomments_itemsperpage"><!--[pnml name="_EZCOMMENTS_ITEMSPERPAGE"]--></label>
+			<input id="ezcomments_itemsperpage" name="itemsperpage" type="text" value="<!--[$itemsperpage|pnvarprepfordisplay]-->" />
+		</div>
+		<div class="pn-adminformrow">
+			<label for="ezcomments_template"><!--[pnml name="_EZCOMMENTS_TEMPLATE"]--></label>
+			<select id="ezcomments_template" name="template">
+				<!--[html_options values=$templates output=$templates selected=$template]-->
+			</select>
+		</div>
+		<div class="pn-adminformrow">
+			<label for="ezcomments_anonusersinfo"><!--[pnml name="_EZCOMMENTS_ALLOWANONUSERSETINFO"]--></label>
+			<!--[if $anonusersinfo eq 1]-->
+			<input id="ezcomments_anonusersinfo" name="anonusersinfo" type="checkbox" value="1" checked="checked" />
+			<!--[else]-->
+			<input id="ezcomments_anonusersinfo" name="anonusersinfo" type="checkbox" value="1" />
+			<!--[/if]-->
+		</div>
+	</fieldset>
+	<fieldset>
+		<legend><!--[pnml name=_EZCOMMENTS_NOTIFICATIONSETTINGS]--></legend>
+		<div class="pn-adminformrow">
+			<label for="ezcomments_email"><!--[pnml name="_EZCOMMENTS_SENDINFOMAIL"]--></label>
+			<!--[if $MailToAdmin eq 1]-->
+			<input id="ezcomments_email" name="MailToAdmin" type="checkbox" value="1" checked="checked" />
+			<!--[else]-->
+			<input id="ezcomments_email" name="MailToAdmin" type="checkbox" value="1" />
+			<!--[/if]-->
+		</div>
+		<div class="pn-adminformrow">
+			<label for="ezcomments_email"><!--[pnml name="_EZCOMMENTS_SENDINFOMAILMOD"]--></label>
+			<!--[if $moderationmail eq 1]-->
+			<input id="ezcomments_moderationmail" name="moderationmail" type="checkbox" value="1" checked="checked" />
+			<!--[else]-->
+			<input id="ezcomments_moderationmail" name="moderationmail" type="checkbox" value="1" />
+			<!--[/if]-->
+		</div>
+	</fieldset>
+	<fieldset>
+		<legend><!--[pnml name=_EZCOMMENTS_MODERATIONSETTINGS]--></legend>
+		<div class="pn-adminformrow">
+			<label for="ezcomments_moderation"><!--[pnml name="_EZCOMMENTS_MODERERATE"]--></label>
+			<!--[if $moderation eq 1]-->
+			<input id="ezcomments_moderation" name="moderation" type="checkbox" value="1" checked="checked" />
+			<!--[else]-->
+			<input id="ezcomments_moderation" name="moderation" type="checkbox" value="1" />
+			<!--[/if]-->
+		</div>
+		<div class="pn-adminformrow">
+			<label for="ezcomments_alwaysmoderate"><!--[pnml name="_EZCOMMENTS_ALWAYSMODERERATE"]--></label>
+			<!--[if $alwaysmoderate eq 1]-->
+			<input id="ezcomments_alwaysmoderate" name="alwaysmoderate" type="checkbox" value="1" checked="checked" />
+			<!--[else]-->
+			<input id="ezcomments_alwaysmoderate" name="alwaysmoderate" type="checkbox" value="1" />
+			<!--[/if]-->
+		</div>
+		<div class="pn-adminformrow">
+			<!--[pnmodcallhooks hookobject="module" hookaction="modifyconfig" hookid="EZComments" module="EZComments"]-->
+		</div>
+		<div class="pn-adminformrow">
+			<label for="ezcomments_modlinkcount"><!--[pnml name="_EZCOMMENTS_MODLINKCOUNT"]--></label>
+			<input id="ezcomments_modlinkcount" name="modlinkcount" type="text" value="<!--[$modlinkcount|pnvarprepfordisplay]-->" />
+		</div>
+		<div class="pn-adminformrow">
+			<label for="ezcomments_modlist"><!--[pnml name="_EZCOMMENTS_MODLIST"]--></label>
+			<textarea id="ezcomments_modlist" name="modlist" rows="5" cols="50"><!--[$modlist|pnvarprepfordisplay]--></textarea>
+			<div><!--[pnml name=_EZCOMMENTS_SEPERATELINE]--></div>
+		</div>
+		<div class="pn-adminformrow">
+			<label for="ezcomments_blacklist"><!--[pnml name="_EZCOMMENTS_BLACKLIST"]--></label>
+			<textarea id="ezcomments_blacklist" name="blacklist" rows="5" cols="50"><!--[$blacklist|pnvarprepfordisplay]--></textarea>
+			<div><!--[pnml name=_EZCOMMENTS_SEPERATELINE]--></div>
+			<div><!--[pnml name=_EZCOMMENTS_BLACKLISTNOTE]--></div>
+		</div>
+	</fieldset>
 	<div class="pn-adminformrow">
 	<input name="submit" type="submit" value="<!--[pnml name="_EZCOMMENTS_OK"]-->" />
 	</div>

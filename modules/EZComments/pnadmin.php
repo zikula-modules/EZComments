@@ -151,6 +151,9 @@ function EZComments_admin_modify($args)
     // out the update
     $pnRender->assign('id', $id);
 
+	// assign the status flags
+	$pnRender->assign('statuslevels', array('0' => _EZCOMMENTS_APPROVED, '1' => _EZCOMMENTS_PENDING, '2' => _EZCOMMENTS_REJECTED));
+
     // For the assignment of name and number we can just assign the associative
     // array $item.
     $pnRender->assign($item);
@@ -169,6 +172,7 @@ function EZComments_admin_modify($args)
  * @param        id              the id of the item to be modified
  * @param        subject         the subject of the item to be updated
  * @param        comment         the main text of the item to be updated
+ * @param        status          the status level for the item
  */
 function EZComments_admin_update($args)
 {
@@ -179,10 +183,12 @@ function EZComments_admin_update($args)
     list($id,
          $objectid,
          $subject,
-         $comment) = pnVarCleanFromInput('id',
-                                         'objectid',
-                                         'subject',
-                                         'comment');
+         $comment,
+		 $status) = pnVarCleanFromInput('id',
+                                        'objectid',
+                                        'subject',
+                                        'comment',
+										'status');
 
 	// extract any input passed directly to the function
     extract($args);
@@ -208,7 +214,7 @@ function EZComments_admin_update($args)
 
     // The API function is called.
     if(pnModAPIFunc('EZComments', 'admin', 'update',
-                    array('id' => $id, 'subject' => $subject, 'comment' => $comment))) {
+                    array('id' => $id, 'subject' => $subject, 'comment' => $comment, 'status' => $status))) {
         // Success
         pnSessionSetVar('statusmsg', pnVarPrepHTMLDisplay(_UPDATESUCCEDED));
     }
@@ -356,8 +362,10 @@ function EZComments_admin_updateconfig($args)
 		return true;
 	} 
 
-    list($MailToAdmin, $template, $itemsperpage, $anonusersinfo) =
-	    pnVarCleanFromInput('MailToAdmin', 'template', 'itemsperpage', 'anonusersinfo');
+    list($MailToAdmin, $moderationmail, $template, $itemsperpage, $anonusersinfo, $moderation, 
+ 	    $modlinkcount, $modlist, $blacklist) =
+	    pnVarCleanFromInput('MailToAdmin', 'moderationmail', 'template', 'itemsperpage', 'anonusersinfo', 'moderation', 
+		                    'modlinkcount', 'modlist', 'blacklist');
 	extract($args);
 
     if (!isset($MailToAdmin)) {
@@ -365,6 +373,11 @@ function EZComments_admin_updateconfig($args)
     }
 	pnModSetVar('EZComments', 'MailToAdmin', $MailToAdmin);
 	
+    if (!isset($moderationmail)) {
+        $moderationmail = 0;
+    }
+	pnModSetVar('EZComments', 'moderationmail', $moderationmail);
+
 	if (!isset($template)) {
 		$template = 'AllOnOnePage';
 	}
@@ -379,6 +392,26 @@ function EZComments_admin_updateconfig($args)
 		$anonusersinfo = 0;
 	}
 	pnModSetVar('EZComments', 'anonusersinfo', $anonusersinfo);
+
+    if (!isset($moderation)) {
+        $moderation = 0;
+    }
+	pnModSetVar('EZComments', 'moderation', $moderation);
+
+    if (!isset($modlinkcount)) {
+        $modlinkcount = 2;
+    }
+	pnModSetVar('EZComments', 'modlinkcount', $modlinkcount);
+
+    if (!isset($modlist)) {
+        $modlist = '';
+    }
+	pnModSetVar('EZComments', 'modlist', $modlist);
+
+    if (!isset($blacklist)) {
+        $blacklist = '';
+    }
+	pnModSetVar('EZComments', 'blacklist', $blacklist);
 
 	pnSessionSetVar('statusmsg', _CONFIGUPDATED);
 	pnRedirect(pnModURL('EZComments', 'admin', 'main'));

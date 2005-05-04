@@ -58,6 +58,7 @@ function EZComments_init()
 			  $EZCommentscolumn[replyto]   int(11)      NOT NULL default '-1',
               $EZCommentscolumn[anonname]  varchar(255) NOT NULL default '',
               $EZCommentscolumn[anonmail]  varchar(255) NOT NULL default '',
+              $EZCommentscolumn[status]    int(4)       NOT NULL default 0,
               PRIMARY KEY(id)
               ) COMMENT='Table for EZComments'";
 	$dbconn->Execute($sql);
@@ -104,6 +105,12 @@ function EZComments_init()
 	pnModSetVar('EZComments', 'template', 'AllOnOnePage');
 	pnModSetVar('EZComments', 'itemsperpage', 25);
 	pnModSetVar('EZComments', 'anonusersinfo', false);
+	pnModSetVar('EZComments', 'moderation', 0);
+	pnModSetVar('EZComments', 'moderationlist', '');
+	pnModSetVar('EZComments', 'blacklist', '');
+	pnModSetVar('EZComments', 'modlinkcount', 2);
+	pnModSetVar('EZComments', 'moderationmail', false);
+	pnModSetVar('EZComments', 'alwaysmoderate', false);
 
 	// Initialisation successful
 	return true;
@@ -152,7 +159,7 @@ function EZComments_upgrade($oldversion)
 		}
 		$oldversion = '0.2';
 	}
-    
+
     if ($oldversion == '0.2') {
         pnModDelVar('EZComments', 'smartypath');
 
@@ -169,7 +176,7 @@ function EZComments_upgrade($oldversion)
     	}
 		$oldversion = '0.3 CVS';
     }
-	if ($oldversion == '0.3' || $oldversion = '0.3 CVS') {
+	if ($oldversion == '0.3' || $oldversion == '0.3 CVS') {
 		// the hook bug for different hook types has been resolved so lets fix that
 		// in this version. We need to unregister the old delete hook, register the
 		// new hook and re-create the hooks for all modules hooked to EZComments.
@@ -225,6 +232,7 @@ function EZComments_upgrade($oldversion)
 		}
 		$oldversion = '0.6';
 	}
+
 	if ($oldversion == '0.6') {
 		pnModSetVar('EZComments', 'anonusersinfo', false);
 		// Add additional for unregistered users info
@@ -236,6 +244,25 @@ function EZComments_upgrade($oldversion)
 			pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED5 . ': ' . $dbconn->ErrorMsg());
 			return false;
 		}
+		$oldversion = '0.7';
+	}
+
+	if ($oldversion == '0.7') {
+		// Add additional field for published status flag on comments
+		$sql = "ALTER TABLE $EZCommentstable 
+		                ADD $EZCommentscolumn[status] int(4) NOT NULL default 0";
+		$dbconn->Execute($sql);
+		if ($dbconn->ErrorNo() != 0) {
+			pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED5 . ': ' . $dbconn->ErrorMsg());
+			return false;
+		}
+		// add additional vars for comment moderation, blacklists and link count for moderation
+		pnModSetVar('EZComments', 'moderation', 0);
+		pnModSetVar('EZComments', 'moderationlist', '');
+		pnModSetVar('EZComments', 'blacklist', '');
+		pnModSetVar('EZComments', 'modlinkcount', 2);
+		pnModSetVar('EZComments', 'moderationmail', false);
+		pnModSetVar('EZComments', 'alwaysmoderate', false);
 	}
 	return true;
 } 

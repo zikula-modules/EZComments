@@ -102,4 +102,26 @@ define('_EZCOMMENTS_NOCOMMENTSFOUND',      'No comments matched your search');
 define('_EZCOMMENTS_TOP',                  'Top');
 define('_EZCOMMENTS_BOTTOM',               'Bottom');
 
+// comment moderation
+define('_EZCOMMENTS_MODERERATE',           'Enable comment moderation');
+define('_EZCOMMENTS_MODLINKCOUNT',         'Number of links in comment before moderation');
+define('_EZCOMMENTS_MODLIST',              'Words to trigger moderation');
+define('_EZCOMMENTS_BLACKLIST',            'Words to blacklist from comments');
+define('_EZCOMMENTS_BLACKLISTNOTE',        'Note: Comments containing words list here will completely ignored by comments module');
+define('_EZCOMMENTS_SEPERATELINE',         'Separate multiple words with new lines');
+define('_EZCOMMENTS_SENDINFOMAILMOD',      'Send mail comments requiring moderation');
+define('_EZCOMMENTS_MODMAILSUBJECT',       'New comment for your site');
+define('_EZCOMMENTS_MODMAILBODY',          'A new comment was submitted to your site that required moderation');
+define('_EZCOMMENTS_ALWAYSMODERERATE',     'All comments require moderation');
+
+// comment statuses
+define('_EZCOMMENTS_APPROVED', 'Approved');
+define('_EZCOMMENTS_PENDING', 'Pending');
+define('_EZCOMMENTS_REJECTED', 'Rejected');
+
+// modifyconfig fieldsets
+define('_EZCOMMENTS_MISCSETTINGS', 'Miscellaneous');
+define('_EZCOMMENTS_MODERATIONSETTINGS', 'Moderation');
+define('_EZCOMMENTS_NOTIFICATIONSETTINGS', 'Notification');
+
 ?>

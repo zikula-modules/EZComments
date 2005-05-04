@@ -14,6 +14,12 @@
 		<textarea id="ezcomments_number" name="comment" rows="5" cols="50"><!--[$comment|pnvarprepfordisplay]--></textarea>
 	</div>
 	<div class="pn-adminformrow">
+		<label for="ezcomments_status"><!--[pnml name="_EZCOMMENTS_STATUS"]--></label>
+		<select id="ezcomments_status" name="status">
+			<!--[html_options options=$statuslevels selected=$status]-->
+		</select>
+	</div>
+	<div class="pn-adminformrow">
 		<!--[pnmodcallhooks hookobject=item hookaction=modify hookid=$tid module=EZComments]-->
 	</div>
 	<div class="pn-adminformrow">
