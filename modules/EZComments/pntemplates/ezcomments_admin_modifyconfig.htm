@@ -63,9 +63,6 @@
 			<!--[/if]-->
 		</div>
 		<div class="pn-adminformrow">
-			<!--[pnmodcallhooks hookobject="module" hookaction="modifyconfig" hookid="EZComments" module="EZComments"]-->
-		</div>
-		<div class="pn-adminformrow">
 			<label for="ezcomments_modlinkcount"><!--[pnml name="_EZCOMMENTS_MODLINKCOUNT"]--></label>
 			<input id="ezcomments_modlinkcount" name="modlinkcount" type="text" value="<!--[$modlinkcount|pnvarprepfordisplay]-->" />
 		</div>
@@ -81,6 +78,9 @@
 			<div><!--[pnml name=_EZCOMMENTS_BLACKLISTNOTE]--></div>
 		</div>
 	</fieldset>
+	<div class="pn-adminformrow">
+		<!--[pnmodcallhooks hookobject="module" hookaction="modifyconfig" hookid="EZComments" module="EZComments"]-->
+	</div>
 	<div class="pn-adminformrow">
 	<input name="submit" type="submit" value="<!--[pnml name="_EZCOMMENTS_OK"]-->" />
 	</div>

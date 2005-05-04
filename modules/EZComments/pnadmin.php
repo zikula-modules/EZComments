@@ -363,9 +363,9 @@ function EZComments_admin_updateconfig($args)
 	} 
 
     list($MailToAdmin, $moderationmail, $template, $itemsperpage, $anonusersinfo, $moderation, 
- 	    $modlinkcount, $modlist, $blacklist) =
+ 	    $modlinkcount, $modlist, $blacklist, $alwaysmoderate) =
 	    pnVarCleanFromInput('MailToAdmin', 'moderationmail', 'template', 'itemsperpage', 'anonusersinfo', 'moderation', 
-		                    'modlinkcount', 'modlist', 'blacklist');
+		                    'modlinkcount', 'modlist', 'blacklist', 'alwaysmoderate');
 	extract($args);
 
     if (!isset($MailToAdmin)) {
@@ -412,6 +412,11 @@ function EZComments_admin_updateconfig($args)
         $blacklist = '';
     }
 	pnModSetVar('EZComments', 'blacklist', $blacklist);
+
+    if (!isset($alwaysmoderate)) {
+        $alwaysmoderate = 0;
+    }
+	pnModSetVar('EZComments', 'alwaysmoderate', $alwaysmoderate);
 
 	pnSessionSetVar('statusmsg', _CONFIGUPDATED);
 	pnRedirect(pnModURL('EZComments', 'admin', 'main'));
