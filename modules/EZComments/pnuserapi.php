@@ -174,19 +174,22 @@ function EZComments_userapi_create($args)
 	extract($args);
 
 	if ((!isset($modname)) ||
-			(!isset($objectid)) ||
-			(!isset($comment))) {
+		(!isset($objectid)) ||
+		(!isset($comment))) {
 		pnSessionSetVar('errormsg', _MODARGSERROR);
 		return false;
 	} 
 
-	if (!$replyto) {
+	if (!isset($replyto)) {
 	    $replyto = -1;
 	}
-	if (!$uid) {
+	if (!isset($uid) || !is_numeric($uid)) {
 		$uid = pnUserGetVar('uid');
+	} else {
+		// the anonymous user
+		$uid = 1;
 	}
-	if (!$date) {
+	if (!isset($date)) {
 		$date = 'NOW()';
 	} else {
 		$date= "'" . pnVarPrepForStore($date) . "'";
