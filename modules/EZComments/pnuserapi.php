@@ -211,33 +211,9 @@ function EZComments_userapi_create($args)
 	// Get next ID in table
 	$nextId = $dbconn->GenId($EZCommentstable);
 
-	// set the comment status - default to approved
-	$status = 0;
-	// check we should moderate the comments
-	if (pnModGetVar('EZComments', 'moderation')) {
-		// check if we should moderate all comments
-		if (pnModGetVar('EZComments', 'alwaysmoderate')) {
-			$status = 1;
-		} else {
-			// check blacklisted words - exit silently if found
-			$blacklistedwords = explode("\n", pnModGetVar('EZComments', 'blacklist'));
-			foreach($blacklistedwords as $blacklistedword) {
-				$blacklistedword = trim($blacklistedword);
-				if (empty($blacklistedword)) continue;
-				if (stristr($blacklistedword, $comment)) return false;
-				if (stristr($blacklistedword, $subject)) return false;
-			}
-			// check words to trigger a moderated comment
-			$modlistedwords = explode("\n", pnModGetVar('EZComments', 'modlist'));
-			foreach($modlistedwords as $modlistedword) {
-				$modlistedword = trim($modlistedword);
-				if (empty($modlistedword)) continue;
-				if (stristr($modlistedword, $comment)) $status = 1;
-				if (stristr($modlistedword, $subject)) $status = 1;
-			}
-			if (count(explode('http:', $comment)) >= pnModGetVar('EZComments', 'modlinkcount')) $status = 1;
-		}
-	}
+	$status = _EZComments_userapi_checkcomment(array('subject' => $subject, 'comment' => $comment));
+	if (!isset($status) || $status == 2) return false;
+
 	list($modname, 
 	     $objectid,
 		 $url,
@@ -630,4 +606,55 @@ function EZComments_userapi_gettemplates()
 
 }
 
+/**
+ * work out the status for a comment
+ *
+ * this function checks the subject and text of a comment against 
+ * the defined moderation rules and returns the an appropriate status
+ *
+ * @param  subject string the subject of the comment
+ * @param  comment string the body of the comment
+ * @author Mark West
+ * @access prviate
+ * @return mixed int 1 to require moderation, 0 for instant submission, 2 for discarding the comment, void error
+ */
+function _EZComments_userapi_checkcomment($args)
+{
+	extract($args);
+
+	if (!isset($subject) && !isset($comment)) {
+		pnSessionSetVar('errormsg', _MODARGSERROR);
+		return;
+	}
+
+	$status = 0;
+	// check we should moderate the comments
+	if (pnModGetVar('EZComments', 'moderation')) {
+		// check if we should moderate all comments
+		if (pnModGetVar('EZComments', 'alwaysmoderate')) {
+			$status = 1;
+		} else {
+			// check blacklisted words - exit silently if found
+			$blacklistedwords = explode("\n", pnModGetVar('EZComments', 'blacklist'));
+			foreach($blacklistedwords as $blacklistedword) {
+				$blacklistedword = trim($blacklistedword);
+				if (empty($blacklistedword)) continue;
+				if (stristr($blacklistedword, $comment)) return 2;
+				if (stristr($blacklistedword, $subject)) return 2;
+			}
+			// check words to trigger a moderated comment
+			$modlistedwords = explode("\n", pnModGetVar('EZComments', 'modlist'));
+			foreach($modlistedwords as $modlistedword) {
+				$modlistedword = trim($modlistedword);
+				if (empty($modlistedword)) continue;
+				if (stristr($modlistedword, $comment)) $status = 1;
+				if (stristr($modlistedword, $subject)) $status = 1;
+			}
+			if (count(explode('http:', $comment)) >= pnModGetVar('EZComments', 'modlinkcount')) $status = 1;
+		}
+	}
+
+	return $status;
+	
+}
 ?>
