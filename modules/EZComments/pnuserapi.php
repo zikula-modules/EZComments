@@ -187,9 +187,6 @@ function EZComments_userapi_create($args)
 	}
 	if (!isset($uid) || !is_numeric($uid)) {
 		$uid = pnUserGetVar('uid');
-	} else {
-		// the anonymous user
-		$uid = 1;
 	}
 	if (!isset($date)) {
 		$date = 'NOW()';
