@@ -83,8 +83,6 @@ define('_EZCOMMENTS_EDIT',              'Modifier le commentaire');
 define('_EZCOMMENTS_DELETE',            'Effacer le commentaire');
 define('_EZCOMMENTS_ITEMSPERPAGE',      'Nombre de commentaires par page');
 
-define('_EZCOMMENTS_AUTHOR',            'Auteur');
-
 // navigation bar
 define('_EZCOMMENTS_DISPLAY',            'Affichage');
 define('_EZCOMMENTS_FLAT',               'A plat');
@@ -95,6 +93,35 @@ define('_EZCOMMENTS_THREADED',           'Par discussions');
 
 define('_EZCOMMENTS_ALLOWANONUSERSETINFO', 'Permettre aux invités de laisser des informations personnelles');
 define('_EZCOMMENTS_ANONNAME',             'Nom');
-define('_EZCOMMENTS_ANONMAIL',             'Addresse E-mail'); 
+define('_EZCOMMENTS_ANONMAIL',             'Addresse E-mail');
+
+
+define('_EZCOMMENTS_SEARCH',               'Chercher dans les commentaires');
+define('_EZCOMMENTS_NOCOMMENTSFOUND',      'Aucun commentaire ne correspond à votre recherche');
+
+define('_EZCOMMENTS_TOP',                  'Début');
+define('_EZCOMMENTS_BOTTOM',               'Fin');
+
+// comment moderation
+define('_EZCOMMENTS_MODERERATE',            'Activer la modération des commentaires');
+define('_EZCOMMENTS_MODLINKCOUNT',          'Nombre de liens dans un commentaire pour provoquer la modération');
+define('_EZCOMMENTS_MODLIST',               'Mots-clés provoquant la modération');
+define('_EZCOMMENTS_BLACKLIST',             'Mots-clés interdits dans les commentaires');
+define('_EZCOMMENTS_BLACKLISTNOTE',         'Note: Les commentaires contenant des mots-clés de cette liste seront complètement ignorés');
+define('_EZCOMMENTS_SEPERATELINE',          'Séparez les mots par des retour à la ligne');
+define('_EZCOMMENTS_SENDINFOMAILMOD',       'Envoi par email des commentaires nécessitant la modération');
+define('_EZCOMMENTS_MODMAILSUBJECT',        'Nouveau commentaire sur votre site.');
+define('_EZCOMMENTS_MODMAILBODY',           'Un nouveau commentaire nécessitant une modération a été inscrit sur votre site.');
+define('_EZCOMMENTS_ALWAYSMODERERATE',      'Modérer tous les commentaires');
+
+// comment statuses
+define('_EZCOMMENTS_APPROVED',              'Approuvé');
+define('_EZCOMMENTS_PENDING',               'En attente');
+define('_EZCOMMENTS_REJECTED',              'Rejeté');
+
+// modifyconfig fieldsets
+define('_EZCOMMENTS_MISCSETTINGS',          'Divers');
+define('_EZCOMMENTS_MODERATIONSETTINGS',    'Modération');
+define('_EZCOMMENTS_NOTIFICATIONSETTINGS',  'Notification');
 
 ?>
