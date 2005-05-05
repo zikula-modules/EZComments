@@ -627,12 +627,11 @@ function _EZComments_userapi_checkcomment($args)
 		return;
 	}
 
-	$status = 0;
 	// check we should moderate the comments
 	if (pnModGetVar('EZComments', 'moderation')) {
 		// check if we should moderate all comments
 		if (pnModGetVar('EZComments', 'alwaysmoderate')) {
-			$status = 1;
+			return 1;
 		} else {
 			// check blacklisted words - exit silently if found
 			$blacklistedwords = explode("\n", pnModGetVar('EZComments', 'blacklist'));
@@ -647,14 +646,14 @@ function _EZComments_userapi_checkcomment($args)
 			foreach($modlistedwords as $modlistedword) {
 				$modlistedword = trim($modlistedword);
 				if (empty($modlistedword)) continue;
-				if (stristr($modlistedword, $comment)) $status = 1;
-				if (stristr($modlistedword, $subject)) $status = 1;
+				if (stristr($modlistedword, $comment)) return 1;
+				if (stristr($modlistedword, $subject)) return 1;
 			}
-			if (count(explode('http:', $comment)) >= pnModGetVar('EZComments', 'modlinkcount')) $status = 1;
+			if (count(explode('http:', $comment)) >= pnModGetVar('EZComments', 'modlinkcount')) return 1;
 		}
 	}
 
-	return $status;
+	return 0;
 	
 }
 ?>
