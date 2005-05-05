@@ -290,22 +290,26 @@ function EZComments_userapi_create($args)
 	
 	// Inform admin about new comment
 	if (pnModGetVar('EZComments', 'MailToAdmin') && $status == 0) {
-		$mailheaders =  'From:' . pnConfigGetVar('sitename') . '<' . pnConfigGetVar('adminmail') . ">\n";
+		$pnRender =& new pnRender('EZComments');
+		$pnRender->assign('comment', $comment);
+		$pnRender->assign('url', $url);
 		$mailsubject = _EZCOMMENTS_MAILSUBJECT;
-		$mailbody    = _EZCOMMENTS_MAILBODY . ":\n" . $comment . "\n\n\nLink:" . $url;
-		pnmail(pnConfigGetVar('adminmail'), 
-               $mailsubject,
-			   $mailbody, 
-	       	   $mailheaders);
+		$mailbody = $pnRender->fetch('ezcomments_mail_newcomment.htm');
+		pnModAPIFunc('Mailer', 'user', 'sendmessage', 
+					 array('toaddress' => pnConfigGetVar('adminmail'), 'toname' => pnConfigGetVar('sitename'),  
+					 	   'fromaddress' => pnConfigGetVar('adminmail'), 'fromname' => pnConfigGetVar('sitename'), 
+						   'subject' => $mailsubject, 'body' => $mailbody));
 	}
 	if (pnModGetVar('EZComments', 'moderationmail') && $status == 1) {
-		$mailheaders =  'From:' . pnConfigGetVar('sitename') . '<' . pnConfigGetVar('adminmail') . ">\n";
+		$pnRender =& new pnRender('EZComments');
+		$pnRender->assign('comment', $comment);
+		$pnRender->assign('url', $url);
 		$mailsubject = _EZCOMMENTS_MODMAILSUBJECT;
-		$mailbody    = _EZCOMMENTS_MODMAILBODY . ":\n" . $comment . "\n\n\nLink:" . $url;
-		pnmail(pnConfigGetVar('adminmail'), 
-               $mailsubject,
-			   $mailbody, 
-	       	   $mailheaders);
+		$mailbody = $pnRender->fetch('ezcomments_mail_modcomment.htm');
+		pnModAPIFunc('Mailer', 'user', 'sendmessage', 
+					 array('toaddress' => pnConfigGetVar('adminmail'), 'toname' => pnConfigGetVar('sitename'),  
+					 	   'fromaddress' => pnConfigGetVar('adminmail'), 'fromname' => pnConfigGetVar('sitename'), 
+						   'subject' => $mailsubject, 'body' => $mailbody));
 	}
 	// pnModCallHooks('item', 'create', $tid, 'tid');
 	return $id;
