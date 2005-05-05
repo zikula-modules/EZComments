@@ -113,6 +113,8 @@ define('_EZCOMMENTS_SENDINFOMAILMOD',       'Envoi par email des commentaires né
 define('_EZCOMMENTS_MODMAILSUBJECT',        'Nouveau commentaire sur votre site.');
 define('_EZCOMMENTS_MODMAILBODY',           'Un nouveau commentaire nécessitant une modération a été inscrit sur votre site.');
 define('_EZCOMMENTS_ALWAYSMODERERATE',      'Modérer tous les commentaires');
+define('_EZCOMMENTS_HELDFORMODERATION',    'Votre commentaire est en attente de modération et sera examiné prochainement');
+define('_EZCOMMENTS_COMMENTBLACKLISTED',   'Votre commentaire a un contenu inacceptable et a été rejeté');
 
 // comment statuses
 define('_EZCOMMENTS_APPROVED',              'Approuvé');
