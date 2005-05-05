@@ -1,31 +1,34 @@
 <?php
-// LICENSE
-// 
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License (GPL)
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-// 
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU Lesser General Public
-// License along with this library; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-//
-// For questions, help, comments, discussion, etc., please visit
-// the EZComments homepage http://lottasophie.sourceforge.net, 
-// the PostNuke homepage http://www.postnuke.com, or the German 
-// PostNuke Support page http://www.post-nuke.net
-//
-// @link http://lottasophie.sourceforge.net
-// @copyright 2001,2002 ispi of Lincoln, Inc.
-// @author Joerg Napp <jnapp@users.sourceforge.net>
-// @package EZComments
-// @version 0.2
-
+/**
+ * $Id$
+ * 
+ * * EZComments *
+ * 
+ * Attach comments to any module calling hooks
+ * 
+ * 
+ * * License *
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License (GPL)
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ *
+ * @author      Joerg Napp <jnapp@users.sourceforge.net>
+ * @author      Mark West <markwest at postnuke dot com>
+ * @author      Jean-Michel Vedrine
+ * @version     0.8
+ * @link        http://lottasophie.sourceforge.net Support and documentation
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU General Public License
+ * @package     Postnuke
+ * @subpackage  EZComments
+ */
 
 /**
  * Main administration function
@@ -33,8 +36,7 @@
  * This function provides the main administration interface to the comments
  * module. 
  * 
- * @returns output
- * @return output the admin interface
+ * @return string output the admin interface
  */
 function EZComments_admin_main() 
 {
@@ -107,7 +109,7 @@ function EZComments_admin_main()
  *
  * @author       The PostNuke Development Team
  * @param        tid          the id of the item to be modified
- * @return       output       the modification page
+ * @return       string       the modification page
  */
 function EZComments_admin_modify($args)
 {
@@ -173,6 +175,7 @@ function EZComments_admin_modify($args)
  * @param        subject         the subject of the item to be updated
  * @param        comment         the main text of the item to be updated
  * @param        status          the status level for the item
+ * @return       bool            true on sucess, false on failure
  */
 function EZComments_admin_update($args)
 {
@@ -244,6 +247,7 @@ function EZComments_admin_update($args)
  * @param        id            the id of the item to be deleted
  * @param        confirmation  confirmation that this item can be deleted
  * @param        redirect      the location to redirect to after the deletion attempt
+ * @return       bool            true on sucess, false on failure
  */
 function EZComments_admin_delete($args)
 {
@@ -324,6 +328,15 @@ function EZComments_admin_delete($args)
     return true;
 }
 
+/**
+ * Modify configuration
+ *
+ * This is a standard function to modify the configuration parameters of the
+ * module
+ *
+ * @author       The PostNuke Development Team
+ * @return       string       The configuration page
+ */
 function EZComments_admin_modifyconfig() 
 {
 	if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
@@ -347,12 +360,23 @@ function EZComments_admin_modifyconfig()
 }
 
 /**
- * Update the settings
- * 
- * This is the function that is called with the results of the
- * form supplied by EZComments_admin_main to alter the admin settings
- * 
- * @param $MailToAdmin full pathname of Smarty class
+ * Update the configuration
+ *
+ * This is a standard function to update the configuration parameters of the
+ * module given the information passed back by the modification form
+ * Modify configuration
+ *
+ * @author       Jim McDonald
+ * @param        MailtoAdmin    flag to mail admin on a new comment
+ * @param        moderationemail flag to mail admin on a new commennt needing moderation
+ * @param        template  the template set to render the comments and submission form
+ * @param        itemsperpage number of comments to display per page in admin view
+ * @param        anonusersinfo flag to allow anonymous users to submit custom user information
+ * @param        moderation flag to turn on comment moderation
+ * @param        modlinkcount number of links in comment to trigger moderation
+ * @param        modlist list of words to trigger moderation
+ * @param        blacklist list of words to trigger rejection of comment
+ * @param        alwaymoderate flag to require all comments are moderated
  */
 function EZComments_admin_updateconfig($args)
 {

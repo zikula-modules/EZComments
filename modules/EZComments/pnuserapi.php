@@ -21,7 +21,9 @@
  *
  *
  * @author      Joerg Napp <jnapp@users.sourceforge.net>
- * @version     0.2
+ * @author      Mark West <markwest at postnuke dot com>
+ * @author      Jean-Michel Vedrine
+ * @version     0.8
  * @link        http://lottasophie.sourceforge.net Support and documentation
  * @license     http://www.gnu.org/copyleft/gpl.html GNU General Public License
  * @package     Postnuke
@@ -443,6 +445,11 @@ function EZComments_userapi_count($args)
 	return $count;
 } 
 
+/**
+ * utility function to count the number of items held by this module
+ * 
+ * @return   integer   number of items held by this module
+ */
 function EZComments_userapi_countitems()
 {
 	if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_OVERVIEW)) {
@@ -466,6 +473,12 @@ function EZComments_userapi_countitems()
     return $numitems;
 }
 
+/**
+ * utility function to return a list of template sets for 
+ * displaying the comments input/output
+ * 
+ * @return   array   array of template set names (directories)
+ */
 function EZComments_userapi_gettemplates()
 {
 	if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_READ)) {
@@ -537,4 +550,5 @@ function _EZComments_userapi_checkcomment($args)
 	return 0;
 	
 }
+
 ?>
