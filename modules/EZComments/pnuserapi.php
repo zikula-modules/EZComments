@@ -649,7 +649,7 @@ function _EZComments_userapi_checkcomment($args)
 				if (stristr($modlistedword, $comment)) return 1;
 				if (stristr($modlistedword, $subject)) return 1;
 			}
-			if (count(explode('http:', $comment)) >= pnModGetVar('EZComments', 'modlinkcount')) return 1;
+			if (count(explode('http:', $comment))-1 >= pnModGetVar('EZComments', 'modlinkcount')) return 1;
 		}
 	}
 
