@@ -111,7 +111,7 @@ define('_EZCOMMENTS_BLACKLISTNOTE',        'Note: Comments containing words list
 define('_EZCOMMENTS_SEPERATELINE',         'Separate multiple words with new lines');
 define('_EZCOMMENTS_SENDINFOMAILMOD',      'Send mail comments requiring moderation');
 define('_EZCOMMENTS_MODMAILSUBJECT',       'New comment for your site');
-define('_EZCOMMENTS_MODMAILBODY',          'A new comment was submitted to your site that required moderation');
+define('_EZCOMMENTS_MODMAILBODY',          'A new comment was submitted to your site that requires moderation');
 define('_EZCOMMENTS_ALWAYSMODERERATE',     'All comments require moderation');
 define('_EZCOMMENTS_HELDFORMODERATION',    'Your comment was held for moderation and will be reviewed shortly');
 define('_EZCOMMENTS_COMMENTBLACKLISTED',   'Your comment contains unacceptable content and has been rejected');
