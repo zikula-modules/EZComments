@@ -76,4 +76,29 @@ define('_EZCOMMENTS_SEND_PM',  			'PM sende');
 define('_EZCOMMENTS_FROM',  			  'Wohnort'); 
 define('_EZCOMMENTS_SUBJECT',  			'Titel');
 define('_EZCOMMENTS_AUTHOR',  			'Autor');
+
+// Steffen 0.8, 05/2005 
+// user
+define('_EZCOMMENTS_DISPLAY',  			'Darstellung');
+define('_EZCOMMENTS_FLAT',  			  'Flach');
+define('_EZCOMMENTS_THREADED',  		'Kommentarbaum');
+define('_EZCOMMENTS_OLDESTFIRST',  	'absteigend');
+define('_EZCOMMENTS_NEWESTFIRST',  	'aufsteigend');
+define('_EZCOMMENTS_ORDER',  			  'Reihenfolge');
+
+// admin
+define('_EZCOMMENTS_MISCSETTINGS',  'Einstellungen');
+define('_EZCOMMENTS_ITEMSPERPAGE',  'Kommentar pro Seite');
+define('_EZCOMMENTS_TEMPLATE',  		'Layout');
+define('_EZCOMMENTS_ALLOWANONUSERSETINFO',  'Anonyme User dürfen ihre Daten angeben');
+define('_EZCOMMENTS_NOTIFICATIONSETTINGS',  'Benachrichtigungen');
+define('_EZCOMMENTS_SENDINFOMAILMOD',			  'Bitten um Moderation mailen');
+define('_EZCOMMENTS_MODERATIONSETTINGS',  	'Moderation');
+define('_EZCOMMENTS_MODERERATE',  	'Moderierte Kommentare');
+define('_EZCOMMENTS_ALWAYSMODERERATE',  		'Nur moderiert freigeben');
+define('_EZCOMMENTS_MODLINKCOUNT',  'Höchstanzahl von Links, bevor freigeschaltet werden muss');
+define('_EZCOMMENTS_MODLIST',  			'Wörter, die automatisch Moderation erfordern');
+define('_EZCOMMENTS_SEPERATELINE',  'Ein Stichwort pro Zeile');
+define('_EZCOMMENTS_BLACKLIST',  		'Wörter die zur Löschung führen');
+define('_EZCOMMENTS_BLACKLISTNOTE', 'Achtung: Kommentare, die diese Wörter enthalten, werden nicht zugelassen');
 ?>
