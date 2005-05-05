@@ -212,8 +212,12 @@ function EZComments_userapi_create($args)
 	$nextId = $dbconn->GenId($EZCommentstable);
 
 	$status = _EZComments_userapi_checkcomment(array('subject' => $subject, 'comment' => $comment));
-	if (!isset($status) || $status == 2) return false;
-
+	if (!isset($status)) return false;
+	if ($status == 2) {
+		pnSessionSetVar('errormsg', _EZCOMMENTS_COMMENTBLACKLISTED);
+		return false;
+	}
+	
 	list($modname, 
 	     $objectid,
 		 $url,
@@ -269,6 +273,15 @@ function EZComments_userapi_create($args)
 		return false;
 	} 
 
+	// set an approriate status/errormsg
+	switch ($status) {
+		case '0' :
+			pnSessionSetVar('statusmsg', _EZCCOMMENTSCREATED);
+			break;
+		case '1' :
+			pnSessionSetVar('statusmsg', _EZCOMMENTS_HELDFORMODERATION);
+			break;
+	}
 
 	// Get the ID of the item that we inserted.
 	$id = $dbconn->PO_Insert_ID($EZCommentstable, $EZCommentscolumn['id']); 

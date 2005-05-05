@@ -268,11 +268,6 @@ function EZComments_user_create($args)
 							 'anonname' => $EZComments_anonname,
 							 'anonmail' => $EZComments_anonmail));
 
-    if ($id != false) {
-        // Success
-        pnSessionSetVar('statusmsg', _EZCCOMMENTSCREATED);
-    } 
-
     // decoding the URL. Credits to tmyhre for fixing.
     $EZComments_redirect = rawurldecode($EZComments_redirect);
     $EZComments_redirect = str_replace('&amp;', '&', $EZComments_redirect);
