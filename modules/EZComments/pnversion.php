@@ -45,8 +45,8 @@ $modversion['credits']     = 'pndocs/credits.txt';
 $modversion['help']        = 'pndocs/install.txt';
 $modversion['license']     = 'pndocs/license.txt';
 $modversion['official']    = 0;
-$modversion['author']      = 'Joerg Napp';
-$modversion['contact']     = 'http://lottasophie.sourceforge.net/';
+$modversion['author']      = 'The EZComments development team';
+$modversion['contact']     = 'http://noc.postnuke.com/projects/ezcomments/';
 
 // This one adds the info to the DB, so that users can click on the 
 // headings in the permission module
