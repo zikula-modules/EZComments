@@ -101,4 +101,19 @@ define('_EZCOMMENTS_MODLIST',  			'Wörter, die automatisch Moderation erfordern'
 define('_EZCOMMENTS_SEPERATELINE',  'Ein Stichwort pro Zeile');
 define('_EZCOMMENTS_BLACKLIST',  		'Wörter die zur Löschung führen');
 define('_EZCOMMENTS_BLACKLISTNOTE', 'Achtung: Kommentare, die diese Wörter enthalten, werden nicht zugelassen');
+define('_EZCOMMENTS_MODMAILSUBJECT',       'Neuer Kommentar');
+define('_EZCOMMENTS_MODMAILBODY',          'Ein neuer Kommentar wurde erstellt und erfordert Moderation.');
+define('_EZCOMMENTS_HELDFORMODERATION',    'Der Kommentar wird so bald wie möglich freigeschaltet. Vielen Dank');
+define('_EZCOMMENTS_COMMENTBLACKLISTED',   'Der Kommentar wurde auf grund inhaltlicher Mängel nicht freigeschaltet');
+
+define('_EZCOMMENTS_SEARCH',               'Kommentare durchsuchen');
+define('_EZCOMMENTS_NOCOMMENTSFOUND',      'Keine passenden Kommentare gefunden');
+
+define('_EZCOMMENTS_ANONNAME',             'Name');
+define('_EZCOMMENTS_ANONMAIL',             'E-mail Adresse');
+
+// comment statuses
+define('_EZCOMMENTS_APPROVED', 'freigeschaltet');
+define('_EZCOMMENTS_PENDING', 'wartet');
+define('_EZCOMMENTS_REJECTED', 'abgelehnt');
 ?>
