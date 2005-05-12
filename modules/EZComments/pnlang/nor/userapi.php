@@ -11,7 +11,7 @@
 // GNU General Public License for more details.
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
 // ----------------------------------------------------------------------
-// Original Author of file: Jörg Napp, http://postnuke.lottasophie.de
+// Original Author of file: Jörg Napp
 // ----------------------------------------------------------------------
 
 require_once dirname(__FILE__) . '/' . 'global.php';

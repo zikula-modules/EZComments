@@ -4,7 +4,7 @@
 // EZComments
 // Attach comments to any module calling hooks
 // ----------------------------------------------------------------------
-// Author: Jörg Napp, http://postnuke.lottasophie.de
+// Author: Jörg Napp
 // ----------------------------------------------------------------------
 // LICENSE
 // This program is free software; you can redistribute it and/or
