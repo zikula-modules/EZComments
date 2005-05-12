@@ -45,7 +45,7 @@
 				<!--[$comments[comments].date|date_format:"%d.%m.%y, %H:%M"]-->
 		    </td>
 		    <td style="background-color:<!--[pnthemegetvar name=bgcolor4]-->" valign="top" width="80%">
-				<!--[$comments[comments].comment|pnvarprephtmldisplay]-->
+				<!--[$comments[comments].comment|formatezcomment|pnvarprephtmldisplay]-->
 		      	<!--[if $comments[comments].del]-->
 					<br />
 					<form action="<!--[pnmodurl modname=EZComments type=admin func=delete id=$comments[comments].id]-->" method="post">
