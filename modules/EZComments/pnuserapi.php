@@ -528,6 +528,19 @@ function _EZComments_userapi_checkcomment($args)
 		if (pnModGetVar('EZComments', 'alwaysmoderate')) {
 			return 1;
 		} else {
+			// check for open proxies
+			// credit to wordpress for this logic function wp_proxy_check()
+			$ipnum = pnServerGetVar('REMOTE_ADDR');
+			if (pnModGetVar('EZComments', 'proxyblacklist') && isset($ipnum) ) {
+				$rev_ip = implode( '.', array_reverse( explode( '.', $ipnum ) ) );
+				// opm.blitzed.org is appended to use thier proxy lookup service
+				// results of gethostbyname are cached
+				$lookup = $rev_ip . '.opm.blitzed.org';
+				if ($lookup != gethostbyname($lookup)) {
+					return 2;
+				}
+			}
+
 			// check blacklisted words - exit silently if found
 			$blacklistedwords = explode("\n", pnModGetVar('EZComments', 'blacklist'));
 			foreach($blacklistedwords as $blacklistedword) {
@@ -536,6 +549,7 @@ function _EZComments_userapi_checkcomment($args)
 				if (stristr($blacklistedword, $comment)) return 2;
 				if (stristr($blacklistedword, $subject)) return 2;
 			}
+
 			// check words to trigger a moderated comment
 			$modlistedwords = explode("\n", pnModGetVar('EZComments', 'modlist'));
 			foreach($modlistedwords as $modlistedword) {
@@ -544,6 +558,8 @@ function _EZComments_userapi_checkcomment($args)
 				if (stristr($modlistedword, $comment)) return 1;
 				if (stristr($modlistedword, $subject)) return 1;
 			}
+
+			// check link count
 			if (count(explode('http:', $comment))-1 >= pnModGetVar('EZComments', 'modlinkcount')) return 1;
 		}
 	}

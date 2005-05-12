@@ -112,6 +112,7 @@ function EZComments_init()
 	pnModSetVar('EZComments', 'modlinkcount', 2);
 	pnModSetVar('EZComments', 'moderationmail', false);
 	pnModSetVar('EZComments', 'alwaysmoderate', false);
+	pnModSetVar('EZComments', 'proxyblacklist', false);
 
 	// Initialisation successful
 	return true;
@@ -264,6 +265,7 @@ function EZComments_upgrade($oldversion)
 		pnModSetVar('EZComments', 'modlinkcount', 2);
 		pnModSetVar('EZComments', 'moderationmail', false);
 		pnModSetVar('EZComments', 'alwaysmoderate', false);
+		pnModSetVar('EZComments', 'proxyblacklist', false);
 	}
 	return true;
 } 

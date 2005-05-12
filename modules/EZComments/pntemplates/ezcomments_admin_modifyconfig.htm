@@ -77,6 +77,14 @@
 			<div><!--[pnml name=_EZCOMMENTS_SEPERATELINE]--></div>
 			<div><!--[pnml name=_EZCOMMENTS_BLACKLISTNOTE]--></div>
 		</div>
+		<div class="pn-adminformrow">
+			<label for="ezcomments_proxyblacklist"><!--[pnml name="_EZCOMMENTS_PROXYBLACKLIST"]--></label>
+			<!--[if $proxyblacklist eq 1]-->
+			<input id="ezcomments_proxyblacklist" name="proxyblacklist" type="checkbox" value="1" checked="checked" />
+			<!--[else]-->
+			<input id="ezcomments_proxyblacklist" name="proxyblacklist" type="checkbox" value="1" />
+			<!--[/if]-->
+		</div>
 	</fieldset>
 	<div class="pn-adminformrow">
 		<!--[pnmodcallhooks hookobject="module" hookaction="modifyconfig" hookid="EZComments" module="EZComments"]-->

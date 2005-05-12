@@ -115,6 +115,7 @@ define('_EZCOMMENTS_MODMAILBODY',          'A new comment was submitted to your 
 define('_EZCOMMENTS_ALWAYSMODERERATE',     'All comments require moderation');
 define('_EZCOMMENTS_HELDFORMODERATION',    'Your comment was held for moderation and will be reviewed shortly');
 define('_EZCOMMENTS_COMMENTBLACKLISTED',   'Your comment contains unacceptable content and has been rejected');
+define('_EZCOMMENTS_PROXYBLACKLIST',       'Blacklist comments from insecure proxies');
 
 // comment statuses
 define('_EZCOMMENTS_APPROVED', 'Approved');
