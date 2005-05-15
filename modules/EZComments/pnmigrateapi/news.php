@@ -84,6 +84,11 @@ function EZComments_migrateapi_news()
 	for (; !$result->EOF; $result->MoveNext()) {
 		list($tid, $sid, $date, $uid, $comment, $subject, $replyto) = $result->fields;
 
+		// set the correct user id for anonymous users
+		if (empty($uid)) {
+			$uid = 0;
+		}
+
 	    $id = pnModAPIFunc('EZComments',
             			   'user',
         	    		   'create',
