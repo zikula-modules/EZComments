@@ -138,6 +138,9 @@ function EZComments_userapi_getall($args)
 	for (; !$result->EOF; $result->MoveNext()) {
 		list($id, $modname, $objectid, $url, $date, $uid, $comment, $subject, $replyto, $anonname, $anonmail, $status) = $result->fields;
 		if (pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:$id", ACCESS_READ)) {
+			if ($uid == 0 && empty($anonname)) {
+				$anonname = pnConfigGetVar('anonymous');
+			}
 			$items[] = compact('id',
 			                   'modname',
 			                   'objectid',
