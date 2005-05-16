@@ -36,7 +36,7 @@
 		</tr>
         <tr style="background-color:none;text-align:left;">
             <td headers="col_0" style="background-color:<!--[ pnthemegetvar name=bgcolor3 ]-->;" valign="top">
-				<!--[if $comments[comments].uid != 0]--> 
+				<!--[if $comments[comments].uid neq 1]-->
 					<!--[if $comments[comments].user_avatar]--><a href="user.php?op=userinfo&amp;uname=<!--[$comments[comments].uname|pnvarprepfordisplay]-->"><img src="images/avatar/<!--[$comments[comments].user_avatar]-->" alt="<!--[$comments[comments].uname]-->'s Avatar" /></a><!--[ /if ]-->
 						<br />
 						<br />
@@ -67,7 +67,7 @@
 				<a title="<!--[ pnml name='_EZCOMMENTS_TOP' ]-->" href="#top"><!--[ pnimg src="go_up.gif" alt="_EZCOMMENTS_TOP" altml=true ]--></a>&nbsp; 	
 			</td>
 			<td headers="col_1" style="background-color:<!--[ pnthemegetvar name=bgcolor3 ]-->;">
-				<!--[ if $comments[comments].uid neq 0]-->
+				<!--[if $comments[comments].uid neq 1]-->
 					<a title="<!--[ pnml name='_EZCOMMENTS_PROFILE' ]-->: <!--[$comments[comments].uname]-->" href="user.php?op=userinfo&amp;uname=<!--[ $comments[comments].uname ]-->"><!--[ pnimg src="profile.gif" alt=$comments[comments].uname ]--></a>
 					<a title="<!--[ pnml name='_EZCOMMENTS_SEND_PM' ]-->" href="index.php?name=Messages&amp;file=replypmsg&amp;send=1&amp;uname=<!--[ $comments[comments].uname ]-->"><!--[ pnimg src="sendpm.gif" alt='_EZCOMMENTS_SEND_PM' altml=true ]--></a>
 				<!--[ /if ]-->
