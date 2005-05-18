@@ -86,7 +86,7 @@ function EZComments_migrateapi_news()
 
 		// set the correct user id for anonymous users
 		if (empty($uid)) {
-			$uid = 0;
+			$uid = 1;
 		}
 
 	    $id = pnModAPIFunc('EZComments',
