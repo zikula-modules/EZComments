@@ -116,4 +116,9 @@ define('_EZCOMMENTS_ANONMAIL',             'E-mail Adresse');
 define('_EZCOMMENTS_APPROVED', 'freigeschaltet');
 define('_EZCOMMENTS_PENDING', 'wartet');
 define('_EZCOMMENTS_REJECTED', 'abgelehnt');
+
+// mails
+define('_EZCOMMENTS_SHOW', 'Anzeigen');
+define('_EZCOMMENTS_MODERATE2', 'Freigeben/Ablehnen');
+define('_EZCOMMENTS_DELETE', 'Löschen');
 ?>

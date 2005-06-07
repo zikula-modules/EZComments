@@ -127,4 +127,9 @@ define('_EZCOMMENTS_MISCSETTINGS', 'Miscellaneous');
 define('_EZCOMMENTS_MODERATIONSETTINGS', 'Moderation');
 define('_EZCOMMENTS_NOTIFICATIONSETTINGS', 'Notification');
 
+// mails
+define('_EZCOMMENTS_SHOW', 'Show');
+define('_EZCOMMENTS_MODERATE2', 'Moderate');
+define('_EZCOMMENTS_DELETE', 'Delete');
+
 ?>
