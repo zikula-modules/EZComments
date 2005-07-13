@@ -85,6 +85,9 @@ function smarty_function_ezcommentsadminlinks($params, &$smarty)
 		$adminlinks .= "$seperator <a href=\"" . pnVarPrepHTMLDisplay(pnModURL('EZComments', 'admin', 'migrate')) . "\">" . _EZCOMMENTS_MIGRATE . "</a> ";
     }
     if (pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
+		$adminlinks .= "$seperator <a href=\"" . pnVarPrepHTMLDisplay(pnModURL('EZComments', 'admin', 'purge')) . "\">" . _EZCOMMENTS_PURGE . "</a> ";
+    }
+    if (pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
 		$adminlinks .= "$seperator <a href=\"" . pnVarPrepHTMLDisplay(pnModURL('EZComments', 'admin', 'modifyconfig')) . "\">" . _MODIFYCONFIG . "</a> ";
     }
 

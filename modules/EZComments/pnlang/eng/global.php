@@ -132,4 +132,9 @@ define('_EZCOMMENTS_SHOW', 'Show');
 define('_EZCOMMENTS_MODERATE2', 'Moderate');
 define('_EZCOMMENTS_DELETE', 'Delete');
 
+// comment purging options
+define('_EZCOMMENTS_PURGE', 'Purge comments');
+define('_EZCOMMENTS_PURGEPENDING', 'Purge all pending comments');
+define('_EZCOMMENTS_PURGEREJECTED', 'Purge all rejected comments');
+
 ?>

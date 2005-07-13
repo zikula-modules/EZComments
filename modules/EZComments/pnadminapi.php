@@ -342,4 +342,59 @@ function EZComments_adminapi_deletemodule($args)
 	return $extrainfo;
 }
 
+/**
+ * delete an item
+ * 
+ * @param    $args['purgerejected']    Purge all rejected comments
+ * @param    $args['purgepending']     Purge all pending comments
+ * @return   bool           true on success, false on failure
+ */
+function EZComments_adminapi_purge($args)
+{
+    // Get arguments from argument array 
+    extract($args);
+
+    // Argument check - make sure that all required arguments are present,
+    // if not then set an appropriate error message and return
+    if (!isset($purgerejected) && !isset($purgepending)) {
+        pnSessionSetVar('errormsg', _MODARGSERROR);
+        return false;
+    }
+
+    // Security check 
+    if (!pnSecAuthAction(0, 'EZComments::', "::", ACCESS_DELETE)) {
+        pnSessionSetVar('errormsg', _MODULENOAUTH);
+        return false;
+    }
+
+    // Get datbase setup
+    $dbconn =& pnDBGetConn(true);
+    $pntable =& pnDBGetTables();
+    $table = $pntable['EZComments'];
+    $column = &$pntable['EZComments_column'];
+
+	if ((bool)$purgerejected) {
+		$sql = "DELETE FROM $table
+				WHERE $column[status] = '2'";
+		$dbconn->Execute($sql);
+		if ($dbconn->ErrorNo() != 0) {
+			pnSessionSetVar('errormsg', _DELETEFAILED);
+			return false;
+		}
+	}
+
+	if ((bool)$purgepending) {
+		$sql = "DELETE FROM $table
+				WHERE $column[status] = '1'";
+		$dbconn->Execute($sql);
+		if ($dbconn->ErrorNo() != 0) {
+			pnSessionSetVar('errormsg', _DELETEFAILED);
+			return false;
+		}
+	}
+
+    // Let the calling process know that we have finished successfully
+    return true;
+}
+
 ?>
