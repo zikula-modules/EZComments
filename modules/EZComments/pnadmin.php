@@ -329,6 +329,62 @@ function EZComments_admin_delete($args)
 }
 
 /**
+ * delete item
+ *
+ * This is a standard function that is called whenever an administrator
+ * wishes to delete a current module item.  Note that this function is
+ * the equivalent of both of the modify() and update() functions above as
+ * it both creates a form and processes its output.  This is fine for
+ * simpler functions, but for more complex operations such as creation and
+ * modification it is generally easier to separate them into separate
+ * functions.  There is no requirement in the PostNuke MDG to do one or the
+ * other, so either or both can be used as seen appropriate by the module
+ * developer
+ *
+ * @author       The PostNuke Development Team
+ * @param        delComments   the ids of the items to be deleted
+ * @param        confirmation  confirmation that this item can be deleted
+ * @param        redirect      the location to redirect to after the deletion attempt
+ * @return       bool          true on sucess, false on failure
+ */
+function EZComments_admin_deleteselected($args)
+{
+    // Get parameters from whatever input we need. 
+	$delComments = pnVarCleanFromInput('delComments');
+
+	// extract any input passed directly to the function
+    extract($args);
+
+    // If we get here it means that the user has confirmed the action
+    // Confirm authorisation code.
+    if (!pnSecConfirmAuthKey()) {
+        pnSessionSetVar('errormsg', pnVarPrepHTMLDisplay(_BADAUTHKEY));
+        pnRedirect(pnModURL('EZComments', 'admin', 'main'));
+        return true;
+    }
+
+	// loop round each comment deleted them in turn 
+	foreach ($delComments as $delComment) {
+		// The API function is called. 
+		if (pnModAPIFunc('EZComments', 'admin', 'delete', array('id' => $delComment))) {
+			// Success
+			pnSessionSetVar('statusmsg', pnVarPrepHTMLDisplay(_DELETESUCCEDED));
+		}
+	}
+
+    // This function generated no output, and so now it is complete we redirect
+    // the user to an appropriate page for them to carry on their work
+	if (!empty($redirect)) {
+		pnRedirect($redirect);
+	} else {
+	    pnRedirect(pnModURL('EZComments', 'admin', 'main'));
+	}
+
+    // Return
+    return true;
+}
+
+/**
  * Modify configuration
  *
  * This is a standard function to modify the configuration parameters of the
