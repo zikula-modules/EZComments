@@ -555,8 +555,8 @@ function _EZComments_userapi_checkcomment($args)
 			foreach($blacklistedwords as $blacklistedword) {
 				$blacklistedword = trim($blacklistedword);
 				if (empty($blacklistedword)) continue;
-				if (stristr($blacklistedword, $comment)) return 2;
-				if (stristr($blacklistedword, $subject)) return 2;
+				if (stristr($comment, $blacklistedword)) return 2;
+				if (stristr($subject, $blacklistedword)) return 2;
 			}
 
 			// check words to trigger a moderated comment
@@ -564,8 +564,8 @@ function _EZComments_userapi_checkcomment($args)
 			foreach($modlistedwords as $modlistedword) {
 				$modlistedword = trim($modlistedword);
 				if (empty($modlistedword)) continue;
-				if (stristr($modlistedword, $comment)) return 1;
-				if (stristr($modlistedword, $subject)) return 1;
+				if (stristr($comment, $modlistedword)) return 1;
+				if (stristr($subject, $modlistedword)) return 1;
 			}
 
 			// check link count
