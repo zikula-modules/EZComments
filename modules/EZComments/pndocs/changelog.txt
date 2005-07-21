@@ -3,6 +3,28 @@ $Id$
 
 Changelog
 
+0.8  - Added comment moderation features (blacklists, moderation lists, link count, insecure proxies)
+     - Added admin notification on comment requiring moderation
+     - Multiple comment deletion functionality added (by status and user selection)
+     - E-mails sent by module are now templated
+
+0.7  - Added anonymous users able to define name and e-mail address
+
+0.6  - Migration scripts moved to a standard module API
+     - Migration scripts added for polls and reviews modules
+     - Module remove hook added so all comments belonging to a module are removed when the module is removed
+
+0.5  - Template sets moved to pntemplates enabling the admin to select the default template set
+     - Added functionality to allow for editing/deletion of individual comments
+     - User navbar added allowing user to select comment view (template set)
+
+0.4  - PN hooks bug fixed so delete hook is now standardised
+     - Entire module now templated
+     - Transform hooks are now called for EZComments not the top-level module
+
+0.3  - Local smarty installation removed module now uses pnRender
+     - Added item delete hook so that comments are deleted when an item is deleted (credit to Timo)
+
 0.2  - The administrator can check that new mail is sent 
        when a new comment is made.
 
