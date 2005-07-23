@@ -1,81 +1,84 @@
-<!--[*  $Id$               *]-->
-<!--[*  ---------------------------------------------------------------------- *]-->
-<!--[*  EZComments                                                             *]-->
-<!--[*  Attach comments to any module calling hooks                            *]-->
-<!--[*  ---------------------------------------------------------------------- *]-->
-<!--[*  Author: Jörg Napp                      *]-->
-<!--[*  ---------------------------------------------------------------------- *]-->
-<!--[*  LICENSE                                                                *]-->
-<!--[*  This program is free software; you can redistribute it and/or          *]-->
-<!--[*  modify it under the terms of the GNU General Public License (GPL)      *]-->
-<!--[*  as published by the Free Software Foundation; either version 2         *]-->
-<!--[*  of the License, or (at your option) any later version.                 *]-->
-<!--[*  This program is distributed in the hope that it will be useful,        *]-->
-<!--[*  but WITHOUT ANY WARRANTY; without even the implied warranty of         *]-->
-<!--[*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *]-->
-<!--[*  GNU General Public License for more details.                           *]-->
-<!--[*  To read the license please visit http://www.gnu.org/copyleft/gpl.html  *]-->
-<!--[*  ---------------------------------------------------------------------- *]-->
-<!--[*  Purpose of this template:                                              *]-->
-<!--[*  Show the comments in a "threaded" look, the way the original           *]-->
-<!--[*  comments module was.                                                   *]-->
-<!--[*  ---------------------------------------------------------------------- *]-->
+<!--[*  $Id$ *]-->
+
+<!--[* ---------------------------------------------------------------------- *]-->
+<!--[* EZComments                                                             *]-->
+<!--[* Attach comments to any module calling hooks                            *]-->
+<!--[* ---------------------------------------------------------------------- *]-->
+<!--[* http://noc.postnuke.com/projects/ezcomments/                           *]-->
+<!--[* ---------------------------------------------------------------------- *]-->
+<!--[* LICENSE                                                                *]-->
+<!--[* This program is free software; you can redistribute it and/or          *]-->
+<!--[* modify it under the terms of the GNU General Public License (GPL)      *]-->
+<!--[* as published by the Free Software Foundation; either version 2         *]-->
+<!--[* of the License, or (at your option) any later version.                 *]-->
+<!--[* This program is distributed in the hope that it will be useful,        *]-->
+<!--[* but WITHOUT ANY WARRANTY; without even the implied warranty of         *]-->
+<!--[* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *]-->
+<!--[* GNU General Public License for more details.                           *]-->
+<!--[* To read the license please visit http://www.gnu.org/copyleft/gpl.html  *]-->
+<!--[* ---------------------------------------------------------------------- *]-->
+<!--[* Purpose of this template:                                              *]-->
+<!--[* Show the comments in a "threaded" look, the way the original           *]-->
+<!--[* comments module was.                                                   *]-->
+<!--[* ---------------------------------------------------------------------- *]-->
+
+
 <!--[assign var="redirect"   value=$redirect|rawurlencode]-->
-	<!--[pnmodgetname assign=modname]-->
+  <!--[pnmodgetname assign=modname]-->
 <!--[*  Order the comments. This is done by the module. *]-->
 <!--[assign var=comments value=$comments|@EZComments_threadComments]-->
 <div class="ezcomments">
-	<!--[include file=ezcomments_user_header.htm]-->
+  <!--[include file=ezcomments_user_header.htm]-->
   <!--[include file="ezcomments_user_navbar.htm"]-->
-	<!--[*  Loop through the comments  *]-->
-	<!--[section name=comments loop=$comments]-->
-		<!--[*  We assign these URLS here to keep the template easier to read *]-->
-		<!--[assign var="url_userinfo" value="user.php?op=userinfo&module=User&uname=`$comments[comments].uname`"]-->
-		<!--[pnmodurl modname=Messages func=compose uname=$comments[comments].uname assign=url_message]-->
-		<!--[pnmodurl modname=EZComments func=comment EZComments_redirect=$redirect EZComments_modname=$modname EZComments_objectid=$objectid EZComments_replyto=$comments[comments].id assign=url_comment]-->
-		<!--[pnmodurl modname=EZComments type=admin func=delete redirect=$redirect id=$comments[comments].id assign=url_del]-->
-		<div style="margin-left: <!--[math equation="x * 2" x=$comments[comments].level]-->em">	
-			<div style="width:99%; background-color:<!--[$bgcolor1]-->; padding:4px;">
-				<strong><!--[$comments[comments].subject]--></strong>
-				<div>
-					<!--[pnml name=_EZCOMMENTS_COMMENT_FROM]--> 
-					<!--[if $comments[comments].anonname neq '']-->
-					<!--[$comments[comments].anonname|pnvarprepfordisplay]-->
-					<!--[else]-->
-					<!--[$comments[comments].uname|pnvarprepfordisplay]-->
-					<!--[/if]-->
-				</div>
-				<div class="pn-sub"><!--[pnml name=_EZCOMMENTS_COMMENT_ON]--> <!--[$comments[comments].date|date_format:"%d.%m.%y, %H:%M"]--></div>
-				<div class="pn-sub"> 
-					[ <a class="pn-sub" href="<!--[$url_userinfo|pnvarprepfordisplay]-->"><!--[pnml name=_USERINFO]--></a> ]
-					[ <a class="pn-sub" href="<!--[$url_message|pnvarprepfordisplay]-->"><!--[pnml name=_SENDAMSG]--></a> ]
-				</div>
-				<!--[$comments[comments].comment|formatezcomment|pnmodcallhooks:EZComments|pnvarprephtmldisplay]-->
-			</div>
-			<div style="text-align:center">
-			  <!--[if $allowadd]-->
-				[ <a href="<!--[$url_comment|pnvarprepfordisplay]-->"><!--[pnml name=_EZCOMMENTS_COMMENT_ANSWER]--></a> ]
-			  <!--[/if]-->
-			  <!--[if $comments[comments].del]-->
-				[ <a href="<!--[$url_del|pnvarprepfordisplay]-->"><!--[pnml name=_EZCOMMENTS_DEL]--></a> ]
-			  <!--[/if]-->
-			</div>
-		</div>	
-		<br />
-	<!--[/section]-->
-	<!--[if $allowadd]-->
-		<form action="<!--[pnmodurl modname=EZComments func=comment]-->" method="post">
-		<div>
-			<input type="hidden" name="authid" id="authid" value="<!--[pnsecgenauthkey module=EZComments]-->" /> 
-			<input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" />
-			<input type="hidden" name="EZComments_modname" id="EZComments_modname" value="<!--[$modname|pnvarprepfordisplay]-->" />
-			<input type="hidden" name="EZComments_objectid" id="EZComments_objectid" value="<!--[$objectid|pnvarprepfordisplay]-->" /> 
-			<input type="submit" value="<!--[pnml name=_EZCOMMENTS_COMMENT_ADD]-->" />
-		</div>
-		</form>
-	<!--[else]-->
-		<!--[pnml name=_EZCOMMENTS_ONLYREG]-->
-		<a href="user.php"><!--[pnml name=_EZCOMMENTS_GOTOREG]--></a>
-	<!--[/if]-->
+  <!--[*  Loop through the comments  *]-->
+  <!--[section name=comments loop=$comments]-->
+    <!--[*  We assign these URLS here to keep the template easier to read *]-->
+    <!--[assign var="url_userinfo" value="user.php?op=userinfo&module=User&uname=`$comments[comments].uname`"]-->
+    <!--[pnmodurl modname=Messages func=compose uname=$comments[comments].uname assign=url_message]-->
+    <!--[pnmodurl modname=EZComments func=comment EZComments_redirect=$redirect EZComments_modname=$modname EZComments_objectid=$objectid EZComments_replyto=$comments[comments].id assign=url_comment]-->
+    <!--[pnmodurl modname=EZComments type=admin func=delete redirect=$redirect id=$comments[comments].id assign=url_del]-->
+    <div style="margin-left: <!--[math equation="x * 2" x=$comments[comments].level]-->em">  
+      <div style="width:99%; background-color:<!--[$bgcolor1]-->; padding:4px;">
+        <strong><!--[$comments[comments].subject]--></strong>
+        <div>
+          <!--[pnml name=_EZCOMMENTS_COMMENT_FROM]--> 
+          <!--[if $comments[comments].anonname neq '']-->
+          <!--[$comments[comments].anonname|pnvarprepfordisplay]-->
+          <!--[else]-->
+          <!--[$comments[comments].uname|pnvarprepfordisplay]-->
+          <!--[/if]-->
+        </div>
+        <div class="pn-sub"><!--[pnml name=_EZCOMMENTS_COMMENT_ON]--> <!--[$comments[comments].date|date_format:"%d.%m.%y, %H:%M"]--></div>
+        <div class="pn-sub"> 
+          [ <a class="pn-sub" href="<!--[$url_userinfo|pnvarprepfordisplay]-->"><!--[pnml name=_USERINFO]--></a> ]
+          [ <a class="pn-sub" href="<!--[$url_message|pnvarprepfordisplay]-->"><!--[pnml name=_SENDAMSG]--></a> ]
+        </div>
+        <!--[$comments[comments].comment|formatezcomment|pnmodcallhooks:EZComments|pnvarprephtmldisplay]-->
+      </div>
+      <div style="text-align:center">
+        <!--[if $allowadd]-->
+        [ <a href="<!--[$url_comment|pnvarprepfordisplay]-->"><!--[pnml name=_EZCOMMENTS_COMMENT_ANSWER]--></a> ]
+        <!--[/if]-->
+        <!--[if $comments[comments].del]-->
+        [ <a href="<!--[$url_del|pnvarprepfordisplay]-->"><!--[pnml name=_EZCOMMENTS_DEL]--></a> ]
+        <!--[/if]-->
+      </div>
+    </div>  
+    <br />
+  <!--[/section]-->
+  <!--[if $allowadd]-->
+    <form action="<!--[pnmodurl modname=EZComments func=comment]-->" method="post">
+    <div>
+      <input type="hidden" name="authid" id="authid" value="<!--[pnsecgenauthkey module=EZComments]-->" /> 
+      <input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" />
+      <input type="hidden" name="EZComments_modname" id="EZComments_modname" value="<!--[$modname|pnvarprepfordisplay]-->" />
+      <input type="hidden" name="EZComments_objectid" id="EZComments_objectid" value="<!--[$objectid|pnvarprepfordisplay]-->" /> 
+      <input type="submit" value="<!--[pnml name=_EZCOMMENTS_COMMENT_ADD]-->" />
+    </div>
+    </form>
+  <!--[else]-->
+    <!--[pnml name=_EZCOMMENTS_ONLYREG]-->
+    <a href="user.php"><!--[pnml name=_EZCOMMENTS_GOTOREG]--></a>
+  <!--[/if]-->
 </div>
 
