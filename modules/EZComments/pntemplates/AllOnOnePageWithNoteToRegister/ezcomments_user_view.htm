@@ -1,95 +1,104 @@
 <!--[*  $Id$                 *]-->
-<!--[*  ---------------------------------------------------------------------- *]-->
-<!--[*  EZComments                                                             *]-->
-<!--[*  Attach comments to any module calling hooks                            *]-->
-<!--[*  ---------------------------------------------------------------------- *]-->
-<!--[*  Author: Jörg Napp                      *]-->
-<!--[*  ---------------------------------------------------------------------- *]-->
-<!--[*  LICENSE                                                                *]-->
-<!--[*  This program is free software; you can redistribute it and/or          *]-->
-<!--[*  modify it under the terms of the GNU General Public License (GPL)      *]-->
-<!--[*  as published by the Free Software Foundation; either version 2         *]-->
-<!--[*  of the License, or (at your option) any later version.                 *]-->
-<!--[*  This program is distributed in the hope that it will be useful,        *]-->
-<!--[*  but WITHOUT ANY WARRANTY; without even the implied warranty of         *]-->
-<!--[*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *]-->
-<!--[*  GNU General Public License for more details.                           *]-->
-<!--[*  To read the license please visit http://www.gnu.org/copyleft/gpl.html  *]-->
-<!--[*  ---------------------------------------------------------------------- *]-->
-<!--[*  Purpose of this template:                                              *]-->
-<!--[*  Show the comments in the standard look, everything on just one         *]-->
-<!--[*  page (the comments as well as the comment form)                        *]-->
-<!--[*  ---------------------------------------------------------------------- *]-->
+
+<!--[* ---------------------------------------------------------------------- *]-->
+<!--[* EZComments                                                             *]-->
+<!--[* Attach comments to any module calling hooks                            *]-->
+<!--[* ---------------------------------------------------------------------- *]-->
+<!--[* http://noc.postnuke.com/projects/ezcomments/                           *]-->
+<!--[* ---------------------------------------------------------------------- *]-->
+<!--[* LICENSE                                                                *]-->
+<!--[* This program is free software; you can redistribute it and/or          *]-->
+<!--[* modify it under the terms of the GNU General Public License (GPL)      *]-->
+<!--[* as published by the Free Software Foundation; either version 2         *]-->
+<!--[* of the License, or (at your option) any later version.                 *]-->
+<!--[* This program is distributed in the hope that it will be useful,        *]-->
+<!--[* but WITHOUT ANY WARRANTY; without even the implied warranty of         *]-->
+<!--[* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *]-->
+<!--[* GNU General Public License for more details.                           *]-->
+<!--[* To read the license please visit http://www.gnu.org/copyleft/gpl.html  *]-->
+<!--[* ---------------------------------------------------------------------- *]-->
+<!--[* Purpose of this template:                                              *]-->
+<!--[* Show the comments in the standard look, everything on just one         *]-->
+<!--[* page (the comments as well as the comment form)                        *]-->
+<!--[* ---------------------------------------------------------------------- *]-->
+
 <!--[if $comments eq true or $allowadd eq true]-->
-	<!--[include file=ezcomments_user_header.htm]-->
-  <!--[include file="ezcomments_user_navbar.htm"]-->
-<!--[/if]-->
-<!--[if $comments eq true]-->
-	<!--[* Here we show the given comments *]-->
-	<table border="0" cellpadding="5" cellspacing="0" width="100%">
-		<!--[section name=comments loop=$comments]-->
-		<tr>
-			<td style="background-color:<!--[pnthemegetvar name=bgcolor2]-->" valign="top" width="20%">
-				<!--[if $comments[comments].anonname neq '']-->
-				<!--[$comments[comments].anonname|pnvarprepfordisplay]-->
-				<!--[else]-->
-                <!--[$comments[comments].uname|pnvarprepfordisplay]-->
-				<!--[/if]-->
-				<br />
-				<!--[$comments[comments].date|date_format:"%d.%m.%y, %H:%M"]-->
-			</td>
-			<td style="background-color:<!--[pnthemegetvar name=bgcolor2]-->" valign="top" width="80%">
-				<!--[$comments[comments].comment|formatezcomment|pnvarprephtmldisplay]-->
-				<!--[if $comments[comments].del]-->
-					<br />
-					<form action="<!--[pnmodurl modname=EZComments type=admin func=delete id=$comments[comments].id]-->" method="post">
-					<div>
-						<input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" /> 
-						<input type="hidden" name="EZComments_id" id="EZComments_id" value="<!--[$comments[comments].id]-->" /> 
-						<input type="submit" value="<!--[pnml name=_EZCOMMENTS_DEL]-->" />
-					</div>
-					</form>
-				<!--[/if]-->
-			</td>
-		</tr>
-		<!--[/section]-->
-	</table>
-<!--[/if]-->
-<!--[if $allowadd]-->
-	<!--[* This is the form to comment. It is shown only, when the user is allowed to. *]-->
-	<div><!--[pnml name=_EZCOMMENTS_COMMENT_ADD]--></div>
-	<form id="post" action="<!--[pnmodurl modname=EZComments func=create]-->" method="post">
-	<div>
-		<input type="hidden" name="authid" id="authid" value="<!--[pnsecgenauthkey module=EZComments]-->" /> 
-		<input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" /> 
-		<input type="hidden" name="EZComments_modname" id="EZComments_modname" value="<!--[pnmodgetname]-->" /> 
-		<input type="hidden" name="EZComments_objectid" id="EZComments_objectid" value="<!--[$objectid|pnvarprepfordisplay]-->" /> 
-		<div>
-			<label for="subject"><!--[pnml name=_EZCOMMENTS_SUBJECT]--></label>
-			<input type="text" name="EZComments_subject" id="subject" size="50" maxlength="255" />
-		</div>
-		<!--[if $loggedin neq true and $anonusersinfo eq true]-->
-		<div>
-			<label for="anonname"><!--[pnml name=_EZCOMMENTS_ANONNAME]--></label>
-			<input type="text" name="EZComments_anonname" id="anonname" size="50" maxlength="255" />
-		</div>
-		<div>
-			<label for="anonmail"><!--[pnml name=_EZCOMMENTS_ANONMAIL]--></label>
-			<input type="text" name="EZComments_anonmail" id="anonmail" size="50" maxlength="255" />
-		</div>
-		<!--[/if]-->
-		<div>
-			<label for="message"><!--[pnml name=_EZCOMMENTS_COMMENT]--></label>
-			<textarea name="EZComments_comment" id="message" cols="60" rows="10"></textarea>
-		</div>
-		<input type="submit" value="<!--[pnml name=_EZCOMMENTS_ADD]-->" />
-	</div>
-	</form>
-<!--[else]-->
-	<div>
-		<!--[pnml name=_EZCOMMENTS_ONLYREG]-->
-		<a href="user.php"><!--[pnml name=_EZCOMMENTS_GOTOREG]--></a>
-	</div>
+  <!--[include file=ezcomments_user_header.htm]-->
 <!--[/if]-->
 
+<!--[if $comments eq true]-->
+  <!--[* Here we show the given comments *]-->
+  <table style="background-color:<!--[pnthemegetvar name="bgcolor1"]-->; width:100%;" border="0" cellpadding="5" cellspacing="3">
+    <!--[section name=comments loop=$comments]-->
+      <tr>
+        <td style="background-color:<!--[pnthemegetvar name="bgcolor2"]-->; width:15%;" valign="top">
+        <!--[if $comments[comments].anonname neq '']-->
+          <!--[$comments[comments].anonname|pnvarprepfordisplay]-->
+        <!--[else]-->
+          <!--[$comments[comments].uname|pnvarprepfordisplay]-->
+        <!--[/if]-->
+        <br />
+        <!--[$comments[comments].date|date_format:"%d.%m.%y, %H:%M"]-->
+        </td>
+        <td style="background-color:<!--[pnthemegetvar name="bgcolor3"]-->; width:85%;" valign="top">
+        <!--[if $comments[comments].subject neq '']-->
+          <strong><!--[$comments[comments].subject|pnvarprepfordisplay]--></strong>
+          <br />
+        <!--[/if]-->
+        <!--[$comments[comments].comment|formatezcomment|pnvarprephtmldisplay]-->
+            <!--[if $comments[comments].del]-->
+          <br />
+          <form action="<!--[pnmodurl modname=EZComments type=admin func=delete id=$comments[comments].id]-->" method="post">
+          <div>
+            <input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" /> 
+            <input type="submit" value="<!--[pnml name=_EZCOMMENTS_DEL]-->" />
+          </div>
+          </form>
+        <!--[/if]-->
+        </td>
+      </tr>
+    <!--[/section]-->
+  </table>
+<!--[/if]-->
+
+<!--[if $allowadd]-->
+  <!--[* This is the form to comment. It is shown only, when the user is allowed to. *]-->
+  <div><!--[pnml name=_EZCOMMENTS_COMMENT_ADD]--></div>
+  <form id="post" action="<!--[pnmodurl modname=EZComments func=create]-->" method="post">
+  <div>
+    <input type="hidden" name="authid" id="authid" value="<!--[pnsecgenauthkey module=EZComments]-->" /> 
+    <input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" /> 
+    <input type="hidden" name="EZComments_modname" id="EZComments_modname" value="<!--[pnmodgetname]-->" /> 
+    <input type="hidden" name="EZComments_objectid" id="EZComments_objectid" value="<!--[$objectid|pnvarprepfordisplay]-->" /> 
+    <div>
+      <label for="subject"><!--[pnml name=_EZCOMMENTS_SUBJECT]--></label>
+      <br />
+      <input type="text" name="EZComments_subject" id="subject" size="50" maxlength="255" />
+    </div>
+    <!--[if $loggedin neq true and $anonusersinfo eq true]-->
+    <div>
+      <label for="anonname"><!--[pnml name=_EZCOMMENTS_ANONNAME]--></label>
+      <br />
+      <input type="text" name="EZComments_anonname" id="anonname" size="50" maxlength="255" />
+    </div>
+    <div>
+      <label for="anonmail"><!--[pnml name=_EZCOMMENTS_ANONMAIL]--></label>
+      <br />
+      <input type="text" name="EZComments_anonmail" id="anonmail" size="50" maxlength="255" />
+    </div>
+    <!--[/if]-->
+    <div>
+      <label for="message"><!--[pnml name=_EZCOMMENTS_COMMENT]--></label>
+      <br />
+      <textarea name="EZComments_comment" id="message" cols="60" rows="10"></textarea>
+    </div>
+    <input type="submit" value="<!--[pnml name=_EZCOMMENTS_ADD]-->" />
+  </div>
+  </form>
+<!--[else]-->
+  <div>
+    <!--[pnml name=_EZCOMMENTS_ONLYREG]-->
+    <a href="user.php"><!--[pnml name=_EZCOMMENTS_GOTOREG]--></a>
+  </div>
+<!--[/if]-->
 
