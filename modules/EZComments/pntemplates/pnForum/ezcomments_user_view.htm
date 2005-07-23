@@ -126,9 +126,6 @@
         <!--[pnml name=_EZCOMMENTS_COMMENT_ADD]-->
       </td>
       <td style="width:80%; vertical-align:top;background-color:<!--[pnthemegetvar name=bgcolor1]-->;">
-        <!--[if $bbcode]-->
-          <!--[pnmodfunc modname=pn_bbcode func=bbcodes images=true]-->
-        <!--[/if]-->
         <form id="post" action="<!--[pnmodurl modname=EZComments func=create]-->" method="post">
         <div>
           <input type="hidden" name="authid" id="authid" value="<!--[pnsecgenauthkey module=EZComments]-->" /> 
@@ -158,6 +155,9 @@
           <input type="submit" value="<!--[pnml name=_EZCOMMENTS_ADD]-->" />
         </div>
         </form>
+        <!--[if $bbcode]-->
+          <!--[pnmodfunc modname=pn_bbcode func=bbcodes images=true]-->
+        <!--[/if]-->
         <!--[if $smilies]-->
           <!--[pnmodfunc modname=pn_bbsmile func=bbsmiles]-->
         <!--[/if]-->
