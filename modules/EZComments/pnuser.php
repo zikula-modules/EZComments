@@ -222,6 +222,11 @@ function EZComments_user_comment($args)
 	}
 	$pnRender->assign('template', $template);
 
+
+	if (!$pnRender->template_exists(pnVarPrepForOS($template . '/ezcomments_user_comment.htm'))) {
+		return _EZCOMMENTS_FAILED;
+	}
+
     return $pnRender->fetch(pnVarPrepForOS($template) . '/ezcomments_user_comment.htm');
 }
 
