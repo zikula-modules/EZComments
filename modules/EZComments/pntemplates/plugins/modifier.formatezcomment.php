@@ -23,7 +23,7 @@
  * @author      Mark West <markwest at postnuke dot com>
  * @author      Jean-Michel Vedrine
  * @version     0.8
- * @link        http://lottasophie.sourceforge.net Support and documentation
+ * @link        http://noc.postnuke.com/projects/ezcomments/ Support and documentation
  * @license     http://www.gnu.org/copyleft/gpl.html GNU General Public License
  * @package     Postnuke
  * @subpackage  EZComments

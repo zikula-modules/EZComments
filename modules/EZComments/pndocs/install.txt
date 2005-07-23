@@ -3,11 +3,11 @@ $Id$
 Copy to your modules folder, initialize, activate
 Edit the modules you want to have comments for, and activate EZComments
 
-Full documentation and forum can be found on http://lottasophie.sourceforge.net
+Full documentation and forum can be found on http://noc.postnuke.com/projects/ezcomments/
 
 
 jnapp@users.sourceforge.net
-http://lottasophie.sourceforge.net
+http://noc.postnuke.com/projects/ezcomments/
 
 Support für PostNuke in deutscher Sprache:
 http://www.post-nuke.net

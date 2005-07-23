@@ -67,7 +67,6 @@ define('_EZCOMMENTS_FAILED5', 			'Table update failed');
 define('_EZCOMMENTS_MAILSUBJECT',		'A new comment was entered'); 
 define('_EZCOMMENTS_MAILBODY',  		'A new comment was entered'); 
 
-// Steffen 01/2005
 define('_EZCOMMENTS_POSTED',  			'posted'); 
 define('_EZCOMMENTS_REG_SINCE',  		'registered'); 
 define('_EZCOMMENTS_STATUS',  			'Status'); 
@@ -76,8 +75,9 @@ define('_EZCOMMENTS_ONLINE',  			'Online');
 define('_EZCOMMENTS_PROFILE',  			'Profile'); 
 define('_EZCOMMENTS_SEND_PM',  			'send PM'); 
 define('_EZCOMMENTS_FROM',  			'Location'); 
-
 define('_EZCOMMENTS_SUBJECT',           'Subject');
+
+
 define('_EZCOMMENTS_EDIT',              'Edit Comment');
 define('_EZCOMMENTS_ITEMSPERPAGE',      'Items per page');
 

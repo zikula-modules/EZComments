@@ -25,7 +25,7 @@
  *
  * @author      Joerg Napp <jnapp@users.sourceforge.net>
  * @version     0.2
- * @link        http://lottasophie.sourceforge.net Support and documentation
+ * @link        http://noc.postnuke.com/projects/ezcomments/ Support and documentation
  * @license     http://www.gnu.org/copyleft/gpl.html GNU General Public License
  * @package     Postnuke
  * @subpackage  EZComments
