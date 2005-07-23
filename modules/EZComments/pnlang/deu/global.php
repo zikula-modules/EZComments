@@ -112,7 +112,7 @@ define('_EZCOMMENTS_MODMAILBODY',         'Ein neuer Kommentar wurde erstellt un
 define('_EZCOMMENTS_ALWAYSMODERERATE',    'Nur moderiert freigeben');
 define('_EZCOMMENTS_HELDFORMODERATION',   'Der Kommentar wird so bald wie möglich freigeschaltet. Vielen Dank');
 define('_EZCOMMENTS_COMMENTBLACKLISTED',  'Der Kommentar wurde aufgrund inhaltlicher Mängel nicht freigeschaltet');
-define('_EZCOMMENTS_PROXYBLACKLIST',      'Blacklist comments from insecure proxies');
+define('_EZCOMMENTS_PROXYBLACKLIST',      'Kommentare, die über unsichere Proxies abgegeben werden, ablehnen');
 
 // comment statuses
 define('_EZCOMMENTS_APPROVED',            'freigeschaltet');
