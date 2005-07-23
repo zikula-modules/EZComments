@@ -50,17 +50,17 @@
  */
 function smarty_modifier_formatezcomment($string)
 {
-	// compare the stipped version with original (identical means an unformated comment)
-	if ($string == strip_tags($string)) {
-		// strip all carriage returns (we're only interested in newlines)
-		$string = str_replace("\r", '', $string);
-		// replace newlines with a paragraph delimiter
-		$string = str_replace("\n", '</p><p>', $string);
-		// wrap string in a parapraph
-		$string = '<p>' . $string . '</p>';
-		// drop any empty parapgraphs
-		$string = str_replace('<p></p>', '', $string);
-	}
+    // compare the stipped version with original (identical means an unformated comment)
+    if ($string == strip_tags($string)) {
+        // strip all carriage returns (we're only interested in newlines)
+        $string = str_replace("\r", '', $string);
+        // replace newlines with a paragraph delimiter
+        $string = str_replace("\n", '</p><p>', $string);
+        // wrap string in a parapraph
+        $string = '<p>' . $string . '</p>';
+        // drop any empty parapgraphs
+        $string = str_replace('<p></p>', '', $string);
+    }
     return $string;
 }
 

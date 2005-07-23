@@ -57,41 +57,41 @@
 function smarty_function_ezcommentsadminlinks($params, &$smarty) 
 {
     extract($params); 
-	unset($params);
+    unset($params);
     
-	// set some defaults
-	if (!isset($start)) {
-		$start = '[';
-	}
-	if (!isset($end)) {
-		$end = ']';
-	}
-	if (!isset($seperator)) {
-		$seperator = '|';
-	}
+    // set some defaults
+    if (!isset($start)) {
+        $start = '[';
+    }
+    if (!isset($end)) {
+        $end = ']';
+    }
+    if (!isset($seperator)) {
+        $seperator = '|';
+    }
     if (!isset($class)) {
-	    $class = 'pn-menuitem-title';
-	}
+        $class = 'pn-menuitem-title';
+    }
 
     $adminlinks = "<span class=\"$class\">$start ";
-	
+    
     if (pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
-		$adminlinks .= "<a href=\"" . pnVarPrepHTMLDisplay(pnModURL('EZComments', 'admin')) . "\">" . _EZCOMMENTS_ADMIN_MAIN . "</a> ";
+        $adminlinks .= "<a href=\"" . pnVarPrepHTMLDisplay(pnModURL('EZComments', 'admin')) . "\">" . _EZCOMMENTS_ADMIN_MAIN . "</a> ";
     }
     if (pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADD)) {
-		$adminlinks .= "$seperator <a href=\"" . pnVarPrepHTMLDisplay(pnModURL('EZComments', 'admin', 'cleanup')) . "\">" . _EZCOMMENTS_CLEANUP . "</a> ";
+        $adminlinks .= "$seperator <a href=\"" . pnVarPrepHTMLDisplay(pnModURL('EZComments', 'admin', 'cleanup')) . "\">" . _EZCOMMENTS_CLEANUP . "</a> ";
     }
     if (pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
-		$adminlinks .= "$seperator <a href=\"" . pnVarPrepHTMLDisplay(pnModURL('EZComments', 'admin', 'migrate')) . "\">" . _EZCOMMENTS_MIGRATE . "</a> ";
+        $adminlinks .= "$seperator <a href=\"" . pnVarPrepHTMLDisplay(pnModURL('EZComments', 'admin', 'migrate')) . "\">" . _EZCOMMENTS_MIGRATE . "</a> ";
     }
     if (pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
-		$adminlinks .= "$seperator <a href=\"" . pnVarPrepHTMLDisplay(pnModURL('EZComments', 'admin', 'purge')) . "\">" . _EZCOMMENTS_PURGE . "</a> ";
+        $adminlinks .= "$seperator <a href=\"" . pnVarPrepHTMLDisplay(pnModURL('EZComments', 'admin', 'purge')) . "\">" . _EZCOMMENTS_PURGE . "</a> ";
     }
     if (pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
-		$adminlinks .= "$seperator <a href=\"" . pnVarPrepHTMLDisplay(pnModURL('EZComments', 'admin', 'modifyconfig')) . "\">" . _MODIFYCONFIG . "</a> ";
+        $adminlinks .= "$seperator <a href=\"" . pnVarPrepHTMLDisplay(pnModURL('EZComments', 'admin', 'modifyconfig')) . "\">" . _MODIFYCONFIG . "</a> ";
     }
 
-	$adminlinks .= "$end</span>\n";
+    $adminlinks .= "$end</span>\n";
 
     return $adminlinks;
 }

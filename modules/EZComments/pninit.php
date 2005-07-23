@@ -40,14 +40,14 @@
  */
 function EZComments_init()
 { 
-	// Create tables
-	$dbconn =& pnDBGetConn(true);
-	$pntable =& pnDBGetTables();
+    // Create tables
+    $dbconn =& pnDBGetConn(true);
+    $pntable =& pnDBGetTables();
 
-	$EZCommentstable = $pntable['EZComments'];
-	$EZCommentscolumn = &$pntable['EZComments_column'];
+    $EZCommentstable = $pntable['EZComments'];
+    $EZCommentscolumn = &$pntable['EZComments_column'];
 
-	$sql = "CREATE TABLE $EZCommentstable (
+    $sql = "CREATE TABLE $EZCommentstable (
               $EZCommentscolumn[id]        int(11)      NOT NULL auto_increment,
               $EZCommentscolumn[modname]   varchar(64)  NOT NULL default '',
               $EZCommentscolumn[objectid]  text         NOT NULL default '',
@@ -55,30 +55,30 @@ function EZComments_init()
               $EZCommentscolumn[date]      datetime     default NULL,
               $EZCommentscolumn[uid]       int(11)      default '0',
               $EZCommentscolumn[comment]   text         NOT NULL,
-		      $EZCommentscolumn[subject]   text         NOT NULL default '',
-			  $EZCommentscolumn[replyto]   int(11)      NOT NULL default '-1',
+              $EZCommentscolumn[subject]   text         NOT NULL default '',
+              $EZCommentscolumn[replyto]   int(11)      NOT NULL default '-1',
               $EZCommentscolumn[anonname]  varchar(255) NOT NULL default '',
               $EZCommentscolumn[anonmail]  varchar(255) NOT NULL default '',
               $EZCommentscolumn[status]    int(4)       NOT NULL default 0,
               PRIMARY KEY(id)
               ) COMMENT='Table for EZComments'";
-	$dbconn->Execute($sql);
+    $dbconn->Execute($sql);
 
-	if ($dbconn->ErrorNo() != 0) { 
-		pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED1  . ': ' . $dbconn->ErrorMsg());
-		return false;
-	} 
-	// register Hook
-	if (!pnModRegisterHook('item',
-            	           'display',
-			  	           'GUI',
+    if ($dbconn->ErrorNo() != 0) { 
+        pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED1  . ': ' . $dbconn->ErrorMsg());
+        return false;
+    } 
+    // register Hook
+    if (!pnModRegisterHook('item',
+                           'display',
+                             'GUI',
                            'EZComments',
-				           'user',
-				           'view')) {
-		pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED2);
-		return false;
-	} 
-	
+                           'user',
+                           'view')) {
+        pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED2);
+        return false;
+    } 
+    
     // register  delete Hook (Timo)
     // TODO: Check the Hook's name!
     if (!pnModRegisterHook('item',
@@ -87,35 +87,35 @@ function EZComments_init()
                            'EZComments',
                            'admin',
                            'deletebyitem')) {
-		pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED2);
-		return false;
-	}
+        pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED2);
+        return false;
+    }
 
-	// register the module delete hook
-	if (!pnModRegisterHook('module',
-                		   'remove',
-						   'API',
-						   'EZComments',
-						   'admin',
-						   'deletemodule')) {
-		pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED2);
-	}	
+    // register the module delete hook
+    if (!pnModRegisterHook('module',
+                           'remove',
+                           'API',
+                           'EZComments',
+                           'admin',
+                           'deletemodule')) {
+        pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED2);
+    }    
 
-	pnModSetVar('EZComments', 'MailToAdmin', false);
-	pnModSetVar('EZComments', 'migrated', serialize(array()));
-	pnModSetVar('EZComments', 'template', 'AllOnOnePage');
-	pnModSetVar('EZComments', 'itemsperpage', 25);
-	pnModSetVar('EZComments', 'anonusersinfo', false);
-	pnModSetVar('EZComments', 'moderation', 0);
-	pnModSetVar('EZComments', 'moderationlist', '');
-	pnModSetVar('EZComments', 'blacklist', '');
-	pnModSetVar('EZComments', 'modlinkcount', 2);
-	pnModSetVar('EZComments', 'moderationmail', false);
-	pnModSetVar('EZComments', 'alwaysmoderate', false);
-	pnModSetVar('EZComments', 'proxyblacklist', false);
+    pnModSetVar('EZComments', 'MailToAdmin', false);
+    pnModSetVar('EZComments', 'migrated', serialize(array()));
+    pnModSetVar('EZComments', 'template', 'AllOnOnePage');
+    pnModSetVar('EZComments', 'itemsperpage', 25);
+    pnModSetVar('EZComments', 'anonusersinfo', false);
+    pnModSetVar('EZComments', 'moderation', 0);
+    pnModSetVar('EZComments', 'moderationlist', '');
+    pnModSetVar('EZComments', 'blacklist', '');
+    pnModSetVar('EZComments', 'modlinkcount', 2);
+    pnModSetVar('EZComments', 'moderationmail', false);
+    pnModSetVar('EZComments', 'alwaysmoderate', false);
+    pnModSetVar('EZComments', 'proxyblacklist', false);
 
-	// Initialisation successful
-	return true;
+    // Initialisation successful
+    return true;
 } 
 
 
@@ -129,38 +129,38 @@ function EZComments_init()
  */
 function EZComments_upgrade($oldversion)
 { 
-	// setup the db connection
-	$dbconn =& pnDBGetConn(true);
-	$pntable =& pnDBGetTables();
-	$EZCommentstable = $pntable['EZComments'];
-	$EZCommentscolumn = &$pntable['EZComments_column'];
+    // setup the db connection
+    $dbconn =& pnDBGetConn(true);
+    $pntable =& pnDBGetTables();
+    $EZCommentstable = $pntable['EZComments'];
+    $EZCommentscolumn = &$pntable['EZComments_column'];
 
     if ($oldversion == '0.1') {
-		// new functionality: MailToAdmin
-		pnModSetVar('EZComments', 'MailToAdmin', false);
-		// new functionality: Migration
-		pnModSetVar('EZComments', 'migrated', serialize(array()));
+        // new functionality: MailToAdmin
+        pnModSetVar('EZComments', 'MailToAdmin', false);
+        // new functionality: Migration
+        pnModSetVar('EZComments', 'migrated', serialize(array()));
 
-		// Rename the table fom nuke_EZComments to nuke_ezcomments
-		$oldtable = pnConfigGetVar('prefix') . '_EZComments';
-		$sql = "ALTER TABLE $oldtable RENAME $EZCommentstable";
-		$dbconn->Execute($sql);
-		if ($dbconn->ErrorNo() != 0) {
-			pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED5 . ': ' . $dbconn->ErrorMsg());
-			return false;
-		}
-		
-		// Add additional fields used for threading		
-		$sql = "ALTER TABLE $EZCommentstable 
-		                ADD $EZCommentscolumn[subject] text    NOT NULL default '',
-						ADD $EZCommentscolumn[replyto] int(11) NOT NULL default '-1'";
-		$dbconn->Execute($sql);
-		if ($dbconn->ErrorNo() != 0) {
-			pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED5 . ': ' . $dbconn->ErrorMsg());
-			return false;
-		}
-		$oldversion = '0.2';
-	}
+        // Rename the table fom nuke_EZComments to nuke_ezcomments
+        $oldtable = pnConfigGetVar('prefix') . '_EZComments';
+        $sql = "ALTER TABLE $oldtable RENAME $EZCommentstable";
+        $dbconn->Execute($sql);
+        if ($dbconn->ErrorNo() != 0) {
+            pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED5 . ': ' . $dbconn->ErrorMsg());
+            return false;
+        }
+        
+        // Add additional fields used for threading        
+        $sql = "ALTER TABLE $EZCommentstable 
+                        ADD $EZCommentscolumn[subject] text    NOT NULL default '',
+                        ADD $EZCommentscolumn[replyto] int(11) NOT NULL default '-1'";
+        $dbconn->Execute($sql);
+        if ($dbconn->ErrorNo() != 0) {
+            pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED5 . ': ' . $dbconn->ErrorMsg());
+            return false;
+        }
+        $oldversion = '0.2';
+    }
 
     if ($oldversion == '0.2') {
         pnModDelVar('EZComments', 'smartypath');
@@ -173,101 +173,101 @@ function EZComments_upgrade($oldversion)
                                'EZComments_delete',
                                'admin',
                                'deletebyitem')) {
-    		pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED2);
-    		return false;
-    	}
-		$oldversion = '0.3 CVS';
+            pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED2);
+            return false;
+        }
+        $oldversion = '0.3 CVS';
     }
-	if ($oldversion == '0.3' || $oldversion == '0.3 CVS') {
-		// the hook bug for different hook types has been resolved so lets fix that
-		// in this version. We need to unregister the old delete hook, register the
-		// new hook and re-create the hooks for all modules hooked to EZComments.
-		// get all modules hooked to ezcomments
-		$hookedmodules = pnModAPIFunc('Modules', 'admin', 'gethookedmodules', array('hookmodname'=> 'EZComments'));
-		if (!pnModUnregisterHook('item',
-								 'delete',
-								 'API',
-								 'EZComments_delete',
-								 'admin',
-								 'deletebyitem')) {
-			pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED4);
-			return false;
-		}
-		if (!pnModRegisterHook('item',
-							   'delete',
-							   'API',
-							   'EZComments',
-							   'admin',
-							   'deletebyitem')) {
-			pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED2);
-			return false;
-		}
-		foreach ($hookedmodules as $modname => $hooktype) {
-			// disable the hooks for this module
-			pnModAPIFunc('Modules', 'admin', 'disablehooks', array('callermodname' => $modname, 'hookmodname' => 'EZComments'));
-			// re-enable the hooks for this module
-			pnModAPIFunc('Modules', 'admin', 'enablehooks', array('callermodname' => $modname, 'hookmodname' => 'EZComments'));
-		}
-		$oldversion = '0.4';
-	}
-	if ($oldversion == '0.4') {
-		pnModSetVar('EZComments', 'template', 'AllOnOnePage');
-		$oldversion = '0.5';
-	}
-	if ($oldversion == '0.5') {
-		pnModSetVar('EZComments', 'itemsperpage', 25);
-		// get all modules hooked to ezcomments
-		$hookedmodules = pnModAPIFunc('Modules', 'admin', 'gethookedmodules', array('hookmodname'=> 'EZComments'));
-		if (!pnModRegisterHook('module',
-		                       'remove',
-							   'API',
-							   'EZComments',
-							   'admin',
-							   'deletemodule')) {
-			pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED2);
-		}	
-		foreach ($hookedmodules as $modname => $hooktype) {
-			// disable the hooks for this module
-			pnModAPIFunc('Modules', 'admin', 'disablehooks', array('callermodname' => $modname, 'hookmodname' => 'EZComments'));
-			// re-enable the hooks for this module
-			pnModAPIFunc('Modules', 'admin', 'enablehooks', array('callermodname' => $modname, 'hookmodname' => 'EZComments'));
-		}
-		$oldversion = '0.6';
-	}
+    if ($oldversion == '0.3' || $oldversion == '0.3 CVS') {
+        // the hook bug for different hook types has been resolved so lets fix that
+        // in this version. We need to unregister the old delete hook, register the
+        // new hook and re-create the hooks for all modules hooked to EZComments.
+        // get all modules hooked to ezcomments
+        $hookedmodules = pnModAPIFunc('Modules', 'admin', 'gethookedmodules', array('hookmodname'=> 'EZComments'));
+        if (!pnModUnregisterHook('item',
+                                 'delete',
+                                 'API',
+                                 'EZComments_delete',
+                                 'admin',
+                                 'deletebyitem')) {
+            pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED4);
+            return false;
+        }
+        if (!pnModRegisterHook('item',
+                               'delete',
+                               'API',
+                               'EZComments',
+                               'admin',
+                               'deletebyitem')) {
+            pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED2);
+            return false;
+        }
+        foreach ($hookedmodules as $modname => $hooktype) {
+            // disable the hooks for this module
+            pnModAPIFunc('Modules', 'admin', 'disablehooks', array('callermodname' => $modname, 'hookmodname' => 'EZComments'));
+            // re-enable the hooks for this module
+            pnModAPIFunc('Modules', 'admin', 'enablehooks', array('callermodname' => $modname, 'hookmodname' => 'EZComments'));
+        }
+        $oldversion = '0.4';
+    }
+    if ($oldversion == '0.4') {
+        pnModSetVar('EZComments', 'template', 'AllOnOnePage');
+        $oldversion = '0.5';
+    }
+    if ($oldversion == '0.5') {
+        pnModSetVar('EZComments', 'itemsperpage', 25);
+        // get all modules hooked to ezcomments
+        $hookedmodules = pnModAPIFunc('Modules', 'admin', 'gethookedmodules', array('hookmodname'=> 'EZComments'));
+        if (!pnModRegisterHook('module',
+                               'remove',
+                               'API',
+                               'EZComments',
+                               'admin',
+                               'deletemodule')) {
+            pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED2);
+        }    
+        foreach ($hookedmodules as $modname => $hooktype) {
+            // disable the hooks for this module
+            pnModAPIFunc('Modules', 'admin', 'disablehooks', array('callermodname' => $modname, 'hookmodname' => 'EZComments'));
+            // re-enable the hooks for this module
+            pnModAPIFunc('Modules', 'admin', 'enablehooks', array('callermodname' => $modname, 'hookmodname' => 'EZComments'));
+        }
+        $oldversion = '0.6';
+    }
 
-	if ($oldversion == '0.6') {
-		pnModSetVar('EZComments', 'anonusersinfo', false);
-		// Add additional for unregistered users info
-		$sql = "ALTER TABLE $EZCommentstable 
-		                ADD $EZCommentscolumn[anonname] varchar(255) NOT NULL default '',
-						ADD $EZCommentscolumn[anonmail] varchar(255) NOT NULL default ''";
-		$dbconn->Execute($sql);
-		if ($dbconn->ErrorNo() != 0) {
-			pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED5 . ': ' . $dbconn->ErrorMsg());
-			return false;
-		}
-		$oldversion = '0.7';
-	}
+    if ($oldversion == '0.6') {
+        pnModSetVar('EZComments', 'anonusersinfo', false);
+        // Add additional for unregistered users info
+        $sql = "ALTER TABLE $EZCommentstable 
+                        ADD $EZCommentscolumn[anonname] varchar(255) NOT NULL default '',
+                        ADD $EZCommentscolumn[anonmail] varchar(255) NOT NULL default ''";
+        $dbconn->Execute($sql);
+        if ($dbconn->ErrorNo() != 0) {
+            pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED5 . ': ' . $dbconn->ErrorMsg());
+            return false;
+        }
+        $oldversion = '0.7';
+    }
 
-	if ($oldversion == '0.7') {
-		// Add additional field for published status flag on comments
-		$sql = "ALTER TABLE $EZCommentstable 
-		                ADD $EZCommentscolumn[status] int(4) NOT NULL default 0";
-		$dbconn->Execute($sql);
-		if ($dbconn->ErrorNo() != 0) {
-			pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED5 . ': ' . $dbconn->ErrorMsg());
-			return false;
-		}
-		// add additional vars for comment moderation, blacklists and link count for moderation
-		pnModSetVar('EZComments', 'moderation', 0);
-		pnModSetVar('EZComments', 'moderationlist', '');
-		pnModSetVar('EZComments', 'blacklist', '');
-		pnModSetVar('EZComments', 'modlinkcount', 2);
-		pnModSetVar('EZComments', 'moderationmail', false);
-		pnModSetVar('EZComments', 'alwaysmoderate', false);
-		pnModSetVar('EZComments', 'proxyblacklist', false);
-	}
-	return true;
+    if ($oldversion == '0.7') {
+        // Add additional field for published status flag on comments
+        $sql = "ALTER TABLE $EZCommentstable 
+                        ADD $EZCommentscolumn[status] int(4) NOT NULL default 0";
+        $dbconn->Execute($sql);
+        if ($dbconn->ErrorNo() != 0) {
+            pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED5 . ': ' . $dbconn->ErrorMsg());
+            return false;
+        }
+        // add additional vars for comment moderation, blacklists and link count for moderation
+        pnModSetVar('EZComments', 'moderation', 0);
+        pnModSetVar('EZComments', 'moderationlist', '');
+        pnModSetVar('EZComments', 'blacklist', '');
+        pnModSetVar('EZComments', 'modlinkcount', 2);
+        pnModSetVar('EZComments', 'moderationmail', false);
+        pnModSetVar('EZComments', 'alwaysmoderate', false);
+        pnModSetVar('EZComments', 'proxyblacklist', false);
+    }
+    return true;
 } 
 
 
@@ -281,24 +281,24 @@ function EZComments_upgrade($oldversion)
  */
 function EZComments_delete()
 {
-	$dbconn =& pnDBGetConn(true);
-	$pntable =& pnDBGetTables();
-	$sql = "DROP TABLE $pntable[EZComments]";
-	$dbconn->Execute($sql);
-	if ($dbconn->ErrorNo() != 0) {
-		pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED3);
-		return false;
-	} 
+    $dbconn =& pnDBGetConn(true);
+    $pntable =& pnDBGetTables();
+    $sql = "DROP TABLE $pntable[EZComments]";
+    $dbconn->Execute($sql);
+    if ($dbconn->ErrorNo() != 0) {
+        pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED3);
+        return false;
+    } 
 
-	if (!pnModUnregisterHook('item',
-				             'display',
-            				 'GUI',
-			            	 'EZComments',
-            				 'user',
-            				 'view')) {
-		pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED4);
-		return false;
-	} 
+    if (!pnModUnregisterHook('item',
+                             'display',
+                             'GUI',
+                             'EZComments',
+                             'user',
+                             'view')) {
+        pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED4);
+        return false;
+    } 
 
     if (!pnModUnregisterHook('item',
                              'delete',
@@ -308,7 +308,7 @@ function EZComments_delete()
                              'deletebyitem')) {
         pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED4);
         return false;
-	}
+    }
 
     if (!pnModUnregisterHook('module',
                              'remove',
@@ -318,16 +318,16 @@ function EZComments_delete()
                              'deletemodule')) {
         pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED4);
         return false;
-	}
+    }
 
-	pnModDelVar('EZComments', 'MailToAdmin');
-	pnModDelVar('EZComments', 'migrated');
-	pnModDelVar('EZComments', 'template');	
-	pnModDelVar('EZcomments', 'itemsperpage');
-	pnModDelVar('EZComments', 'anonusersinfo');
+    pnModDelVar('EZComments', 'MailToAdmin');
+    pnModDelVar('EZComments', 'migrated');
+    pnModDelVar('EZComments', 'template');    
+    pnModDelVar('EZcomments', 'itemsperpage');
+    pnModDelVar('EZComments', 'anonusersinfo');
 
-	// Deletion successful
-	return true;
+    // Deletion successful
+    return true;
 } 
 
 ?>

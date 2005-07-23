@@ -42,32 +42,32 @@
  */
 function EZComments_adminapi_getUsedModules()
 {
-	if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
-		return false;
-	} 
-	
-	$dbconn =& pnDBGetConn(true);
-	$pntable =& pnDBGetTables();
+    if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
+        return false;
+    } 
+    
+    $dbconn =& pnDBGetConn(true);
+    $pntable =& pnDBGetTables();
 
-	$table = $pntable['EZComments'];
-	$column = &$pntable['EZComments_column']; 
+    $table = $pntable['EZComments'];
+    $column = &$pntable['EZComments_column']; 
 
     $sql = "SELECT    $column[modname]
             FROM      $table
-			GROUP BY  $column[modname]";
+            GROUP BY  $column[modname]";
     $result =& $dbconn->Execute($sql);
 
     if ($dbconn->ErrorNo() != 0) {
         return false;
     }
 
-	$mods = array();
-	for (; !$result->EOF; $result->MoveNext()) {
-		list($mods[]) = $result->fields;
-	} 
-	$result->Close(); 
+    $mods = array();
+    for (; !$result->EOF; $result->MoveNext()) {
+        list($mods[]) = $result->fields;
+    } 
+    $result->Close(); 
 
-	return $mods;
+    return $mods;
 }
 
 /**
@@ -81,33 +81,33 @@ function EZComments_adminapi_getUsedModules()
  **/
 function EZComments_adminapi_deleteall($args)
 {
-	if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
-		return false;
-	} 
+    if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
+        return false;
+    } 
 
-	if (!isset($args['module'])) { 
-		return false;
-	}
-	
-	
-	$dbconn =& pnDBGetConn(true);
-	$pntable =& pnDBGetTables();
+    if (!isset($args['module'])) { 
+        return false;
+    }
+    
+    
+    $dbconn =& pnDBGetConn(true);
+    $pntable =& pnDBGetTables();
 
-	$table = $pntable['EZComments'];
-	$column = &$pntable['EZComments_column']; 
+    $table = $pntable['EZComments'];
+    $column = &$pntable['EZComments_column']; 
 
     $sql = "DELETE FROM $table
-			WHERE $column[modname] = '$args[module]'";
-			
+            WHERE $column[modname] = '$args[module]'";
+            
     $result =& $dbconn->Execute($sql);
 
     if ($dbconn->ErrorNo() != 0) {
-	echo $dbconn->ErrorMsg;
+    echo $dbconn->ErrorMsg;
         return false;
     }
-	$result->Close(); 
+    $result->Close(); 
 
-	return true;
+    return true;
 }
 
 /**
@@ -141,7 +141,7 @@ function EZComments_adminapi_deletebyitem($args)
     $column = &$pntable['EZComments_column'];
 
     $sql = "DELETE FROM $table
-			WHERE $column[modname] = '$modname' AND $column[objectid] = '$objectid'";
+            WHERE $column[modname] = '$modname' AND $column[objectid] = '$objectid'";
 
     $result =& $dbconn->Execute($sql);
 
@@ -267,13 +267,13 @@ function EZComments_adminapi_update($args)
     // It's good practice to name the table and column definitions you
     // are getting - $table and $column don't cut it in more complex
     // modules
-	$EZCommentstable = $pntable['EZComments'];
-	$EZCommentscolumn = &$pntable['EZComments_column']; 
+    $EZCommentstable = $pntable['EZComments'];
+    $EZCommentscolumn = &$pntable['EZComments_column']; 
 
-	// All variables that come in to or go out of PostNuke should be handled
-	// by the relevant pnVar*() functions to ensure that they are safe. 
-	// Failure to do this could result in opening security wholes at either 
-	// the web, filesystem, display, or database layers. 
+    // All variables that come in to or go out of PostNuke should be handled
+    // by the relevant pnVar*() functions to ensure that they are safe. 
+    // Failure to do this could result in opening security wholes at either 
+    // the web, filesystem, display, or database layers. 
     list($subject, $comment, $id, $status) = pnVarPrepForStore($subject, $comment, $id, $status);
 
     // Update the item - the formatting here is not mandatory, but it does
@@ -283,7 +283,7 @@ function EZComments_adminapi_update($args)
     $sql = "UPDATE $EZCommentstable
             SET $EZCommentscolumn[subject] = '".$subject."',
                 $EZCommentscolumn[comment] = '".$comment."',
-				$EZCommentscolumn[status] = '".(int)$status."'
+                $EZCommentscolumn[status] = '".(int)$status."'
             WHERE $EZCommentscolumn[id] = '".(int)$id."'";
     $dbconn->Execute($sql);
 
@@ -331,15 +331,15 @@ function EZComments_adminapi_deletemodule($args)
     // Database information
     $dbconn =& pnDBGetConn(true);
     $pntable =& pnDBGetTables();
-	$EZCommentstable = $pntable['EZComments'];
-	$EZCommentscolumn = &$pntable['EZComments_column']; 
+    $EZCommentstable = $pntable['EZComments'];
+    $EZCommentscolumn = &$pntable['EZComments_column']; 
 
     // Get items
     $sql = "DELETE FROM $EZCommentstable
             WHERE $EZCommentscolumn[modname] = '" . pnVarPrepForStore($modname) . "'";
     $result =& $dbconn->Execute($sql);
 
-	return $extrainfo;
+    return $extrainfo;
 }
 
 /**
@@ -373,25 +373,25 @@ function EZComments_adminapi_purge($args)
     $table = $pntable['EZComments'];
     $column = &$pntable['EZComments_column'];
 
-	if ((bool)$purgerejected) {
-		$sql = "DELETE FROM $table
-				WHERE $column[status] = '2'";
-		$dbconn->Execute($sql);
-		if ($dbconn->ErrorNo() != 0) {
-			pnSessionSetVar('errormsg', _DELETEFAILED);
-			return false;
-		}
-	}
+    if ((bool)$purgerejected) {
+        $sql = "DELETE FROM $table
+                WHERE $column[status] = '2'";
+        $dbconn->Execute($sql);
+        if ($dbconn->ErrorNo() != 0) {
+            pnSessionSetVar('errormsg', _DELETEFAILED);
+            return false;
+        }
+    }
 
-	if ((bool)$purgepending) {
-		$sql = "DELETE FROM $table
-				WHERE $column[status] = '1'";
-		$dbconn->Execute($sql);
-		if ($dbconn->ErrorNo() != 0) {
-			pnSessionSetVar('errormsg', _DELETEFAILED);
-			return false;
-		}
-	}
+    if ((bool)$purgepending) {
+        $sql = "DELETE FROM $table
+                WHERE $column[status] = '1'";
+        $dbconn->Execute($sql);
+        if ($dbconn->ErrorNo() != 0) {
+            pnSessionSetVar('errormsg', _DELETEFAILED);
+            return false;
+        }
+    }
 
     // Let the calling process know that we have finished successfully
     return true;

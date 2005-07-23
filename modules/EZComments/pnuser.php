@@ -61,24 +61,24 @@ function EZComments_user_main($args)
  */
 function EZComments_user_view($args)
 {
-	// work out the input from the hook
+    // work out the input from the hook
     $modname = pnModGetName();
     $objectid = $args['objectid'];
 
-	// security check
+    // security check
     if (!pnSecAuthAction(0, 'EZComments::', "$modname:$objectid: ", ACCESS_OVERVIEW)) {
         return _EZCOMMENTS_NOAUTH;
     }
 
-	// we may get some input in from the navigation bar
-	list ($EZComments_template, $EZComments_order) = pnVarCleanFromInput('EZComments_template', 'EZComments_order');
+    // we may get some input in from the navigation bar
+    list ($EZComments_template, $EZComments_order) = pnVarCleanFromInput('EZComments_template', 'EZComments_order');
 
-	if ($EZComments_order == 1) {
-		$sortorder = 'DESC';
-	} else {
-		$sortorder = 'ASC';
-	}
-	$status = 0;
+    if ($EZComments_order == 1) {
+        $sortorder = 'DESC';
+    } else {
+        $sortorder = 'ASC';
+    }
+    $status = 0;
     $items = pnModAPIFunc('EZComments',
                           'user',
                           'getall',
@@ -97,38 +97,38 @@ function EZComments_user_view($args)
     $pnRender->caching=false;
 
     $pnRender->assign('comments',   $comments);
-	$pnRender->assign('order',      $EZComments_order);
+    $pnRender->assign('order',      $EZComments_order);
     $pnRender->assign('allowadd',   pnSecAuthAction(0, 'EZComments::', "$modname:$objectid: ", ACCESS_COMMENT));
-	$pnRender->assign('loggedin',   pnUserLoggedIn());
+    $pnRender->assign('loggedin',   pnUserLoggedIn());
     if (!is_array($args['extrainfo'])) {
-    	$pnRender->assign('redirect',   $args['extrainfo']);
+        $pnRender->assign('redirect',   $args['extrainfo']);
     } else {
-		$pnRender->assign('redirect',   $args['extrainfo']['returnurl']);
+        $pnRender->assign('redirect',   $args['extrainfo']['returnurl']);
     }
     $pnRender->assign('objectid',   $objectid);
 
-	// assign all module vars (they may be useful...)
-	$pnRender->assign(pnModGetVar('EZComments'));
+    // assign all module vars (they may be useful...)
+    $pnRender->assign(pnModGetVar('EZComments'));
 
-	// check for some useful hooks
-	if (pnModIsHooked('pn_bbcode', 'EZComments')) {
-		$pnRender->assign('bbcode', true);
-	}
-	if (pnModIsHooked('pn_bbsmile', 'EZComments')) {
-		$pnRender->assign('smilies', true);
-	}
+    // check for some useful hooks
+    if (pnModIsHooked('pn_bbcode', 'EZComments')) {
+        $pnRender->assign('bbcode', true);
+    }
+    if (pnModIsHooked('pn_bbsmile', 'EZComments')) {
+        $pnRender->assign('smilies', true);
+    }
 
     // find out which template to use
-	$template = pnModGetVar('EZComments', 'template');
-	if (!empty($EZComments_template)) {
-		$template = $EZComments_template;
-	} else if (isset($args['template'])) {
-		$template = $args['template'];
-	}
-	if (!$pnRender->template_exists(pnVarPrepForOS($template . '/ezcomments_user_view.htm'))) {
-		$template = pnModGetVar('EZComments', 'template');
-	}
-	$pnRender->assign('template', $template);
+    $template = pnModGetVar('EZComments', 'template');
+    if (!empty($EZComments_template)) {
+        $template = $EZComments_template;
+    } else if (isset($args['template'])) {
+        $template = $args['template'];
+    }
+    if (!$pnRender->template_exists(pnVarPrepForOS($template . '/ezcomments_user_view.htm'))) {
+        $template = pnModGetVar('EZComments', 'template');
+    }
+    $pnRender->assign('template', $template);
     return $pnRender->fetch(pnVarPrepForOS($template) . '/ezcomments_user_view.htm');
 } 
 
@@ -166,10 +166,10 @@ function EZComments_user_comment($args)
 
     extract($args);
 
-	// check if commenting is setup for the input module
-	if (!pnModAvailable($EZComments_modname) || !pnModIsHooked('EZComments', $EZComments_modname)) {
-		return _EZCOMMENTS_NOAUTH;
-	}
+    // check if commenting is setup for the input module
+    if (!pnModAvailable($EZComments_modname) || !pnModIsHooked('EZComments', $EZComments_modname)) {
+        return _EZCOMMENTS_NOAUTH;
+    }
 
     $items = pnModAPIFunc('EZComments',
                           'user',
@@ -198,34 +198,34 @@ function EZComments_user_comment($args)
     $pnRender->assign('subject',  pnVarPrepForDisplay($EZComments_subject));
     $pnRender->assign('replyto',  pnVarPrepForDisplay($EZComments_replyto));
 
-	// assign all module vars (they may be useful...)
-	$pnRender->assign(pnModGetVar('EZComments'));
+    // assign all module vars (they may be useful...)
+    $pnRender->assign(pnModGetVar('EZComments'));
 
-	// check for some useful hooks
-	if (pnModIsHooked('pn_bbcode', 'EZComments')) {
-		$pnRender->assign('bbcode', true);
-	}
-	if (pnModIsHooked('pn_bbsmile', 'EZComments')) {
-		$pnRender->assign('smilies', true);
-	}
+    // check for some useful hooks
+    if (pnModIsHooked('pn_bbcode', 'EZComments')) {
+        $pnRender->assign('bbcode', true);
+    }
+    if (pnModIsHooked('pn_bbsmile', 'EZComments')) {
+        $pnRender->assign('smilies', true);
+    }
 
     // find out which template to use
-	$template = pnModGetVar('EZComments', 'template');
-	if (!empty($EZComments_template)) {
-		$template = $EZComments_template;
-	} else if (isset($args['template'])) {
-		$template = $args['template'];
-	}
+    $template = pnModGetVar('EZComments', 'template');
+    if (!empty($EZComments_template)) {
+        $template = $EZComments_template;
+    } else if (isset($args['template'])) {
+        $template = $args['template'];
+    }
 
-	if (!$pnRender->template_exists(pnVarPrepForOS($template . '/ezcomments_user_comment.htm'))) {
-		$template = pnModGetVar('EZComments', 'template');
-	}
-	$pnRender->assign('template', $template);
+    if (!$pnRender->template_exists(pnVarPrepForOS($template . '/ezcomments_user_comment.htm'))) {
+        $template = pnModGetVar('EZComments', 'template');
+    }
+    $pnRender->assign('template', $template);
 
 
-	if (!$pnRender->template_exists(pnVarPrepForOS($template . '/ezcomments_user_comment.htm'))) {
-		return _EZCOMMENTS_FAILED;
-	}
+    if (!$pnRender->template_exists(pnVarPrepForOS($template . '/ezcomments_user_comment.htm'))) {
+        return _EZCOMMENTS_FAILED;
+    }
 
     return $pnRender->fetch(pnVarPrepForOS($template) . '/ezcomments_user_comment.htm');
 }
@@ -265,14 +265,14 @@ function EZComments_user_create($args)
                                                     'EZComments_subject',
                                                     'EZComments_replyto');
 
-	// check if the user logged in and if we're allowing anon users to 
-	// set a name and e-mail address
-	if (!pnUserLoggedIn()) {
-		list($EZComments_anonname, $EZComments_anonmail) = pnVarCleanFromInput('EZComments_anonname', 'EZComments_anonmail');
-	} else {
-		$EZComments_anonname = '';
-		$EZComments_anonmail = '';
-	}
+    // check if the user logged in and if we're allowing anon users to 
+    // set a name and e-mail address
+    if (!pnUserLoggedIn()) {
+        list($EZComments_anonname, $EZComments_anonmail) = pnVarCleanFromInput('EZComments_anonname', 'EZComments_anonmail');
+    } else {
+        $EZComments_anonname = '';
+        $EZComments_anonmail = '';
+    }
 
     $id = pnModAPIFunc('EZComments',
                        'user',
@@ -284,8 +284,8 @@ function EZComments_user_create($args)
                              'subject'  => $EZComments_subject,
                              'replyto'  => $EZComments_replyto,
                              'uid'      => pnUserGetVar('uid'),
-							 'anonname' => $EZComments_anonname,
-							 'anonmail' => $EZComments_anonmail));
+                             'anonname' => $EZComments_anonname,
+                             'anonmail' => $EZComments_anonmail));
 
     // decoding the URL. Credits to tmyhre for fixing.
     $EZComments_redirect = rawurldecode($EZComments_redirect);
@@ -311,27 +311,27 @@ function EZComments_prepareCommentsForDisplay($items)
 {
     $comments = array();
     foreach ($items as $item) {
-		$comment = $item;
-		if ($item['uid'] > 0) {
-			// get the user vars and merge into the comment array
-			$userinfo = pnUserGetVars($item['uid']);
-			$comment  = array_merge ($comment, $userinfo);
+        $comment = $item;
+        if ($item['uid'] > 0) {
+            // get the user vars and merge into the comment array
+            $userinfo = pnUserGetVars($item['uid']);
+            $comment  = array_merge ($comment, $userinfo);
 
-			// work out if the user is online
-			$comment['online'] = false;
-			if (pnModAvailable('Members_List')) {
-				if (pnModAPIFunc('Members_List', 'user', 'isonline', array('userid' => $userinfo['pn_uid']))) {
-					$comment['onlinestatus'] = true;
-					$comment['online'] = true;
-				}
-			} else {
-				$comment['onlinestatus'] = false;
-			}
-		} else {
-			$comment['uname'] = pnConfigGetVar('Anonymous');
-		}
-		$comment['del'] = (pnSecAuthAction(0, 'EZComments::', "$comment[modname]:$comment[objectid]:$comment[id]", ACCESS_DELETE));
-		$comments[] = $comment;
+            // work out if the user is online
+            $comment['online'] = false;
+            if (pnModAvailable('Members_List')) {
+                if (pnModAPIFunc('Members_List', 'user', 'isonline', array('userid' => $userinfo['pn_uid']))) {
+                    $comment['onlinestatus'] = true;
+                    $comment['online'] = true;
+                }
+            } else {
+                $comment['onlinestatus'] = false;
+            }
+        } else {
+            $comment['uname'] = pnConfigGetVar('Anonymous');
+        }
+        $comment['del'] = (pnSecAuthAction(0, 'EZComments::', "$comment[modname]:$comment[objectid]:$comment[id]", ACCESS_DELETE));
+        $comments[] = $comment;
     }
     return $comments;
 }

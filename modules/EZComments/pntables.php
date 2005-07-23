@@ -48,13 +48,13 @@ function EZComments_pntables()
                                           'objectid'  => $EZComments . '.objectid',
                                           'url'       => $EZComments . '.url',
                                           'date'      => $EZComments . '.date',
-                                          'uid'	      => $EZComments . '.uid',
+                                          'uid'          => $EZComments . '.uid',
                                           'comment'   => $EZComments . '.comment',
-										  'subject'   => $EZComments . '.subject',
-										  'replyto'   => $EZComments . '.replyto',
-										  'anonname'  => $EZComments . '.anonname',
-										  'anonmail'  => $EZComments . '.anonmail',
-										  'status'    => $EZComments . '.status');
+                                          'subject'   => $EZComments . '.subject',
+                                          'replyto'   => $EZComments . '.replyto',
+                                          'anonname'  => $EZComments . '.anonname',
+                                          'anonmail'  => $EZComments . '.anonmail',
+                                          'status'    => $EZComments . '.status');
     return $pntable;
 }
 

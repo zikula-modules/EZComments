@@ -40,9 +40,9 @@
  */
 function EZComments_admin_main() 
 {
-	if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
-		return _EZCOMMENTS_NOAUTH;
-	} 
+    if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
+        return _EZCOMMENTS_NOAUTH;
+    } 
 
     // Create output object
     $pnRender =& new pnRender('EZComments');
@@ -50,41 +50,41 @@ function EZComments_admin_main()
     // As admin output changes often, we do not want caching.
     $pnRender->caching = false;
 
-	// assign the module vars
-	$pnRender->assign(pnModGetVar('EZComments'));
-	// presentation values
-	$itemsperpage = pnModGetVar('EZComments', 'itemsperpage');
+    // assign the module vars
+    $pnRender->assign(pnModGetVar('EZComments'));
+    // presentation values
+    $itemsperpage = pnModGetVar('EZComments', 'itemsperpage');
     $startnum = pnVarCleanFromInput('startnum');
 
-	// call the api to get all current comments
-	$items = pnModAPIFunc('EZComments',
-            			  'user',
-            			  'getall',
+    // call the api to get all current comments
+    $items = pnModAPIFunc('EZComments',
+                          'user',
+                          'getall',
                           array('startnum' => $startnum,
                                 'numitems' => $itemsperpage));
 
-	if ($items === false) {
-		return _EZCOMMENTS_FAILED;
-	} 
+    if ($items === false) {
+        return _EZCOMMENTS_FAILED;
+    } 
 
-	// loop through each item adding the relevant links
-	$comments = array();
-	foreach ($items as $item) {
-		$options = array();
-		if (pnSecAuthAction(0, 'EZComments::', "$item[modname]:$item[objectid]:$item[id]", ACCESS_EDIT)) {
-			$options[] = array('url'   => pnModURL('EZComments', 'admin', 'modify', array('id' => $item['id'])),
-							   'title' => _EDIT);
-			if (pnSecAuthAction(0, 'EZComments::', "$item[modname]:$item[objectid]:$item[id]", ACCESS_DELETE)) {
+    // loop through each item adding the relevant links
+    $comments = array();
+    foreach ($items as $item) {
+        $options = array();
+        if (pnSecAuthAction(0, 'EZComments::', "$item[modname]:$item[objectid]:$item[id]", ACCESS_EDIT)) {
+            $options[] = array('url'   => pnModURL('EZComments', 'admin', 'modify', array('id' => $item['id'])),
+                               'title' => _EDIT);
+            if (pnSecAuthAction(0, 'EZComments::', "$item[modname]:$item[objectid]:$item[id]", ACCESS_DELETE)) {
                 $options[] = array('url'   => pnModURL('EZComments', 'admin', 'delete', array('id' => $item['id'])),
                                    'title' => _DELETE);
-			}
-		}
-		$item['options'] = $options;
-		$comments[] = $item;
-	}
+            }
+        }
+        $item['options'] = $options;
+        $comments[] = $item;
+    }
 
-	// assign the items to the template
-	$pnRender->assign('items', $comments);
+    // assign the items to the template
+    $pnRender->assign('items', $comments);
 
     // assign the values for the smarty plugin to produce a pager in case of there
     // being many items to display.
@@ -97,8 +97,8 @@ function EZComments_admin_main()
                                                                     'countitems'),
                                      'itemsperpage' => $itemsperpage));
 
-	// Return the output
-	return $pnRender->fetch('ezcomments_admin_view.htm');
+    // Return the output
+    return $pnRender->fetch('ezcomments_admin_view.htm');
 }
 
 /**
@@ -113,15 +113,15 @@ function EZComments_admin_main()
  */
 function EZComments_admin_modify($args)
 {
-	// get our input
+    // get our input
     list($id,
          $objectid)= pnVarCleanFromInput('id',
                                          'objectid');
 
-	// extract any input passed directly to the function
+    // extract any input passed directly to the function
     extract($args);
 
-	// check for a generic object id
+    // check for a generic object id
     if (!empty($objectid)) {
         $id = $objectid;
     }
@@ -153,8 +153,8 @@ function EZComments_admin_modify($args)
     // out the update
     $pnRender->assign('id', $id);
 
-	// assign the status flags
-	$pnRender->assign('statuslevels', array('0' => _EZCOMMENTS_APPROVED, '1' => _EZCOMMENTS_PENDING, '2' => _EZCOMMENTS_REJECTED));
+    // assign the status flags
+    $pnRender->assign('statuslevels', array('0' => _EZCOMMENTS_APPROVED, '1' => _EZCOMMENTS_PENDING, '2' => _EZCOMMENTS_REJECTED));
 
     // For the assignment of name and number we can just assign the associative
     // array $item.
@@ -187,16 +187,16 @@ function EZComments_admin_update($args)
          $objectid,
          $subject,
          $comment,
-		 $status) = pnVarCleanFromInput('id',
+         $status) = pnVarCleanFromInput('id',
                                         'objectid',
                                         'subject',
                                         'comment',
-										'status');
+                                        'status');
 
-	// extract any input passed directly to the function
+    // extract any input passed directly to the function
     extract($args);
 
-	// check for a generic object id
+    // check for a generic object id
     if (!empty($objectid)) {
         $id = $objectid;
     }
@@ -254,16 +254,16 @@ function EZComments_admin_delete($args)
     // Get parameters from whatever input we need. 
     list($id,
          $objectid,
-		 $redirect,
+         $redirect,
          $confirmation) = pnVarCleanFromInput('id',
                                               'objectid',
-											  'redirect',
+                                              'redirect',
                                               'confirmation');
 
-	// extract any input passed directly to the function
+    // extract any input passed directly to the function
     extract($args);
 
-	// check for a generic object id
+    // check for a generic object id
     if (!empty($objectid)) {
         $id = $objectid;
     }
@@ -294,7 +294,7 @@ function EZComments_admin_delete($args)
 
         // Add a hidden field for the item ID to the output
         $pnRender->assign('id', $id);
-		
+        
         // Add a hidden field for the item ID to the output
         $pnRender->assign('redirect', $redirect);
 
@@ -318,11 +318,11 @@ function EZComments_admin_delete($args)
 
     // This function generated no output, and so now it is complete we redirect
     // the user to an appropriate page for them to carry on their work
-	if (!empty($redirect)) {
-		pnRedirect($redirect);
-	} else {
-	    pnRedirect(pnModURL('EZComments', 'admin', 'main'));
-	}
+    if (!empty($redirect)) {
+        pnRedirect($redirect);
+    } else {
+        pnRedirect(pnModURL('EZComments', 'admin', 'main'));
+    }
 
     // Return
     return true;
@@ -350,9 +350,9 @@ function EZComments_admin_delete($args)
 function EZComments_admin_deleteselected($args)
 {
     // Get parameters from whatever input we need. 
-	$delComments = pnVarCleanFromInput('delComments');
+    $delComments = pnVarCleanFromInput('delComments');
 
-	// extract any input passed directly to the function
+    // extract any input passed directly to the function
     extract($args);
 
     // If we get here it means that the user has confirmed the action
@@ -363,22 +363,22 @@ function EZComments_admin_deleteselected($args)
         return true;
     }
 
-	// loop round each comment deleted them in turn 
-	foreach ($delComments as $delComment) {
-		// The API function is called. 
-		if (pnModAPIFunc('EZComments', 'admin', 'delete', array('id' => $delComment))) {
-			// Success
-			pnSessionSetVar('statusmsg', pnVarPrepHTMLDisplay(_DELETESUCCEDED));
-		}
-	}
+    // loop round each comment deleted them in turn 
+    foreach ($delComments as $delComment) {
+        // The API function is called. 
+        if (pnModAPIFunc('EZComments', 'admin', 'delete', array('id' => $delComment))) {
+            // Success
+            pnSessionSetVar('statusmsg', pnVarPrepHTMLDisplay(_DELETESUCCEDED));
+        }
+    }
 
     // This function generated no output, and so now it is complete we redirect
     // the user to an appropriate page for them to carry on their work
-	if (!empty($redirect)) {
-		pnRedirect($redirect);
-	} else {
-	    pnRedirect(pnModURL('EZComments', 'admin', 'main'));
-	}
+    if (!empty($redirect)) {
+        pnRedirect($redirect);
+    } else {
+        pnRedirect(pnModURL('EZComments', 'admin', 'main'));
+    }
 
     // Return
     return true;
@@ -395,9 +395,9 @@ function EZComments_admin_deleteselected($args)
  */
 function EZComments_admin_modifyconfig() 
 {
-	if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
-		return _EZCOMMENTS_NOAUTH;
-	} 
+    if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
+        return _EZCOMMENTS_NOAUTH;
+    } 
 
     // Create output object
     $pnRender =& new pnRender('EZComments');
@@ -405,14 +405,14 @@ function EZComments_admin_modifyconfig()
     // As admin output changes often, we do not want caching.
     $pnRender->caching = false;
 
-	// assign the module vars
-	$pnRender->assign(pnModGetVar('EZComments'));
+    // assign the module vars
+    $pnRender->assign(pnModGetVar('EZComments'));
 
-	// assign all available template sets
-	$pnRender->assign('templates', pnModAPIFunc('EZComments', 'user', 'gettemplates'));
+    // assign all available template sets
+    $pnRender->assign('templates', pnModAPIFunc('EZComments', 'user', 'gettemplates'));
 
-	// Return the output
-	return $pnRender->fetch('ezcomments_admin_modifyconfig.htm');
+    // Return the output
+    return $pnRender->fetch('ezcomments_admin_modifyconfig.htm');
 }
 
 /**
@@ -436,76 +436,76 @@ function EZComments_admin_modifyconfig()
  */
 function EZComments_admin_updateconfig($args)
 {
-	if (!pnSecConfirmAuthKey()) {
-		pnSessionSetVar('errormsg', _BADAUTHKEY);
-		pnRedirect(pnModURL('EZComments', 'admin', 'main'));
-		return true;
-	} 
+    if (!pnSecConfirmAuthKey()) {
+        pnSessionSetVar('errormsg', _BADAUTHKEY);
+        pnRedirect(pnModURL('EZComments', 'admin', 'main'));
+        return true;
+    } 
 
     list($MailToAdmin, $moderationmail, $template, $itemsperpage, $anonusersinfo, $moderation, 
- 	    $modlinkcount, $modlist, $blacklist, $alwaysmoderate, $proxyblacklist) =
-	    pnVarCleanFromInput('MailToAdmin', 'moderationmail', 'template', 'itemsperpage', 'anonusersinfo', 'moderation', 
-		                    'modlinkcount', 'modlist', 'blacklist', 'alwaysmoderate', 'proxyblacklist');
-	extract($args);
+         $modlinkcount, $modlist, $blacklist, $alwaysmoderate, $proxyblacklist) =
+        pnVarCleanFromInput('MailToAdmin', 'moderationmail', 'template', 'itemsperpage', 'anonusersinfo', 'moderation', 
+                            'modlinkcount', 'modlist', 'blacklist', 'alwaysmoderate', 'proxyblacklist');
+    extract($args);
 
     if (!isset($MailToAdmin)) {
         $MailToAdmin = 0;
     }
-	pnModSetVar('EZComments', 'MailToAdmin', $MailToAdmin);
-	
+    pnModSetVar('EZComments', 'MailToAdmin', $MailToAdmin);
+    
     if (!isset($moderationmail)) {
         $moderationmail = 0;
     }
-	pnModSetVar('EZComments', 'moderationmail', $moderationmail);
+    pnModSetVar('EZComments', 'moderationmail', $moderationmail);
 
-	if (!isset($template)) {
-		$template = 'AllOnOnePage';
-	}
-	pnModSetVar('EZComments', 'template', $template);
+    if (!isset($template)) {
+        $template = 'AllOnOnePage';
+    }
+    pnModSetVar('EZComments', 'template', $template);
 
-	if (!isset($itemsperpage)) {
-		$itemsperpage = 25;
-	}
-	pnModSetVar('EZComments', 'itemsperpage', $itemsperpage);
+    if (!isset($itemsperpage)) {
+        $itemsperpage = 25;
+    }
+    pnModSetVar('EZComments', 'itemsperpage', $itemsperpage);
 
-	if (!isset($anonusersinfo)) {
-		$anonusersinfo = 0;
-	}
-	pnModSetVar('EZComments', 'anonusersinfo', $anonusersinfo);
+    if (!isset($anonusersinfo)) {
+        $anonusersinfo = 0;
+    }
+    pnModSetVar('EZComments', 'anonusersinfo', $anonusersinfo);
 
     if (!isset($moderation)) {
         $moderation = 0;
     }
-	pnModSetVar('EZComments', 'moderation', $moderation);
+    pnModSetVar('EZComments', 'moderation', $moderation);
 
     if (!isset($modlinkcount)) {
         $modlinkcount = 2;
     }
-	pnModSetVar('EZComments', 'modlinkcount', $modlinkcount);
+    pnModSetVar('EZComments', 'modlinkcount', $modlinkcount);
 
     if (!isset($modlist)) {
         $modlist = '';
     }
-	pnModSetVar('EZComments', 'modlist', $modlist);
+    pnModSetVar('EZComments', 'modlist', $modlist);
 
     if (!isset($blacklist)) {
         $blacklist = '';
     }
-	pnModSetVar('EZComments', 'blacklist', $blacklist);
+    pnModSetVar('EZComments', 'blacklist', $blacklist);
 
     if (!isset($alwaysmoderate)) {
         $alwaysmoderate = 0;
     }
-	pnModSetVar('EZComments', 'alwaysmoderate', $alwaysmoderate);
+    pnModSetVar('EZComments', 'alwaysmoderate', $alwaysmoderate);
 
     if (!isset($proxyblacklist)) {
         $proxyblacklist = 0;
     }
-	pnModSetVar('EZComments', 'proxyblacklist', $proxyblacklist);
+    pnModSetVar('EZComments', 'proxyblacklist', $proxyblacklist);
 
-	pnSessionSetVar('statusmsg', _CONFIGUPDATED);
-	pnRedirect(pnModURL('EZComments', 'admin', 'main'));
-	return true;
+    pnSessionSetVar('statusmsg', _CONFIGUPDATED);
+    pnRedirect(pnModURL('EZComments', 'admin', 'main'));
+    return true;
 }
 
 /**
@@ -519,20 +519,20 @@ function EZComments_admin_updateconfig($args)
  */
 function EZComments_admin_migrate()
 {
-	if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
-		return _EZCOMMENTS_NOAUTH;
-	} 
-	$migrated=unserialize(pnModGetVar('EZComments', 'migrated'));
-	$d = opendir('modules/EZComments/pnmigrateapi');
+    if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
+        return _EZCOMMENTS_NOAUTH;
+    } 
+    $migrated=unserialize(pnModGetVar('EZComments', 'migrated'));
+    $d = opendir('modules/EZComments/pnmigrateapi');
     $selectitems = array();
-	while($f = readdir($d)) {
-    	if(substr($f, -3, 3) == 'php') {
-			if (!isset($migrated[substr($f, 0, strlen($f) -4)]) || !$migrated[substr($f, 0, strlen($f) -4)]) {
-		        $selectitems[substr($f, 0, strlen($f) -4)] = substr($f, 0, strlen($f) -4);
-			}
-	    }
-	}
-	closedir($d);
+    while($f = readdir($d)) {
+        if(substr($f, -3, 3) == 'php') {
+            if (!isset($migrated[substr($f, 0, strlen($f) -4)]) || !$migrated[substr($f, 0, strlen($f) -4)]) {
+                $selectitems[substr($f, 0, strlen($f) -4)] = substr($f, 0, strlen($f) -4);
+            }
+        }
+    }
+    closedir($d);
 
     if (!$selectitems) {
         pnSessionSetVar('statusmsg', _EZCOMMENTS_MIGRATE_NOTHINGTODO);
@@ -547,8 +547,8 @@ function EZComments_admin_migrate()
     // As Admin output changes often, we do not want caching.
     $pnRender->caching = false;
 
-	// assign the migratation options
- 	$pnRender->assign('selectitems', $selectitems);
+    // assign the migratation options
+     $pnRender->assign('selectitems', $selectitems);
 
     // Return the output that has been generated by this function
     return $pnRender->fetch('ezcomments_admin_migrate.htm');
@@ -573,22 +573,22 @@ function EZComments_admin_migrate_go()
     if (!pnSecConfirmAuthKey()) {
         // return _EZCOMMENTS_NOAUTH;
     } 
-	// Parameter
-	$migrate = pnVarCleanFromInput('EZComments_migrate');
-	if (!isset($migrate)){ 
+    // Parameter
+    $migrate = pnVarCleanFromInput('EZComments_migrate');
+    if (!isset($migrate)){ 
         return _EZCOMMENTS_MODSARGSERROR;
-	}
+    }
 
-	// Eintrag in Datenbank
-	$migrated=unserialize(pnModGetVar('EZComments', 'migrated'));
+    // Eintrag in Datenbank
+    $migrated=unserialize(pnModGetVar('EZComments', 'migrated'));
 
-	// call the migration function
-	if (pnModAPIFunc('EZComments', 'migrate', $migrate)) {
-		$migrated[$migrate] = true;
-		pnModSetVar('EZComments', 'migrated', serialize($migrated));
-	}
-	pnRedirect(pnModURL('EZComments', 'admin', 'migrate'));
-	return true;
+    // call the migration function
+    if (pnModAPIFunc('EZComments', 'migrate', $migrate)) {
+        $migrated[$migrate] = true;
+        pnModSetVar('EZComments', 'migrated', serialize($migrated));
+    }
+    pnRedirect(pnModURL('EZComments', 'admin', 'migrate'));
+    return true;
 }
 
 
@@ -623,8 +623,8 @@ function EZComments_admin_cleanup()
     $orphanedmods = array_diff($usedmods, $allmods);
 
     if (!$orphanedmods) {
-    	pnSessionSetVar('statusmsg', _EZCOMMENTS_CLEANUP_NOTHINGTODO);
-    	pnRedirect(pnModURL('EZComments', 'admin', 'main'));
+        pnSessionSetVar('statusmsg', _EZCOMMENTS_CLEANUP_NOTHINGTODO);
+        pnRedirect(pnModURL('EZComments', 'admin', 'main'));
         return true;
     } 
 
@@ -633,8 +633,8 @@ function EZComments_admin_cleanup()
         $selectitems[$mod] = $mod;
     }
 
-	$pnRender =& new pnRender('EZComments');
-	$pnRender->assign('selectitems', $selectitems);
+    $pnRender =& new pnRender('EZComments');
+    $pnRender->assign('selectitems', $selectitems);
 
     return $pnRender->fetch('ezcomments_admin_cleanup.htm');
 } 
@@ -688,12 +688,12 @@ function EZComments_admin_purge($args)
 {
     // Get parameters from whatever input we need. 
     list($purgepending,
-		 $purgerejected,
+         $purgerejected,
          $confirmation) = pnVarCleanFromInput('purgepending',
-		 									  'purgerejected',
+                                               'purgerejected',
                                               'confirmation');
 
-	// extract any input passed directly to the function
+    // extract any input passed directly to the function
     extract($args);
 
     // Security check
@@ -730,14 +730,14 @@ function EZComments_admin_purge($args)
 
     // The API function is called. 
     if (pnModAPIFunc('EZComments', 'admin', 'purge', 
-		array('purgepending' => $purgepending, 'purgerejected' => $purgerejected))) {
+        array('purgepending' => $purgepending, 'purgerejected' => $purgerejected))) {
         // Success
         pnSessionSetVar('statusmsg', pnVarPrepHTMLDisplay(_DELETESUCCEDED));
     }
 
     // This function generated no output, and so now it is complete we redirect
     // the user to an appropriate page for them to carry on their work
-	pnRedirect(pnModURL('EZComments', 'admin', 'main'));
+    pnRedirect(pnModURL('EZComments', 'admin', 'main'));
 
     // Return
     return true;
