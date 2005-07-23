@@ -7,10 +7,6 @@
 	<fieldset>
 		<legend><!--[pnml name=_EZCOMMENTS_MISCSETTINGS]--></legend>
 		<div class="pn-adminformrow">
-			<label for="ezcomments_itemsperpage"><!--[pnml name="_EZCOMMENTS_ITEMSPERPAGE"]--></label>
-			<input id="ezcomments_itemsperpage" name="itemsperpage" type="text" value="<!--[$itemsperpage|pnvarprepfordisplay]-->" />
-		</div>
-		<div class="pn-adminformrow">
 			<label for="ezcomments_template"><!--[pnml name="_EZCOMMENTS_TEMPLATE"]--></label>
 			<select id="ezcomments_template" name="template">
 				<!--[html_options values=$templates output=$templates selected=$template]-->
@@ -46,6 +42,10 @@
 	</fieldset>
 	<fieldset>
 		<legend><!--[pnml name=_EZCOMMENTS_MODERATIONSETTINGS]--></legend>
+		<div class="pn-adminformrow">
+			<label for="ezcomments_itemsperpage"><!--[pnml name="_EZCOMMENTS_ITEMSPERPAGE"]--></label>
+			<input id="ezcomments_itemsperpage" name="itemsperpage" type="text" value="<!--[$itemsperpage|pnvarprepfordisplay]-->" />
+		</div>
 		<div class="pn-adminformrow">
 			<label for="ezcomments_moderation"><!--[pnml name="_EZCOMMENTS_MODERERATE"]--></label>
 			<!--[if $moderation eq 1]-->
