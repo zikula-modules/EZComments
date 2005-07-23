@@ -185,7 +185,7 @@ function EZComments_userapi_create($args)
 		return false;
 	} 
 
-	if (!empty($replyto)) {
+	if (!isset($replyto) || empty($replyto)) {
 	    $replyto = -1;
 	}
 	if (!isset($uid) || !is_numeric($uid)) {
