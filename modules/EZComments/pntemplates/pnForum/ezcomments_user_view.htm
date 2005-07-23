@@ -114,43 +114,57 @@
     </tbody>
   </table>
 <!--[/if]-->
+
 <!--[if $allowadd]-->
   <!--[* This is the form to comment. It is shown only, when the user is allowed to. *]-->
+  <table border="0" cellpadding="5" cellspacing="0" width="100%">
+    <tbody>
+    <tr style="background-color:<!--[pnthemegetvar name=bgcolor3]-->;">
+      <td  style="width:20%;" align="left">
+        <!--[pnml name=_EZCOMMENTS_COMMENT_ADD]-->
+      </td>
+      <td style="width:80%; vertical-align:top;background-color:<!--[pnthemegetvar name=bgcolor1]-->;">
+        <!--[if $bbcode]-->
+          <!--[pnmodfunc modname=pn_bbcode func=bbcodes images=true]-->
+        <!--[/if]-->
+        <form id="post" action="<!--[pnmodurl modname=EZComments func=create]-->" method="post">
+        <div>
+          <input type="hidden" name="authid" id="authid" value="<!--[pnsecgenauthkey module=EZComments]-->" /> 
+          <input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" /> 
+          <input type="hidden" name="EZComments_modname" id="EZComments_modname" value="<!--[pnmodgetname]-->" /> 
+          <input type="hidden" name="EZComments_objectid" id="EZComments_objectid" value="<!--[$objectid|pnvarprepfordisplay]-->" /> 
+          <div>
+            <label for="subject"><!--[pnml name=_EZCOMMENTS_SUBJECT]--></label>
+            <br />
+            <input type="text" name="EZComments_subject" id="subject" size="50" maxlength="255" />
+          </div>
+          <!--[if $loggedin neq true and $anonusersinfo eq true]-->
+          <div>
+            <label for="anonname"><!--[pnml name=_EZCOMMENTS_ANONNAME]--></label>
+            <input type="text" name="EZComments_anonname" id="anonname" size="50" maxlength="255" />
+          </div>
+          <div>
+            <label for="anonmail"><!--[pnml name=_EZCOMMENTS_ANONMAIL]--></label>
+            <input type="text" name="EZComments_anonmail" id="anonmail" size="50" maxlength="255" />
+          </div>
+          <!--[/if]-->
+          <div>
+            <label for="message"><!--[pnml name=_EZCOMMENTS_COMMENT]--></label>
+            <br />
+            <textarea name="EZComments_comment" id="message" cols="60" rows="10"></textarea>
+          </div>
+          <input type="submit" value="<!--[pnml name=_EZCOMMENTS_ADD]-->" />
+        </div>
+        </form>
+        <!--[if $smilies]-->
+          <!--[pnmodfunc modname=pn_bbsmile func=bbsmiles]-->
+        <!--[/if]-->
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
   <div>
-    <!--[pnml name=_EZCOMMENTS_COMMENT_ADD]-->
     <a id="bottom">&nbsp;</a>
   </div>
-  <!--[if $bbcode]-->
-    <!--[pnmodfunc modname=pn_bbcode func=bbcodes images=true]-->
-  <!--[/if]-->
-  <form id="post" action="<!--[pnmodurl modname=EZComments func=create]-->" method="post">
-  <div>
-    <input type="hidden" name="authid" id="authid" value="<!--[pnsecgenauthkey module=EZComments]-->" /> 
-    <input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" /> 
-    <input type="hidden" name="EZComments_modname" id="EZComments_modname" value="<!--[pnmodgetname]-->" /> 
-    <input type="hidden" name="EZComments_objectid" id="EZComments_objectid" value="<!--[$objectid|pnvarprepfordisplay]-->" /> 
-    <div>
-      <label for="subject"><!--[pnml name=_EZCOMMENTS_SUBJECT]--></label>
-      <input type="text" name="EZComments_subject" id="subject" size="50" maxlength="255" />
-    </div>
-    <!--[if $loggedin neq true and $anonusersinfo eq true]-->
-    <div>
-      <label for="anonname"><!--[pnml name=_EZCOMMENTS_ANONNAME]--></label>
-      <input type="text" name="EZComments_anonname" id="anonname" size="50" maxlength="255" />
-    </div>
-    <div>
-      <label for="anonmail"><!--[pnml name=_EZCOMMENTS_ANONMAIL]--></label>
-      <input type="text" name="EZComments_anonmail" id="anonmail" size="50" maxlength="255" />
-    </div>
-    <!--[/if]-->
-    <div>
-      <label for="message"><!--[pnml name=_EZCOMMENTS_COMMENT]--></label>
-      <textarea name="EZComments_comment" id="message" cols="60" rows="10"></textarea>
-    </div>
-    <input type="submit" value="<!--[pnml name=_EZCOMMENTS_ADD]-->" />
-  </div>
-  </form>
-  <!--[if $smilies]-->
-    <!--[pnmodfunc modname=pn_bbsmile func=bbsmiles]-->
-  <!--[/if]-->
 <!--[/if]-->
