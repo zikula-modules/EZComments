@@ -18,7 +18,7 @@
 <!--[* To read the license please visit http://www.gnu.org/copyleft/gpl.html  *]-->
 <!--[* ---------------------------------------------------------------------- *]-->
 <!--[* Purpose of this template:                                              *]-->
-<!--[* Show the comments in a "threaded" look, the way the original           *]-->
+<!--[* Show the comments in a "flat" look, the way the original               *]-->
 <!--[* comments module was.                                                   *]-->
 <!--[* ---------------------------------------------------------------------- *]-->
 
@@ -26,7 +26,7 @@
 <!--[assign var="redirect"   value=$redirect|rawurlencode]-->
   <!--[pnmodgetname assign=modname]-->
 <!--[*  Order the comments. This is done by the module. *]-->
-<!--[assign var=comments value=$comments|@EZComments_threadComments]-->
+
 <div class="ezcomments">
   <!--[include file=ezcomments_user_header.htm]-->
 
@@ -57,7 +57,6 @@
     <!--[pnmodurl modname=Messages func=compose uname=$comments[comments].uname assign=url_message]-->
     <!--[pnmodurl modname=EZComments func=comment EZComments_redirect=$redirect EZComments_modname=$modname EZComments_objectid=$objectid EZComments_replyto=$comments[comments].id assign=url_comment]-->
     <!--[pnmodurl modname=EZComments type=admin func=delete redirect=$redirect id=$comments[comments].id assign=url_del]-->
-    <div style="margin-left: <!--[math equation="x * 2" x=$comments[comments].level]-->em">  
       <div style="width:99%; background-color:<!--[$bgcolor1]-->; padding:4px;">
         <strong><!--[$comments[comments].subject]--></strong>
         <div>
@@ -83,7 +82,6 @@
         [ <a href="<!--[$url_del|pnvarprepfordisplay]-->"><!--[pnml name=_EZCOMMENTS_DEL]--></a> ]
         <!--[/if]-->
       </div>
-    </div>  
     <br />
   <!--[/section]-->
   <!--[if $allowadd]-->
