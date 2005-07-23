@@ -4,7 +4,7 @@
 <!--[* EZComments                                                             *]-->
 <!--[* Attach comments to any module calling hooks                            *]-->
 <!--[* ---------------------------------------------------------------------- *]-->
-<!--[* http://noc.postnuke.com/projects/ezcomments/                            *]-->
+<!--[* http://noc.postnuke.com/projects/ezcomments/                           *]-->
 <!--[* ---------------------------------------------------------------------- *]-->
 <!--[* LICENSE                                                                *]-->
 <!--[* This program is free software; you can redistribute it and/or          *]-->
@@ -68,13 +68,13 @@
           <br />
           <br />
           <div style="border-top-style: solid; border-top-width: 1px;">
-          <!--[pnml name='_EZCOMMENTS_REG_SINCE']-->:&nbsp;<!--[$comments[comments].pn_user_regdate|date_format:"%b. %Y"|pnvarprepfordisplay ]-->
+          <!--[pnml name='_EZCOMMENTS_REG_SINCE']-->:&nbsp;<!--[$comments[comments].pn_user_regdate|date_format:"%b. %Y"|pnvarprepfordisplay]-->
           <!--[if $comments[comments].pn_user_from != ""]-->
             <br /><!--[pnml name='_EZCOMMENTS_FROM']-->:&nbsp;<!--[$comments[comments].pn_user_from|pnvarprepfordisplay]-->
           <!--[/if]-->
           </div>
           <!--[if $comments[comments].onlinestatus]-->
-            <br /><!--[pnml name='_EZCOMMENTS_STATUS']-->:&nbsp;<!--[if $comments[comments].online ]--><!--[pnml name='_EZCOMMENTS_ONLINE']--><!--[else]--><!--[pnml name='_EZCOMMENTS_OFFLINE']--><!--[/if]-->
+            <br /><!--[pnml name='_EZCOMMENTS_STATUS']-->:&nbsp;<!--[if $comments[comments].online]--><!--[pnml name='_EZCOMMENTS_ONLINE']--><!--[else]--><!--[pnml name='_EZCOMMENTS_OFFLINE']--><!--[/if]-->
           <!--[/if]-->
         <!--[/if]-->
         </td>
