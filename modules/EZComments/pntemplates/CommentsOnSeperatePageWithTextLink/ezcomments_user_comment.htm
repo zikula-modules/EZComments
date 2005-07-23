@@ -1,57 +1,62 @@
-<!--[*  $Id$                 *]-->
-<!--[*  ---------------------------------------------------------------------- *]-->
-<!--[*  EZComments                                                             *]-->
-<!--[*  Attach comments to any module calling hooks                            *]-->
-<!--[*  ---------------------------------------------------------------------- *]-->
-<!--[*  Author: Jörg Napp                      *]-->
-<!--[*  ---------------------------------------------------------------------- *]-->
-<!--[*  LICENSE                                                                *]-->
-<!--[*  This program is free software; you can redistribute it and/or          *]-->
-<!--[*  modify it under the terms of the GNU General Public License (GPL)      *]-->
-<!--[*  as published by the Free Software Foundation; either version 2         *]-->
-<!--[*  of the License, or (at your option) any later version.                 *]-->
-<!--[*  This program is distributed in the hope that it will be useful,        *]-->
-<!--[*  but WITHOUT ANY WARRANTY; without even the implied warranty of         *]-->
-<!--[*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *]-->
-<!--[*  GNU General Public License for more details.                           *]-->
-<!--[*  To read the license please visit http://www.gnu.org/copyleft/gpl.html  *]-->
-<!--[*  ---------------------------------------------------------------------- *]-->
-<!--[*  Purpose of this template:                                              *]-->
-<!--[*  This is the form to comment.                                           *]-->
-<!--[*  It is shown only, when the user is allowed to comment.                 *]-->
-<!--[*  ---------------------------------------------------------------------- *]-->
+<!--[* $Id$ *]-->
+
+<!--[* ---------------------------------------------------------------------- *]-->
+<!--[* EZComments                                                             *]-->
+<!--[* Attach comments to any module calling hooks                            *]-->
+<!--[* ---------------------------------------------------------------------- *]-->
+<!--[* http://noc.postnuke.com/projects/ezcomments/                           *]-->
+<!--[* ---------------------------------------------------------------------- *]-->
+<!--[* LICENSE                                                                *]-->
+<!--[* This program is free software; you can redistribute it and/or          *]-->
+<!--[* modify it under the terms of the GNU General Public License (GPL)      *]-->
+<!--[* as published by the Free Software Foundation; either version 2         *]-->
+<!--[* of the License, or (at your option) any later version.                 *]-->
+<!--[* This program is distributed in the hope that it will be useful,        *]-->
+<!--[* but WITHOUT ANY WARRANTY; without even the implied warranty of         *]-->
+<!--[* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *]-->
+<!--[* GNU General Public License for more details.                           *]-->
+<!--[* To read the license please visit http://www.gnu.org/copyleft/gpl.html  *]-->
+<!--[* ---------------------------------------------------------------------- *]-->
+<!--[* Purpose of this template:                                              *]-->
+<!--[* This is the form to comment.                                           *]-->
+<!--[* It is shown only when the user is allowed to comment.                  *]-->
+<!--[* ---------------------------------------------------------------------- *]-->
 
 <h3><!--[pnml name=_EZCOMMENTS]--></h3>
 <p><!--[pnml name=_EZCOMMENTS_RULES]--></p>
 <!--[if $allowadd]-->
-	<form action="<!--[pnmodurl modname=EZComments func=create]-->" method="post">
-	<div>
-		<input type="hidden" name="authid" id="authid" value="<!--[pnsecgenauthkey modname=EZComments]-->" /> 
-		<input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" /> 
-		<input type="hidden" name="EZComments_modname" id="EZComments_modname" value="<!--[$modname|pnvarprepfordisplay]-->" /> 
-		<input type="hidden" name="EZComments_objectid" id="EZComments_objectid" value="<!--[$objectid|pnvarprepfordisplay]-->" /> 
-		<div>
-			<label for="subject"><!--[pnml name=_EZCOMMENTS_SUBJECT]--></label>
-			<input type="text" name="EZComments_subject" id="subject" size="50" maxlength="255" />
-		</div>
-		<!--[if $loggedin neq true and $anonusersinfo eq true]-->
-		<div>
-			<label for="anonname"><!--[pnml name=_EZCOMMENTS_ANONNAME]--></label>
-			<input type="text" name="EZComments_anonname" id="anonname" size="50" maxlength="255" />
-		</div>
-		<div>
-			<label for="anonmail"><!--[pnml name=_EZCOMMENTS_ANONMAIL]--></label>
-			<input type="text" name="EZComments_anonmail" id="anonmail" size="50" maxlength="255" />
-		</div>
-		<!--[/if]-->
-		<div>
-			<label for="message"><!--[pnml name=_EZCOMMENTS_COMMENT]--></label>
-			<textarea name="EZComments_comment" id="message" cols="60" rows="10"></textarea>
-		</div>
-		<input type="submit" value="<!--[pnml name=_EZCOMMENTS_ADD]-->" />
-	</div>
-	</form>
+  <form action="<!--[pnmodurl modname=EZComments func=create]-->" method="post">
+  <div>
+    <input type="hidden" name="authid" id="authid" value="<!--[pnsecgenauthkey module="EZComments"]-->" /> 
+    <input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" />
+    <input type="hidden" name="EZComments_modname"  id="EZComments_modname"  value="<!--[$modname|pnvarprepfordisplay]-->" />
+    <input type="hidden" name="EZComments_objectid" id="EZComments_objectid" value="<!--[$objectid|pnvarprepfordisplay]-->" />
+    <div>
+      <label for="subject"><!--[pnml name=_EZCOMMENTS_SUBJECT]--></label>
+      <br />
+      <input type="text" name="EZComments_subject" id="subject" size="50" maxlength="255" />
+    </div>
+    <!--[if $loggedin neq true and $anonusersinfo eq true]-->
+    <div>
+      <label for="anonname"><!--[pnml name=_EZCOMMENTS_ANONNAME]--></label>
+      <br />
+      <input type="text" name="EZComments_anonname" id="anonname" size="50" maxlength="255" />
+    </div>
+    <div>
+      <label for="anonmail"><!--[pnml name=_EZCOMMENTS_ANONMAIL]--></label>
+      <br />
+      <input type="text" name="EZComments_anonmail" id="anonmail" size="50" maxlength="255" />
+    </div>
+    <!--[/if]-->
+    <div>
+      <label for="message"><!--[pnml name=_EZCOMMENTS_COMMENT]--></label>
+      <br />
+      <textarea name="EZComments_comment" id="message" cols="60" rows="10"></textarea>
+    </div>
+    <input type="submit" value="<!--[pnml name=_EZCOMMENTS_ADD]-->" />
+  </div>
+  </form>  
 <!--[else]-->
-	<!--[pnml name=_EZCOMMENTS_ONLYREG]-->
-	<a href="user.php"><!--[pnml name=_EZCOMMENTS_GOTOREG]--></a>
+  <!--[pnml name=_EZCOMMENTS_ONLYREG]-->
+  <a href="user.php"><!--[pnml name=_EZCOMMENTS_GOTOREG]--></a>
 <!--[/if]-->

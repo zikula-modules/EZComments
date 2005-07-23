@@ -1,63 +1,70 @@
-<!--[*  $Id$                 *]-->
-<!--[*  ---------------------------------------------------------------------- *]-->
-<!--[*  EZComments                                                             *]-->
-<!--[*  Attach comments to any module calling hooks                            *]-->
-<!--[*  ---------------------------------------------------------------------- *]-->
-<!--[*  Author: Jörg Napp                      *]-->
-<!--[*  ---------------------------------------------------------------------- *]-->
-<!--[*  LICENSE                                                                *]-->
-<!--[*  This program is free software; you can redistribute it and/or          *]-->
-<!--[*  modify it under the terms of the GNU General Public License (GPL)      *]-->
-<!--[*  as published by the Free Software Foundation; either version 2         *]-->
-<!--[*  of the License, or (at your option) any later version.                 *]-->
-<!--[*  This program is distributed in the hope that it will be useful,        *]-->
-<!--[*  but WITHOUT ANY WARRANTY; without even the implied warranty of         *]-->
-<!--[*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *]-->
-<!--[*  GNU General Public License for more details.                           *]-->
-<!--[*  To read the license please visit http://www.gnu.org/copyleft/gpl.html  *]-->
-<!--[*  ---------------------------------------------------------------------- *]-->
-<!--[*  Purpose of this template:                                              *]-->
-<!--[*  Show the comments in a flat manner, but with comments on another       *]-->
-<!--[*  page (the link is a normal text link -- note that in this case the     *]-->
-<!--[*  return URL must be escaped to make it to the next page.                *]-->
-<!--[*  ---------------------------------------------------------------------- *]-->
+<!--[*  $Id$ *]-->
+
+<!--[* ---------------------------------------------------------------------- *]-->
+<!--[* EZComments                                                             *]-->
+<!--[* Attach comments to any module calling hooks                            *]-->
+<!--[* ---------------------------------------------------------------------- *]-->
+<!--[* http://noc.postnuke.com/projects/ezcomments/                           *]-->
+<!--[* ---------------------------------------------------------------------- *]-->
+<!--[* LICENSE                                                                *]-->
+<!--[* This program is free software; you can redistribute it and/or          *]-->
+<!--[* modify it under the terms of the GNU General Public License (GPL)      *]-->
+<!--[* as published by the Free Software Foundation; either version 2         *]-->
+<!--[* of the License, or (at your option) any later version.                 *]-->
+<!--[* This program is distributed in the hope that it will be useful,        *]-->
+<!--[* but WITHOUT ANY WARRANTY; without even the implied warranty of         *]-->
+<!--[* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *]-->
+<!--[* GNU General Public License for more details.                           *]-->
+<!--[* To read the license please visit http://www.gnu.org/copyleft/gpl.html  *]-->
+<!--[* ---------------------------------------------------------------------- *]-->
+<!--[* Purpose of this template:                                              *]-->
+<!--[* Show the comments in a flat manner, but with comments on another       *]-->
+<!--[* page (the link is a normal text link -- note that in this case the     *]-->
+<!--[* return URL must be escaped to make it to the next page.                *]-->
+<!--[* ---------------------------------------------------------------------- *]-->
+
 <!--[if $comments eq true or $allowadd eq true]-->
-	<!--[include file=ezcomments_user_header.htm]-->
-  <!--[include file="ezcomments_user_navbar.htm"]-->
+  <!--[include file=ezcomments_user_header.htm]-->
 <!--[/if]-->
+
 <!--[if $allowadd]-->
-	<div style="text-align:right">
-		<!--[pnimg src=comment.gif]-->
-		<!--[pnmodgetname assign=modname]-->
-		<a href="<!--[pnmodurl modname=EZComments func=comment EZComments_redirect=$redirect|rawurlencode EZComments_modname=$modname EZComments_objectid=$objectid]-->"><!--[pnml name=_EZCOMMENTS_COMMENT_ADD]--></a>
-	</div>
+  <div style="text-align:right">
+    <!--[pnimg src=comment.gif]-->
+    <!--[pnmodgetname assign=modname]-->
+    <a href="<!--[pnmodurl modname=EZComments func=comment EZComments_redirect=$redirect|rawurlencode EZComments_modname=$modname EZComments_objectid=$objectid]-->"><!--[pnml name=_EZCOMMENTS_COMMENT_ADD]--></a>
+  </div>
 <!--[/if]-->
+
 <!--[if $comments eq true]-->
-	<table border="0" cellpadding="5" cellspacing="0" width="100%">
-		<!--[section name=comments loop=$comments]-->
-  		<tr>
-	    	<td style="background-color:<!--[pnthemegetvar name=bgcolor4]-->" valign="top" width="20%">
-				<!--[if $comments[comments].anonname neq '']-->
-				<!--[$comments[comments].anonname|pnvarprepfordisplay]-->
-				<!--[else]-->
-                <!--[$comments[comments].uname|pnvarprepfordisplay]-->
-				<!--[/if]-->
-				<br />
-				<!--[$comments[comments].date|date_format:"%d.%m.%y, %H:%M"]-->
-		    </td>
-		    <td style="background-color:<!--[pnthemegetvar name=bgcolor4]-->" valign="top" width="80%">
-				<!--[$comments[comments].comment|formatezcomment|pnvarprephtmldisplay]-->
-		      	<!--[if $comments[comments].del]-->
-					<br />
-					<form action="<!--[pnmodurl modname=EZComments type=admin func=delete id=$comments[comments].id]-->" method="post">
-					<div>
-						<input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" /> 
-						<input type="submit" value="<!--[pnml name=_EZCOMMENTS_DEL]-->" />
-					</div>
-					</form>
-				<!--[/if]-->
-		    </td>
-  		</tr>
-		<!--[/section]-->
-	</table>
+  <table style="background-color:<!--[pnthemegetvar name="bgcolor1"]-->; width:100%;" border="0" cellpadding="5" cellspacing="3">
+    <!--[section name=comments loop=$comments]-->
+      <tr>
+        <td style="background-color:<!--[pnthemegetvar name="bgcolor2"]-->; width:15%;" valign="top">
+        <!--[if $comments[comments].anonname neq '']-->
+          <!--[$comments[comments].anonname|pnvarprepfordisplay]-->
+        <!--[else]-->
+          <!--[$comments[comments].uname|pnvarprepfordisplay]-->
+        <!--[/if]-->
+        <br />
+        <!--[$comments[comments].date|date_format:"%d.%m.%y, %H:%M"]-->
+        </td>
+        <td style="background-color:<!--[pnthemegetvar name="bgcolor3"]-->; width:85%;" valign="top">
+        <!--[if $comments[comments].subject neq '']-->
+          <strong><!--[$comments[comments].subject|pnvarprepfordisplay]--></strong>
+          <br />
+        <!--[/if]-->
+        <!--[$comments[comments].comment|formatezcomment|pnvarprephtmldisplay]-->
+            <!--[if $comments[comments].del]-->
+          <br />
+          <form action="<!--[pnmodurl modname=EZComments type=admin func=delete id=$comments[comments].id]-->" method="post">
+          <div>
+            <input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" /> 
+            <input type="submit" value="<!--[pnml name=_EZCOMMENTS_DEL]-->" />
+          </div>
+          </form>
+        <!--[/if]-->
+        </td>
+      </tr>
+    <!--[/section]-->
+  </table>
 <!--[/if]-->
