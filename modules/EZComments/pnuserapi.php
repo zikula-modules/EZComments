@@ -48,116 +48,116 @@
  */ 
 function EZComments_userapi_getall($args)
 {
-	extract($args);
+    extract($args);
 
-	if (!isset($startnum) || !is_numeric($startnum)) {
+    if (!isset($startnum) || !is_numeric($startnum)) {
         $startnum = 1;
     }
-	if (!isset($numitems) || !is_numeric($numitems)) {
+    if (!isset($numitems) || !is_numeric($numitems)) {
         $numitems = -1;
     }
-	if (!isset($status) || !is_numeric($status)) {
+    if (!isset($status) || !is_numeric($status)) {
         $status = -1;
     }
 
-	$items = array(); 
+    $items = array(); 
 
-	// Security check
-	if (isset($modname) && isset($objectid)) {
-    	if (!pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:", ACCESS_READ)) {
-    		return $items;
-    	} 
-		list($querymodname, $queryobjectid) = pnVarPrepForStore($modname, $objectid);
-	} else {
-    	if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_OVERVIEW)) {
-    		return $items;
-    	}
-	}
+    // Security check
+    if (isset($modname) && isset($objectid)) {
+        if (!pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:", ACCESS_READ)) {
+            return $items;
+        } 
+        list($querymodname, $queryobjectid) = pnVarPrepForStore($modname, $objectid);
+    } else {
+        if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_OVERVIEW)) {
+            return $items;
+        }
+    }
 
-	// Get datbase setup
-	$dbconn =& pnDBGetConn(true);
-	$pntable =& pnDBGetTables();
+    // Get datbase setup
+    $dbconn =& pnDBGetConn(true);
+    $pntable =& pnDBGetTables();
 
-	$EZCommentstable = $pntable['EZComments'];
-	$EZCommentscolumn = &$pntable['EZComments_column']; 
-	
-	// form where clause
-	$wherestring = '';
-	if (isset($modname) && isset($objectid)) {
-		$whereclause[] = "$EZCommentscolumn[modname] = '$querymodname'";
-		$whereclause[] = "$EZCommentscolumn[objectid] = '$queryobjectid'";
-	}
-	if ($status != -1) {
-		$whereclause[] = "$EZCommentscolumn[status] = '$status'";
-	}
-	$wherestring = '';
-	if (!empty($whereclause)) {
-		$wherestring = 'WHERE ' . implode(' AND ', $whereclause);
-	}
+    $EZCommentstable = $pntable['EZComments'];
+    $EZCommentscolumn = &$pntable['EZComments_column']; 
+    
+    // form where clause
+    $wherestring = '';
+    if (isset($modname) && isset($objectid)) {
+        $whereclause[] = "$EZCommentscolumn[modname] = '$querymodname'";
+        $whereclause[] = "$EZCommentscolumn[objectid] = '$queryobjectid'";
+    }
+    if ($status != -1) {
+        $whereclause[] = "$EZCommentscolumn[status] = '$status'";
+    }
+    $wherestring = '';
+    if (!empty($whereclause)) {
+        $wherestring = 'WHERE ' . implode(' AND ', $whereclause);
+    }
 
-	// form the order clause
-	$orderstring = '';
-	if (isset($sortby) && isset($EZCommentscolumn[$sortby])) {
-		$orderstring = "ORDER BY $EZCommentscolumn[$sortby]";
-	} else {
-		$orderstring = "ORDER BY $EZCommentscolumn[date]";
-	}
+    // form the order clause
+    $orderstring = '';
+    if (isset($sortby) && isset($EZCommentscolumn[$sortby])) {
+        $orderstring = "ORDER BY $EZCommentscolumn[$sortby]";
+    } else {
+        $orderstring = "ORDER BY $EZCommentscolumn[date]";
+    }
 
-	$orderby = 'DESC';
-	if (isset($sortorder) && (strtoupper($sortorder) == 'DESC' || strtoupper($sortorder) == 'ASC')) {
-		$orderby = $sortorder;
-	}
+    $orderby = 'DESC';
+    if (isset($sortorder) && (strtoupper($sortorder) == 'DESC' || strtoupper($sortorder) == 'ASC')) {
+        $orderby = $sortorder;
+    }
 
-	// Get items
-	$sql = "SELECT $EZCommentscolumn[id],
+    // Get items
+    $sql = "SELECT $EZCommentscolumn[id],
                    $EZCommentscolumn[modname],
                    $EZCommentscolumn[objectid],
                    $EZCommentscolumn[url],
-				   $EZCommentscolumn[date],
+                   $EZCommentscolumn[date],
                    $EZCommentscolumn[uid],
                    $EZCommentscolumn[comment],
                    $EZCommentscolumn[subject],
                    $EZCommentscolumn[replyto],
-			  	   $EZCommentscolumn[anonname],
-			       $EZCommentscolumn[anonmail],
-			       $EZCommentscolumn[status]
+                     $EZCommentscolumn[anonname],
+                   $EZCommentscolumn[anonmail],
+                   $EZCommentscolumn[status]
             FROM $EZCommentstable
             $wherestring $orderstring $orderby";
-    $result = $dbconn->SelectLimit($sql, $numitems, $startnum-1);			
+    $result = $dbconn->SelectLimit($sql, $numitems, $startnum-1);            
 
-	// Check for an error with the database code, and if so set an appropriate
-	// error message and return
-	if ($dbconn->ErrorNo() != 0) {
-		pnSessionSetVar('errormsg', _GETFAILED);
-		return false;
-	} 
+    // Check for an error with the database code, and if so set an appropriate
+    // error message and return
+    if ($dbconn->ErrorNo() != 0) {
+        pnSessionSetVar('errormsg', _GETFAILED);
+        return false;
+    } 
 
-	// Put items into result array.  Note that each item is checked
-	// individually to ensure that the user is allowed access to it before it
-	// is added to the results array
-	for (; !$result->EOF; $result->MoveNext()) {
-		list($id, $modname, $objectid, $url, $date, $uid, $comment, $subject, $replyto, $anonname, $anonmail, $status) = $result->fields;
-		if (pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:$id", ACCESS_READ)) {
-			if ($uid == 1 && empty($anonname)) {
-				$anonname = pnConfigGetVar('anonymous');
-			}
-			$items[] = compact('id',
-			                   'modname',
-			                   'objectid',
-			                   'url',
-                			   'date',
-							   'uid',
-							   'comment',
-							   'subject',
-							   'replyto',
-							   'anonname',
-							   'anonmail',
-							   'status');
-		} 
-	} 
-	$result->Close();
-	// Return the items
-	return $items;
+    // Put items into result array.  Note that each item is checked
+    // individually to ensure that the user is allowed access to it before it
+    // is added to the results array
+    for (; !$result->EOF; $result->MoveNext()) {
+        list($id, $modname, $objectid, $url, $date, $uid, $comment, $subject, $replyto, $anonname, $anonmail, $status) = $result->fields;
+        if (pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:$id", ACCESS_READ)) {
+            if ($uid == 1 && empty($anonname)) {
+                $anonname = pnConfigGetVar('anonymous');
+            }
+            $items[] = compact('id',
+                               'modname',
+                               'objectid',
+                               'url',
+                               'date',
+                               'uid',
+                               'comment',
+                               'subject',
+                               'replyto',
+                               'anonname',
+                               'anonmail',
+                               'status');
+        } 
+    } 
+    $result->Close();
+    // Return the items
+    return $items;
 } 
 
 
@@ -176,149 +176,149 @@ function EZComments_userapi_getall($args)
  */ 
 function EZComments_userapi_create($args)
 {
-	extract($args);
+    extract($args);
 
-	if ((!isset($modname)) ||
-		(!isset($objectid)) ||
-		(!isset($comment))) {
-		pnSessionSetVar('errormsg', _MODARGSERROR);
-		return false;
-	} 
+    if ((!isset($modname)) ||
+        (!isset($objectid)) ||
+        (!isset($comment))) {
+        pnSessionSetVar('errormsg', _MODARGSERROR);
+        return false;
+    } 
 
-	if (!isset($replyto) || empty($replyto)) {
-	    $replyto = -1;
-	}
-	if (!isset($uid) || !is_numeric($uid)) {
-		$uid = pnUserGetVar('uid');
-	}
-	if (!isset($date)) {
-		$date = 'NOW()';
-	} else {
-		$date= "'" . pnVarPrepForStore($date) . "'";
-	}
-	
-	// Security check
-	if (!pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:", ACCESS_COMMENT)) {
-		pnSessionSetVar('errormsg', _EZCOMMENTS_NOAUTH);
-		return false;
-	} 
+    if (!isset($replyto) || empty($replyto)) {
+        $replyto = -1;
+    }
+    if (!isset($uid) || !is_numeric($uid)) {
+        $uid = pnUserGetVar('uid');
+    }
+    if (!isset($date)) {
+        $date = 'NOW()';
+    } else {
+        $date= "'" . pnVarPrepForStore($date) . "'";
+    }
+    
+    // Security check
+    if (!pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:", ACCESS_COMMENT)) {
+        pnSessionSetVar('errormsg', _EZCOMMENTS_NOAUTH);
+        return false;
+    } 
 
-	// Get datbase setup
-	$dbconn =& pnDBGetConn(true);
-	$pntable =& pnDBGetTables();
+    // Get datbase setup
+    $dbconn =& pnDBGetConn(true);
+    $pntable =& pnDBGetTables();
 
-	$EZCommentstable = $pntable['EZComments'];
-	$EZCommentscolumn = &$pntable['EZComments_column']; 
+    $EZCommentstable = $pntable['EZComments'];
+    $EZCommentscolumn = &$pntable['EZComments_column']; 
 
-	// Get next ID in table
-	$nextId = $dbconn->GenId($EZCommentstable);
+    // Get next ID in table
+    $nextId = $dbconn->GenId($EZCommentstable);
 
-	$status = _EZComments_userapi_checkcomment(array('subject' => $subject, 'comment' => $comment));
-	if (!isset($status)) return false;
-	if ($status == 2) {
-		pnSessionSetVar('errormsg', _EZCOMMENTS_COMMENTBLACKLISTED);
-		return false;
-	}
-	
-	list($modname, 
-	     $objectid,
-		 $url,
-		 $uid,
-		 $comment,
-		 $subject,
-		 $replyto,
-		 $anonname,
-		 $anonmail,
-		 $status  ) = pnVarPrepForStore($modname, 
-		                                $objectid, 
-									    $url,
-									    $uid,
-									    $comment,
-		                                $subject,
-		                                $replyto,
-										$anonname,
-										$anonmail,
-										$status); 
-									   
-	// Add item
-	$sql = "INSERT INTO $EZCommentstable (
-			  $EZCommentscolumn[id],
+    $status = _EZComments_userapi_checkcomment(array('subject' => $subject, 'comment' => $comment));
+    if (!isset($status)) return false;
+    if ($status == 2) {
+        pnSessionSetVar('errormsg', _EZCOMMENTS_COMMENTBLACKLISTED);
+        return false;
+    }
+    
+    list($modname, 
+         $objectid,
+         $url,
+         $uid,
+         $comment,
+         $subject,
+         $replyto,
+         $anonname,
+         $anonmail,
+         $status  ) = pnVarPrepForStore($modname, 
+                                        $objectid, 
+                                        $url,
+                                        $uid,
+                                        $comment,
+                                        $subject,
+                                        $replyto,
+                                        $anonname,
+                                        $anonmail,
+                                        $status); 
+                                       
+    // Add item
+    $sql = "INSERT INTO $EZCommentstable (
+              $EZCommentscolumn[id],
               $EZCommentscolumn[modname],
               $EZCommentscolumn[objectid],
               $EZCommentscolumn[url],
               $EZCommentscolumn[date],
               $EZCommentscolumn[uid],
               $EZCommentscolumn[comment],
-			  $EZCommentscolumn[subject],
-			  $EZCommentscolumn[replyto],
-			  $EZCommentscolumn[anonname],
-			  $EZCommentscolumn[anonmail],
-			  $EZCommentscolumn[status])
+              $EZCommentscolumn[subject],
+              $EZCommentscolumn[replyto],
+              $EZCommentscolumn[anonname],
+              $EZCommentscolumn[anonmail],
+              $EZCommentscolumn[status])
             VALUES (
               '$nextId',
-			  '$modname',
-			  '$objectid',
-			  '$url',
-			  $date,
-			  '$uid',
-			  '$comment',
-			  '$subject',
-			  '$replyto',
-			  '$anonname',
-			  '$anonmail',
-			  '$status')";
-	$dbconn->Execute($sql); 
+              '$modname',
+              '$objectid',
+              '$url',
+              $date,
+              '$uid',
+              '$comment',
+              '$subject',
+              '$replyto',
+              '$anonname',
+              '$anonmail',
+              '$status')";
+    $dbconn->Execute($sql); 
 
-	// Check for an error with the database code
-	if ($dbconn->ErrorNo() != 0) {
-		pnSessionSetVar('errormsg', _CREATEFAILED);
-		return false;
-	} 
+    // Check for an error with the database code
+    if ($dbconn->ErrorNo() != 0) {
+        pnSessionSetVar('errormsg', _CREATEFAILED);
+        return false;
+    } 
 
-	// set an approriate status/errormsg
-	switch ($status) {
-		case '0' :
-			pnSessionSetVar('statusmsg', _EZCCOMMENTSCREATED);
-			break;
-		case '1' :
-			pnSessionSetVar('statusmsg', _EZCOMMENTS_HELDFORMODERATION);
-			break;
-	}
+    // set an approriate status/errormsg
+    switch ($status) {
+        case '0' :
+            pnSessionSetVar('statusmsg', _EZCCOMMENTSCREATED);
+            break;
+        case '1' :
+            pnSessionSetVar('statusmsg', _EZCOMMENTS_HELDFORMODERATION);
+            break;
+    }
 
-	// Get the ID of the item that we inserted.
-	$id = $dbconn->PO_Insert_ID($EZCommentstable, $EZCommentscolumn['id']); 
-	
-	// Inform admin about new comment
-	if (pnModGetVar('EZComments', 'MailToAdmin') && $status == 0) {
-		$pnRender =& new pnRender('EZComments');
-		$pnRender->assign('comment', $comment);
-		$pnRender->assign('url', $url);
-		$pnRender->assign('moderate', pnModURL('EZComments', 'admin', 'modify', array('id' => $id)));
-		$pnRender->assign('delete', pnModURL('EZComments', 'admin', 'delete', array('id' => $id)));
-		$pnRender->assign('baseURL', pnGetBaseURL());
-		$mailsubject = _EZCOMMENTS_MAILSUBJECT;
-		$mailbody = $pnRender->fetch('ezcomments_mail_newcomment.htm');
-		pnModAPIFunc('Mailer', 'user', 'sendmessage', 
-					 array('toaddress' => pnConfigGetVar('adminmail'), 'toname' => pnConfigGetVar('sitename'),  
-					 	   'fromaddress' => pnConfigGetVar('adminmail'), 'fromname' => pnConfigGetVar('sitename'), 
-						   'subject' => $mailsubject, 'body' => $mailbody));
-	}
-	if (pnModGetVar('EZComments', 'moderationmail') && $status == 1) {
-		$pnRender =& new pnRender('EZComments');
-		$pnRender->assign('comment', $comment);
-		$pnRender->assign('url', $url);
-		$pnRender->assign('moderate', pnModURL('EZComments', 'admin', 'modify', array('id' => $id)));
-		$pnRender->assign('delete', pnModURL('EZComments', 'admin', 'delete', array('id' => $id)));
-		$pnRender->assign('baseURL', pnGetBaseURL());
-		$mailsubject = _EZCOMMENTS_MODMAILSUBJECT;
-		$mailbody = $pnRender->fetch('ezcomments_mail_modcomment.htm');
-		pnModAPIFunc('Mailer', 'user', 'sendmessage', 
-					 array('toaddress' => pnConfigGetVar('adminmail'), 'toname' => pnConfigGetVar('sitename'),  
-					 	   'fromaddress' => pnConfigGetVar('adminmail'), 'fromname' => pnConfigGetVar('sitename'), 
-						   'subject' => $mailsubject, 'body' => $mailbody));
-	}
-	// pnModCallHooks('item', 'create', $tid, 'tid');
-	return $id;
+    // Get the ID of the item that we inserted.
+    $id = $dbconn->PO_Insert_ID($EZCommentstable, $EZCommentscolumn['id']); 
+    
+    // Inform admin about new comment
+    if (pnModGetVar('EZComments', 'MailToAdmin') && $status == 0) {
+        $pnRender =& new pnRender('EZComments');
+        $pnRender->assign('comment', $comment);
+        $pnRender->assign('url', $url);
+        $pnRender->assign('moderate', pnModURL('EZComments', 'admin', 'modify', array('id' => $id)));
+        $pnRender->assign('delete', pnModURL('EZComments', 'admin', 'delete', array('id' => $id)));
+        $pnRender->assign('baseURL', pnGetBaseURL());
+        $mailsubject = _EZCOMMENTS_MAILSUBJECT;
+        $mailbody = $pnRender->fetch('ezcomments_mail_newcomment.htm');
+        pnModAPIFunc('Mailer', 'user', 'sendmessage', 
+                     array('toaddress' => pnConfigGetVar('adminmail'), 'toname' => pnConfigGetVar('sitename'),  
+                            'fromaddress' => pnConfigGetVar('adminmail'), 'fromname' => pnConfigGetVar('sitename'), 
+                           'subject' => $mailsubject, 'body' => $mailbody));
+    }
+    if (pnModGetVar('EZComments', 'moderationmail') && $status == 1) {
+        $pnRender =& new pnRender('EZComments');
+        $pnRender->assign('comment', $comment);
+        $pnRender->assign('url', $url);
+        $pnRender->assign('moderate', pnModURL('EZComments', 'admin', 'modify', array('id' => $id)));
+        $pnRender->assign('delete', pnModURL('EZComments', 'admin', 'delete', array('id' => $id)));
+        $pnRender->assign('baseURL', pnGetBaseURL());
+        $mailsubject = _EZCOMMENTS_MODMAILSUBJECT;
+        $mailbody = $pnRender->fetch('ezcomments_mail_modcomment.htm');
+        pnModAPIFunc('Mailer', 'user', 'sendmessage', 
+                     array('toaddress' => pnConfigGetVar('adminmail'), 'toname' => pnConfigGetVar('sitename'),  
+                            'fromaddress' => pnConfigGetVar('adminmail'), 'fromname' => pnConfigGetVar('sitename'), 
+                           'subject' => $mailsubject, 'body' => $mailbody));
+    }
+    // pnModCallHooks('item', 'create', $tid, 'tid');
+    return $id;
 } 
 
 /**
@@ -333,19 +333,19 @@ function EZComments_userapi_create($args)
  */ 
 function EZComments_userapi_get($args)
 {
-	extract($args);
-	if (!isset($id)) {
-		pnSessionSetVar('errormsg', _MODARGSERROR);
-		return false;
-	} 
-	// Get datbase setup
-	$dbconn =& pnDBGetConn(true);
-	$pntable =& pnDBGetTables();
+    extract($args);
+    if (!isset($id)) {
+        pnSessionSetVar('errormsg', _MODARGSERROR);
+        return false;
+    } 
+    // Get datbase setup
+    $dbconn =& pnDBGetConn(true);
+    $pntable =& pnDBGetTables();
 
-	$EZCommentstable = $pntable['EZComments'];
-	$EZCommentscolumn = &$pntable['EZComments_column']; 
-	// Get items
-	$sql = "SELECT $EZCommentscolumn[modname],
+    $EZCommentstable = $pntable['EZComments'];
+    $EZCommentscolumn = &$pntable['EZComments_column']; 
+    // Get items
+    $sql = "SELECT $EZCommentscolumn[modname],
                    $EZCommentscolumn[objectid],
                    $EZCommentscolumn[url],
                    $EZCommentscolumn[date],
@@ -353,54 +353,54 @@ function EZComments_userapi_get($args)
                    $EZCommentscolumn[comment],
                    $EZCommentscolumn[subject],
                    $EZCommentscolumn[replyto],
-			  	   $EZCommentscolumn[anonname],
-			       $EZCommentscolumn[anonmail],
-			       $EZCommentscolumn[status]
+                     $EZCommentscolumn[anonname],
+                   $EZCommentscolumn[anonmail],
+                   $EZCommentscolumn[status]
             FROM $EZCommentstable
             WHERE $EZCommentscolumn[id] = '$id'";
-	$result =& $dbconn->Execute($sql); 
-	// Check for an error with the database code, and if so set an appropriate
-	// error message and return
-	if ($dbconn->ErrorNo() != 0) {
-		pnSessionSetVar('errormsg', _GETFAILED);
-		return false;
-	} 
+    $result =& $dbconn->Execute($sql); 
+    // Check for an error with the database code, and if so set an appropriate
+    // error message and return
+    if ($dbconn->ErrorNo() != 0) {
+        pnSessionSetVar('errormsg', _GETFAILED);
+        return false;
+    } 
 
-	if ($result->EOF) {
-		pnSessionSetVar('errormsg', _GETFAILED);
-		return false;
-	} 
-	// Put items into result array.  Note that each item is checked
-	// individually to ensure that the user is allowed access to it before it
-	// is added to the results array
-	list($modname, 
-		 $objectid,
-		 $url,
-	     $date, 
-		 $uid, 
-		 $comment,
-		 $subject,
-		 $replyto,
-		 $anonname,
-		 $anonmail,
-		 $status) = $result->fields;
-	if (!pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:$id", ACCESS_READ)) {
-		return false;
-	} 
-	 
-	$result->Close();
-	// Return the items
-	return compact('modname', 
-		           'objectid',
-		           'url',
-	               'date', 
-		           'uid', 
-		           'comment',
-				   'subject',
-				   'replyto',
-				   'anonname',
-				   'anonmail',
-				   'status');
+    if ($result->EOF) {
+        pnSessionSetVar('errormsg', _GETFAILED);
+        return false;
+    } 
+    // Put items into result array.  Note that each item is checked
+    // individually to ensure that the user is allowed access to it before it
+    // is added to the results array
+    list($modname, 
+         $objectid,
+         $url,
+         $date, 
+         $uid, 
+         $comment,
+         $subject,
+         $replyto,
+         $anonname,
+         $anonmail,
+         $status) = $result->fields;
+    if (!pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:$id", ACCESS_READ)) {
+        return false;
+    } 
+     
+    $result->Close();
+    // Return the items
+    return compact('modname', 
+                   'objectid',
+                   'url',
+                   'date', 
+                   'uid', 
+                   'comment',
+                   'subject',
+                   'replyto',
+                   'anonname',
+                   'anonmail',
+                   'status');
 } 
 
 
@@ -416,43 +416,43 @@ function EZComments_userapi_get($args)
  */ 
 function EZComments_userapi_count($args)
 {
-	extract($args);
+    extract($args);
 
-	if (!isset($module) || !isset($objectid)) {
-		pnSessionSetVar('errormsg', _MODARGSERROR);
-		return false;
-	} 
+    if (!isset($module) || !isset($objectid)) {
+        pnSessionSetVar('errormsg', _MODARGSERROR);
+        return false;
+    } 
 
-	if (!pnSecAuthAction(0, 'EZComments::', "$module:$objectid:", ACCESS_READ)) {
-		return false;
-	} 
-	// Get datbase setup
-	$dbconn =& pnDBGetConn(true);
-	$pntable =& pnDBGetTables();
+    if (!pnSecAuthAction(0, 'EZComments::', "$module:$objectid:", ACCESS_READ)) {
+        return false;
+    } 
+    // Get datbase setup
+    $dbconn =& pnDBGetConn(true);
+    $pntable =& pnDBGetTables();
 
-	$EZCommentstable = $pntable['EZComments'];
-	$EZCommentscolumn = &$pntable['EZComments_column']; 
-	
-	$querymodname = pnVarPrepForStore($module);
-	$queryobjectid = pnVarPrepForStore($objectid);
-	// Get items
-	$sql = "SELECT count(1)
+    $EZCommentstable = $pntable['EZComments'];
+    $EZCommentscolumn = &$pntable['EZComments_column']; 
+    
+    $querymodname = pnVarPrepForStore($module);
+    $queryobjectid = pnVarPrepForStore($objectid);
+    // Get items
+    $sql = "SELECT count(1)
             FROM $EZCommentstable
             WHERE $EZCommentscolumn[modname] = '$querymodname'
               AND $EZCommentscolumn[objectid] = '$queryobjectid'";
 
-	$result =& $dbconn->Execute($sql); 
-	// Check for an error with the database code, and if so set an appropriate
-	// error message and return
-	if ($dbconn->ErrorNo() != 0) {
-		pnSessionSetVar('errormsg', _GETFAILED);
-		return false;
-	} 
+    $result =& $dbconn->Execute($sql); 
+    // Check for an error with the database code, and if so set an appropriate
+    // error message and return
+    if ($dbconn->ErrorNo() != 0) {
+        pnSessionSetVar('errormsg', _GETFAILED);
+        return false;
+    } 
 
     list($count) = $result->fields;
-	$result->Close(); 
-	// Return the items
-	return $count;
+    $result->Close(); 
+    // Return the items
+    return $count;
 } 
 
 /**
@@ -462,15 +462,15 @@ function EZComments_userapi_count($args)
  */
 function EZComments_userapi_countitems()
 {
-	if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_OVERVIEW)) {
-		return false;
-	} 
-	
-	// Get datbase setup
-	$dbconn =& pnDBGetConn(true);
-	$pntable =& pnDBGetTables();
+    if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_OVERVIEW)) {
+        return false;
+    } 
+    
+    // Get datbase setup
+    $dbconn =& pnDBGetConn(true);
+    $pntable =& pnDBGetTables();
 
-	$EZCommentstable = $pntable['EZComments'];
+    $EZCommentstable = $pntable['EZComments'];
     $sql = "SELECT COUNT(1)
             FROM $EZCommentstable";
     $result =& $dbconn->Execute($sql);
@@ -491,18 +491,18 @@ function EZComments_userapi_countitems()
  */
 function EZComments_userapi_gettemplates()
 {
-	if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_READ)) {
-		return false;
-	} 
+    if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_READ)) {
+        return false;
+    } 
 
-	$modinfo = pnModGetInfo(pnModGetIDFromName('EZComments'));
+    $modinfo = pnModGetInfo(pnModGetIDFromName('EZComments'));
 
-	$templates = array();
+    $templates = array();
     $handle = opendir('modules/'.pnVarPrepForOS($modinfo['directory']).'/pntemplates/');
     while ($f = readdir($handle)) {
-	    if ($f != '.' && $f != '..' && $f != 'CVS' && !ereg("[.]", $f) && $f != 'plugins') {
-	    	$templates[] = $f;
-		}
+        if ($f != '.' && $f != '..' && $f != 'CVS' && !ereg("[.]", $f) && $f != 'plugins') {
+            $templates[] = $f;
+        }
     } 
     closedir($handle); 
 
@@ -524,57 +524,58 @@ function EZComments_userapi_gettemplates()
  */
 function _EZComments_userapi_checkcomment($args)
 {
-	extract($args);
+    extract($args);
 
-	if (!isset($subject) && !isset($comment)) {
-		pnSessionSetVar('errormsg', _MODARGSERROR);
-		return;
-	}
+    if (!isset($subject) && !isset($comment)) {
+        pnSessionSetVar('errormsg', _MODARGSERROR);
+        return;
+    }
 
-	// check we should moderate the comments
-	if (pnModGetVar('EZComments', 'moderation')) {
-		// check if we should moderate all comments
-		if (pnModGetVar('EZComments', 'alwaysmoderate')) {
-			return 1;
-		} else {
-			// check for open proxies
-			// credit to wordpress for this logic function wp_proxy_check()
-			$ipnum = pnServerGetVar('REMOTE_ADDR');
-			if (pnModGetVar('EZComments', 'proxyblacklist') && isset($ipnum) ) {
-				$rev_ip = implode( '.', array_reverse( explode( '.', $ipnum ) ) );
-				// opm.blitzed.org is appended to use thier proxy lookup service
-				// results of gethostbyname are cached
-				$lookup = $rev_ip . '.opm.blitzed.org';
-				if ($lookup != gethostbyname($lookup)) {
-					return 2;
-				}
-			}
+    // check we should moderate the comments
+    if (!pnModGetVar('EZComments', 'moderation')) {
+        return 0;
+    }
+    
+    // check if we should moderate all comments
+    if (pnModGetVar('EZComments', 'alwaysmoderate')) {
+        return 1;
+    } 
 
-			// check blacklisted words - exit silently if found
-			$blacklistedwords = explode("\n", pnModGetVar('EZComments', 'blacklist'));
-			foreach($blacklistedwords as $blacklistedword) {
-				$blacklistedword = trim($blacklistedword);
-				if (empty($blacklistedword)) continue;
-				if (stristr($comment, $blacklistedword)) return 2;
-				if (stristr($subject, $blacklistedword)) return 2;
-			}
+    // check blacklisted words - exit silently if found
+    $blacklistedwords = explode("\n", pnModGetVar('EZComments', 'blacklist'));
+    foreach($blacklistedwords as $blacklistedword) {
+        $blacklistedword = trim($blacklistedword);
+        if (empty($blacklistedword)) continue;
+        if (stristr($comment, $blacklistedword)) return 2;
+        if (stristr($subject, $blacklistedword)) return 2;
+    }
 
-			// check words to trigger a moderated comment
-			$modlistedwords = explode("\n", pnModGetVar('EZComments', 'modlist'));
-			foreach($modlistedwords as $modlistedword) {
-				$modlistedword = trim($modlistedword);
-				if (empty($modlistedword)) continue;
-				if (stristr($comment, $modlistedword)) return 1;
-				if (stristr($subject, $modlistedword)) return 1;
-			}
+    // check words to trigger a moderated comment
+    $modlistedwords = explode("\n", pnModGetVar('EZComments', 'modlist'));
+    foreach($modlistedwords as $modlistedword) {
+        $modlistedword = trim($modlistedword);
+        if (empty($modlistedword)) continue;
+        if (stristr($comment, $modlistedword)) return 1;
+        if (stristr($subject, $modlistedword)) return 1;
+    }
 
-			// check link count
-			if (count(explode('http:', $comment))-1 >= pnModGetVar('EZComments', 'modlinkcount')) return 1;
-		}
-	}
+    // check link count
+    if (count(explode('http:', $comment))-1 >= pnModGetVar('EZComments', 'modlinkcount')) return 1;
+    
+    // check for open proxies
+    // credit to wordpress for this logic function wp_proxy_check()
+    $ipnum = pnServerGetVar('REMOTE_ADDR');
+    if (pnModGetVar('EZComments', 'proxyblacklist') && !empty($ipnum) ) {
+        $rev_ip = implode( '.', array_reverse( explode( '.', $ipnum ) ) );
+        // opm.blitzed.org is appended to use thier proxy lookup service
+        // results of gethostbyname are cached
+        $lookup = $rev_ip . '.opm.blitzed.org';
+        if ($lookup != gethostbyname($lookup)) {
+            return 2;
+        }
+    }
 
-	return 0;
-	
+    return 0;
 }
 
 ?>
