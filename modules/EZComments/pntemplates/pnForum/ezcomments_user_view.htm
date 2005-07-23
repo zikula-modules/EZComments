@@ -25,7 +25,9 @@
 <!--[* Here we show the given comments *]-->
 
 <!--[if $comments eq true or $allowadd eq true]-->
-  <!--[include file="ezcomments_user_header.htm"]-->
+  <h3><!--[pnml name="_EZCOMMENTS"]--></h3>
+  <em style="color:red"><!--[pngetstatusmsg]--></em>
+  <br />  
 <!--[/if]-->
 
 <!--[if !$allowadd]-->
