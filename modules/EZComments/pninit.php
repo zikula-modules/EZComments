@@ -101,15 +101,15 @@ function EZComments_init()
         pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED2);
     }    
 
-    pnModSetVar('EZComments', 'MailToAdmin', false);
-    pnModSetVar('EZComments', 'migrated', serialize(array()));
-    pnModSetVar('EZComments', 'template', 'AllOnOnePage');
-    pnModSetVar('EZComments', 'itemsperpage', 25);
-    pnModSetVar('EZComments', 'anonusersinfo', false);
-    pnModSetVar('EZComments', 'moderation', 0);
+    pnModSetVar('EZComments', 'MailToAdmin',    false);
+    pnModSetVar('EZComments', 'migrated',       serialize(array('dummy')));
+    pnModSetVar('EZComments', 'template',       'Plain');
+    pnModSetVar('EZComments', 'itemsperpage',   25);
+    pnModSetVar('EZComments', 'anonusersinfo',  false);
+    pnModSetVar('EZComments', 'moderation',     0);
     pnModSetVar('EZComments', 'moderationlist', '');
-    pnModSetVar('EZComments', 'blacklist', '');
-    pnModSetVar('EZComments', 'modlinkcount', 2);
+    pnModSetVar('EZComments', 'blacklist',      '');
+    pnModSetVar('EZComments', 'modlinkcount',   2);
     pnModSetVar('EZComments', 'moderationmail', false);
     pnModSetVar('EZComments', 'alwaysmoderate', false);
     pnModSetVar('EZComments', 'proxyblacklist', false);
