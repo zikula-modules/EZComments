@@ -56,9 +56,9 @@
       </td>
       <td>
         <!--[if $comments[comments].subject neq '']-->
-          <strong><!--[pnml name=_EZCOMMENTS_SUBJECT]-->:</strong>&nbsp;<!--[$comments[comments].subject|pnvarprepfordisplay]-->
+          <span style="float:left;"><strong><!--[pnml name=_EZCOMMENTS_SUBJECT]-->:</strong>&nbsp;<!--[$comments[comments].subject|pnvarprepfordisplay]--></span>
         <!--[/if]-->
-        <strong><!--[pnml name='_EZCOMMENTS_POSTED']-->:</strong>&nbsp;<!--[$comments[comments].date|pndate_format:"%d.%m.%y, %H:%M"]-->
+          <span style="float:right;"><strong><!--[pnml name='_EZCOMMENTS_POSTED']-->:</strong>&nbsp;<!--[$comments[comments].date|pndate_format:"datetimebrief"]--></span>
       </td>
     </tr>
         <tr style="background-color:none;text-align:left;">
@@ -68,7 +68,11 @@
           <br />
           <br />
           <div style="border-top-style: solid; border-top-width: 1px;">
-          <!--[pnml name='_EZCOMMENTS_REG_SINCE']-->:&nbsp;<!--[$comments[comments].pn_user_regdate|date_format:"%b. %Y"|pnvarprepfordisplay]-->
+          <!--[if $comments[comments].uname != "" ]-->
+              <!--[pnml name='_EZCOMMENTS_REG_SINCE']-->:&nbsp;<!--[$comments[comments].pn_user_regdate|date_format:"%b. %Y"|pnvarprepfordisplay]-->
+          <!--[else]--> 
+              <!--[pnml name='_EZCOMMENTS_NOTREG']-->   
+          <!--[/if]-->
           <!--[if $comments[comments].pn_user_from != ""]-->
             <br /><!--[pnml name='_EZCOMMENTS_FROM']-->:&nbsp;<!--[$comments[comments].pn_user_from|pnvarprepfordisplay]-->
           <!--[/if]-->
@@ -94,10 +98,10 @@
           <a title="<!--[pnml name='_EZCOMMENTS_TOP']-->" href="#top"><!--[pnimg src="go_up.gif" alt="_EZCOMMENTS_TOP" altml=true]--></a>&nbsp;   
         </td>
         <td headers="col_1" style="background-color:<!--[pnthemegetvar name=bgcolor3]-->;">
-          <!--[if $comments[comments].uid neq 1]-->
+         <!--[if $comments[comments].uname != ""]-->
             <a title="<!--[pnml name='_EZCOMMENTS_PROFILE']-->: <!--[$comments[comments].uname]-->" href="user.php?op=userinfo&amp;uname=<!--[$comments[comments].uname]-->"><!--[pnimg src="profile.gif" alt=$comments[comments].uname]--></a>
             <a title="<!--[pnml name='_EZCOMMENTS_SEND_PM']-->" href="index.php?name=Messages&amp;file=replypmsg&amp;send=1&amp;uname=<!--[$comments[comments].uname]-->"><!--[pnimg src="sendpm.gif" alt='_EZCOMMENTS_SEND_PM' altml=true]--></a>
-          <!--[/if]-->
+         <!--[/if]--> 
         </td>
       </tr>
       <tr>

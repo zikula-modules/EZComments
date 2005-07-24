@@ -69,6 +69,7 @@ define('_EZCOMMENTS_MAILBODY',  		'A new comment was entered');
 
 define('_EZCOMMENTS_POSTED',  			'posted'); 
 define('_EZCOMMENTS_REG_SINCE',  		'registered'); 
+define('_EZCOMMENTS_NOTREG',  		  'not registered'); 
 define('_EZCOMMENTS_STATUS',  			'Status'); 
 define('_EZCOMMENTS_OFFLINE',  			'Offline'); 
 define('_EZCOMMENTS_ONLINE',  			'Online'); 
