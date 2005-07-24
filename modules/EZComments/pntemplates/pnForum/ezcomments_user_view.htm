@@ -21,7 +21,7 @@
 <!--[* Show the comments in a look like pnForum does.                         *]-->
 <!--[* This is a tabular layout with author information in the left column.   *]-->
 <!--[* ---------------------------------------------------------------------- *]-->
-
+<!--[ additional_header ]-->
 <!--[* Here we show the given comments *]-->
 
 <!--[if $comments eq true or $allowadd eq true]-->
@@ -156,13 +156,13 @@
           <div>
             <label for="message"><!--[pnml name=_EZCOMMENTS_COMMENT]--></label>
             <br />
-            <textarea name="EZComments_comment" id="message" cols="60" rows="10"></textarea>
+            <textarea name="EZComments_comment" id="message" cols="35" rows="10"></textarea>
           </div>
           <input type="submit" value="<!--[pnml name=_EZCOMMENTS_ADD]-->" />
         </div>
         </form>
         <!--[if $bbcode]-->
-          <!--[pnmodfunc modname=pn_bbcode func=bbcodes images=true]-->
+          <!--[ pnmodfunc modname=pn_bbcode type=user func=bbcodes textfieldid=message images=1 ]-->
         <!--[/if]-->
         <!--[if $smilies]-->
           <!--[pnmodfunc modname=pn_bbsmile func=bbsmiles]-->
