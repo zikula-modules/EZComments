@@ -297,7 +297,7 @@ function EZComments_userapi_create($args)
     // set an approriate status/errormsg
     switch ($status) {
         case '0' :
-            pnSessionSetVar('statusmsg', _EZCCOMMENTSCREATED);
+            pnSessionSetVar('statusmsg', _EZCOMMENTS_CREATED);
             break;
         case '1' :
             pnSessionSetVar('statusmsg', _EZCOMMENTS_HELDFORMODERATION);
