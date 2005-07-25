@@ -456,11 +456,17 @@ function EZComments_userapi_count($args)
 } 
 
 /**
- * utility function to count the number of items held by this module
+ * Utility function to count the number of items held by this module
  * 
- * @return   integer   number of items held by this module
+ * Credits to Lee Eason from http://pnflashgames.com for giving the idea
+ * to allow a module to find the number of comments that have been added 
+ * to the module as a whole or to an individual item.
+ * 
+ * @param     $args['modname']  name of the module to get the number of comments for
+ * @param     $args['objectid'] the objectid to get the number of comments for
+ * @return    integer   number of items held by this module
  */
-function EZComments_userapi_countitems()
+function EZComments_userapi_countitems($args)
 {
     if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_OVERVIEW)) {
         return false;
@@ -470,9 +476,23 @@ function EZComments_userapi_countitems()
     $dbconn =& pnDBGetConn(true);
     $pntable =& pnDBGetTables();
 
-    $EZCommentstable = $pntable['EZComments'];
+    $EZCommentstable =& $pntable['EZComments'];
+    $EZCommentscolumn =& $pntable['EZComments_column']; 
+    
     $sql = "SELECT COUNT(1)
             FROM $EZCommentstable";
+
+    if (isset($args['modname'])) {
+        // Count comments for a specific module
+        $modname = pnVarPrepForStore($args['modname']);
+        $sql .= " WHERE $EZCommentscolumn[modname]='$modname'";
+        if (isset($args['objectid'])) {
+            // Count comments for a specific item in a specific mod
+            $objectid = pnVarPrepForStore($args['objectid']);
+            $sql .= " AND $EZCommentscolumn[objectid]='$objectid'";
+        } 
+    } 
+
     $result =& $dbconn->Execute($sql);
 
     if ($dbconn->ErrorNo() != 0) {
