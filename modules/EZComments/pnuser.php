@@ -315,7 +315,7 @@ function EZComments_prepareCommentsForDisplay($items)
         if ($item['uid'] > 0) {
             // get the user vars and merge into the comment array
             $userinfo = pnUserGetVars($item['uid']);
-            $comment  = array_merge ($comment, $userinfo);
+            $comment  = array_merge ($userinfo, $comment);
 
             // work out if the user is online
             $comment['online'] = false;
