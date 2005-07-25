@@ -68,7 +68,6 @@ function EZComments_userapi_getall($args)
         if (!pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:", ACCESS_READ)) {
             return $items;
         } 
-        list($querymodname, $queryobjectid) = pnVarPrepForStore($modname, $objectid);
     } else {
         if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_OVERVIEW)) {
             return $items;
@@ -84,9 +83,13 @@ function EZComments_userapi_getall($args)
     
     // form where clause
     $whereclause = array();
-    if (isset($modname) && isset($objectid)) {
+    if (isset($modname)) {
+        $querymodname = pnVarPrepForStore($modname);
         $whereclause[] = "$EZCommentscolumn[modname] = '$querymodname'";
-        $whereclause[] = "$EZCommentscolumn[objectid] = '$queryobjectid'";
+        if (isset($objectid)) {
+            $queryobjectid = pnVarPrepForStore($objectid);
+            $whereclause[] = "$EZCommentscolumn[objectid] = '$queryobjectid'";
+        }
     }
     if ($status != -1) {
         $whereclause[] = "$EZCommentscolumn[status] = '$status'";
