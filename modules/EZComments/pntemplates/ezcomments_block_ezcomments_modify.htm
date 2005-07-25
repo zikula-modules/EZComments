@@ -1,44 +1,55 @@
 <tr>
-	<td>
-    	<label for="ezcomments_numentries"><!--[pnml name="_EZCOMMENTSNUMENTRIES"]--></label>
-	</td>
-	<td>
-    	<input id="ezcomments_numentries" type="text" name="numentries" value="<!--[$numentries|pnvarprephtmldisplay]-->" size="5" maxlength="5" />
-	</td>
+  <td>
+    <label for="ezcomments_numentries"><!--[pnml name="_EZCOMMENTS_NUMENTRIES"]--></label>
+  </td>
+  <td>
+    <input id="ezcomments_numentries" type="text" name="numentries" value="<!--[$numentries|pnvarprephtmldisplay]-->" size="5" maxlength="5" />
+  </td>
 </tr>
 <tr>
-	<td>
-    	<label for="ezcomments_showusername"><!--[pnml name="_EZCOMMENTSSHOWUSERNAME"]--></label>
-	</td>
-	<td>
-		<!--[if $showusername]-->
-    		<input id="ezcomments_showusername" type="checkbox" name="showusername" value="1" checked="checked" />
-		<!--[else]-->
-	    	<input id="ezcomments_showusername" type="checkbox" name="showusername" value="1" />
-		<!--[/if]-->
-	</td>
+  <td>
+    <label for="ezcomments_module"><!--[pnml name="_EZCOMMENTS_MODULE"]--></label>
+  </td>
+  <td>
+    <select id="ezcomments_modname" name="modname">
+    <option label="*" value="*" <!--[if $modname eq "*"]-->selected="selected"<!--[/if]-->><!--[pnml name="_EZCOMMENTS_ALLMODULES"]--></option>
+    <!--[html_options values=$usermods output=$usermods selected=$modname]-->
+    </select>
+  </td>
 </tr>
 <tr>
-	<td>
-    	<label for="ezcomments_linkusername"><!--[pnml name="_EZCOMMENTSLINKUSERNAME"]--></label>
-	</td>
-	<td>
-		<!--[if $linkusername]-->
-    		<input id="ezcomments_linkusername" type="checkbox" name="linkusername" value="1" checked="checked" />
-		<!--[else]-->
-	    	<input id="ezcomments_linkusername" type="checkbox" name="linkusername" value="1" />
-		<!--[/if]-->
-	</td>
+  <td>
+    <label for="ezcomments_showusername"><!--[pnml name="_EZCOMMENTS_SHOWUSERNAME"]--></label>
+  </td>
+  <td>
+    <!--[if $showusername]-->
+      <input id="ezcomments_showusername" type="checkbox" name="showusername" value="1" checked="checked" />
+    <!--[else]-->
+      <input id="ezcomments_showusername" type="checkbox" name="showusername" value="1" />
+    <!--[/if]-->
+  </td>
 </tr>
 <tr>
-	<td>
-    	<label for="ezcomments_showdate"><!--[pnml name="_EZCOMMENTSSHOWDATE"]--></label>
-	</td>
-	<td>
-		<!--[if $showdate]-->
-    		<input id="ezcomments_showdate" type="checkbox" name="showdate" value="1" checked="checked" />
-		<!--[else]-->
-	    	<input id="ezcomments_showdate" type="checkbox" name="showdate" value="1" />
-		<!--[/if]-->
-	</td>
+  <td>
+    <label for="ezcomments_linkusername"><!--[pnml name="_EZCOMMENTS_LINKUSERNAME"]--></label>
+  </td>
+  <td>
+    <!--[if $linkusername]-->
+      <input id="ezcomments_linkusername" type="checkbox" name="linkusername" value="1" checked="checked" />
+    <!--[else]-->
+      <input id="ezcomments_linkusername" type="checkbox" name="linkusername" value="1" />
+    <!--[/if]-->
+  </td>
+</tr>
+<tr>
+  <td>
+    <label for="ezcomments_showdate"><!--[pnml name="_EZCOMMENTS_SHOWDATE"]--></label>
+  </td>
+  <td>
+    <!--[if $showdate]-->
+      <input id="ezcomments_showdate" type="checkbox" name="showdate" value="1" checked="checked" />
+    <!--[else]-->
+      <input id="ezcomments_showdate" type="checkbox" name="showdate" value="1" />
+    <!--[/if]-->
+  </td>
 </tr>

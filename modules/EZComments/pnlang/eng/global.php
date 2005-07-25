@@ -138,4 +138,12 @@ define('_EZCOMMENTS_PURGE', 'Purge comments');
 define('_EZCOMMENTS_PURGEPENDING', 'Purge all pending comments');
 define('_EZCOMMENTS_PURGEREJECTED', 'Purge all rejected comments');
 
+// Block
+define('_EZCOMMENTS_NUMENTRIES',          'Number of comments to display');
+define('_EZCOMMENTS_SHOWUSERNAME',        'Show username?');
+define('_EZCOMMENTS_LINKUSERNAME',        'Link username to profile?');
+define('_EZCOMMENTS_SHOWDATE',            'Show Date?');
+define('_EZCOMMENTS_MODULE',              'Show comments for the following module');
+define('_EZCOMMENTS_ALLMODULES',          'All');
+
 ?>

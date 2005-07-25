@@ -135,4 +135,12 @@ define('_EZCOMMENTS_PURGE',               'Kommentare entfernen');
 define('_EZCOMMENTS_PURGEPENDING',        'Alle noch nicht freigegebenen Kommentare entfernen');
 define('_EZCOMMENTS_PURGEREJECTED',       'Alle zurückgewiesenen Kommentare entfernen');
 
+// Block
+define('_EZCOMMENTS_NUMENTRIES',          'Anzahl der anzuzeigenden Kommentare');
+define('_EZCOMMENTS_SHOWUSERNAME',        'Benutzernamen anzeigen?');
+define('_EZCOMMENTS_LINKUSERNAME',        'Benutzername mit Link zum Profil versehen?');
+define('_EZCOMMENTS_SHOWDATE',            'Datum des Kommentars anzeigen?');
+define('_EZCOMMENTS_MODULE',              'Kommentare für das folgende Modul anzeigen');
+define('_EZCOMMENTS_ALLMODULES',          'Alle');
+
 ?>
