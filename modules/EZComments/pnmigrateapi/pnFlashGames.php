@@ -43,7 +43,7 @@
  * @return   boolean   true on sucessful migration, false else
  * @since    0.2
  */
-function EZComments_migrate()
+function EZComments_migrateapi_pnFlashGames()
 {
 	// Security check
 	if (!pnSecAuthAction(0, 'EZComments::', "::", ACCESS_ADMIN)) {
