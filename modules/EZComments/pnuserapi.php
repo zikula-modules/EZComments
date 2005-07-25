@@ -39,6 +39,7 @@
  * 
  * @param     $args['modname']   Name of the module to get comments for
  * @param     $args['objectid']  ID of the item to get comments for
+ * @param     $args['search']    an array with words to search for and a boolean 
  * @param     $args['startnum']  First comment
  * @param     $args['numitems']  number of comments
  * @param     $args['sortorder'] order to sort the comments
@@ -82,7 +83,7 @@ function EZComments_userapi_getall($args)
     $EZCommentscolumn = &$pntable['EZComments_column']; 
     
     // form where clause
-    $wherestring = '';
+    $whereclause = array();
     if (isset($modname) && isset($objectid)) {
         $whereclause[] = "$EZCommentscolumn[modname] = '$querymodname'";
         $whereclause[] = "$EZCommentscolumn[objectid] = '$queryobjectid'";
@@ -90,6 +91,21 @@ function EZComments_userapi_getall($args)
     if ($status != -1) {
         $whereclause[] = "$EZCommentscolumn[status] = '$status'";
     }
+    if (isset($search)) {
+        $where_array = array();
+        foreach($search['words'] as $word) {
+            $word = pnVarPrepForStore($word);
+            $where_array[] = "( $EZCommentscolumn[subject] LIKE '%$word%' 
+                             OR $EZCommentscolumn[comment] LIKE '%$word%' )";
+        }
+        if ($search['bool'] == 'AND') {
+            $andor = ' AND ';
+        } else {
+            $andor = ' OR ';
+        }
+        $whereclause[] = implode($andor, $where_array);
+    }
+
     $wherestring = '';
     if (!empty($whereclause)) {
         $wherestring = 'WHERE ' . implode(' AND ', $whereclause);
@@ -118,7 +134,7 @@ function EZComments_userapi_getall($args)
                    $EZCommentscolumn[comment],
                    $EZCommentscolumn[subject],
                    $EZCommentscolumn[replyto],
-                     $EZCommentscolumn[anonname],
+                   $EZCommentscolumn[anonname],
                    $EZCommentscolumn[anonmail],
                    $EZCommentscolumn[status]
             FROM $EZCommentstable
