@@ -38,7 +38,7 @@ define('_EZCOMMENTS_ADMIN',                 'EZComments Administration');
 define('_EZCOMMENTS_ADMIN_MAIN',            'Main EZComments Administration');
 define('_EZCOMMENTS_SENDINFOMAIL',          'Send mail on new comment');
 define('_EZCOMMENTS_OK',                    'Accept');
-define('_EZCOMMENTS_LASTCOMMENTS',          'The last comments');
+define('_EZCOMMENTS_LASTCOMMENTS',          'The last %c% comments');
 define('_EZCOMMENTS_USERNAME',              'User');
 define('_EZCOMMENTS_MODULE',                'Module');
 define('_EZCOMMENTS_TEMPLATE',              'Default template');
