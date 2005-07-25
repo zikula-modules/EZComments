@@ -75,6 +75,10 @@ function EZComments_EZCommentsblock_display($blockinfo)
         return false;
     } 
 
+    if (!pnModLoad('EZComments')) {
+        return false;
+    }
+    
     // Get variables from content block
     $vars = pnBlockVarsFromContent($blockinfo['content']);
     extract($vars);
@@ -92,71 +96,16 @@ function EZComments_EZCommentsblock_display($blockinfo)
         $linkusername = 0;
     } 
 
-    // load up the db info
-    pnModDBInfoLoad('EZComments'); 
-
-    // Get datbase setup
-    $dbconn = &pnDBGetConn(true);
-    $pntable = &pnDBGetTables();
-
-    $EZCommentstable = $pntable['EZComments'];
-    $EZCommentscolumn = &$pntable['EZComments_column'];
-    $userstable = $pntable['users'];
-    $userscolumn = &$pntable['users_column']; 
-
-    // query the database
-    $sql = "SELECT  $EZCommentscolumn[id],
-                    $EZCommentscolumn[url],
-                    $EZCommentscolumn[date],
-                    $EZCommentscolumn[uid],
-                    $EZCommentscolumn[subject],
-                    $EZCommentscolumn[comment],
-                    $userscolumn[uid],
-                    $userscolumn[uname]
-            FROM $EZCommentstable , $userstable
-            WHERE $EZCommentscolumn[uid] = $userscolumn[uid]
-            ORDER BY $EZCommentscolumn[date] DESC
-            LIMIT $numentries";
-    $result = $dbconn->Execute($sql); 
-
-    // saftey checks.
-    if ($dbconn->ErrorNo() != 0) {
-        return false;
-    } 
-    if ($result->EOF) {
-        return false;
-    } 
-
-    // create the output object
+    // get the comments
+    $items = pnModAPIFunc('EZComments', 
+                          'user', 
+                          'getall', 
+                          array('numitems'   => $numentries));
+    // augment the info
+    $comments = EZComments_prepareCommentsForDisplay($items);
+    
     $pnRender = &new pnRender('EZComments'); 
-
-    // assign all the block vars
     $pnRender->assign($vars);
-
-    $comments = array();
-    for (; !$result->EOF; $result->MoveNext()) {
-        if (pnSecAuthAction(0, 'EZComments::', "::$id", ACCESS_READ)) {
-            list($id,
-                 $url,
-                 $date,
-                 $uid,
-                 $subject,
-                 $comment,
-                 $pn_uid,
-                 $uname) = $result->fields;
- 
-            $comments[] = array('id'      => $id,
-                                'url'     => $url,
-                                'date'    => $date,
-                                'uid'     => $uid,
-                                'subject' => $subject,
-                                'comment' => $comment,
-                                'pn_uid'  => $pn_uid,
-                                'uname'   => $uname);
-        } 
-    } 
-    $result->Close();
-
     $pnRender->assign('comments', $comments); 
 
     // Populate block info and pass to theme
