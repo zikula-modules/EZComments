@@ -71,7 +71,7 @@ function EZComments_init()
     // register Hook
     if (!pnModRegisterHook('item',
                            'display',
-                             'GUI',
+                           'GUI',
                            'EZComments',
                            'user',
                            'view')) {
