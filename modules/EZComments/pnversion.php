@@ -23,7 +23,7 @@
  * @author      Joerg Napp <jnapp@users.sourceforge.net>
  * @author      Mark West <markwest at postnuke dot com>
  * @author      Jean-Michel Vedrine
- * @version     0.8
+ * @version     0.9
  * @link        http://noc.postnuke.com/projects/ezcomments/ Support and documentation
  * @license     http://www.gnu.org/copyleft/gpl.html GNU General Public License
  * @package     Postnuke
@@ -32,7 +32,7 @@
 
 // Information for the modules admin
 $modversion['name']        = 'EZComments';
-$modversion['version']     = '0.8';
+$modversion['version']     = '0.9';
 $modversion['description'] = 'Attach comments to pages using hooks';
 
 // I suspect these are not respected as the should

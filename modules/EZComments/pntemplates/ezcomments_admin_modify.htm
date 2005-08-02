@@ -6,6 +6,15 @@
 	<input type="hidden" name="authid" value="<!--[pnsecgenauthkey module="EZComments"]-->" />
 	<input type="hidden" name="id" value="<!--[$id|pnvarprepfordisplay]-->" />
 	<div class="pn-adminformrow">
+		<label for="ezcomments_name"><!--[pnml name="_EZCOMMENTS_USERNAME"]--></label>
+		<span><!--[pnusergetvar name=uname uid=$uid]--></span>
+	</div>
+	<div class="pn-adminformrow">
+		<label for="ezcomments_name"><!--[pnml name="_EZCOMMENTS_IPADDR"]--></label>
+		<!--[pnml name=_EZCOMMENTS_IPADDRNOTLOGGED assign=notloggedstring]-->
+		<span><!--[$ipaddr|default:$notloggedstring|pnvarprepfordisplay]--></span>
+	</div>
+	<div class="pn-adminformrow">
 		<label for="ezcomments_name"><!--[pnml name="_EZCOMMENTS_SUBJECT"]--></label>
 		<input id="ezcomments_name" name="subject" type="text" size="32" maxlength="32" value="<!--[$subject|pnvarprepfordisplay]-->" />
 	</div>

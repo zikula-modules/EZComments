@@ -145,4 +145,9 @@ define('_EZCOMMENTS_SHOWDATE',              'Show Date?');
 define('_EZCOMMENTS_SELECT_MODULE',         'Show comments for the following module');
 define('_EZCOMMENTS_ALLMODULES',            'All');
 
+// ip address logging
+define('_EZCOMMENTS_IPADDR',                'IP address');
+define('_EZCOMMENTS_LOGIPADDR',              'Log IP addresses');
+define('_EZCOMMENTS_IPADDRNOTLOGGED',       'IP address not logged');
+
 ?>

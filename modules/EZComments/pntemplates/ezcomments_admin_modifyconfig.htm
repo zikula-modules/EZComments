@@ -20,6 +20,14 @@
 			<input id="ezcomments_anonusersinfo" name="anonusersinfo" type="checkbox" value="1" />
 			<!--[/if]-->
 		</div>
+		<div class="pn-adminformrow">
+			<label for="ezcomments_logip"><!--[pnml name="_EZCOMMENTS_LOGIPADDR"]--></label>
+			<!--[if $logip eq 1]-->
+			<input id="ezcomments_logip" name="logip" type="checkbox" value="1" checked="checked" />
+			<!--[else]-->
+			<input id="ezcomments_logip" name="logip" type="checkbox" value="1" />
+			<!--[/if]-->
+		</div>
 	</fieldset>
 	<fieldset>
 		<legend><!--[pnml name=_EZCOMMENTS_NOTIFICATIONSETTINGS]--></legend>

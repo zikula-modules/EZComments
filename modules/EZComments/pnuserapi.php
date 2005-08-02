@@ -23,7 +23,7 @@
  * @author      Joerg Napp <jnapp@users.sourceforge.net>
  * @author      Mark West <markwest at postnuke dot com>
  * @author      Jean-Michel Vedrine
- * @version     0.8
+ * @version     0.9
  * @link        http://noc.postnuke.com/projects/ezcomments/ Support and documentation
  * @license     http://www.gnu.org/copyleft/gpl.html GNU General Public License
  * @package     Postnuke
@@ -139,7 +139,8 @@ function EZComments_userapi_getall($args)
                    $EZCommentscolumn[replyto],
                    $EZCommentscolumn[anonname],
                    $EZCommentscolumn[anonmail],
-                   $EZCommentscolumn[status]
+                   $EZCommentscolumn[status],
+                   $EZCommentscolumn[ipaddr]
             FROM $EZCommentstable
             $wherestring $orderstring $orderby";
     $result = $dbconn->SelectLimit($sql, $numitems, $startnum-1);            
@@ -155,7 +156,7 @@ function EZComments_userapi_getall($args)
     // individually to ensure that the user is allowed access to it before it
     // is added to the results array
     for (; !$result->EOF; $result->MoveNext()) {
-        list($id, $modname, $objectid, $url, $date, $uid, $comment, $subject, $replyto, $anonname, $anonmail, $status) = $result->fields;
+        list($id, $modname, $objectid, $url, $date, $uid, $comment, $subject, $replyto, $anonname, $anonmail, $status, $ipaddr) = $result->fields;
         if (pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:$id", ACCESS_READ)) {
             if ($uid == 1 && empty($anonname)) {
                 $anonname = pnConfigGetVar('anonymous');
@@ -171,7 +172,8 @@ function EZComments_userapi_getall($args)
                                'replyto',
                                'anonname',
                                'anonmail',
-                               'status');
+                               'status',
+							   'ipaddr');
         } 
     } 
     $result->Close();
@@ -215,7 +217,13 @@ function EZComments_userapi_create($args)
     } else {
         $date= "'" . pnVarPrepForStore($date) . "'";
     }
-    
+
+	// get the users ip
+	$ipaddr = '';
+	if (pnModGetVar('EZComments', 'logip')) {
+		$ipaddr = pnServerGetVar('REMOTE_ADDR');
+	}
+
     // Security check
     if (!pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:", ACCESS_COMMENT)) {
         pnSessionSetVar('errormsg', _EZCOMMENTS_NOAUTH);
@@ -248,7 +256,8 @@ function EZComments_userapi_create($args)
          $replyto,
          $anonname,
          $anonmail,
-         $status  ) = pnVarPrepForStore($modname, 
+         $status,
+		 $ipaddr  ) = pnVarPrepForStore($modname, 
                                         $objectid, 
                                         $url,
                                         $uid,
@@ -257,7 +266,8 @@ function EZComments_userapi_create($args)
                                         $replyto,
                                         $anonname,
                                         $anonmail,
-                                        $status); 
+                                        $status,
+										$ipaddr);
                                        
     // Add item
     $sql = "INSERT INTO $EZCommentstable (
@@ -272,7 +282,8 @@ function EZComments_userapi_create($args)
               $EZCommentscolumn[replyto],
               $EZCommentscolumn[anonname],
               $EZCommentscolumn[anonmail],
-              $EZCommentscolumn[status])
+              $EZCommentscolumn[status],
+			  $EZCommentscolumn[ipaddr])
             VALUES (
               '$nextId',
               '$modname',
@@ -285,7 +296,8 @@ function EZComments_userapi_create($args)
               '$replyto',
               '$anonname',
               '$anonmail',
-              '$status')";
+              '$status',
+			  '$ipaddr')";
     $dbconn->Execute($sql); 
 
     // Check for an error with the database code
@@ -372,9 +384,10 @@ function EZComments_userapi_get($args)
                    $EZCommentscolumn[comment],
                    $EZCommentscolumn[subject],
                    $EZCommentscolumn[replyto],
-                     $EZCommentscolumn[anonname],
+                   $EZCommentscolumn[anonname],
                    $EZCommentscolumn[anonmail],
-                   $EZCommentscolumn[status]
+                   $EZCommentscolumn[status],
+                   $EZCommentscolumn[ipaddr]
             FROM $EZCommentstable
             WHERE $EZCommentscolumn[id] = '$id'";
     $result =& $dbconn->Execute($sql); 
@@ -402,7 +415,8 @@ function EZComments_userapi_get($args)
          $replyto,
          $anonname,
          $anonmail,
-         $status) = $result->fields;
+         $status,
+		 $ipaddr) = $result->fields;
     if (!pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:$id", ACCESS_READ)) {
         return false;
     } 
@@ -419,7 +433,8 @@ function EZComments_userapi_get($args)
                    'replyto',
                    'anonname',
                    'anonmail',
-                   'status');
+                   'status',
+				   'ipaddr');
 } 
 
 

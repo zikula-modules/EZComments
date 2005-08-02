@@ -23,7 +23,7 @@
  * @author      Joerg Napp <jnapp@users.sourceforge.net>
  * @author      Mark West <markwest at postnuke dot com>
  * @author      Jean-Michel Vedrine
- * @version     0.8
+ * @version     0.9
  * @link        http://noc.postnuke.com/projects/ezcomments/ Support and documentation
  * @license     http://www.gnu.org/copyleft/gpl.html GNU General Public License
  * @package     Postnuke
@@ -433,6 +433,7 @@ function EZComments_admin_modifyconfig()
  * @param        modlist list of words to trigger moderation
  * @param        blacklist list of words to trigger rejection of comment
  * @param        alwaymoderate flag to require all comments are moderated
+ * @param        logip flag to control logging of ip addresses
  */
 function EZComments_admin_updateconfig($args)
 {
@@ -443,9 +444,9 @@ function EZComments_admin_updateconfig($args)
     } 
 
     list($MailToAdmin, $moderationmail, $template, $itemsperpage, $anonusersinfo, $moderation, 
-         $modlinkcount, $modlist, $blacklist, $alwaysmoderate, $proxyblacklist) =
+         $modlinkcount, $modlist, $blacklist, $alwaysmoderate, $proxyblacklist, $logip) =
         pnVarCleanFromInput('MailToAdmin', 'moderationmail', 'template', 'itemsperpage', 'anonusersinfo', 'moderation', 
-                            'modlinkcount', 'modlist', 'blacklist', 'alwaysmoderate', 'proxyblacklist');
+                            'modlinkcount', 'modlist', 'blacklist', 'alwaysmoderate', 'proxyblacklist', 'logip');
     extract($args);
 
     if (!isset($MailToAdmin)) {
@@ -502,6 +503,11 @@ function EZComments_admin_updateconfig($args)
         $proxyblacklist = 0;
     }
     pnModSetVar('EZComments', 'proxyblacklist', $proxyblacklist);
+
+    if (!isset($logip)) {
+        $logip = 0;
+    }
+    pnModSetVar('EZComments', 'logip', $logip);
 
     pnSessionSetVar('statusmsg', _CONFIGUPDATED);
     pnRedirect(pnModURL('EZComments', 'admin', 'main'));
