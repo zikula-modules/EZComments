@@ -2,6 +2,9 @@ $Id$
 
 
 Changelog
+0.9  - Added optional logging of IP address for comments
+     - Added additional moderation option; moderate comments except where someone has commented before
+     - Added comment statistics
 
 0.8  - Added comment moderation features (blacklists, moderation lists, link count, insecure proxies)
      - Added admin notification on comment requiring moderation
