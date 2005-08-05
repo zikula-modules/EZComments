@@ -1,0 +1,34 @@
+<!--[*  $Id$  *]-->
+<!--[include file="ezcomments_admin_menu.htm"]-->
+<h2><!--[pnml name=_EZCOMMENTS_STATS]--></h2>
+<form id="ezcomments_view" action="<!--[pnmodurl modname=EZComments type=admin func=processselected]-->" method="post">
+<div>
+<input type="hidden" name="authid" value="<!--[pnsecgenauthkey modname=EZComments]-->" />
+<table class="pn-admintable">
+	<tr>
+		<th><!--[pnml name=_EZCOMMENTS_MODULE]--></th>
+		<th><!--[pnml name=_EZCOMMENTS_TOTAL]--></th>
+		<th><!--[pnml name=_EZCOMMENTS_APPROVED]--></th>
+		<th><!--[pnml name=_EZCOMMENTS_REJECTED]--></th>
+		<th><!--[pnml name=_EZCOMMENTS_PENDING]--></th>
+		<th><!--[pnml name=_OPTIONS]--></th>
+	</tr>
+	<!--[foreach from=$commentstats item=commentstat]-->
+		<tr class="<!--[cycle values=pn-odd,pn-even]-->">
+			<td><!--[$commentstat.name|pnvarprepfordisplay]--></td>
+			<td><!--[$commentstat.totalcomments|pnvarprepfordisplay]--></td>
+			<td><!--[$commentstat.approvedcomments|pnvarprepfordisplay]--></td>
+			<td><!--[$commentstat.pendingcomments|pnvarprepfordisplay]--></td>
+			<td><!--[$commentstat.rejectedcomments|pnvarprepfordisplay]--></td>
+			<td>
+				<!--[assign var="options" value=$item.options]-->
+				<!--[strip]-->
+				[<!--[section name=options loop=$options]-->
+					<a href="<!--[$options[options].url|pnvarprepfordisplay]-->"><!--[pnml name=$options[options].title]--></a> 
+					<!--[if !$smarty.section.options.last]--> | <!--[/if]-->
+				<!--[/section]-->]
+				<!--[/strip]-->
+			</td>
+		</tr>
+	<!--[/foreach]-->
+</table>

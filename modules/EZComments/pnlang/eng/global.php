@@ -156,5 +156,8 @@ define('_EZCOMMENTS_APPROVE',                'Approve');
 define('_EZCOMMENTS_REJECT',                 'Reject');
 define('_EZCOMMENTS_HOLD',                   'Hold');
 
+// comment stats
+define('_EZCOMMENTS_STATS',                  'Comment statistics');
+define('_EZCOMMENTS_TOTAL',                  'Total comments');
 
 ?>
