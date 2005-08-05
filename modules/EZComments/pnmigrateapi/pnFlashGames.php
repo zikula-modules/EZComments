@@ -129,5 +129,6 @@ function EZComments_migrateapi_pnFlashGames()
 	}
 	pnSessionSetVar('errormsg', 'pnFlashGames migration successful');
     return true;
-} 
+}
+
 ?>
