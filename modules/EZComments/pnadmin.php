@@ -443,9 +443,9 @@ function EZComments_admin_updateconfig($args)
         return true;
     } 
 
-    list($MailToAdmin, $moderationmail, $template, $itemsperpage, $anonusersinfo, $moderation, 
+    list($MailToAdmin, $moderationmail, $template, $itemsperpage, $anonusersinfo, $moderation, $dontmoderateifcommented,
          $modlinkcount, $modlist, $blacklist, $alwaysmoderate, $proxyblacklist, $logip) =
-        pnVarCleanFromInput('MailToAdmin', 'moderationmail', 'template', 'itemsperpage', 'anonusersinfo', 'moderation', 
+        pnVarCleanFromInput('MailToAdmin', 'moderationmail', 'template', 'itemsperpage', 'anonusersinfo', 'moderation', 'dontmoderateifcommented', 
                             'modlinkcount', 'modlist', 'blacklist', 'alwaysmoderate', 'proxyblacklist', 'logip');
     extract($args);
 
@@ -478,6 +478,11 @@ function EZComments_admin_updateconfig($args)
         $moderation = 0;
     }
     pnModSetVar('EZComments', 'moderation', $moderation);
+
+    if (!isset($dontmoderateifcommented)) {
+        $dontmoderateifcommented = 0;
+    }
+    pnModSetVar('EZComments', 'dontmoderateifcommented', $dontmoderateifcommented);
 
     if (!isset($modlinkcount)) {
         $modlinkcount = 2;

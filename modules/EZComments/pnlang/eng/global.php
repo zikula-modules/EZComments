@@ -103,19 +103,20 @@ define('_EZCOMMENTS_TOP',                   'Top');
 define('_EZCOMMENTS_BOTTOM',                'Bottom');
 
 // comment moderation
-define('_EZCOMMENTS_MODERERATE',            'Enable comment moderation');
-define('_EZCOMMENTS_MODLINKCOUNT',          'Number of links in comment before moderation');
-define('_EZCOMMENTS_MODLIST',               'Words to trigger moderation');
-define('_EZCOMMENTS_BLACKLIST',             'Words to blacklist from comments');
-define('_EZCOMMENTS_BLACKLISTNOTE',         'Note: Comments containing words listed here will be completely ignored by the comments module');
-define('_EZCOMMENTS_SEPERATELINE',          'Separate multiple words with new lines');
-define('_EZCOMMENTS_SENDINFOMAILMOD',       'Send mail on comment requiring moderation');
-define('_EZCOMMENTS_MODMAILSUBJECT',        'New comment for your site');
-define('_EZCOMMENTS_MODMAILBODY',           'A new comment was submitted to your site that requires moderation');
-define('_EZCOMMENTS_ALWAYSMODERERATE',      'All comments require moderation');
-define('_EZCOMMENTS_HELDFORMODERATION',     'Your comment was held for moderation and will be reviewed shortly');
-define('_EZCOMMENTS_COMMENTBLACKLISTED',    'Your comment contains unacceptable content and has been rejected');
-define('_EZCOMMENTS_PROXYBLACKLIST',        'Blacklist comments from insecure proxies');
+define('_EZCOMMENTS_MODERERATE',              'Enable comment moderation');
+define('_EZCOMMENTS_MODLINKCOUNT',            'Number of links in comment before moderation');
+define('_EZCOMMENTS_MODLIST',                 'Words to trigger moderation');
+define('_EZCOMMENTS_BLACKLIST',               'Words to blacklist from comments');
+define('_EZCOMMENTS_BLACKLISTNOTE',           'Note: Comments containing words listed here will be completely ignored by the comments module');
+define('_EZCOMMENTS_SEPERATELINE',            'Separate multiple words with new lines');
+define('_EZCOMMENTS_SENDINFOMAILMOD',         'Send mail on comment requiring moderation');
+define('_EZCOMMENTS_MODMAILSUBJECT',          'New comment for your site');
+define('_EZCOMMENTS_MODMAILBODY',             'A new comment was submitted to your site that requires moderation');
+define('_EZCOMMENTS_ALWAYSMODERERATE',        'All comments require moderation');
+define('_EZCOMMENTS_HELDFORMODERATION',       'Your comment was held for moderation and will be reviewed shortly');
+define('_EZCOMMENTS_COMMENTBLACKLISTED',      'Your comment contains unacceptable content and has been rejected');
+define('_EZCOMMENTS_PROXYBLACKLIST',          'Blacklist comments from insecure proxies');
+define('_EZCOMMENTS_DONTMODERATEIFCOMMENTED', 'Don\'t require moderation for comments from users who\'ve already commented');
 
 // comment statuses
 define('_EZCOMMENTS_APPROVED',              'Approved');

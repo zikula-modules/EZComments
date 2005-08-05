@@ -629,7 +629,47 @@ function _EZComments_userapi_checkcomment($args)
         }
     }
 
+	// check if the comment comes from user that we trust
+	// i.e. one who has an approved comment already
+	if (pnUserLoggedIn() && pnModGetVar('EZComments', 'dontmoderateifcommented')) {
+		$commentedlist = pnModAPIFunc('EZcomments', 'user', 'getcommentingusers');
+		if (is_array($commentedlist) && in_array(pnUserGetVar('uid'), $commentedlist)) {
+			return 0;
+		} else {
+			return 1;
+		}
+	}
     return 0;
+}
+
+/**
+ * get all users who have commented on the site so far
+ *
+ * @author Mark West
+ * @return array users who've commented so far
+ */
+function EZComments_userapi_getcommentingusers($args)
+{
+    extract($args);
+
+    $items = array(); 
+
+    // Security check
+	if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_OVERVIEW)) {
+		return $items;
+	}
+
+    // Get datbase setup
+    $dbconn =& pnDBGetConn(true);
+    $pntable =& pnDBGetTables();
+
+    $EZCommentstable = $pntable['EZComments'];
+    $EZCommentscolumn = &$pntable['EZComments_column']; 
+
+	// setup the query
+	$sql = "SELECT DISTINCT $EZCommentscolumn[uid] FROM $EZCommentstable WHERE $EZCommentscolumn[status] = 0";
+	$items = $dbconn->GetCol($sql);
+    return $items;
 }
 
 ?>

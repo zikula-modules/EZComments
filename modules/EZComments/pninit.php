@@ -115,6 +115,7 @@ function EZComments_init()
     pnModSetVar('EZComments', 'alwaysmoderate', false);
     pnModSetVar('EZComments', 'proxyblacklist', false);
 	pnModSetVar('EZComments', 'logip',          false);
+	pnModSetVar('EZComments', 'dontmoderateifcommented', false);
 
     // Initialisation successful
     return true;
@@ -272,6 +273,7 @@ function EZComments_upgrade($oldversion)
     }
 
     if ($oldversion == '0.8') {
+		pnModSetVar('EZComments', 'dontmoderateifcommented', false);
         pnModSetVar('EZComments', 'logip', false);
         // Add additional for unregistered users info
         $sql = "ALTER TABLE $EZCommentstable 

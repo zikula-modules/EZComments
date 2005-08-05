@@ -71,6 +71,14 @@
 			<!--[/if]-->
 		</div>
 		<div class="pn-adminformrow">
+			<label for="ezcomments_dontmoderateifcommented"><!--[pnml name="_EZCOMMENTS_DONTMODERATEIFCOMMENTED"]--></label>
+			<!--[if $dontmoderateifcommented eq 1]-->
+			<input id="ezcomments_dontmoderateifcommented" name="dontmoderateifcommented" type="checkbox" value="1" checked="checked" />
+			<!--[else]-->
+			<input id="ezcomments_dontmoderateifcommented" name="dontmoderateifcommented" type="checkbox" value="1" />
+			<!--[/if]-->
+		</div>
+		<div class="pn-adminformrow">
 			<label for="ezcomments_modlinkcount"><!--[pnml name="_EZCOMMENTS_MODLINKCOUNT"]--></label>
 			<input id="ezcomments_modlinkcount" name="modlinkcount" type="text" value="<!--[$modlinkcount|pnvarprepfordisplay]-->" />
 		</div>
