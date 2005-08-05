@@ -28,6 +28,10 @@
 			<input id="ezcomments_logip" name="logip" type="checkbox" value="1" />
 			<!--[/if]-->
 		</div>
+		<div class="pn-adminformrow">
+			<label for="ezcomments_itemsperpage"><!--[pnml name="_EZCOMMENTS_ITEMSPERPAGE"]--></label>
+			<input id="ezcomments_itemsperpage" name="itemsperpage" type="text" value="<!--[$itemsperpage|pnvarprepfordisplay]-->" />
+		</div>
 	</fieldset>
 	<fieldset>
 		<legend><!--[pnml name=_EZCOMMENTS_NOTIFICATIONSETTINGS]--></legend>
@@ -50,10 +54,6 @@
 	</fieldset>
 	<fieldset>
 		<legend><!--[pnml name=_EZCOMMENTS_MODERATIONSETTINGS]--></legend>
-		<div class="pn-adminformrow">
-			<label for="ezcomments_itemsperpage"><!--[pnml name="_EZCOMMENTS_ITEMSPERPAGE"]--></label>
-			<input id="ezcomments_itemsperpage" name="itemsperpage" type="text" value="<!--[$itemsperpage|pnvarprepfordisplay]-->" />
-		</div>
 		<div class="pn-adminformrow">
 			<label for="ezcomments_moderation"><!--[pnml name="_EZCOMMENTS_MODERERATE"]--></label>
 			<!--[if $moderation eq 1]-->
