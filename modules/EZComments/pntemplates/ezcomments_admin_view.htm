@@ -2,7 +2,7 @@
 <!--[include file="ezcomments_admin_menu.htm"]-->
 <!--[add_additional_header header='<script type="text/javascript" src="modules/EZComments/pnjavascript/toggle.js"></script>']-->
 <h2><!--[pnml name=_EZCOMMENTS_LASTCOMMENTS c=$itemsperpage]--></h2>
-<form id="ezcomments_view" action="<!--[pnmodurl modname=EZComments type=admin func=deleteselected]-->" method="post">
+<form id="ezcomments_view" action="<!--[pnmodurl modname=EZComments type=admin func=processselected]-->" method="post">
 <div>
 <input type="hidden" name="authid" value="<!--[pnsecgenauthkey modname=EZComments]-->" />
 <table class="pn-admintable">
@@ -16,7 +16,7 @@
 	</tr>
 	<!--[foreach from=$items item=item]-->
 		<tr class="<!--[cycle values=pn-odd,pn-even]-->">
-			<td><input type="checkbox" name="delComments[]" value="<!--[$item.id]-->" onclick="checkAllFields(2);" /></td>
+			<td><input type="checkbox" name="comments[]" value="<!--[$item.id]-->" onclick="checkAllFields(2);" /></td>
 			<td>
 				<!--[if $item.status eq 0]--><!--[pnimg src=green.gif]--><!--[/if]-->
 				<!--[if $item.status eq 1]--><!--[pnimg src=yellow.gif]--><!--[/if]-->
@@ -44,7 +44,14 @@
 		</tr>
 	<!--[/foreach]-->
 </table>
-<input type="submit" value="<!--[pnml name=_EZCOMMENTS_DELETESELECTED]-->" />
+<!--[pnml name=_EZCOMMENTSWITHSELECTED]-->
+<select name="action">
+<option value="delete"><!--[pnml name=_DELETE]--></option>
+<option value="approve"><!--[pnml name=_EZCOMMENTS_APPROVE]--></option>
+<option value="hold"><!--[pnml name=_EZCOMMENTS_HOLD]--></option>
+<option value="reject"><!--[pnml name=_EZCOMMENTS_REJECT]--></option>
+</select>
+<input type="submit" value="<!--[pnml name=_SUBMIT]-->" />
 </div>
 </form>
 <!--[pager show="page" rowcount=$pager.numitems limit=$pager.itemsperpage posvar=startnum shift=1]-->

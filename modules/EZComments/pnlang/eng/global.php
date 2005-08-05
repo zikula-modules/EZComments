@@ -42,7 +42,6 @@ define('_EZCOMMENTS_LASTCOMMENTS',          'The last %c% comments');
 define('_EZCOMMENTS_USERNAME',              'User');
 define('_EZCOMMENTS_MODULE',                'Module');
 define('_EZCOMMENTS_TEMPLATE',              'Default template');
-define('_EZCOMMENTS_DELETESELECTED',        'Delete selected comments');
 
 define('_EZCOMMENTS_CLEANUP_NOTHINGTODO',   'No orphaned comments');
 define('_EZCOMMENTS_CLEANUP_GOBACK',        'Back');
@@ -148,7 +147,14 @@ define('_EZCOMMENTS_ALLMODULES',            'All');
 
 // ip address logging
 define('_EZCOMMENTS_IPADDR',                'IP address');
-define('_EZCOMMENTS_LOGIPADDR',              'Log IP addresses');
+define('_EZCOMMENTS_LOGIPADDR',             'Log IP addresses');
 define('_EZCOMMENTS_IPADDRNOTLOGGED',       'IP address not logged');
+
+// multiple comment processing
+define('_EZCOMMENTSWITHSELECTED',            'With selected comments: ');
+define('_EZCOMMENTS_APPROVE',                'Approve');
+define('_EZCOMMENTS_REJECT',                 'Reject');
+define('_EZCOMMENTS_HOLD',                   'Hold');
+
 
 ?>

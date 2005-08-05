@@ -329,28 +329,21 @@ function EZComments_admin_delete($args)
 }
 
 /**
- * delete item
+ * process multiple comments
  *
- * This is a standard function that is called whenever an administrator
- * wishes to delete a current module item.  Note that this function is
- * the equivalent of both of the modify() and update() functions above as
- * it both creates a form and processes its output.  This is fine for
- * simpler functions, but for more complex operations such as creation and
- * modification it is generally easier to separate them into separate
- * functions.  There is no requirement in the PostNuke MDG to do one or the
- * other, so either or both can be used as seen appropriate by the module
- * developer
+ * This function process the comments selected in the admin view page.
+ * Multiple comments may have thier state changed or be deleted
  *
  * @author       The PostNuke Development Team
- * @param        delComments   the ids of the items to be deleted
+ * @param        Comments   the ids of the items to be deleted
  * @param        confirmation  confirmation that this item can be deleted
  * @param        redirect      the location to redirect to after the deletion attempt
  * @return       bool          true on sucess, false on failure
  */
-function EZComments_admin_deleteselected($args)
+function EZComments_admin_processselected($args)
 {
     // Get parameters from whatever input we need. 
-    $delComments = pnVarCleanFromInput('delComments');
+    list($comments, $action) = pnVarCleanFromInput('comments', 'action');
 
     // extract any input passed directly to the function
     extract($args);
@@ -364,12 +357,34 @@ function EZComments_admin_deleteselected($args)
     }
 
     // loop round each comment deleted them in turn 
-    foreach ($delComments as $delComment) {
-        // The API function is called. 
-        if (pnModAPIFunc('EZComments', 'admin', 'delete', array('id' => $delComment))) {
-            // Success
-            pnSessionSetVar('statusmsg', pnVarPrepHTMLDisplay(_DELETESUCCEDED));
-        }
+    foreach ($comments as $comment) {
+		switch(strtolower($action)) {
+			case 'delete':
+				// The API function is called. 
+				if (pnModAPIFunc('EZComments', 'admin', 'delete', array('id' => $comment))) {
+					// Success
+					pnSessionSetVar('statusmsg', pnVarPrepHTMLDisplay(_DELETESUCCEDED));
+				}
+				break;
+			case 'approve':
+				if (pnModAPIFunc('EZComments', 'admin', 'updatestatus', array('id' => $comment, 'status' => 0))) {
+					// Success
+					pnSessionSetVar('statusmsg', pnVarPrepHTMLDisplay(_UPDATESUCCEDED));
+				}
+				break;
+			case 'hold':
+				if (pnModAPIFunc('EZComments', 'admin', 'updatestatus', array('id' => $comment, 'status' => 1))) {
+					// Success
+					pnSessionSetVar('statusmsg', pnVarPrepHTMLDisplay(_UPDATESUCCEDED));
+				}
+				break;
+			case 'reject':
+				if (pnModAPIFunc('EZComments', 'admin', 'updatestatus', array('id' => $comment, 'status' => 2))) {
+					// Success
+					pnSessionSetVar('statusmsg', pnVarPrepHTMLDisplay(_UPDATESUCCEDED));
+				}
+				break;
+		}
     }
 
     // This function generated no output, and so now it is complete we redirect

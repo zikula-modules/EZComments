@@ -397,4 +397,85 @@ function EZComments_adminapi_purge($args)
     return true;
 }
 
+/**
+ * update an item status
+ * 
+ * @param    $args['id']         the ID of the item
+ * @param    $args['status']     the new status of the item
+ * @return   bool             true on success, false on failure
+ */
+function EZComments_adminapi_updatestatus($args)
+{
+    // Get arguments from argument array - all arguments to this function
+    // should be obtained from the $args array, getting them from other
+    // places such as the environment is not allowed, as that makes
+    // assumptions that will not hold in future versions of PostNuke
+    extract($args);
+
+    // Argument check - make sure that all required arguments are present,
+    // if not then set an appropriate error message and return
+    if (isset($id) && !is_numeric($id) && isset($status) && !is_numeric($status)) {
+        pnSessionSetVar('errormsg', _MODARGSERROR);
+        return false;
+    }
+
+    // The user API function is called.  This takes the item ID which
+    // we obtained from the input and gets us the information on the
+    // appropriate item.  If the item does not exist we post an appropriate
+    // message and return
+    $item = pnModAPIFunc('EZComments', 'user', 'get', array('id' => $id));
+
+    if (!$item) {
+        pnSessionSetVar('errormsg', _NOSUCHITEM);
+        return false;
+    }
+
+    // Security check.
+    // In this case we had to wait until we could obtain the item
+    // name to complete the instance information so this is the first
+    // chance we get to do the check
+    if (!pnSecAuthAction(0, 'EZComments::', "::$id", ACCESS_EDIT)) {
+        pnSessionSetVar('errormsg', _MODULENOAUTH);
+        return false;
+    }
+
+    // Get datbase setup
+    $dbconn =& pnDBGetConn(true);
+    $pntable =& pnDBGetTables();
+
+    // It's good practice to name the table and column definitions you
+    // are getting - $table and $column don't cut it in more complex
+    // modules
+    $EZCommentstable = $pntable['EZComments'];
+    $EZCommentscolumn = &$pntable['EZComments_column']; 
+
+    // All variables that come in to or go out of PostNuke should be handled
+    // by the relevant pnVar*() functions to ensure that they are safe. 
+    // Failure to do this could result in opening security wholes at either 
+    // the web, filesystem, display, or database layers. 
+    list($id, $status) = pnVarPrepForStore($id, $status);
+
+    // Update the item - the formatting here is not mandatory, but it does
+    // make the SQL statement relatively easy to read.  Also, separating
+    // out the sql statement from the Execute() command allows for simpler
+    // debug operation if it is ever needed
+    $sql = "UPDATE $EZCommentstable
+            SET $EZCommentscolumn[status] = '".(int)$status."'
+            WHERE $EZCommentscolumn[id] = '".(int)$id."'";
+    $dbconn->Execute($sql);
+
+    // Check for an error with the database code, and if so set an
+    // appropriate error message and return
+    if ($dbconn->ErrorNo() != 0) {
+        pnSessionSetVar('errormsg', _UPDATEFAILED);
+        return false;
+    }
+
+    // Let any hooks know that we have updated an item.
+    pnModCallHooks('item', 'update', $id, array('module' => 'EZComments'));
+
+    // Let the calling process know that we have finished successfully
+    return true;
+}
+
 ?>

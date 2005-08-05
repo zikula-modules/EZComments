@@ -3,7 +3,7 @@ Reference: http://www.dustindiaz.com/archives/2005/04/check_one_check_all_javasc
 function checkAllFields(ref)
 {
 var chkAll = document.getElementById('checkAll');
-var checks = document.getElementsByName('delComments[]');
+var checks = document.getElementsByName('comments[]');
 var removeButton = document.getElementById('removeChecked');
 var boxLength = checks.length;
 var allChecked = false;
