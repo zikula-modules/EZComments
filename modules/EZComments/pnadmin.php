@@ -773,9 +773,11 @@ function EZComments_admin_purge($args)
  * display commenting stats
  *
  * @author Mark West
+ * @return string html output
  */
 function EZComments_admin_stats($args)
 {
+	// security check
     if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
         return _EZCOMMENTS_NOAUTH;
     } 
@@ -798,6 +800,7 @@ function EZComments_admin_stats($args)
 		$commentstat = array();
 		$modinfo = pnModGetInfo(pnModGetIDFromName($modname));
 		$commentstat = $modinfo;
+		$commentstat['modid'] = pnModGetIDFromName($modname);
 		$commentstat['approvedcomments'] = pnModAPIFunc('EZComments', 'user', 'countitems', array('status' => 0, 'modname' => $modinfo['name']));
 		$commentstat['pendingcomments'] = pnModAPIFunc('EZComments', 'user', 'countitems', array('status' => 1, 'modname' => $modinfo['name']));
 		$commentstat['rejectedcomments'] = pnModAPIFunc('EZComments', 'user', 'countitems', array('status' => 2, 'modname' => $modinfo['name']));
@@ -809,6 +812,54 @@ function EZComments_admin_stats($args)
     // Return the output
     return $pnRender->fetch('ezcomments_admin_stats.htm');
 
+}
+
+/**
+ * display all comments for a module
+ *
+ * @author Mark West
+ * @return string html output
+ */
+function EZComments_admin_modulestats()
+{
+	// security check
+    if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
+        return _EZCOMMENTS_NOAUTH;
+    } 
+
+	// get our input
+	$modname = pnVarCleanFromInput('mod');
+
+    // Create output object
+    $pnRender =& new pnRender('EZComments');
+
+    // As admin output changes often, we do not want caching.
+    $pnRender->caching = false;
+
+    // assign the module vars
+    $pnRender->assign(pnModGetVar('EZComments'));
+
+	// get a list of comments
+	$modulecomments = pnModAPIFunc('EZComments', 'user', 'getallbymodule', array('modname' => $modname));
+
+	// assign the module info
+	$pnRender->assign(pnModGetInfo(pnModGetIDFromName($modname)));
+
+	// get a list of comment stats by module
+	$commentstats = array();
+	foreach ($modulecomments as $modulecomment) {
+		$commentstat = array();
+		$commentstat['objectid'] = $modulecomment['objectid'];
+		$commentstat['approvedcomments'] = pnModAPIFunc('EZComments', 'user', 'countitems', array('status' => 0, 'modname' => $modname, 'objectid' => $modulecomment['objectid']));
+		$commentstat['pendingcomments'] = pnModAPIFunc('EZComments', 'user', 'countitems', array('status' => 1, 'modname' => $modname, 'objectid' => $modulecomment['objectid']));
+		$commentstat['rejectedcomments'] = pnModAPIFunc('EZComments', 'user', 'countitems', array('status' => 2, 'modname' => $modname, 'objectid' => $modulecomment['objectid']));
+		$commentstat['totalcomments'] = $modulecomment['count'];
+		$commentstats[] = $commentstat;
+	}
+	$pnRender->assign('commentstats', $commentstats);
+
+    // Return the output
+    return $pnRender->fetch('ezcomments_admin_modulestats.htm');
 }
 
 ?>

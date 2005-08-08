@@ -634,4 +634,61 @@ function EZComments_userapi_getcommentingusers($args)
     return $items;
 }
 
+/**
+ * get all comments attached to a module
+ *
+ * @author Mark West
+ * @return mixed array of items if successful, false otherwise
+ */
+function EZComments_userapi_getallbymodule($args)
+{
+    extract($args);
+
+    $items = array();
+
+    // Security check
+	if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_OVERVIEW)) {
+		return false;
+	}
+
+	// check for a valid module
+	if (!isset($modname) || !is_string($modname)) {
+		return false;
+	}
+	$modname = pnVarPrepForOS($modname);
+
+    // Get datbase setup
+    $dbconn =& pnDBGetConn(true);
+    $pntable =& pnDBGetTables();
+
+    $EZCommentstable = $pntable['EZComments'];
+    $EZCommentscolumn = &$pntable['EZComments_column']; 
+
+	$sql = "SELECT $EZCommentscolumn[objectid], count(*) 
+	        FROM $EZCommentstable 
+			WHERE $EZCommentscolumn[modname] = '$modname' 
+			GROUP BY $EZCommentscolumn[objectid] 
+			ORDER BY $EZCommentscolumn[objectid]";
+    $result = $dbconn->Execute($sql);
+
+    // Check for an error with the database code, and if so set an appropriate
+    // error message and return
+    if ($dbconn->ErrorNo() != 0) {
+        pnSessionSetVar('errormsg', _GETFAILED);
+        return false;
+    } 
+
+    // Put items into result array.  Note that each item is checked
+    // individually to ensure that the user is allowed access to it before it
+    // is added to the results array
+    for (; !$result->EOF; $result->MoveNext()) {
+        list($objectid, $count) = $result->fields;
+		$items[] = compact('objectid', 'count');
+    } 
+    $result->Close();
+    // Return the items
+    return $items;
+
+}
+
 ?>

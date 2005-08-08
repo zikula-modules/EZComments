@@ -159,5 +159,6 @@ define('_EZCOMMENTS_HOLD',                   'Hold');
 // comment stats
 define('_EZCOMMENTS_STATS',                  'Comment statistics');
 define('_EZCOMMENTS_TOTAL',                  'Total comments');
+define('_EZCOMMENTS_ITEM',                   'Item ID');
 
 ?>
