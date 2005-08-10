@@ -18,7 +18,11 @@
 			<td><!--[$commentstat.pendingcomments|pnvarprepfordisplay]--></td>
 			<td><!--[$commentstat.rejectedcomments|pnvarprepfordisplay]--></td>
 			<td>
+				<!--[if $commentstat.totalcomments gt 0]-->
 				[<a href="<!--[pnmodurl modname=EZComments type=admin func=deletemodule modid=$commentstat.modid]-->"><!--[pnml name=_DELETE]--></a>]
+				<!--[else]-->
+				&nbsp;
+				<!--[/if]-->
 			</td>
 		</tr>
 	<!--[/foreach]-->
