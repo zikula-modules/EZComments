@@ -664,7 +664,9 @@ function EZComments_userapi_getallbymodule($args)
     $EZCommentstable = $pntable['EZComments'];
     $EZCommentscolumn = &$pntable['EZComments_column']; 
 
-	$sql = "SELECT $EZCommentscolumn[objectid], count(*) 
+	$sql = "SELECT $EZCommentscolumn[objectid], 
+				   $EZCommentscolumn[url], 
+				   count(*)
 	        FROM $EZCommentstable 
 			WHERE $EZCommentscolumn[modname] = '$modname' 
 			GROUP BY $EZCommentscolumn[objectid] 
@@ -682,8 +684,8 @@ function EZComments_userapi_getallbymodule($args)
     // individually to ensure that the user is allowed access to it before it
     // is added to the results array
     for (; !$result->EOF; $result->MoveNext()) {
-        list($objectid, $count) = $result->fields;
-		$items[] = compact('objectid', 'count');
+        list($objectid, $url, $count) = $result->fields;
+		$items[] = compact('objectid', 'url', 'count');
     } 
     $result->Close();
     // Return the items

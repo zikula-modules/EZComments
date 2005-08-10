@@ -848,8 +848,7 @@ function EZComments_admin_modulestats()
 	// get a list of comment stats by module
 	$commentstats = array();
 	foreach ($modulecomments as $modulecomment) {
-		$commentstat = array();
-		$commentstat['objectid'] = $modulecomment['objectid'];
+		$commentstat = $modulecomment;
 		$commentstat['approvedcomments'] = pnModAPIFunc('EZComments', 'user', 'countitems', array('status' => 0, 'modname' => $modname, 'objectid' => $modulecomment['objectid']));
 		$commentstat['pendingcomments'] = pnModAPIFunc('EZComments', 'user', 'countitems', array('status' => 1, 'modname' => $modname, 'objectid' => $modulecomment['objectid']));
 		$commentstat['rejectedcomments'] = pnModAPIFunc('EZComments', 'user', 'countitems', array('status' => 2, 'modname' => $modname, 'objectid' => $modulecomment['objectid']));
