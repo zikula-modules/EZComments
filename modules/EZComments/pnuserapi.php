@@ -140,7 +140,8 @@ function EZComments_userapi_getall($args)
                    $EZCommentscolumn[anonname],
                    $EZCommentscolumn[anonmail],
                    $EZCommentscolumn[status],
-                   $EZCommentscolumn[ipaddr]
+                   $EZCommentscolumn[ipaddr],
+                   $EZCommentscolumn[type]
             FROM $EZCommentstable
             $wherestring $orderstring $orderby";
     $result = $dbconn->SelectLimit($sql, $numitems, $startnum-1);            
@@ -156,7 +157,7 @@ function EZComments_userapi_getall($args)
     // individually to ensure that the user is allowed access to it before it
     // is added to the results array
     for (; !$result->EOF; $result->MoveNext()) {
-        list($id, $modname, $objectid, $url, $date, $uid, $comment, $subject, $replyto, $anonname, $anonmail, $status, $ipaddr) = $result->fields;
+        list($id, $modname, $objectid, $url, $date, $uid, $comment, $subject, $replyto, $anonname, $anonmail, $status, $ipaddr, $type) = $result->fields;
         if (pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:$id", ACCESS_READ)) {
             if ($uid == 1 && empty($anonname)) {
                 $anonname = pnConfigGetVar('anonymous');
@@ -173,7 +174,8 @@ function EZComments_userapi_getall($args)
                                'anonname',
                                'anonmail',
                                'status',
-							   'ipaddr');
+							   'ipaddr',
+							   'type');
         } 
     } 
     $result->Close();
@@ -397,7 +399,8 @@ function EZComments_userapi_get($args)
                    $EZCommentscolumn[anonname],
                    $EZCommentscolumn[anonmail],
                    $EZCommentscolumn[status],
-                   $EZCommentscolumn[ipaddr]
+                   $EZCommentscolumn[ipaddr],
+                   $EZCommentscolumn[type]
             FROM $EZCommentstable
             WHERE $EZCommentscolumn[id] = '$id'";
     $result =& $dbconn->Execute($sql); 
@@ -426,7 +429,8 @@ function EZComments_userapi_get($args)
          $anonname,
          $anonmail,
          $status,
-		 $ipaddr) = $result->fields;
+		 $ipaddr,
+		 $type) = $result->fields;
     if (!pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:$id", ACCESS_READ)) {
         return false;
     } 
@@ -444,7 +448,8 @@ function EZComments_userapi_get($args)
                    'anonname',
                    'anonmail',
                    'status',
-				   'ipaddr');
+				   'ipaddr',
+				   'type');
 } 
 
 /**

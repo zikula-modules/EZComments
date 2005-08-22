@@ -11,6 +11,7 @@
 		<th><!--[pnml name=_EZCOMMENTS_STATUS]--></th>
 		<th><!--[pnml name=_EZCOMMENTS_USERNAME]--></th>
 		<th><!--[pnml name=_EZCOMMENTS_MODULE]--></th>
+		<th><!--[pnml name=_EZCOMMENTS_TYPE]--></th>
 		<th><!--[pnml name=_EZCOMMENTS_COMMENT]--></th>
 		<th><!--[pnml name=_OPTIONS]--></th>
 	</tr>
@@ -31,6 +32,7 @@
 				<br /><!--[$item.date|pndate_format]-->
 			</td>
 			<td><a href="<!--[$item.url]-->"><!--[$item.modname]--></a></td>
+			<td><!--[$item.type|pnvarprepfordisplay]--></td>
 			<td><!--[$item.comment|strip_tags|truncate:80]--></td>
 			<td>
 				<!--[assign var="options" value=$item.options]-->
