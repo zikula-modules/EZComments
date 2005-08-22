@@ -162,6 +162,8 @@ define('_EZCOMMENTS_TOTAL',                  'Total comments');
 define('_EZCOMMENTS_ITEM',                   'Item ID');
 define('_EZCOMMENTS_CONFIRMDELETEMODULE',    'Confirm deletion of all comments attached to module \'%m%\'');
 define('_EZCOMMENTS_CANCELDELETEMODULE',     'Cancel deletion of all comments attached to module \'%m%\'');
+define('_EZCOMMENTS_CONFIRMDELETEITEM',      'Confirm deletion of all comments for object id \'%o%\' attached to module \'%m%\'');
+define('_EZCOMMENTS_CANCELDELETEITEM',       'Cancel deletion of all comments for object id \'%o%\' attached to module \'%m%\'');
 
 // comment typing
 define('_EZCOMMENTS_TYPE',                    'Comment type');

@@ -123,11 +123,14 @@ function EZComments_adminapi_deleteall($args)
  **/
 function EZComments_adminapi_deletebyitem($args)
 {
-    $modname = pnModGetName();
     if (!isset($args['objectid'])) {
         return false;
     } 
-
+	if (!isset($args['modname'])) {
+	    $modname = pnModGetName();
+	} else {
+		$modname = $args['modname'];
+	}
     $objectid = $args['objectid'];
     
     if (!pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:", ACCESS_ADMIN)) {
