@@ -23,7 +23,7 @@
  * @author      Joerg Napp <jnapp@users.sourceforge.net>
  * @author      Mark West <markwest at postnuke dot com>
  * @author      Jean-Michel Vedrine
- * @version     0.9
+ * @version     1.0
  * @link        http://noc.postnuke.com/projects/ezcomments/ Support and documentation
  * @license     http://www.gnu.org/copyleft/gpl.html GNU General Public License
  * @package     Postnuke
@@ -55,7 +55,8 @@ function EZComments_pntables()
                                           'anonname'  => $EZComments . '.anonname',
                                           'anonmail'  => $EZComments . '.anonmail',
                                           'status'    => $EZComments . '.status',
-										  'ipaddr'    => $EZComments . '.ipaddr');
+										  'ipaddr'    => $EZComments . '.ipaddr',
+										  'type'      => $EZComments . '.type');
     return $pntable;
 }
 

@@ -23,7 +23,7 @@
  * @author      Joerg Napp <jnapp@users.sourceforge.net>
  * @author      Mark West <markwest at postnuke dot com>
  * @author      Jean-Michel Vedrine
- * @version     0.9
+ * @version     1.0
  * @link        http://noc.postnuke.com/projects/ezcomments/ Support and documentation
  * @license     http://www.gnu.org/copyleft/gpl.html GNU General Public License
  * @package     Postnuke
@@ -61,6 +61,7 @@ function EZComments_init()
               $EZCommentscolumn[anonmail]  varchar(255) NOT NULL default '',
               $EZCommentscolumn[status]    int(4)       NOT NULL default 0,
               $EZCommentscolumn[ipaddr]    varchar(85)  NOT NULL default '',
+              $EZCommentscolumn[type]      varchar(64)  NOT NULL default '',
               PRIMARY KEY(id)
               ) COMMENT='Table for EZComments'";
     $dbconn->Execute($sql);
@@ -278,6 +279,18 @@ function EZComments_upgrade($oldversion)
         // Add additional for unregistered users info
         $sql = "ALTER TABLE $EZCommentstable 
                         ADD $EZCommentscolumn[ipaddr] varchar(85) NOT NULL default ''";
+        $dbconn->Execute($sql);
+        if ($dbconn->ErrorNo() != 0) {
+            pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED5 . ': ' . $dbconn->ErrorMsg());
+            return false;
+        }
+		$oldversion = '0.9';
+    }
+
+    if ($oldversion == '0.9') {
+        // Add additional field for published status flag on comments
+        $sql = "ALTER TABLE $EZCommentstable 
+                        ADD $EZCommentscolumn[type] varchar(64) NOT NULL default ''";
         $dbconn->Execute($sql);
         if ($dbconn->ErrorNo() != 0) {
             pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED5 . ': ' . $dbconn->ErrorMsg());
