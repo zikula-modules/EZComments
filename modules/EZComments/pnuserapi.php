@@ -44,7 +44,7 @@
  * @param     $args['numitems']  number of comments
  * @param     $args['sortorder'] order to sort the comments
  * @param     $args['sortby']    field to sort the comments by
- * @param     $args['status']    field to sort the comments by
+ * @param     $args['status']    get all comments of this status
  * @return    array              array of items, or false on failure
  */ 
 function EZComments_userapi_getall($args)
@@ -193,6 +193,8 @@ function EZComments_userapi_getall($args)
  * @param    $args['comment']    The comment itself
  * @param    $args['subject']    The subject of the comment
  * @param    $args['replyto']    The reference ID
+ * @param    $args['uid']        The user ID (optional)
+ * @param    $args['type']       The type of comment (optional) currently trackback, pingback are only allowed values
  * @return   integer             ID of new comment on success, false on failure
  */ 
 function EZComments_userapi_create($args)
@@ -217,6 +219,10 @@ function EZComments_userapi_create($args)
     } else {
         $date= "'" . pnVarPrepForStore($date) . "'";
     }
+
+	if (!isset($type) && !is_string($type) && $type != 'trackback' && $type != 'pingback') {
+		$type = '';
+	}
 
 	// get the users ip
 	$ipaddr = '';
@@ -257,7 +263,8 @@ function EZComments_userapi_create($args)
          $anonname,
          $anonmail,
          $status,
-		 $ipaddr  ) = pnVarPrepForStore($modname, 
+		 $ipaddr,
+		 $type    ) = pnVarPrepForStore($modname, 
                                         $objectid, 
                                         $url,
                                         $uid,
@@ -267,7 +274,8 @@ function EZComments_userapi_create($args)
                                         $anonname,
                                         $anonmail,
                                         $status,
-										$ipaddr);
+										$ipaddr,
+                                        $type);
                                        
     // Add item
     $sql = "INSERT INTO $EZCommentstable (
@@ -283,7 +291,8 @@ function EZComments_userapi_create($args)
               $EZCommentscolumn[anonname],
               $EZCommentscolumn[anonmail],
               $EZCommentscolumn[status],
-			  $EZCommentscolumn[ipaddr])
+			  $EZCommentscolumn[ipaddr],
+			  $EZCommentscolumn[type])
             VALUES (
               '$nextId',
               '$modname',
@@ -297,7 +306,8 @@ function EZComments_userapi_create($args)
               '$anonname',
               '$anonmail',
               '$status',
-			  '$ipaddr')";
+			  '$ipaddr',
+			  '$type')";
     $dbconn->Execute($sql); 
 
     // Check for an error with the database code
