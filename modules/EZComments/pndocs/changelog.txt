@@ -2,6 +2,8 @@ $Id$
 
 
 Changelog
+1.0  - Added comment type field; allows for distinction of comments from different sources e.g. trackback
+
 0.9  - Added optional logging of IP address for comments
      - Added additional moderation option; moderate comments except where someone has commented before
      - Added comment statistics
