@@ -42,8 +42,7 @@
  */
 function EZComments_user_main($args)
 {
-    pnredirect(pnGetBaseUrl());
-    return true;
+    return pnRedirect(pnGetBaseUrl());
 }
 
 
@@ -249,8 +248,7 @@ function EZComments_user_create($args)
     // Confirm authorisation code.
     if (!pnSecConfirmAuthKey()) {
         pnSessionSetVar('errormsg', _BADAUTHKEY);
-        pnRedirect($EZComments_redirect);
-        return true;
+        return pnRedirect($EZComments_redirect);
     } 
 
     list($EZComments_modname,
@@ -291,8 +289,7 @@ function EZComments_user_create($args)
     $EZComments_redirect = rawurldecode($EZComments_redirect);
     $EZComments_redirect = str_replace('&amp;', '&', $EZComments_redirect);
 
-    pnRedirect($EZComments_redirect);
-    return true;
+    return pnRedirect($EZComments_redirect);
 } 
 
 /**

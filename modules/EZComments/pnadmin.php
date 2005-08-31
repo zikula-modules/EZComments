@@ -207,8 +207,7 @@ function EZComments_admin_update($args)
     // in false data to the system
     if (!pnSecConfirmAuthKey()) {
         pnSessionSetVar('errormsg', pnVarPrepHTMLDisplay(_BADAUTHKEY));
-        pnRedirect(pnModURL('EZComments', 'admin', 'main'));
-        return true;
+        return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
     }
 
     // Notable by its absence there is no security check here.  This is because
@@ -224,10 +223,7 @@ function EZComments_admin_update($args)
 
     // This function generated no output, and so now it is complete we redirect
     // the user to an appropriate page for them to carry on their work
-    pnRedirect(pnModURL('EZComments', 'admin', 'main'));
-
-    // Return
-    return true;
+    return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
 }
 
 /**
@@ -306,8 +302,7 @@ function EZComments_admin_delete($args)
     // Confirm authorisation code.
     if (!pnSecConfirmAuthKey()) {
         pnSessionSetVar('errormsg', pnVarPrepHTMLDisplay(_BADAUTHKEY));
-        pnRedirect(pnModURL('EZComments', 'admin', 'main'));
-        return true;
+        return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
     }
 
     // The API function is called. 
@@ -319,13 +314,10 @@ function EZComments_admin_delete($args)
     // This function generated no output, and so now it is complete we redirect
     // the user to an appropriate page for them to carry on their work
     if (!empty($redirect)) {
-        pnRedirect($redirect);
+        return pnRedirect($redirect);
     } else {
-        pnRedirect(pnModURL('EZComments', 'admin', 'main'));
+        return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
     }
-
-    // Return
-    return true;
 }
 
 /**
@@ -352,8 +344,7 @@ function EZComments_admin_processselected($args)
     // Confirm authorisation code.
     if (!pnSecConfirmAuthKey()) {
         pnSessionSetVar('errormsg', pnVarPrepHTMLDisplay(_BADAUTHKEY));
-        pnRedirect(pnModURL('EZComments', 'admin', 'main'));
-        return true;
+        return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
     }
 
     // loop round each comment deleted them in turn 
@@ -390,13 +381,10 @@ function EZComments_admin_processselected($args)
     // This function generated no output, and so now it is complete we redirect
     // the user to an appropriate page for them to carry on their work
     if (!empty($redirect)) {
-        pnRedirect($redirect);
+        return pnRedirect($redirect);
     } else {
-        pnRedirect(pnModURL('EZComments', 'admin', 'main'));
+        return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
     }
-
-    // Return
-    return true;
 }
 
 /**
@@ -454,8 +442,7 @@ function EZComments_admin_updateconfig($args)
 {
     if (!pnSecConfirmAuthKey()) {
         pnSessionSetVar('errormsg', _BADAUTHKEY);
-        pnRedirect(pnModURL('EZComments', 'admin', 'main'));
-        return true;
+        return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
     } 
 
     list($MailToAdmin, $moderationmail, $template, $itemsperpage, $anonusersinfo, $moderation, $dontmoderateifcommented,
@@ -530,8 +517,7 @@ function EZComments_admin_updateconfig($args)
     pnModSetVar('EZComments', 'logip', $logip);
 
     pnSessionSetVar('statusmsg', _CONFIGUPDATED);
-    pnRedirect(pnModURL('EZComments', 'admin', 'main'));
-    return true;
+    return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
 }
 
 /**
@@ -562,8 +548,7 @@ function EZComments_admin_migrate()
 
     if (!$selectitems) {
         pnSessionSetVar('statusmsg', _EZCOMMENTS_MIGRATE_NOTHINGTODO);
-        pnRedirect(pnModURL('EZComments', 'admin'));
-        return true;
+        return pnRedirect(pnModURL('EZComments', 'admin'));
     } 
 
     // Create output object - this object will store all of our output so that
@@ -613,8 +598,7 @@ function EZComments_admin_migrate_go()
         $migrated[$migrate] = true;
         pnModSetVar('EZComments', 'migrated', serialize($migrated));
     }
-    pnRedirect(pnModURL('EZComments', 'admin', 'migrate'));
-    return true;
+    return pnRedirect(pnModURL('EZComments', 'admin', 'migrate'));
 }
 
 
@@ -650,8 +634,7 @@ function EZComments_admin_cleanup()
 
     if (!$orphanedmods) {
         pnSessionSetVar('statusmsg', _EZCOMMENTS_CLEANUP_NOTHINGTODO);
-        pnRedirect(pnModURL('EZComments', 'admin', 'main'));
-        return true;
+        return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
     } 
 
     $selectitems = array();
@@ -698,8 +681,7 @@ function EZComments_admin_cleanup_go()
         return _EZCOMMENTS_GENERALFAILIURE;
     } 
 
-    pnRedirect(pnModURL('EZComments', 'admin', 'cleanup'));
-    return true;
+    return pnRedirect(pnModURL('EZComments', 'admin', 'cleanup'));
 } 
 
 /**
@@ -750,8 +732,7 @@ function EZComments_admin_purge($args)
     // Confirm authorisation code.
     if (!pnSecConfirmAuthKey()) {
         pnSessionSetVar('errormsg', pnVarPrepHTMLDisplay(_BADAUTHKEY));
-        pnRedirect(pnModURL('EZComments', 'admin', 'main'));
-        return true;
+        return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
     }
 
     // The API function is called. 
@@ -763,10 +744,7 @@ function EZComments_admin_purge($args)
 
     // This function generated no output, and so now it is complete we redirect
     // the user to an appropriate page for them to carry on their work
-    pnRedirect(pnModURL('EZComments', 'admin', 'main'));
-
-    // Return
-    return true;
+    return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
 }
 
 /**
@@ -915,8 +893,7 @@ function EZComments_admin_deletemodule($args)
     // Confirm authorisation code.
     if (!pnSecConfirmAuthKey()) {
         pnSessionSetVar('errormsg', pnVarPrepHTMLDisplay(_BADAUTHKEY));
-        pnRedirect(pnModURL('EZComments', 'admin', 'main'));
-        return true;
+        return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
     }
 
     // The API function is called. 
@@ -993,8 +970,7 @@ function EZComments_admin_deleteitem($args)
     // Confirm authorisation code.
     if (!pnSecConfirmAuthKey()) {
         pnSessionSetVar('errormsg', pnVarPrepHTMLDisplay(_BADAUTHKEY));
-        pnRedirect(pnModURL('EZComments', 'admin', 'main'));
-        return true;
+        return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
     }
 
     // The API function is called. 
