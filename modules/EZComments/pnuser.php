@@ -109,14 +109,6 @@ function EZComments_user_view($args)
     // assign all module vars (they may be useful...)
     $pnRender->assign(pnModGetVar('EZComments'));
 
-    // check for some useful hooks
-    if (pnModIsHooked('pn_bbcode', 'EZComments')) {
-        $pnRender->assign('bbcode', true);
-    }
-    if (pnModIsHooked('pn_bbsmile', 'EZComments')) {
-        $pnRender->assign('smilies', true);
-    }
-
     // find out which template to use
     $template = pnModGetVar('EZComments', 'template');
     if (!empty($EZComments_template)) {

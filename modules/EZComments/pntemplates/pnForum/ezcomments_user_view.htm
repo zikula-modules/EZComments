@@ -161,9 +161,11 @@
           <input type="submit" value="<!--[pnml name=_EZCOMMENTS_ADD]-->" />
         </div>
         </form>
+		<!--[pnmodishooked tmodname="pn_bbcode" smodname="EZComments" assign=bbcode]--> 
         <!--[if $bbcode]-->
-          <!--[ pnmodfunc modname=pn_bbcode type=user func=bbcodes textfieldid=message images=1 ]-->
+          <!--[pnmodfunc modname=pn_bbcode type=user func=bbcodes textfieldid=message images=1]-->
         <!--[/if]-->
+		<!--[pnmodishooked tmodname="pn_bbsmile" smodname="EZComments" assign=smilies]-->
         <!--[if $smilies]-->
           <!--[pnmodfunc modname=pn_bbsmile func=bbsmiles]-->
         <!--[/if]-->
