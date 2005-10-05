@@ -27,7 +27,7 @@
 <!--[if $comments eq true or $allowadd eq true]-->
   <h3><!--[pnml name="_EZCOMMENTS"]--></h3>
   <em style="color:red"><!--[pngetstatusmsg]--></em>
-  <br />  
+  <br />
 <!--[/if]-->
 
 <!--[if !$allowadd]-->
@@ -70,8 +70,8 @@
           <div style="border-top-style: solid; border-top-width: 1px;">
           <!--[if $comments[comments].uname != "" ]-->
               <!--[pnml name='_EZCOMMENTS_REG_SINCE']-->:&nbsp;<!--[$comments[comments].pn_user_regdate|date_format:"%b. %Y"|pnvarprepfordisplay]-->
-          <!--[else]--> 
-              <!--[pnml name='_EZCOMMENTS_NOTREG']-->   
+          <!--[else]-->
+              <!--[pnml name='_EZCOMMENTS_NOTREG']-->
           <!--[/if]-->
           <!--[if $comments[comments].pn_user_from != ""]-->
             <br /><!--[pnml name='_EZCOMMENTS_FROM']-->:&nbsp;<!--[$comments[comments].pn_user_from|pnvarprepfordisplay]-->
@@ -95,13 +95,13 @@
       </tr>
       <tr style="height:18px;">
         <td headers="col_0" style="background-color:<!--[pnthemegetvar name=bgcolor3]-->;">
-          <a title="<!--[pnml name='_EZCOMMENTS_TOP']-->" href="#top"><!--[pnimg src="go_up.gif" alt="_EZCOMMENTS_TOP" altml=true]--></a>&nbsp;   
+          <a title="<!--[pnml name='_EZCOMMENTS_TOP']-->" href="#top"><!--[pnimg src="go_up.gif" alt="_EZCOMMENTS_TOP" altml=true]--></a>&nbsp;
         </td>
         <td headers="col_1" style="background-color:<!--[pnthemegetvar name=bgcolor3]-->;">
          <!--[if $comments[comments].uname != ""]-->
             <a title="<!--[pnml name='_EZCOMMENTS_PROFILE']-->: <!--[$comments[comments].uname]-->" href="user.php?op=userinfo&amp;uname=<!--[$comments[comments].uname]-->"><!--[pnimg src="profile.gif" alt=$comments[comments].uname]--></a>
             <a title="<!--[pnml name='_EZCOMMENTS_SEND_PM']-->" href="index.php?name=Messages&amp;file=replypmsg&amp;send=1&amp;uname=<!--[$comments[comments].uname]-->"><!--[pnimg src="sendpm.gif" alt='_EZCOMMENTS_SEND_PM' altml=true]--></a>
-         <!--[/if]--> 
+         <!--[/if]-->
         </td>
       </tr>
       <tr>
@@ -109,7 +109,7 @@
           <!--[if $comments[comments].del]-->
             <form action="<!--[pnmodurl modname=EZComments type=admin func=delete id=$comments[comments].id]-->" method="post">
             <div>
-              <input type="hidden" name="redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" /> 
+              <input type="hidden" name="redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" />
               <input type="submit" value="<!--[pnml name=_EZCOMMENTS_DEL]-->" />
             </div>
             </form>
@@ -132,10 +132,10 @@
       <td style="width:80%; vertical-align:top;background-color:<!--[pnthemegetvar name=bgcolor1]-->;">
         <form id="post" action="<!--[pnmodurl modname=EZComments func=create]-->" method="post">
         <div>
-          <input type="hidden" name="authid" id="authid" value="<!--[pnsecgenauthkey module=EZComments]-->" /> 
-          <input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" /> 
-          <input type="hidden" name="EZComments_modname" id="EZComments_modname" value="<!--[pnmodgetname]-->" /> 
-          <input type="hidden" name="EZComments_objectid" id="EZComments_objectid" value="<!--[$objectid|pnvarprepfordisplay]-->" /> 
+          <input type="hidden" name="authid" id="authid" value="<!--[pnsecgenauthkey module=EZComments]-->" />
+          <input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" />
+          <input type="hidden" name="EZComments_modname" id="EZComments_modname" value="<!--[pnmodgetname]-->" />
+          <input type="hidden" name="EZComments_objectid" id="EZComments_objectid" value="<!--[$objectid|pnvarprepfordisplay]-->" />
           <div>
             <label for="subject"><!--[pnml name=_EZCOMMENTS_SUBJECT]--></label>
             <br />
@@ -158,17 +158,17 @@
             <br />
             <textarea name="EZComments_comment" id="message" cols="35" rows="10"></textarea>
           </div>
+       	  <!--[pnmodishooked tmodname="pn_bbcode" smodname="EZComments" assign=bbcode]-->
+          <!--[if $bbcode]-->
+            <!--[pnmodfunc modname=pn_bbcode type=user func=bbcodes textfieldid=message ]-->
+          <!--[/if]-->
+       	  <!--[pnmodishooked tmodname="pn_bbsmile" smodname="EZComments" assign=smilies]-->
+          <!--[if $smilies]-->
+            <!--[pnmodfunc modname=pn_bbsmile func=bbsmiles textfieldid=message]-->
+          <!--[/if]-->
           <input type="submit" value="<!--[pnml name=_EZCOMMENTS_ADD]-->" />
         </div>
         </form>
-		<!--[pnmodishooked tmodname="pn_bbcode" smodname="EZComments" assign=bbcode]--> 
-        <!--[if $bbcode]-->
-          <!--[pnmodfunc modname=pn_bbcode type=user func=bbcodes textfieldid=message images=1]-->
-        <!--[/if]-->
-		<!--[pnmodishooked tmodname="pn_bbsmile" smodname="EZComments" assign=smilies]-->
-        <!--[if $smilies]-->
-          <!--[pnmodfunc modname=pn_bbsmile func=bbsmiles textfieldid=message]-->
-        <!--[/if]-->
       </td>
     </tr>
     </tbody>
