@@ -334,6 +334,7 @@ function EZComments_userapi_create($args)
     // Inform admin about new comment
     if (pnModGetVar('EZComments', 'MailToAdmin') && $status == 0) {
         $pnRender =& new pnRender('EZComments');
+		$pnRender->caching = false;
         $pnRender->assign('comment', $comment);
         $pnRender->assign('url', $url);
         $pnRender->assign('moderate', pnModURL('EZComments', 'admin', 'modify', array('id' => $id)));
@@ -348,6 +349,7 @@ function EZComments_userapi_create($args)
     }
     if (pnModGetVar('EZComments', 'moderationmail') && $status == 1) {
         $pnRender =& new pnRender('EZComments');
+		$pnRender->caching = false;
         $pnRender->assign('comment', $comment);
         $pnRender->assign('url', $url);
         $pnRender->assign('moderate', pnModURL('EZComments', 'admin', 'modify', array('id' => $id)));
