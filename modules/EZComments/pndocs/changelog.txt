@@ -2,6 +2,8 @@ $Id$
 
 
 Changelog
+1.1  - Added Atom and RSS feeds for last x comments
+     - 'modname' parameter in function interfaces changed to 'mod' to avoid clash with pnmodapifunc plugin
 1.0  - Added comment type field; allows for distinction of comments from different sources e.g. trackback
 
 0.9  - Added optional logging of IP address for comments
