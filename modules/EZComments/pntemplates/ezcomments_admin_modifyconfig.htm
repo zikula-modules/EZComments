@@ -85,13 +85,13 @@
 		<div class="pn-adminformrow">
 			<label for="ezcomments_modlist"><!--[pnml name="_EZCOMMENTS_MODLIST"]--></label>
 			<textarea id="ezcomments_modlist" name="modlist" rows="5" cols="50"><!--[$modlist|pnvarprepfordisplay]--></textarea>
-			<div><!--[pnml name=_EZCOMMENTS_SEPERATELINE]--></div>
+			<p><!--[pnml name=_EZCOMMENTS_SEPERATELINE]--></p>
 		</div>
 		<div class="pn-adminformrow">
 			<label for="ezcomments_blacklist"><!--[pnml name="_EZCOMMENTS_BLACKLIST"]--></label>
 			<textarea id="ezcomments_blacklist" name="blacklist" rows="5" cols="50"><!--[$blacklist|pnvarprepfordisplay]--></textarea>
-			<div><!--[pnml name=_EZCOMMENTS_SEPERATELINE]--></div>
-			<div><!--[pnml name=_EZCOMMENTS_BLACKLISTNOTE]--></div>
+			<p><!--[pnml name=_EZCOMMENTS_SEPERATELINE]--></p>
+			<p><!--[pnml name=_EZCOMMENTS_BLACKLISTNOTE]--></p>
 		</div>
 		<div class="pn-adminformrow">
 			<label for="ezcomments_proxyblacklist"><!--[pnml name="_EZCOMMENTS_PROXYBLACKLIST"]--></label>
@@ -100,6 +100,21 @@
 			<!--[else]-->
 			<input id="ezcomments_proxyblacklist" name="proxyblacklist" type="checkbox" value="1" />
 			<!--[/if]-->
+		</div>
+	</fieldset>
+	<fieldset>
+		<legend><!--[pnml name=_EZCOMMENTS_FEEDS]--></legend>
+		<p><!--[pnml name=_EZCOMMENTS_FEEDNOTE]--></p>
+		<div class="pn-adminformrow">
+			<label for="ezcomments_feedcount"><!--[pnml name="_EZCOMMENTS_FEEDTYPE"]--></label>
+			<select id="ezcomments_template" name="feedtype">
+				<option value="atom"<!--[if $feedtype eq atom]--> selected="selected"<!--[/if]-->><!--[pnml name=_EZCOMMENTS_ATOM]--></option>
+				<option value="rss"<!--[if $feedtype eq rss]--> selected="selected"<!--[/if]-->><!--[pnml name=_EZCOMMENTS_RSS]--></option>
+			</select>
+		</div>
+		<div class="pn-adminformrow">
+			<label for="ezcomments_feedcount"><!--[pnml name="_EZCOMMENTS_FEEDCOUNT"]--></label>
+			<input id="ezcomments_feedcount" name="feedcount" size="3" value="<!--[$feedcount|pnvarprepfordisplay]-->" />
 		</div>
 	</fieldset>
 	<div class="pn-adminformrow">

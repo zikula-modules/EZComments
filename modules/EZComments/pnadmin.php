@@ -446,9 +446,9 @@ function EZComments_admin_updateconfig($args)
     } 
 
     list($MailToAdmin, $moderationmail, $template, $itemsperpage, $anonusersinfo, $moderation, $dontmoderateifcommented,
-         $modlinkcount, $modlist, $blacklist, $alwaysmoderate, $proxyblacklist, $logip) =
+         $modlinkcount, $modlist, $blacklist, $alwaysmoderate, $proxyblacklist, $logip, $feedtype, $feedcount) =
         pnVarCleanFromInput('MailToAdmin', 'moderationmail', 'template', 'itemsperpage', 'anonusersinfo', 'moderation', 'dontmoderateifcommented', 
-                            'modlinkcount', 'modlist', 'blacklist', 'alwaysmoderate', 'proxyblacklist', 'logip');
+                            'modlinkcount', 'modlist', 'blacklist', 'alwaysmoderate', 'proxyblacklist', 'logip', 'feedtype', 'feedcount');
     extract($args);
 
     if (!isset($MailToAdmin)) {
@@ -515,6 +515,16 @@ function EZComments_admin_updateconfig($args)
         $logip = 0;
     }
     pnModSetVar('EZComments', 'logip', $logip);
+
+    if (!isset($feedtype)) {
+        $feedtype = 'rss';
+    }
+    pnModSetVar('EZComments', 'feedtype', $feedtype);
+
+    if (!isset($feedcount)) {
+        $feedcount = '10';
+    }
+    pnModSetVar('EZComments', 'feedcount', $feedcount);
 
     pnSessionSetVar('statusmsg', _CONFIGUPDATED);
     return pnRedirect(pnModURL('EZComments', 'admin', 'main'));

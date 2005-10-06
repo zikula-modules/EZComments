@@ -168,4 +168,12 @@ define('_EZCOMMENTS_CANCELDELETEITEM',       'Cancel deletion of all comments fo
 // comment typing
 define('_EZCOMMENTS_TYPE',                    'Comment type');
 
+// comment feeds
+define('_EZCOMMENTS_FEEDS',	                  'Feeds');
+define('_EZCOMMENTS_FEEDTYPE',                'Type of feed');
+define('_EZCOMMENTS_FEEDCOUNT',               'Number of items to display in feed');
+define('_EZCOMMENTS_FEEDCOUNT',               'Number of items to display in feed');
+define('_EZCOMMENTS_ATOM',                    'Atom 0.3');
+define('_EZCOMMENTS_RSS',                     'RSS 2.0');
+define('_EZCOMMENTS_FEEDNOTE',                'Note: both the feed type and feed count can be overriden using feedtype and feedcount parameters appended to the feed URL');
 ?>

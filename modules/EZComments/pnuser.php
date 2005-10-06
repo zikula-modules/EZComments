@@ -365,4 +365,32 @@ function EZComments_displayChildren($comments, $id, $level)
     return $comments2;
 }
 
+/** 
+ * return an rss/atom feed of the last x comments
+ *
+ * @author Mark west
+*/
+function EZComments_user_feed()
+{
+	list($feedcount, $feedtype) = pnVarCleanFromInput('feedcount', 'feedtype');
+
+	// check our input
+	if (!isset($feedcount) && !is_numeric($feedcount) && $feedcount < 1 && $feedcount > 999) {
+		$feedcount = pnModGetVar('EZcomments', 'feedcount');
+	}
+	if (!isset($feedtype) && !is_string($feedtype) && ($feedtype !== 'rss' || $feedtype !== 'atom')) {
+		$feedtype = pnModGetVar('EZComments', 'feedtype');
+	}
+    // create the pnRender object
+    $pnRender =& new pnRender('EZComments');
+
+	// get the last x comments
+	$pnRender->assign('comments', pnModAPIFunc('EZComments', 'user', 'getall', array('numitems' => $feedcount, 'sortorder' => 'DESC')));
+
+	// display the feed and notify the core that we're done
+	$pnRender->display("ezcomments_user_$feedtype.htm");
+	return true;
+
+}
+
 ?>

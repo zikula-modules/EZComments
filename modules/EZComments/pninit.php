@@ -117,6 +117,8 @@ function EZComments_init()
     pnModSetVar('EZComments', 'proxyblacklist', false);
 	pnModSetVar('EZComments', 'logip',          false);
 	pnModSetVar('EZComments', 'dontmoderateifcommented', false);
+	pnModSetVar('EZComments', 'feedtype', 'rss');
+	pnModSetVar('EZComments', 'feedcount', '10');
 
     // Initialisation successful
     return true;
@@ -296,7 +298,13 @@ function EZComments_upgrade($oldversion)
             pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED5 . ': ' . $dbconn->ErrorMsg());
             return false;
         }
+		$oldversion = '1.0';
     }
+
+	if ($oldversion == '1.0') {
+		pnModSetVar('EZComments', 'feedtype', 'rss');
+		pnModSetVar('EZComments', 'feedcount', '10');
+	}
 
     return true;
 } 
