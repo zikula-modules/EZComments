@@ -32,6 +32,7 @@
     <!--[section name=comments loop=$comments]-->
       <tr>
         <td style="background-color:<!--[pnthemegetvar name="bgcolor2"]-->; width:15%;" valign="top">
+		<a id="comment<!--[$comments[comments].id]-->"></a>
         <!--[if $comments[comments].anonname neq '']-->
           <!--[$comments[comments].anonname|pnvarprepfordisplay]-->
         <!--[else]-->
