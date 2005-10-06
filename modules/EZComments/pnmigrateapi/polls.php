@@ -92,7 +92,7 @@ function EZComments_migrateapi_polls()
         $id = pnModAPIFunc('EZComments',
                            'user',
                            'create',
-                           array('modname'  => 'Polls',
+                           array('mod'  => 'Polls',
                                    'objectid' => pnVarPrepForStore($sid),
                                    'url'        => 'name=Polls&req=results&pollID=' . $pollid,
                                    'comment'  => $comment,

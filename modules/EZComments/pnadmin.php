@@ -71,10 +71,10 @@ function EZComments_admin_main()
     $comments = array();
     foreach ($items as $item) {
         $options = array();
-        if (pnSecAuthAction(0, 'EZComments::', "$item[modname]:$item[objectid]:$item[id]", ACCESS_EDIT)) {
+        if (pnSecAuthAction(0, 'EZComments::', "$item[mod]:$item[objectid]:$item[id]", ACCESS_EDIT)) {
             $options[] = array('url'   => pnModURL('EZComments', 'admin', 'modify', array('id' => $item['id'])),
                                'title' => _EDIT);
-            if (pnSecAuthAction(0, 'EZComments::', "$item[modname]:$item[objectid]:$item[id]", ACCESS_DELETE)) {
+            if (pnSecAuthAction(0, 'EZComments::', "$item[mod]:$item[objectid]:$item[id]", ACCESS_DELETE)) {
                 $options[] = array('url'   => pnModURL('EZComments', 'admin', 'delete', array('id' => $item['id'])),
                                    'title' => _DELETE);
             }
@@ -774,14 +774,14 @@ function EZComments_admin_stats($args)
 
 	// get a list of comment stats by module
 	$commentstats = array();
-	foreach ($hookedmodules as $modname => $hooktype) {
+	foreach ($hookedmodules as $mod => $hooktype) {
 		$commentstat = array();
-		$modinfo = pnModGetInfo(pnModGetIDFromName($modname));
+		$modinfo = pnModGetInfo(pnModGetIDFromName($mod));
 		$commentstat = $modinfo;
-		$commentstat['modid'] = pnModGetIDFromName($modname);
-		$commentstat['approvedcomments'] = pnModAPIFunc('EZComments', 'user', 'countitems', array('status' => 0, 'modname' => $modinfo['name']));
-		$commentstat['pendingcomments'] = pnModAPIFunc('EZComments', 'user', 'countitems', array('status' => 1, 'modname' => $modinfo['name']));
-		$commentstat['rejectedcomments'] = pnModAPIFunc('EZComments', 'user', 'countitems', array('status' => 2, 'modname' => $modinfo['name']));
+		$commentstat['modid'] = pnModGetIDFromName($mod);
+		$commentstat['approvedcomments'] = pnModAPIFunc('EZComments', 'user', 'countitems', array('status' => 0, 'mod' => $modinfo['name']));
+		$commentstat['pendingcomments'] = pnModAPIFunc('EZComments', 'user', 'countitems', array('status' => 1, 'mod' => $modinfo['name']));
+		$commentstat['rejectedcomments'] = pnModAPIFunc('EZComments', 'user', 'countitems', array('status' => 2, 'mod' => $modinfo['name']));
 		$commentstat['totalcomments'] = $commentstat['approvedcomments'] + $commentstat['pendingcomments'] + $commentstat['rejectedcomments'];
 		$commentstats[] = $commentstat;
 	}
@@ -806,7 +806,7 @@ function EZComments_admin_modulestats()
     } 
 
 	// get our input
-	$modname = pnVarCleanFromInput('mod');
+	$mod = pnVarCleanFromInput('mod');
 
     // Create output object
     $pnRender =& new pnRender('EZComments');
@@ -818,10 +818,10 @@ function EZComments_admin_modulestats()
     $pnRender->assign(pnModGetVar('EZComments'));
 
 	// get a list of comments
-	$modulecomments = pnModAPIFunc('EZComments', 'user', 'getallbymodule', array('modname' => $modname));
+	$modulecomments = pnModAPIFunc('EZComments', 'user', 'getallbymodule', array('mod' => $mod));
 
 	// assign the module info
-	$modid = pnModGetIDFromName($modname);
+	$modid = pnModGetIDFromName($mod);
 	$pnRender->assign('modid', $modid);
 	$pnRender->assign(pnModGetInfo($modid));
 
@@ -829,9 +829,9 @@ function EZComments_admin_modulestats()
 	$commentstats = array();
 	foreach ($modulecomments as $modulecomment) {
 		$commentstat = $modulecomment;
-		$commentstat['approvedcomments'] = pnModAPIFunc('EZComments', 'user', 'countitems', array('status' => 0, 'modname' => $modname, 'objectid' => $modulecomment['objectid']));
-		$commentstat['pendingcomments'] = pnModAPIFunc('EZComments', 'user', 'countitems', array('status' => 1, 'modname' => $modname, 'objectid' => $modulecomment['objectid']));
-		$commentstat['rejectedcomments'] = pnModAPIFunc('EZComments', 'user', 'countitems', array('status' => 2, 'modname' => $modname, 'objectid' => $modulecomment['objectid']));
+		$commentstat['approvedcomments'] = pnModAPIFunc('EZComments', 'user', 'countitems', array('status' => 0, 'mod' => $mod, 'objectid' => $modulecomment['objectid']));
+		$commentstat['pendingcomments'] = pnModAPIFunc('EZComments', 'user', 'countitems', array('status' => 1, 'mod' => $mod, 'objectid' => $modulecomment['objectid']));
+		$commentstat['rejectedcomments'] = pnModAPIFunc('EZComments', 'user', 'countitems', array('status' => 2, 'mod' => $mod, 'objectid' => $modulecomment['objectid']));
 		$commentstat['totalcomments'] = $modulecomment['count'];
 		$commentstats[] = $commentstat;
 	}
@@ -860,7 +860,7 @@ function EZComments_admin_deletemodule($args)
     extract($args);
 
     // Security check
-    if (!pnSecAuthAction(0, 'EZComments::', "$modname::", ACCESS_DELETE)) {
+    if (!pnSecAuthAction(0, 'EZComments::', "$mod::", ACCESS_DELETE)) {
         return pnVarPrepHTMLDisplay(_MODULENOAUTH);
     }
 
@@ -921,7 +921,7 @@ function EZComments_admin_deletemodule($args)
 function EZComments_admin_deleteitem($args)
 {
     // Get parameters from whatever input we need. 
-    list($modname,
+    list($mod,
 		 $objectid,
          $confirmation) = pnVarCleanFromInput('mod',
 											  'objectid',
@@ -931,19 +931,19 @@ function EZComments_admin_deleteitem($args)
     extract($args);
 
 	// input check
-	if (!isset($modname) || !is_string($modname) || !isset($objectid) || !is_numeric($objectid)) {
+	if (!isset($mod) || !is_string($mod) || !isset($objectid) || !is_numeric($objectid)) {
 		pnSessionSetVar('errormsg', _MODARGSERROR);
 		return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
 	}
 
     // Security check
-    if (!pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:", ACCESS_DELETE)) {
+    if (!pnSecAuthAction(0, 'EZComments::', "$mod:$objectid:", ACCESS_DELETE)) {
         return pnVarPrepHTMLDisplay(_MODULENOAUTH);
     }
 
 	// get our module info
-	if (!empty($modname)) {
-		$modinfo =  pnModGetInfo(pnModGetIDFromName($modname));
+	if (!empty($mod)) {
+		$modinfo =  pnModGetInfo(pnModGetIDFromName($mod));
 	}
 
     // Check for confirmation.
@@ -977,7 +977,7 @@ function EZComments_admin_deleteitem($args)
 	// note: the api call is a little different here since we'll really calling a hook function that will 
 	// normally be executed when a module is deleted. The extra nesting of the modname inside an extrainfo
 	// array reflects this
-    if (pnModAPIFunc('EZComments', 'admin', 'deletebyitem', array('modname' => $modinfo['name'], 'objectid' => $objectid))) {
+    if (pnModAPIFunc('EZComments', 'admin', 'deletebyitem', array('mod' => $modinfo['name'], 'objectid' => $objectid))) {
         // Success
         pnSessionSetVar('statusmsg', pnVarPrepHTMLDisplay(_DELETESUCCEDED));
     }

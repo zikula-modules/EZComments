@@ -99,7 +99,7 @@ function EZComments_migrateapi_pnFlashGames()
 	    $id = pnModAPIFunc('EZComments',
             			   'user',
         	    		   'create',
-        		    	   array('modname'  => 'pnFlashGames',
+        		    	   array('mod'  => 'pnFlashGames',
       	        	    		 'objectid' => pnVarPrepForStore($gid),
       			            	 'url'	    => 'index.php?module=pnFlashGames&func=display&id=' . $gid,
               				     'comment'  => $comment,

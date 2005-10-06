@@ -61,11 +61,11 @@ function EZComments_user_main($args)
 function EZComments_user_view($args)
 {
     // work out the input from the hook
-    $modname = pnModGetName();
+    $mod = pnModGetName();
     $objectid = $args['objectid'];
 
     // security check
-    if (!pnSecAuthAction(0, 'EZComments::', "$modname:$objectid: ", ACCESS_OVERVIEW)) {
+    if (!pnSecAuthAction(0, 'EZComments::', "$mod:$objectid: ", ACCESS_OVERVIEW)) {
         return _EZCOMMENTS_NOAUTH;
     }
 
@@ -81,7 +81,7 @@ function EZComments_user_view($args)
     $items = pnModAPIFunc('EZComments',
                           'user',
                           'getall',
-                           compact('modname', 'objectid','sortorder','status'));
+                           compact('mod', 'objectid','sortorder','status'));
 
     if ($items === false) {
         return _EZCOMMENTS_FAILED;
@@ -97,7 +97,7 @@ function EZComments_user_view($args)
 
     $pnRender->assign('comments',   $comments);
     $pnRender->assign('order',      $EZComments_order);
-    $pnRender->assign('allowadd',   pnSecAuthAction(0, 'EZComments::', "$modname:$objectid: ", ACCESS_COMMENT));
+    $pnRender->assign('allowadd',   pnSecAuthAction(0, 'EZComments::', "$mod:$objectid: ", ACCESS_COMMENT));
     $pnRender->assign('loggedin',   pnUserLoggedIn());
     if (!is_array($args['extrainfo'])) {
         $pnRender->assign('redirect',   $args['extrainfo']);
@@ -165,7 +165,7 @@ function EZComments_user_comment($args)
     $items = pnModAPIFunc('EZComments',
                           'user',
                           'getall',
-                           array('modname'  => $EZComments_modname,
+                           array('mod'  => $EZComments_modname,
                                  'objectid' => $EZComments_objectid));
 
     if ($items === false) {
@@ -184,7 +184,7 @@ function EZComments_user_comment($args)
     $pnRender->assign('addurl',   pnModURL('EZComments', 'user', 'create'));
     $pnRender->assign('loggedin', pnUserLoggedIn());
     $pnRender->assign('redirect', $EZComments_redirect);
-    $pnRender->assign('modname',  pnVarPrepForDisplay($EZComments_modname));
+    $pnRender->assign('mod',  pnVarPrepForDisplay($EZComments_modname));
     $pnRender->assign('objectid', pnVarPrepForDisplay($EZComments_objectid));
     $pnRender->assign('subject',  pnVarPrepForDisplay($EZComments_subject));
     $pnRender->assign('replyto',  pnVarPrepForDisplay($EZComments_replyto));
@@ -267,7 +267,7 @@ function EZComments_user_create($args)
     $id = pnModAPIFunc('EZComments',
                        'user',
                        'create',
-                       array('modname'  => $EZComments_modname,
+                       array('mod'  => $EZComments_modname,
                              'objectid' => $EZComments_objectid,
                              'url'      => $EZComments_redirect,
                              'comment'  => $EZComments_comment,

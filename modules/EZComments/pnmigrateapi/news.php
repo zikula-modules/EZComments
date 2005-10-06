@@ -92,7 +92,7 @@ function EZComments_migrateapi_news()
         $id = pnModAPIFunc('EZComments',
                            'user',
                            'create',
-                           array('modname'  => 'News',
+                           array('mod'  => 'News',
                                    'objectid' => pnVarPrepForStore($sid),
                                    'url'        => 'index.php?name=News&file=article&sid=' . $sid,
                                    'comment'  => $comment,

@@ -97,8 +97,8 @@ function EZComments_EZCommentsblock_display($blockinfo)
     } 
 
     $options = array('numitems'   => $numentries);
-    if (isset($modname) && $modname != '*') {
-        $options['modname'] = $modname;
+    if (isset($mod) && $mod != '*') {
+        $options['mod'] = $mod;
     }
     
     // get the comments
@@ -163,11 +163,11 @@ function EZComments_EZCommentsblock_update($blockinfo)
     list ($vars['numentries'], 
           $vars['showusername'], 
           $vars['linkusername'], 
-          $vars['modname'], 
+          $vars['mod'], 
           $vars['showdate']) = pnVarCleanFromInput('numentries', 
                                                    'showusername', 
                                                    'linkusername', 
-                                                   'modname',
+                                                   'mod',
                                                    'showdate'); 
     // write back the new contents
     $blockinfo['content'] = pnBlockVarsToContent($vars); 

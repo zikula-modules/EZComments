@@ -118,7 +118,7 @@ function EZComments_adminapi_deleteall($args)
  *
  * @author Timo (Numerobis)
  * @since 0.3
- * @param $args[module] the module for which to delete for
+ * @param $args[mod] the module for which to delete for
  * @return boolean sucess status
  **/
 function EZComments_adminapi_deletebyitem($args)
@@ -126,14 +126,14 @@ function EZComments_adminapi_deletebyitem($args)
     if (!isset($args['objectid'])) {
         return false;
     } 
-	if (!isset($args['modname'])) {
-	    $modname = pnModGetName();
+	if (!isset($args['mod'])) {
+	    $mod = pnModGetName();
 	} else {
-		$modname = $args['modname'];
+		$mod = $args['mod'];
 	}
     $objectid = $args['objectid'];
     
-    if (!pnSecAuthAction(0, 'EZComments::', "$modname:$objectid:", ACCESS_ADMIN)) {
+    if (!pnSecAuthAction(0, 'EZComments::', "$mod:$objectid:", ACCESS_ADMIN)) {
         return false;
     } 
 
@@ -144,7 +144,7 @@ function EZComments_adminapi_deletebyitem($args)
     $column = &$pntable['EZComments_column'];
 
     $sql = "DELETE FROM $table
-            WHERE $column[modname] = '$modname' AND $column[objectid] = '$objectid'";
+            WHERE $column[modname] = '$mod' AND $column[objectid] = '$objectid'";
 
     $result =& $dbconn->Execute($sql);
 
@@ -326,9 +326,9 @@ function EZComments_adminapi_deletemodule($args)
     // When called via hooks, the module name may be empty, so we get it from
     // the current module
     if (empty($extrainfo['module'])) {
-        $modname = pnModGetName();
+        $mod = pnModGetName();
     } else {
-        $modname = $extrainfo['module'];
+        $mod = $extrainfo['module'];
     }
 
     // Database information
@@ -339,7 +339,7 @@ function EZComments_adminapi_deletemodule($args)
 
     // Get items
     $sql = "DELETE FROM $EZCommentstable
-            WHERE $EZCommentscolumn[modname] = '" . pnVarPrepForStore($modname) . "'";
+            WHERE $EZCommentscolumn[modname] = '" . pnVarPrepForStore($mod) . "'";
     $result =& $dbconn->Execute($sql);
 
     return $extrainfo;

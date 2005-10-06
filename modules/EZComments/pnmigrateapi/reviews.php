@@ -87,7 +87,7 @@ function EZComments_migrateapi_reviews()
         $id = pnModAPIFunc('EZComments',
                            'user',
                            'create',
-                           array('modname'  => 'Reviews',
+                           array('mod'  => 'Reviews',
                                    'objectid' => pnVarPrepForStore($rid),
                                    'url'        => 'index.php?name=Reviews&req=showcontent&id=' . $rid,
                                    'comment'  => $comment,
