@@ -248,13 +248,31 @@ function EZComments_userapi_create($args)
     // Get next ID in table
     $nextId = $dbconn->GenId($EZCommentstable);
 
-    $status = _EZComments_userapi_checkcomment(array('subject' => $subject, 'comment' => $comment));
-    if (!isset($status)) return false;
-    if ($status == 2) {
-        pnSessionSetVar('errormsg', _EZCOMMENTS_COMMENTBLACKLISTED);
-        return false;
-    }
-    
+    // check we should moderate the comments
+	$status = 0;
+    if (!pnModGetVar('EZComments', 'moderation')) {
+        $status = 0;
+    } else {
+		// check if we should moderate all comments
+		if (pnModGetVar('EZComments', 'alwaysmoderate')) {
+			$status = 1;
+		} else {
+			$checkvars = array($subject, $comment, $anonname, $anonmail);
+			foreach($checkvars as $checkvar) {
+				$status = _EZComments_userapi_checkcomment($checkvar);
+				if ($status == 2) {
+					pnSessionSetVar('errormsg', _EZCOMMENTS_COMMENTBLACKLISTED);
+					return false;
+				}
+			}
+		}
+		$status = _EZComments_userapi_checksubmitter();
+		if ($status == 2) {
+			pnSessionSetVar('errormsg', _EZCOMMENTS_COMMENTBLACKLISTED);
+			return false;
+		}
+	}    
+
     list($mod, 
          $objectid,
          $url,
@@ -546,41 +564,27 @@ function EZComments_userapi_gettemplates()
 /**
  * work out the status for a comment
  *
- * this function checks the subject and text of a comment against 
+ * this function checks a piece of textagainst 
  * the defined moderation rules and returns the an appropriate status
  *
- * @param  subject string the subject of the comment
- * @param  comment string the body of the comment
+ * @param  var string to check
  * @author Mark West
  * @access prviate
  * @return mixed int 1 to require moderation, 0 for instant submission, 2 for discarding the comment, void error
  */
-function _EZComments_userapi_checkcomment($args)
+function _EZComments_userapi_checkcomment($var)
 {
-    extract($args);
-
-    if (!isset($subject) && !isset($comment)) {
+    if (!isset($var)) {
         pnSessionSetVar('errormsg', _MODARGSERROR);
         return;
     }
-
-    // check we should moderate the comments
-    if (!pnModGetVar('EZComments', 'moderation')) {
-        return 0;
-    }
-    
-    // check if we should moderate all comments
-    if (pnModGetVar('EZComments', 'alwaysmoderate')) {
-        return 1;
-    } 
 
     // check blacklisted words - exit silently if found
     $blacklistedwords = explode("\n", pnModGetVar('EZComments', 'blacklist'));
     foreach($blacklistedwords as $blacklistedword) {
         $blacklistedword = trim($blacklistedword);
         if (empty($blacklistedword)) continue;
-        if (stristr($comment, $blacklistedword)) return 2;
-        if (stristr($subject, $blacklistedword)) return 2;
+        if (stristr($var, $blacklistedword)) return 2;
     }
 
     // check words to trigger a moderated comment
@@ -588,13 +592,28 @@ function _EZComments_userapi_checkcomment($args)
     foreach($modlistedwords as $modlistedword) {
         $modlistedword = trim($modlistedword);
         if (empty($modlistedword)) continue;
-        if (stristr($comment, $modlistedword)) return 1;
-        if (stristr($subject, $modlistedword)) return 1;
+        if (stristr($var, $modlistedword)) return 1;
     }
 
     // check link count
-    if (count(explode('http:', $comment))-1 >= pnModGetVar('EZComments', 'modlinkcount')) return 1;
-    
+    if (count(explode('http:', $var))-1 >= pnModGetVar('EZComments', 'modlinkcount')) return 1;
+
+	// comment passed
+    return 0;
+}
+
+/**
+ * work out the status for a comment
+ *
+ * this function checks for blacklisted proxies and if the user
+ * has already commented
+ *
+ * @author Mark West
+ * @access prviate
+ * @return mixed int 1 to require moderation, 0 for instant submission, 2 for discarding the comment, void error
+ */
+function _EZComments_userapi_checksubmitter()
+{
     // check for open proxies
     // credit to wordpress for this logic function wp_proxy_check()
     $ipnum = pnServerGetVar('REMOTE_ADDR');
