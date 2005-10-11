@@ -264,6 +264,10 @@ function EZComments_user_create($args)
         $EZComments_anonmail = '';
     }
 
+    // decoding the URL. Credits to tmyhre for fixing.
+    $EZComments_redirect = rawurldecode($EZComments_redirect);
+    $EZComments_redirect = str_replace('&amp;', '&', $EZComments_redirect);
+
     $id = pnModAPIFunc('EZComments',
                        'user',
                        'create',
@@ -276,10 +280,6 @@ function EZComments_user_create($args)
                              'uid'      => pnUserGetVar('uid'),
                              'anonname' => $EZComments_anonname,
                              'anonmail' => $EZComments_anonmail));
-
-    // decoding the URL. Credits to tmyhre for fixing.
-    $EZComments_redirect = rawurldecode($EZComments_redirect);
-    $EZComments_redirect = str_replace('&amp;', '&', $EZComments_redirect);
 
     return pnRedirect($EZComments_redirect);
 } 
