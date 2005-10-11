@@ -23,9 +23,8 @@
 <!--[* ---------------------------------------------------------------------- *]-->
 
 
-<!--[assign var="redirect"  value=$redirect|rawurlencode]-->
-<!--[pnmodgetname assign=modname]-->
-
+<!--[assign var="redirect"   value=$redirect|rawurlencode]-->
+<!--[pnmodgetname assign="mod"]-->
 <!--[*  Order the comments. This is done by the module. *]-->
 
 <div class="ezcomments">
@@ -56,7 +55,7 @@
     <!--[*  We assign these URLS here to keep the template easier to read *]-->
     <!--[assign var="url_userinfo" value="user.php?op=userinfo&module=User&uname=`$comments[comments].uname`"]-->
     <!--[pnmodurl modname=Messages func=compose uname=$comments[comments].uname assign=url_message]-->
-    <!--[pnmodurl modname=EZComments func=comment EZComments_redirect=$redirect EZComments_modname=$modname EZComments_objectid=$objectid EZComments_replyto=$comments[comments].id EZComments_template=$template assign=url_comment]-->
+    <!--[pnmodurl modname=EZComments func=comment EZComments_redirect=$redirect EZComments_modname=$mod EZComments_objectid=$objectid EZComments_replyto=$comments[comments].id EZComments_template=$template assign=url_comment]-->
     <!--[pnmodurl modname=EZComments type=admin func=delete redirect=$redirect id=$comments[comments].id assign=url_del]-->
       <a id="comment<!--[$comments[comments].id]-->"></a>
       <div style="width:99%; background-color:<!--[$bgcolor1]-->; padding:4px;">
@@ -91,7 +90,7 @@
     <div>
       <input type="hidden" name="authid" id="authid" value="<!--[pnsecgenauthkey module=EZComments]-->" /> 
       <input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" />
-      <input type="hidden" name="EZComments_modname"  id="EZComments_modname"  value="<!--[$modname|pnvarprepfordisplay]-->"  />
+      <input type="hidden" name="EZComments_modname" id="EZComments_modname" value="<!--[$mod|pnvarprepfordisplay]-->" />
       <input type="hidden" name="EZComments_objectid" id="EZComments_objectid" value="<!--[$objectid|pnvarprepfordisplay]-->" /> 
       <input type="hidden" name="EZComments_template" id="EZComments_template" value="<!--[$template|pnvarprepfordisplay]-->" /> 
       <input type="submit" value="<!--[pnml name=_EZCOMMENTS_COMMENT_ADD]-->" />
