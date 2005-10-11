@@ -2,9 +2,9 @@
 <!--[foreach from=$comments item=comment]-->
 	<li>
 		<!--[if $comment.subject neq '']-->
-			<a href="<!--[$comment.url|pnvarprepfordisplay]-->"><!--[$comment.subject]--></a>
+			<a href="<!--[$comment.url|pnvarprepfordisplay]-->#comment<!--[$comment.id|pnvarprepfordisplay]-->"><!--[$comment.subject]--></a>
 		<!--[else]-->
-			<a href="<!--[$comment.url|pnvarprepfordisplay]-->"><!--[$comment.comment|truncate:30]--></a>
+			<a href="<!--[$comment.url|pnvarprepfordisplay]-->#comment<!--[$comment.id|pnvarprepfordisplay]-->"><!--[$comment.comment|truncate:30]--></a>
 		<!--[/if]-->
 		<!--[if $showusername]-->
 			<!--[pnml name=_BY]-->
