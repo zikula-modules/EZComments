@@ -42,7 +42,6 @@ define('_EZCOMMENTS_LASTCOMMENTS',          'Die letzten Kommentare');
 define('_EZCOMMENTS_USERNAME',              'Benutzer');
 define('_EZCOMMENTS_MODULE',                'Modul');
 define('_EZCOMMENTS_TEMPLATE',              'Layout');
-define('_EZCOMMENTS_DELETESELECTED',        'Gewählte Kommentare löschen');
 
 define('_EZCOMMENTS_CLEANUP_NOTHINGTODO',   'Es gibt keine verwaisten Kommentare');
 define('_EZCOMMENTS_CLEANUP_GOBACK',        'Zurück');
@@ -116,6 +115,7 @@ define('_EZCOMMENTS_ALWAYSMODERERATE',      'Nur moderiert freigeben');
 define('_EZCOMMENTS_HELDFORMODERATION',     'Der Kommentar wird so bald wie möglich freigeschaltet. Vielen Dank');
 define('_EZCOMMENTS_COMMENTBLACKLISTED',    'Der Kommentar wurde aufgrund inhaltlicher Mängel nicht freigeschaltet');
 define('_EZCOMMENTS_PROXYBLACKLIST',        'Kommentare, die über unsichere Proxies abgegeben werden, ablehnen');
+define('_EZCOMMENTS_DONTMODERATEIFCOMMENTED', 'Benutzer, die bereits Kommentare abgegeben haben, nicht moderieren');
 
 // comment statuses
 define('_EZCOMMENTS_APPROVED',              'freigeschaltet');
@@ -144,5 +144,36 @@ define('_EZCOMMENTS_LINKUSERNAME',          'Benutzername mit Link zum Profil ve
 define('_EZCOMMENTS_SHOWDATE',              'Datum des Kommentars anzeigen?');
 define('_EZCOMMENTS_SELECT_MODULE',         'Kommentare für das folgende Modul anzeigen');
 define('_EZCOMMENTS_ALLMODULES',            'Alle');
+
+// ip address logging
+define('_EZCOMMENTS_IPADDR',                'IP-Adressen');
+define('_EZCOMMENTS_LOGIPADDR',             'IP-Adressen protokollieren');
+define('_EZCOMMENTS_IPADDRNOTLOGGED',       'IP-Adressen nicht protokolliert');
+
+// multiple comment processing
+define('_EZCOMMENTSWITHSELECTED',            'Die ausgewählten Kommentare');
+define('_EZCOMMENTS_APPROVE',                'freischalten');
+define('_EZCOMMENTS_REJECT',                 'ablehnen');
+define('_EZCOMMENTS_HOLD',                   'auf "wartend" setzen');
+
+// comment stats
+define('_EZCOMMENTS_STATS',                  'Kommentarstatistiken');
+define('_EZCOMMENTS_TOTAL',                  'Gesamtanzahl');
+define('_EZCOMMENTS_ITEM',                   'Element-ID');
+define('_EZCOMMENTS_CONFIRMDELETEMODULE',    'Die Löschung aller zum Modul %m% gehörigen Kommentaren bestätigen');
+define('_EZCOMMENTS_CANCELDELETEMODULE',     'Die Löschung aller zum Modul %m% gehörigen Kommentaren abbrechen');
+define('_EZCOMMENTS_CONFIRMDELETEITEM',      'Die Löschung aller zum Modul %m%, Element %o% gehörigen Kommentaren bestätigen');
+define('_EZCOMMENTS_CANCELDELETEITEM',       'Die Löschung aller zum Modul %m%, Element %o% gehörigen Kommentaren abbrechen');
+
+// comment typing
+define('_EZCOMMENTS_TYPE',                    'Kommentartyp');
+
+// comment feeds
+define('_EZCOMMENTS_FEEDS',	                  'Feeds');
+define('_EZCOMMENTS_FEEDTYPE',                'Art des Feeds');
+define('_EZCOMMENTS_FEEDCOUNT',               'Anzahl der Kommentare im Feed');
+define('_EZCOMMENTS_ATOM',                    'Atom 0.3');
+define('_EZCOMMENTS_RSS',                     'RSS 2.0');
+define('_EZCOMMENTS_FEEDNOTE',                'Hinweis: Sowohl der Typ des Feeds als auch die Anzahl der angezeigten Kommentare können überschrieben werden, indem die Parameter feedtype und feedcount an die URL des Feeds angehängt werden.');
 
 ?>
