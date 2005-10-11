@@ -375,7 +375,7 @@ function EZComments_user_feed()
 	list($feedcount, $feedtype) = pnVarCleanFromInput('feedcount', 'feedtype');
 
 	// check our input
-	if (!isset($feedcount) && !is_numeric($feedcount) && $feedcount < 1 && $feedcount > 999) {
+	if (!isset($feedcount) && !is_numeric($feedcount) && ($feedcount < 1 || $feedcount > 999)) {
 		$feedcount = pnModGetVar('EZcomments', 'feedcount');
 	}
 	if (!isset($feedtype) && !is_string($feedtype) && ($feedtype !== 'rss' || $feedtype !== 'atom')) {
