@@ -96,6 +96,7 @@ function EZComments_user_view($args)
     $pnRender->caching=false;
 
     $pnRender->assign('comments',   $comments);
+	$pnRender->assign('commentcount', count($comments));
     $pnRender->assign('order',      $EZComments_order);
     $pnRender->assign('allowadd',   pnSecAuthAction(0, 'EZComments::', "$mod:$objectid: ", ACCESS_COMMENT));
     $pnRender->assign('loggedin',   pnUserLoggedIn());
