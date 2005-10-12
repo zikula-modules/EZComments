@@ -84,18 +84,18 @@ function search_ezcomments()
     $words = explode(' ', $q);
 
     // Let the API search
-    $items = pnModAPIFunc('EZComments', 
-                          'user', 
-                          'getall', 
-                          array('search'   => compact('words', 'bool')));
+    $comments = pnModAPIFunc('EZComments', 
+                             'user', 
+                             'getall', 
+                             array('search' => compact('words', 'bool')));
 
-    if (empty($items)) {
+    if (empty($comments)) {
         return _EZCOMMENTS_NOCOMMENTSFOUND . '<br /><br /><br />';
     }
 
     $pnRender = &new pnRender('EZComments');
     $pnRender->caching = false;
-    $pnRender->assign('items', $items);
+    $pnRender->assign('comments', $comments);
     return $pnRender->fetch('ezcomments_search_results.htm');
 } 
 ?>

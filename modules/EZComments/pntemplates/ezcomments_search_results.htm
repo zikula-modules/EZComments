@@ -21,16 +21,16 @@
 <!--[* Presentation of the search results                                     *]-->
 <!--[* ---------------------------------------------------------------------- *]-->
 
-<!--[pnml name='_EZCOMMENTS']-->: <!--[$items|@count]--> <!--[pnml name='_SEARCHRESULTS']--> 
+<!--[pnml name="_EZCOMMENTS"]-->: <!--[$comments|@count]--> <!--[pnml name="_SEARCHRESULTS"]--> 
 <ul>
-<!--[foreach from=$items item=item]-->
+<!--[foreach from=$comments item=comment]-->
   <li>
-    <a href="<!--[$item.url|pnvarprepfordisplay]-->#comment<!--[$item.id|pnvarprepfordisplay]-->"><!--[$item.subject|pnvarprepfordisplay]--></a>
+    <a href="<!--[$comment.url|pnvarprepfordisplay]-->#comment<!--[$comment.id|pnvarprepfordisplay]-->"><!--[$comment.subject|pnvarprepfordisplay]--></a>
     <br />
-    <!--[$item.comment|pnvarprepfordisplay]-->
+    <!--[$comment.comment|pnvarprepfordisplay]-->
   </li>
 <!--[/foreach]-->
 </ul>
 <br />
 <br />
-<br />
+
