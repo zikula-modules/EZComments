@@ -372,20 +372,28 @@ function EZComments_displayChildren($comments, $id, $level)
 */
 function EZComments_user_feed()
 {
-	list($feedcount, $feedtype) = pnVarCleanFromInput('feedcount', 'feedtype');
+	list($feedcount, $feedtype, $mod, $objectid) = pnVarCleanFromInput('feedcount', 'feedtype', 'mod', 'objectid');
 
 	// check our input
-	if (!isset($feedcount) && !is_numeric($feedcount) && ($feedcount < 1 || $feedcount > 999)) {
+	if (!isset($feedcount) || !is_numeric($feedcount) || $feedcount < 1 || $feedcount > 999) {
 		$feedcount = pnModGetVar('EZcomments', 'feedcount');
 	}
-	if (!isset($feedtype) && !is_string($feedtype) && ($feedtype !== 'rss' || $feedtype !== 'atom')) {
+	if (!isset($feedtype) || !is_string($feedtype) || $feedtype !== 'rss' || $feedtype !== 'atom') {
 		$feedtype = pnModGetVar('EZComments', 'feedtype');
 	}
+	if (!isset($mod) || !is_string($mod) || !pnModAvailable($mod)) {
+		$mod = null;
+	}
+	if (!isset($objectid) || !is_string($objectid)) {
+		$objectid = null;
+	}
+
     // create the pnRender object
     $pnRender =& new pnRender('EZComments');
 
 	// get the last x comments
-	$pnRender->assign('comments', pnModAPIFunc('EZComments', 'user', 'getall', array('numitems' => $feedcount, 'sortorder' => 'DESC')));
+	$pnRender->assign('comments', pnModAPIFunc('EZComments', 'user', 'getall', 
+		array('numitems' => $feedcount, 'sortorder' => 'DESC', 'mod' => $mod, 'objectid' => $objectid)));
 
 	// display the feed and notify the core that we're done
 	$pnRender->display("ezcomments_user_$feedtype.htm");
