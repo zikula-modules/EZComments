@@ -22,7 +22,7 @@ define('_EZCOMMENTS',                       'Comments');
 define('_EZCOMMENTS_NOAUTH',                'No access to comments.');
 define('_EZCOMMENTS_ONLYREG',               'Only logged in users are allowed to comment.');
 define('_EZCOMMENTS_GOTOREG',               'register/log in');
-define('_EZCOMMENTS_ADD',                   'Add');
+define('_EZCOMMENTS_ADD',                   'Submit Comment');
 define('_EZCOMMENTS_DEL',                   'Delete this comment');
 define('_EZCOMMENTS_COMMENT_ADD',           'Add a new Comment');
 define('_EZCOMMENTS_COMMENT_ANSWER',        'Answer');
@@ -93,7 +93,8 @@ define('_EZCOMMENTS_THREADED',              'Threaded');
 
 define('_EZCOMMENTS_ALLOWANONUSERSETINFO',  'Allow unregistered users to set user information');
 define('_EZCOMMENTS_ANONNAME',              'Name');
-define('_EZCOMMENTS_ANONMAIL',              'E-mail address'); 
+define('_EZCOMMENTS_ANONMAIL',              'E-mail address (will not be published)'); 
+define('_EZCOMMENTS_ANONWEBSITE',           'Website'); 
 
 define('_EZCOMMENTS_SEARCH',                'Search comments');
 define('_EZCOMMENTS_NOCOMMENTSFOUND',       'No comments matched your search');
@@ -116,6 +117,7 @@ define('_EZCOMMENTS_HELDFORMODERATION',       'Your comment was held for moderat
 define('_EZCOMMENTS_COMMENTBLACKLISTED',      'Your comment contains unacceptable content and has been rejected');
 define('_EZCOMMENTS_PROXYBLACKLIST',          'Blacklist comments from insecure proxies');
 define('_EZCOMMENTS_DONTMODERATEIFCOMMENTED', 'Don\'t require moderation for comments from users who\'ve already commented');
+define('_EZCOMMENTS_MODERATIONON',            '<strong>Please note:</strong> Comment moderation is enabled and may delay your comment. There is no need to resubmit your comment.');
 
 // comment statuses
 define('_EZCOMMENTS_APPROVED',              'Approved');
@@ -175,4 +177,10 @@ define('_EZCOMMENTS_FEEDCOUNT',               'Number of items to display in fee
 define('_EZCOMMENTS_ATOM',                    'Atom 0.3');
 define('_EZCOMMENTS_RSS',                     'RSS 2.0');
 define('_EZCOMMENTS_FEEDNOTE',                'Note: both the feed type and feed count can be overriden using feedtype and feedcount parameters appended to the feed URL');
+
+// some other users phrases in comment templates
+define('_EZCOMMENTS_COMMENTSOFAR',            'Comments so far');
+define('_EZCOMMENTS_WROTEON',                 'wrote on');
+define('_EZCOMMENTS_AT',                      'at');
+define('_EZCOMMENTS_LEAVEACOMMENT',           'Leave a Comment');
 ?>
