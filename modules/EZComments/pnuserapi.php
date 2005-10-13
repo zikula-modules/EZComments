@@ -141,7 +141,8 @@ function EZComments_userapi_getall($args)
                    $EZCommentscolumn[anonmail],
                    $EZCommentscolumn[status],
                    $EZCommentscolumn[ipaddr],
-                   $EZCommentscolumn[type]
+                   $EZCommentscolumn[type],
+                   $EZCommentscolumn[anonwebsite]
             FROM $EZCommentstable
             $wherestring $orderstring $orderby";
     $result = $dbconn->SelectLimit($sql, $numitems, $startnum-1);            
@@ -157,7 +158,7 @@ function EZComments_userapi_getall($args)
     // individually to ensure that the user is allowed access to it before it
     // is added to the results array
     for (; !$result->EOF; $result->MoveNext()) {
-        list($id, $mod, $objectid, $url, $date, $uid, $comment, $subject, $replyto, $anonname, $anonmail, $status, $ipaddr, $type) = $result->fields;
+        list($id, $mod, $objectid, $url, $date, $uid, $comment, $subject, $replyto, $anonname, $anonmail, $status, $ipaddr, $type, $anonwebsite) = $result->fields;
         if (pnSecAuthAction(0, 'EZComments::', "$mod:$objectid:$id", ACCESS_READ)) {
             if ($uid == 1 && empty($anonname)) {
                 $anonname = pnConfigGetVar('anonymous');
@@ -175,7 +176,8 @@ function EZComments_userapi_getall($args)
                                'anonmail',
                                'status',
 							   'ipaddr',
-							   'type');
+							   'type',
+							   'anonwebsite');
         } 
     } 
     $result->Close();
@@ -257,7 +259,7 @@ function EZComments_userapi_create($args)
 		if (pnModGetVar('EZComments', 'alwaysmoderate')) {
 			$status = 1;
 		} else {
-			$checkvars = array($subject, $comment, $anonname, $anonmail);
+			$checkvars = array($subject, $comment, $anonname, $anonmail, $anonwebsite);
 			foreach($checkvars as $checkvar) {
 				$status = _EZComments_userapi_checkcomment($checkvar);
 				if ($status == 2) {
@@ -284,7 +286,8 @@ function EZComments_userapi_create($args)
          $anonmail,
          $status,
 		 $ipaddr,
-		 $type    ) = pnVarPrepForStore($mod, 
+		 $type,
+		 $anonwebsite) = pnVarPrepForStore($mod, 
                                         $objectid, 
                                         $url,
                                         $uid,
@@ -295,7 +298,8 @@ function EZComments_userapi_create($args)
                                         $anonmail,
                                         $status,
 										$ipaddr,
-                                        $type);
+                                        $type,
+										$anonwebsite);
                                        
     // Add item
     $sql = "INSERT INTO $EZCommentstable (
@@ -312,7 +316,8 @@ function EZComments_userapi_create($args)
               $EZCommentscolumn[anonmail],
               $EZCommentscolumn[status],
 			  $EZCommentscolumn[ipaddr],
-			  $EZCommentscolumn[type])
+			  $EZCommentscolumn[type],
+			  $EZCommentscolumn[anonwebsite])
             VALUES (
               '$nextId',
               '$mod',
@@ -327,7 +332,8 @@ function EZComments_userapi_create($args)
               '$anonmail',
               '$status',
 			  '$ipaddr',
-			  '$type')";
+			  '$type',
+			  '$anonwebsite')";
     $dbconn->Execute($sql); 
 
     // Check for an error with the database code

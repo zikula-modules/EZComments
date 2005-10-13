@@ -181,6 +181,7 @@ function EZComments_user_comment($args)
     $pnRender->caching=false;
 
     $pnRender->assign('comments', $comments);
+	$pnRender->assign('commentcount', count($comments));
     $pnRender->assign('allowadd', pnSecAuthAction(0, 'EZComments::', "$EZComments_modname:$EZComments_objectid: ", ACCESS_COMMENT));
     $pnRender->assign('addurl',   pnModURL('EZComments', 'user', 'create'));
     $pnRender->assign('loggedin', pnUserLoggedIn());
@@ -259,10 +260,11 @@ function EZComments_user_create($args)
     // check if the user logged in and if we're allowing anon users to 
     // set a name and e-mail address
     if (!pnUserLoggedIn()) {
-        list($EZComments_anonname, $EZComments_anonmail) = pnVarCleanFromInput('EZComments_anonname', 'EZComments_anonmail');
+        list($EZComments_anonname, $EZComments_anonmail, $EZComments_anonwebsite) = pnVarCleanFromInput('EZComments_anonname', 'EZComments_anonmail', 'EZComments_website');
     } else {
         $EZComments_anonname = '';
         $EZComments_anonmail = '';
+		$EZComments_anonwebsite = '';
     }
 
     // decoding the URL. Credits to tmyhre for fixing.
@@ -272,15 +274,16 @@ function EZComments_user_create($args)
     $id = pnModAPIFunc('EZComments',
                        'user',
                        'create',
-                       array('mod'  => $EZComments_modname,
-                             'objectid' => $EZComments_objectid,
-                             'url'      => $EZComments_redirect,
-                             'comment'  => $EZComments_comment,
-                             'subject'  => $EZComments_subject,
-                             'replyto'  => $EZComments_replyto,
-                             'uid'      => pnUserGetVar('uid'),
-                             'anonname' => $EZComments_anonname,
-                             'anonmail' => $EZComments_anonmail));
+                       array('mod'         => $EZComments_modname,
+                             'objectid'    => $EZComments_objectid,
+                             'url'         => $EZComments_redirect,
+                             'comment'     => $EZComments_comment,
+                             'subject'     => $EZComments_subject,
+                             'replyto'     => $EZComments_replyto,
+                             'uid'         => pnUserGetVar('uid'),
+                             'anonname'    => $EZComments_anonname,
+                             'anonmail'    => $EZComments_anonmail,
+							 'anonwebsite' => $EZComments_anonwebsite));
 
     return pnRedirect($EZComments_redirect);
 } 
@@ -305,6 +308,8 @@ function EZComments_prepareCommentsForDisplay($items)
         if ($item['uid'] > 0) {
             // get the user vars and merge into the comment array
             $userinfo = pnUserGetVars($item['uid']);
+			// the users url will clash with the comment url so lets move it out of the way
+			$userinfo['website'] = $userinfo['url'];
             $comment  = array_merge ($userinfo, $comment);
 
             // work out if the user is online

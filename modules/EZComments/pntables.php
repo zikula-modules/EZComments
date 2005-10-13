@@ -43,20 +43,21 @@ function EZComments_pntables()
     $pntable = array();
     $EZComments = pnConfigGetVar('prefix') . '_ezcomments';
     $pntable['EZComments'] = $EZComments;
-    $pntable['EZComments_column'] = array('id'        => $EZComments . '.id',
-                                          'modname'   => $EZComments . '.modname',
-                                          'objectid'  => $EZComments . '.objectid',
-                                          'url'       => $EZComments . '.url',
-                                          'date'      => $EZComments . '.date',
-                                          'uid'          => $EZComments . '.uid',
-                                          'comment'   => $EZComments . '.comment',
-                                          'subject'   => $EZComments . '.subject',
-                                          'replyto'   => $EZComments . '.replyto',
-                                          'anonname'  => $EZComments . '.anonname',
-                                          'anonmail'  => $EZComments . '.anonmail',
-                                          'status'    => $EZComments . '.status',
-										  'ipaddr'    => $EZComments . '.ipaddr',
-										  'type'      => $EZComments . '.type');
+    $pntable['EZComments_column'] = array('id'          => $EZComments . '.id',
+                                          'modname'     => $EZComments . '.modname',
+                                          'objectid'    => $EZComments . '.objectid',
+                                          'url'         => $EZComments . '.url',
+                                          'date'        => $EZComments . '.date',
+                                          'uid'         => $EZComments . '.uid',
+                                          'comment'     => $EZComments . '.comment',
+                                          'subject'     => $EZComments . '.subject',
+                                          'replyto'     => $EZComments . '.replyto',
+                                          'anonname'    => $EZComments . '.anonname',
+                                          'anonmail'    => $EZComments . '.anonmail',
+                                          'status'      => $EZComments . '.status',
+										  'ipaddr'      => $EZComments . '.ipaddr',
+										  'type'        => $EZComments . '.type',
+										  'anonwebsite' => $EZComments . '.anonwebsite');
     return $pntable;
 }
 

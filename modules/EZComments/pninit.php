@@ -48,20 +48,21 @@ function EZComments_init()
     $EZCommentscolumn = &$pntable['EZComments_column'];
 
     $sql = "CREATE TABLE $EZCommentstable (
-              $EZCommentscolumn[id]        int(11)      NOT NULL auto_increment,
-              $EZCommentscolumn[modname]   varchar(64)  NOT NULL default '',
-              $EZCommentscolumn[objectid]  text         NOT NULL default '',
-              $EZCommentscolumn[url]       text         NOT NULL default '',
-              $EZCommentscolumn[date]      datetime     default NULL,
-              $EZCommentscolumn[uid]       int(11)      default '0',
-              $EZCommentscolumn[comment]   text         NOT NULL,
-              $EZCommentscolumn[subject]   text         NOT NULL default '',
-              $EZCommentscolumn[replyto]   int(11)      NOT NULL default '-1',
-              $EZCommentscolumn[anonname]  varchar(255) NOT NULL default '',
-              $EZCommentscolumn[anonmail]  varchar(255) NOT NULL default '',
-              $EZCommentscolumn[status]    int(4)       NOT NULL default 0,
-              $EZCommentscolumn[ipaddr]    varchar(85)  NOT NULL default '',
-              $EZCommentscolumn[type]      varchar(64)  NOT NULL default '',
+              $EZCommentscolumn[id]           int(11)      NOT NULL auto_increment,
+              $EZCommentscolumn[modname]      varchar(64)  NOT NULL default '',
+              $EZCommentscolumn[objectid]     text         NOT NULL default '',
+              $EZCommentscolumn[url]          text         NOT NULL default '',
+              $EZCommentscolumn[date]         datetime     default NULL,
+              $EZCommentscolumn[uid]          int(11)      default '0',
+              $EZCommentscolumn[comment]      text         NOT NULL,
+              $EZCommentscolumn[subject]      text         NOT NULL default '',
+              $EZCommentscolumn[replyto]      int(11)      NOT NULL default '-1',
+              $EZCommentscolumn[anonname]     varchar(255) NOT NULL default '',
+              $EZCommentscolumn[anonmail]     varchar(255) NOT NULL default '',
+              $EZCommentscolumn[status]       int(4)       NOT NULL default 0,
+              $EZCommentscolumn[ipaddr]       varchar(85)  NOT NULL default '',
+              $EZCommentscolumn[type]         varchar(64)  NOT NULL default '',
+              $EZCommentscolumn[anonwebsite]  varchar(255) NOT NULL default '',
               PRIMARY KEY(id)
               ) COMMENT='Table for EZComments'";
     $dbconn->Execute($sql);
@@ -304,7 +305,19 @@ function EZComments_upgrade($oldversion)
 	if ($oldversion == '1.0') {
 		pnModSetVar('EZComments', 'feedtype', 'rss');
 		pnModSetVar('EZComments', 'feedcount', '10');
+		$oldversion = '1.1';
 	}
+
+    if ($oldversion == '1.1') {
+        // Add additional for unregistered users info
+        $sql = "ALTER TABLE $EZCommentstable 
+                        ADD $EZCommentscolumn[anonwebsite] varchar(255) NOT NULL default ''";
+        $dbconn->Execute($sql);
+        if ($dbconn->ErrorNo() != 0) {
+            pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED5 . ': ' . $dbconn->ErrorMsg());
+            return false;
+        }
+    }
 
     return true;
 } 
