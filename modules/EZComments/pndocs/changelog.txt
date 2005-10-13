@@ -2,6 +2,9 @@ $Id$
 
 
 Changelog
+
+1.3  - Added a pager to the users view of comments
+
 1.2  - Added additional field for anonymous users website
      - Template sets now support thier own images and stylesheets via the ezcommentsimg and ezcommentsstylesheet plugins
 

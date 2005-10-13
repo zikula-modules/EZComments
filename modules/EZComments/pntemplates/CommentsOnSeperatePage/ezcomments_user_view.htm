@@ -59,6 +59,9 @@
       </tr>
     <!--[/section]-->
   </table>
+  <!--[if $enablepager]-->
+	<!--[pager show="page" rowcount=$pager.numitems limit=$pager.itemsperpage posvar=comments_startnum shift=1]-->
+  <!--[/if]-->
 <!--[/if]-->
 <!--[if $allowadd]-->
 	<form action="<!--[pnmodurl modname=EZComments type=user func=comment]-->" method="post">

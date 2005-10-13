@@ -78,7 +78,7 @@ define('_EZCOMMENTS_FROM',  			    'Location');
 define('_EZCOMMENTS_SUBJECT',               'Subject');
 
 define('_EZCOMMENTS_EDIT',                  'Edit Comment');
-define('_EZCOMMENTS_ITEMSPERPAGE',          'Items per page');
+define('_EZCOMMENTS_ITEMSPERPAGE',          'Comments per page (admin view)');
 
 define('_EZCOMMENTS_AUTHOR',                'Author');
 define('_EZCOMMENTS_COMMENT',               'Comment');
@@ -183,4 +183,8 @@ define('_EZCOMMENTS_COMMENTSOFAR',            'Comments so far');
 define('_EZCOMMENTS_WROTEON',                 'wrote on');
 define('_EZCOMMENTS_AT',                      'at');
 define('_EZCOMMENTS_LEAVEACOMMENT',           'Leave a Comment');
+
+// pager defines
+define('_EZCOMMENTS_ENABLEPAGER',             'Enable pager (user view)');
+define('_EZCOMMENTS_COMMENTSPERPAGE',         'Comments per page (user view)');
 ?>

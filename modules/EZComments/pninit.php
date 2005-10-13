@@ -23,7 +23,7 @@
  * @author      Joerg Napp <jnapp@users.sourceforge.net>
  * @author      Mark West <markwest at postnuke dot com>
  * @author      Jean-Michel Vedrine
- * @version     1.2
+ * @version     1.3
  * @link        http://noc.postnuke.com/projects/ezcomments/ Support and documentation
  * @license     http://www.gnu.org/copyleft/gpl.html GNU General Public License
  * @package     Postnuke
@@ -120,6 +120,8 @@ function EZComments_init()
 	pnModSetVar('EZComments', 'dontmoderateifcommented', false);
 	pnModSetVar('EZComments', 'feedtype', 'rss');
 	pnModSetVar('EZComments', 'feedcount', '10');
+	pnModSetVar('EZComments', 'enablepager', false);
+	pnModSetVar('EZComments', 'commentsperpage', '25');
 
     // Initialisation successful
     return true;
@@ -317,7 +319,13 @@ function EZComments_upgrade($oldversion)
             pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED5 . ': ' . $dbconn->ErrorMsg());
             return false;
         }
+		$oldversion = '1.2';
     }
+
+	if ($oldversion == '1.2') {
+		pnModSetVar('EZComments', 'enablepager', false);
+		pnModSetVar('EZComments', 'commentsperpage', '25');
+	}
 
     return true;
 } 

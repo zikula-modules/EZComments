@@ -120,6 +120,9 @@
     <!--[/section]-->
     </tbody>
   </table>
+  <!--[if $enablepager]-->
+	<!--[pager show="page" rowcount=$pager.numitems limit=$pager.itemsperpage posvar=comments_startnum shift=1]-->
+  <!--[/if]-->
 <!--[/if]-->
 
 <!--[if $allowadd]-->

@@ -32,6 +32,14 @@
 			<label for="ezcomments_itemsperpage"><!--[pnml name="_EZCOMMENTS_ITEMSPERPAGE"]--></label>
 			<input id="ezcomments_itemsperpage" name="itemsperpage" type="text" value="<!--[$itemsperpage|pnvarprepfordisplay]-->" />
 		</div>
+		<div class="pn-adminformrow">
+			<label for="ezcomments_enablepager"><!--[pnml name="_EZCOMMENTS_ENABLEPAGER"]--></label>
+			<input id="ezcomments_enablepager" name="enablepager" type="checkbox" <!--[if $enablepager]--> checked="checked"<!--[/if]--> />
+		</div>
+		<div class="pn-adminformrow">
+			<label for="ezcomments_commentsperpage"><!--[pnml name="_EZCOMMENTS_COMMENTSPERPAGE"]--></label>
+			<input id="ezcomments_commentsperpage" name="commentsperpage" type="text" value="<!--[$commentsperpage|pnvarprepfordisplay]-->" />
+		</div>
 	</fieldset>
 	<fieldset>
 		<legend><!--[pnml name=_EZCOMMENTS_NOTIFICATIONSETTINGS]--></legend>

@@ -23,7 +23,7 @@
  * @author      Joerg Napp <jnapp@users.sourceforge.net>
  * @author      Mark West <markwest at postnuke dot com>
  * @author      Jean-Michel Vedrine
- * @version     1.2
+ * @version     1.3
  * @link        http://noc.postnuke.com/projects/ezcomments/ Support and documentation
  * @license     http://www.gnu.org/copyleft/gpl.html GNU General Public License
  * @package     Postnuke
@@ -446,9 +446,11 @@ function EZComments_admin_updateconfig($args)
     } 
 
     list($MailToAdmin, $moderationmail, $template, $itemsperpage, $anonusersinfo, $moderation, $dontmoderateifcommented,
-         $modlinkcount, $modlist, $blacklist, $alwaysmoderate, $proxyblacklist, $logip, $feedtype, $feedcount) =
+         $modlinkcount, $modlist, $blacklist, $alwaysmoderate, $proxyblacklist, $logip, $feedtype, $feedcount, 
+         $enablepager, $commentsperpage) =
         pnVarCleanFromInput('MailToAdmin', 'moderationmail', 'template', 'itemsperpage', 'anonusersinfo', 'moderation', 'dontmoderateifcommented', 
-                            'modlinkcount', 'modlist', 'blacklist', 'alwaysmoderate', 'proxyblacklist', 'logip', 'feedtype', 'feedcount');
+                            'modlinkcount', 'modlist', 'blacklist', 'alwaysmoderate', 'proxyblacklist', 'logip', 'feedtype', 'feedcount', 
+							'enablepager', 'commentsperpage');
     extract($args);
 
     if (!isset($MailToAdmin)) {
@@ -525,6 +527,16 @@ function EZComments_admin_updateconfig($args)
         $feedcount = '10';
     }
     pnModSetVar('EZComments', 'feedcount', $feedcount);
+
+    if (!isset($commentsperpage)) {
+        $commentsperpage = '25';
+    }
+    pnModSetVar('EZComments', 'commentsperpage', $commentsperpage);
+
+    if (!isset($enablepager)) {
+        $enablepager = false;
+    }
+    pnModSetVar('EZComments', 'enablepager', $enablepager);
 
     pnSessionSetVar('statusmsg', _CONFIGUPDATED);
     return pnRedirect(pnModURL('EZComments', 'admin', 'main'));

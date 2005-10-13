@@ -23,7 +23,7 @@
  * @author      Joerg Napp <jnapp@users.sourceforge.net>
  * @author      Mark West <markwest at postnuke dot com>
  * @author      Jean-Michel Vedrine
- * @version     1.2
+ * @version     1.3
  * @link        http://noc.postnuke.com/projects/ezcomments/ Support and documentation
  * @license     http://www.gnu.org/copyleft/gpl.html GNU General Public License
  * @package     Postnuke
@@ -78,17 +78,34 @@ function EZComments_user_view($args)
         $sortorder = 'ASC';
     }
     $status = 0;
+
+	// check if we're using the pager
+	$enablepager = pnModGetVar('EZComments', 'enablepager');
+	if ($enablepager) {
+		$numitems = pnModGetVar('EZComments', 'commentsperpage');
+		$startnum = pnVarCleanFromInput('comments_startnum');
+		if (!isset($startnum) && !is_numeric($startnum)) {
+			$startnum = -1;
+		}
+	} else {
+		$startnum = -1;
+		$numitems = -1;
+	}
     $items = pnModAPIFunc('EZComments',
                           'user',
                           'getall',
-                           compact('mod', 'objectid','sortorder','status'));
+                           compact('mod', 'objectid','sortorder','status','numitems','startnum'));
 
     if ($items === false) {
         return _EZCOMMENTS_FAILED;
     }     
 
     $comments = EZComments_prepareCommentsForDisplay($items);
-
+	if ($enablepager) {
+		$commentcount = pnModAPIFunc('EZComments', 'user', 'countitems', array('mod' => $mod, 'objectid' => $objectid));
+	} else {
+		$commentcount = count($comments);
+	}
     // create the pnRender object
     $pnRender =& new pnRender('EZComments');
 
@@ -96,7 +113,7 @@ function EZComments_user_view($args)
     $pnRender->caching=false;
 
     $pnRender->assign('comments',   $comments);
-	$pnRender->assign('commentcount', count($comments));
+	$pnRender->assign('commentcount', $commentcount);
     $pnRender->assign('order',      $EZComments_order);
     $pnRender->assign('allowadd',   pnSecAuthAction(0, 'EZComments::', "$mod:$objectid: ", ACCESS_COMMENT));
     $pnRender->assign('loggedin',   pnUserLoggedIn());
@@ -109,6 +126,10 @@ function EZComments_user_view($args)
 
     // assign all module vars (they may be useful...)
     $pnRender->assign(pnModGetVar('EZComments'));
+
+	// assign the values for the pager
+	$pnRender->assign('pager', array('numitems'     => $commentcount,
+	                                 'itemsperpage' => $numitems));
 
     // find out which template to use
     $template = pnModGetVar('EZComments', 'template');
@@ -163,44 +184,57 @@ function EZComments_user_comment($args)
         return _EZCOMMENTS_NOAUTH;
     }
 
+	// check if we're using the pager
+	$enablepager = pnModGetVar('EZComments', 'enablepager');
+	if ($enablepager) {
+		$numitems = pnModGetVar('EZComments', 'commentsperpage');
+		$startnum = pnVarCleanFromInput('comments_startnum');
+		if (!isset($startnum) && !is_numeric($startnum)) {
+			$startnum = -1;
+		}
+	} else {
+		$startnum = -1;
+		$numitems = -1;
+	}
     $items = pnModAPIFunc('EZComments',
                           'user',
                           'getall',
-                           array('mod'  => $EZComments_modname,
-                                 'objectid' => $EZComments_objectid));
+                           compact('mod', 'objectid','sortorder','status','numitems','startnum'));
 
     if ($items === false) {
         return _EZCOMMENTS_FAILED;
-    }
+    }     
 
     $comments = EZComments_prepareCommentsForDisplay($items);
+	if ($enablepager) {
+		$commentcount = pnModAPIFunc('EZComments', 'user', 'countitems', array('mod' => $mod, 'objectid' => $objectid));
+	} else {
+		$commentcount = count($comments);
+	}
 
     $pnRender =& new pnRender('EZComments');
 
     // don't use caching (for now...)
     $pnRender->caching=false;
 
-    $pnRender->assign('comments', $comments);
-	$pnRender->assign('commentcount', count($comments));
-    $pnRender->assign('allowadd', pnSecAuthAction(0, 'EZComments::', "$EZComments_modname:$EZComments_objectid: ", ACCESS_COMMENT));
-    $pnRender->assign('addurl',   pnModURL('EZComments', 'user', 'create'));
-    $pnRender->assign('loggedin', pnUserLoggedIn());
-    $pnRender->assign('redirect', $EZComments_redirect);
-    $pnRender->assign('mod',  pnVarPrepForDisplay($EZComments_modname));
-    $pnRender->assign('objectid', pnVarPrepForDisplay($EZComments_objectid));
-    $pnRender->assign('subject',  pnVarPrepForDisplay($EZComments_subject));
-    $pnRender->assign('replyto',  pnVarPrepForDisplay($EZComments_replyto));
+    $pnRender->assign('comments',     $comments);
+	$pnRender->assign('commentcount', $commentcount);
+    $pnRender->assign('order',        $EZComments_order);
+    $pnRender->assign('allowadd',     pnSecAuthAction(0, 'EZComments::', "$EZComments_modname:$EZComments_objectid: ", ACCESS_COMMENT));
+    $pnRender->assign('addurl',       pnModURL('EZComments', 'user', 'create'));
+    $pnRender->assign('loggedin',     pnUserLoggedIn());
+    $pnRender->assign('redirect',     $EZComments_redirect);
+    $pnRender->assign('mod',          pnVarPrepForDisplay($EZComments_modname));
+    $pnRender->assign('objectid',     pnVarPrepForDisplay($EZComments_objectid));
+    $pnRender->assign('subject',      pnVarPrepForDisplay($EZComments_subject));
+    $pnRender->assign('replyto',      pnVarPrepForDisplay($EZComments_replyto));
 
     // assign all module vars (they may be useful...)
     $pnRender->assign(pnModGetVar('EZComments'));
 
-    // check for some useful hooks
-    if (pnModIsHooked('pn_bbcode', 'EZComments')) {
-        $pnRender->assign('bbcode', true);
-    }
-    if (pnModIsHooked('pn_bbsmile', 'EZComments')) {
-        $pnRender->assign('smilies', true);
-    }
+	// assign the values for the pager
+	$pnRender->assign('pager', array('numitems'     => $commentcount,
+	                                 'itemsperpage' => $numitems));
 
     // find out which template to use
     $template = pnModGetVar('EZComments', 'template');
