@@ -93,7 +93,6 @@ function smarty_function_ezcommentsstylesheet($params, &$smarty)
 
         $tag = '<link rel="stylesheet" href="' . $csssrc . '" type="text/css"' . $xhtml . '>';
     }
-echo $tag;
     $GLOBALS['additional_header'][] = $tag;        
 }
 ?>
