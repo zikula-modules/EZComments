@@ -78,7 +78,7 @@ define('_EZCOMMENTS_FROM',                  'Wohnort');
 define('_EZCOMMENTS_SUBJECT',               'Titel');
 
 define('_EZCOMMENTS_EDIT',                  'Kommentar bearbeiten');
-define('_EZCOMMENTS_ITEMSPERPAGE',          'Kommentare pro Seite');
+define('_EZCOMMENTS_ITEMSPERPAGE',          'Kommentare pro Seite (für den Administrator)');
 
 define('_EZCOMMENTS_AUTHOR',                'Autor');
 define('_EZCOMMENTS_COMMENT',               'Kommentar');
@@ -94,6 +94,7 @@ define('_EZCOMMENTS_ORDER',                 'Reihenfolge');
 define('_EZCOMMENTS_ALLOWANONUSERSETINFO',  'Anonyme User dürfen ihre Daten angeben');
 define('_EZCOMMENTS_ANONNAME',              'Name');
 define('_EZCOMMENTS_ANONMAIL',              'E-mail Adresse');
+define('_EZCOMMENTS_ANONWEBSITE',           'Webseite'); 
 
 define('_EZCOMMENTS_SEARCH',                'Kommentare durchsuchen');
 define('_EZCOMMENTS_NOCOMMENTSFOUND',       'Keine passenden Kommentare gefunden');
@@ -116,6 +117,7 @@ define('_EZCOMMENTS_HELDFORMODERATION',     'Der Kommentar wird so bald wie mögl
 define('_EZCOMMENTS_COMMENTBLACKLISTED',    'Der Kommentar wurde aufgrund inhaltlicher Mängel nicht freigeschaltet');
 define('_EZCOMMENTS_PROXYBLACKLIST',        'Kommentare, die über unsichere Proxies abgegeben werden, ablehnen');
 define('_EZCOMMENTS_DONTMODERATEIFCOMMENTED', 'Benutzer, die bereits Kommentare abgegeben haben, nicht moderieren');
+define('_EZCOMMENTS_MODERATIONON',            '<strong>Bitte beachten:</strong> Die Moderation ist eingeschaltet, deshalb erscheint der Kommentar nicht sofort. Dies ist kein Grund, den Kommentar ein weiteres Mal einzureichen.');
 
 // comment statuses
 define('_EZCOMMENTS_APPROVED',              'freigeschaltet');
@@ -176,4 +178,13 @@ define('_EZCOMMENTS_ATOM',                    'Atom 0.3');
 define('_EZCOMMENTS_RSS',                     'RSS 2.0');
 define('_EZCOMMENTS_FEEDNOTE',                'Hinweis: Sowohl der Typ des Feeds als auch die Anzahl der angezeigten Kommentare können überschrieben werden, indem die Parameter feedtype und feedcount an die URL des Feeds angehängt werden.');
 
+// some other users phrases in comment templates
+define('_EZCOMMENTS_COMMENTSOFAR',            'Kommentare derzeit');
+define('_EZCOMMENTS_WROTEON',                 'geschrieben am');
+define('_EZCOMMENTS_AT',                      'um');
+define('_EZCOMMENTS_LEAVEACOMMENT',           'Sie haben die Möglichkeit, einen Kommentar abzugeben');
+
+// pager defines
+define('_EZCOMMENTS_ENABLEPAGER',             'Paginierung einschalten (Benutzersicht)');
+define('_EZCOMMENTS_COMMENTSPERPAGE',         'Kommentare pro Seite (Benutzersicht)');
 ?>
