@@ -1,4 +1,4 @@
-<?php 
+<?php
 // $Id$
 // LICENSE
 // This program is free software; you can redistribute it and/or
@@ -15,4 +15,5 @@
 // ----------------------------------------------------------------------
 
 require_once dirname(__FILE__) . '/' . 'global.php';
+
 ?>
