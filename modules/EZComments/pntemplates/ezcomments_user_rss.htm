@@ -3,7 +3,6 @@
 <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/">
 <channel>
 	<title><!--[pnconfiggetvar name=sitename]--></title>
-	<pubDate><!--[$mostrecentdate]--></pubDate>
 	<link><!--[pngetbaseurl]--></link>
 	<description><!--[pnconfiggetvar name=backend_title]--></description>
 	<language><!--[pnconfiggetvar name=backend_language]--></language>
@@ -17,7 +16,7 @@
 		<item>
 			<title><!--[$comment.subject|pnvarprepfordisplay]--></title>
 			<link><!--[pngetbaseurl]--><!--[$comment.url|pnvarprepfordisplay]-->#comment<!--[$comment.id|pnvarprepfordisplay]--></link>
-			<pubDate><!--[$comment.date|strtotime|date_format:"%r"]--></pubDate>
+			<pubDate><!--[$comment.date|strtotime|date_format:"%a, %d %b %Y %H:%M:%S %z"]--></pubDate>
 			<guid><!--[pngetbaseurl]--><!--[$comment.url|pnvarprepfordisplay]-->#comment<!--[$comment.id|pnvarprepfordisplay]--></guid>
 			<description><!--[$comment.comment|pnvarprepfordisplay]--></description>
 		</item>
