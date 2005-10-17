@@ -433,7 +433,7 @@ function EZComments_user_feed()
 
 	// get the last x comments
 	$pnRender->assign('comments', pnModAPIFunc('EZComments', 'user', 'getall', 
-		array('numitems' => $feedcount, 'sortorder' => 'DESC', 'mod' => $mod, 'objectid' => $objectid)));
+		array('numitems' => $feedcount, 'sortorder' => 'DESC', 'mod' => $mod, 'objectid' => $objectid, 'status' => 0)));
 
 	// display the feed and notify the core that we're done
 	$pnRender->display("ezcomments_user_$feedtype.htm");
