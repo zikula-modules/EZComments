@@ -418,7 +418,7 @@ function EZComments_user_feed()
 	if (!isset($feedcount) || !is_numeric($feedcount) || $feedcount < 1 || $feedcount > 999) {
 		$feedcount = pnModGetVar('EZcomments', 'feedcount');
 	}
-	if (!isset($feedtype) || !is_string($feedtype) || $feedtype !== 'rss' || $feedtype !== 'atom') {
+	if (!isset($feedtype) || !is_string($feedtype) || ($feedtype !== 'rss' && $feedtype !== 'atom')) {
 		$feedtype = pnModGetVar('EZComments', 'feedtype');
 	}
 	if (!isset($mod) || !is_string($mod) || !pnModAvailable($mod)) {
