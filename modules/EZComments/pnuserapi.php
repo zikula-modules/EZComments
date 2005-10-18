@@ -251,29 +251,31 @@ function EZComments_userapi_create($args)
     $nextId = $dbconn->GenId($EZCommentstable);
 
     // check we should moderate the comments
-	$status = 0;
+	$status[] = 0;
     if (!pnModGetVar('EZComments', 'moderation')) {
-        $status = 0;
+        $status[] = 0;
     } else {
 		// check if we should moderate all comments
 		if (pnModGetVar('EZComments', 'alwaysmoderate')) {
-			$status = 1;
+			$status[] = 1;
 		} else {
 			$checkvars = array($subject, $comment, $anonname, $anonmail, $anonwebsite);
 			foreach($checkvars as $checkvar) {
-				$status = _EZComments_userapi_checkcomment($checkvar);
-				if ($status == 2) {
-					pnSessionSetVar('errormsg', _EZCOMMENTS_COMMENTBLACKLISTED);
-					return false;
-				}
+				$status[] = _EZComments_userapi_checkcomment($checkvar);
 			}
 		}
-		$status = _EZComments_userapi_checksubmitter();
-		if ($status == 2) {
-			pnSessionSetVar('errormsg', _EZCOMMENTS_COMMENTBLACKLISTED);
-			return false;
-		}
-	}    
+		$status[] = _EZComments_userapi_checksubmitter();
+	}
+	// check for a blacklisted return
+	if (in_array(2, $status)) {
+		pnSessionSetVar('errormsg', _EZCOMMENTS_COMMENTBLACKLISTED);
+		return false;
+	}
+	// check for a moderated return
+	$maxstatus = 0;
+	if (in_array(1, $status)) {
+		$maxstatus = 1 ;
+	}
 
     list($mod, 
          $objectid,
@@ -284,7 +286,7 @@ function EZComments_userapi_create($args)
          $replyto,
          $anonname,
          $anonmail,
-         $status,
+         $maxstatus,
 		 $ipaddr,
 		 $type,
 		 $anonwebsite) = pnVarPrepForStore($mod, 
@@ -296,7 +298,7 @@ function EZComments_userapi_create($args)
                                         $replyto,
                                         $anonname,
                                         $anonmail,
-                                        $status,
+                                        $maxstatus,
 										$ipaddr,
                                         $type,
 										$anonwebsite);
@@ -330,7 +332,7 @@ function EZComments_userapi_create($args)
               '$replyto',
               '$anonname',
               '$anonmail',
-              '$status',
+              '$maxstatus',
 			  '$ipaddr',
 			  '$type',
 			  '$anonwebsite')";
@@ -343,7 +345,7 @@ function EZComments_userapi_create($args)
     } 
 
     // set an approriate status/errormsg
-    switch ($status) {
+    switch ($maxstatus) {
         case '0' :
             pnSessionSetVar('statusmsg', _EZCOMMENTS_CREATED);
             break;
@@ -583,10 +585,7 @@ function EZComments_userapi_gettemplates()
  */
 function _EZComments_userapi_checkcomment($var)
 {
-    if (!isset($var)) {
-        pnSessionSetVar('errormsg', _MODARGSERROR);
-        return;
-    }
+	if (!isset($var)) return 0;
 
     // check blacklisted words - exit silently if found
     $blacklistedwords = explode("\n", pnModGetVar('EZComments', 'blacklist'));
