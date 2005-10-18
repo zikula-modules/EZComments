@@ -426,7 +426,8 @@ function EZComments_userapi_get($args)
                    $EZCommentscolumn[anonmail],
                    $EZCommentscolumn[status],
                    $EZCommentscolumn[ipaddr],
-                   $EZCommentscolumn[type]
+                   $EZCommentscolumn[type],
+				   $EZCommentscolumn[anonwebsite]
             FROM $EZCommentstable
             WHERE $EZCommentscolumn[id] = '$id'";
     $result =& $dbconn->Execute($sql); 
@@ -456,7 +457,8 @@ function EZComments_userapi_get($args)
          $anonmail,
          $status,
 		 $ipaddr,
-		 $type) = $result->fields;
+		 $type,
+		 $anonwebsite) = $result->fields;
     if (!pnSecAuthAction(0, 'EZComments::', "$mod:$objectid:$id", ACCESS_READ)) {
         return false;
     } 
@@ -475,7 +477,8 @@ function EZComments_userapi_get($args)
                    'anonmail',
                    'status',
 				   'ipaddr',
-				   'type');
+				   'type',
+				   'anonwebsite');
 } 
 
 /**

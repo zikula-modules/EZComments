@@ -294,7 +294,7 @@ function EZComments_user_create($args)
     // check if the user logged in and if we're allowing anon users to 
     // set a name and e-mail address
     if (!pnUserLoggedIn()) {
-        list($EZComments_anonname, $EZComments_anonmail, $EZComments_anonwebsite) = pnVarCleanFromInput('EZComments_anonname', 'EZComments_anonmail', 'EZComments_website');
+        list($EZComments_anonname, $EZComments_anonmail, $EZComments_anonwebsite) = pnVarCleanFromInput('EZComments_anonname', 'EZComments_anonmail', 'EZComments_anonwebsite');
     } else {
         $EZComments_anonname = '';
         $EZComments_anonmail = '';
