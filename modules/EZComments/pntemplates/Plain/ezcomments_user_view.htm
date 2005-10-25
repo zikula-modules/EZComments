@@ -89,6 +89,7 @@
 	<!--[pager show="page" rowcount=$pager.numitems limit=$pager.itemsperpage posvar=comments_startnum shift=1]-->
   <!--[/if]-->
   <!--[if $allowadd]-->
+    <a id="commentform"></a>
     <form action="<!--[pnmodurl modname=EZComments func=comment]-->" method="post">
     <div>
       <input type="hidden" name="authid" id="authid" value="<!--[pnsecgenauthkey module=EZComments]-->" /> 
