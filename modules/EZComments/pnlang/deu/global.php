@@ -96,7 +96,7 @@ define('_EZCOMMENTS_ANONNAME',              'Name');
 define('_EZCOMMENTS_ANONMAIL',              'E-mail Adresse');
 define('_EZCOMMENTS_ANONWEBSITE',           'Webseite'); 
 
-define('_EZCOMMENTS_SEARCH',                'Kommentare durchsuchen');
+define('_EZCOMMENTS_SEARCH',                'Durchsuche Kommentare');
 define('_EZCOMMENTS_NOCOMMENTSFOUND',       'Keine passenden Kommentare gefunden');
 
 define('_EZCOMMENTS_TOP',                   'Top');
