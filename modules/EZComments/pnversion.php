@@ -50,5 +50,8 @@ $modversion['contact']     = 'http://noc.postnuke.com/projects/ezcomments/';
 
 // This one adds the info to the DB, so that users can click on the 
 // headings in the permission module
-$modversion['securityschema'] = array('EZComments::' => 'Module:Item ID:Comment ID');
+$modversion['securityschema'] = array('EZComments::'         => 'Module:Item ID:Comment ID',
+                                      'EZComments:trackback' => 'Module:Item ID:',
+                                      'EZComments:pingback'  => 'Module:Item ID:'
+                                      );
 ?>
