@@ -235,7 +235,7 @@ function EZComments_userapi_create($args)
 	}
 
     // Security check
-    if (!pnSecAuthAction(0, 'EZComments::', "$mod:$objectid:", ACCESS_COMMENT)) {
+    if (!pnSecAuthAction(0, "EZComments::$type", "$mod:$objectid:", ACCESS_COMMENT)) {
         pnSessionSetVar('errormsg', _EZCOMMENTS_NOAUTH);
         return false;
     } 
