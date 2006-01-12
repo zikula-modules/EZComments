@@ -440,6 +440,10 @@ function EZComments_admin_modifyconfig()
  */
 function EZComments_admin_updateconfig($args)
 {
+    if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
+        return _EZCOMMENTS_NOAUTH;
+    } 
+
     if (!pnSecConfirmAuthKey()) {
         pnSessionSetVar('errormsg', _BADAUTHKEY);
         return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
