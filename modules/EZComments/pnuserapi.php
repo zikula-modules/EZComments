@@ -266,6 +266,11 @@ function EZComments_userapi_create($args)
 		}
 		$status[] = _EZComments_userapi_checksubmitter();
 	}
+	// always moderate trackback or pingback comments
+    if($type=='trackback' || $type=='pingback' ) {
+        $status[] = 1;
+    }
+	
 	// check for a blacklisted return
 	if (in_array(2, $status)) {
 		pnSessionSetVar('errormsg', _EZCOMMENTS_COMMENTBLACKLISTED);
@@ -620,7 +625,7 @@ function _EZComments_userapi_checkcomment($var)
  * @access prviate
  * @return mixed int 1 to require moderation, 0 for instant submission, 2 for discarding the comment, void error
  */
-function _EZComments_userapi_checksubmitter()
+function _EZComments_userapi_checksubmitter($type = '')
 {
     // check for open proxies
     // credit to wordpress for this logic function wp_proxy_check()
@@ -645,6 +650,7 @@ function _EZComments_userapi_checksubmitter()
 			return 1;
 		}
 	}
+	 
     return 0;
 }
 
