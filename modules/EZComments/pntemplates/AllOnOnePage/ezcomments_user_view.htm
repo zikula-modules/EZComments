@@ -35,9 +35,13 @@
         <td style="background-color:<!--[pnthemegetvar name="bgcolor2"]-->; width:15%;" valign="top">
 		<a id="comment<!--[$comments[comments].id]-->"></a>
         <!--[if $comments[comments].anonname neq '']-->
-          <!--[$comments[comments].anonname|pnvarprepfordisplay]-->
+          <!--[if $comments[comments].anonwebsite neq '']-->
+            <a href="<!--[$comments[comments].anonwebsite|pnvarprepfordisplay]-->"><!--[$comments[comments].anonname|pnvarprepfordisplay]--></a>
+          <!--[else]-->
+            <!--[$comments[comments].anonname|pnvarprepfordisplay]-->
+          <!--[/if]-->
         <!--[else]-->
-          <!--[$comments[comments].uname|pnvarprepfordisplay]-->
+          <a href="<!--[$url_userinfo|pnvarprepfordisplay]-->"><!--[$comments[comments].uname|pnvarprepfordisplay]--></a>
         <!--[/if]-->
         <br />
         <!--[$comments[comments].date|pndate_format:"datetimebrief"]-->
@@ -91,6 +95,11 @@
       <label for="anonmail"><!--[pnml name=_EZCOMMENTS_ANONMAIL]--></label>
       <br />
       <input type="text" name="EZComments_anonmail" id="anonmail" size="50" maxlength="255" />
+    </div>
+    <div>
+      <label for="anonwebsite"><!--[pnml name=_EZCOMMENTS_ANONWEBSITE]--></label>
+      <br />
+      <input type="text" name="EZComments_anonwebsite" id="anonwebsite" size="50" maxlength="255" />
     </div>
     <!--[/if]-->
     <div>
