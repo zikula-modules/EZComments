@@ -187,10 +187,16 @@ function EZComments_admin_update($args)
          $objectid,
          $subject,
          $comment,
+         $anonname,
+         $anonmail,
+         $anonwebsite,
          $status) = pnVarCleanFromInput('id',
                                         'objectid',
                                         'subject',
                                         'comment',
+                                        'anonname',
+                                        'anonmail',
+                                        'anonwebsite',
                                         'status');
 
     // extract any input passed directly to the function
@@ -216,7 +222,8 @@ function EZComments_admin_update($args)
 
     // The API function is called.
     if(pnModAPIFunc('EZComments', 'admin', 'update',
-                    array('id' => $id, 'subject' => $subject, 'comment' => $comment, 'status' => $status))) {
+                    array('id' => $id, 'subject' => $subject, 'comment' => $comment, 'status' => $status,
+                          'anonname' => $anonname, 'anonmail' => $anonmail, 'anonwebsite' => $anonwebsite))) {
         // Success
         pnSessionSetVar('statusmsg', pnVarPrepHTMLDisplay(_UPDATESUCCEDED));
     }

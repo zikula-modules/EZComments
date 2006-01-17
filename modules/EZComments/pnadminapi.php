@@ -243,6 +243,11 @@ function EZComments_adminapi_update($args)
         return false;
     }
 
+    // optional arguments
+    if (!isset($anonname)) $anonname = '';
+    if (!isset($anonmail)) $anonmail = '';
+    if (!isset($anonwebsite)) $anonwebsite = '';
+
     // The user API function is called.  This takes the item ID which
     // we obtained from the input and gets us the information on the
     // appropriate item.  If the item does not exist we post an appropriate
@@ -286,6 +291,9 @@ function EZComments_adminapi_update($args)
     $sql = "UPDATE $EZCommentstable
             SET $EZCommentscolumn[subject] = '".$subject."',
                 $EZCommentscolumn[comment] = '".$comment."',
+                $EZCommentscolumn[anonname] = '".$anonname."',
+                $EZCommentscolumn[anonmail] = '".$anonmail."',
+                $EZCommentscolumn[anonwebsite] = '".$anonwebsite."',
                 $EZCommentscolumn[status] = '".(int)$status."'
             WHERE $EZCommentscolumn[id] = '".(int)$id."'";
     $dbconn->Execute($sql);
