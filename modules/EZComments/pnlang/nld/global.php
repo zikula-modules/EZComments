@@ -113,7 +113,7 @@ define('_EZCOMMENTS_SENDINFOMAILMOD',       'Verstuur email als moderatie nodig 
 define('_EZCOMMENTS_MODMAILSUBJECT',        'Nieuw commentaar voor de website ingestuurd');
 define('_EZCOMMENTS_MODMAILBODY',           'Er is een nieuw commentaar ter moderatie ingestuurd voor uw website.');
 define('_EZCOMMENTS_ALWAYSMODERERATE',      'Voor al het commentaar is moderatie vereist');
-define('_EZCOMMENTS_HELDFORMODERATION',     'Het ingezonden commentaar wordt zo snel mogelijk gekeurd en geplaatst. Bedankt vor uw bijdrage.');
+define('_EZCOMMENTS_HELDFORMODERATION',     'Het ingezonden commentaar wordt zo snel mogelijk gekeurd en geplaatst. Bedankt voor uw bijdrage.');
 define('_EZCOMMENTS_COMMENTBLACKLISTED',    'Het ingezonden commentaar bevat woorden die niet toegestaan zijn op deze website, en is derhalve genegeerd.');
 define('_EZCOMMENTS_PROXYBLACKLIST',        'Commentaar van onveilige proxies negeren');
 define('_EZCOMMENTS_DONTMODERATEIFCOMMENTED', 'Moderatie uitschakelen voor commentaren van gebruikers die al eerder een commentaar achter lieten');
