@@ -96,10 +96,17 @@ function EZComments_EZCommentsblock_display($blockinfo)
         $linkusername = 0;
     } 
 
-    $options = array('numitems'   => $numentries);
+    $options = array('numitems' => $numentries);
+                     
     if (isset($mod) && $mod != '*') {
         $options['mod'] = $mod;
     }
+
+    if (!isset($showpending) || $showpending == 0) {
+        // don't show pending comments
+        $options['status'] = 0;
+    }
+
     
     // get the comments
     $items = pnModAPIFunc('EZComments', 
@@ -109,7 +116,7 @@ function EZComments_EZCommentsblock_display($blockinfo)
     // augment the info
     $comments = EZComments_prepareCommentsForDisplay($items);
     
-    $pnRender = &new pnRender('EZComments'); 
+    $pnRender = new pnRender('EZComments'); 
     $pnRender->assign($vars);
     $pnRender->assign('comments', $comments); 
 
@@ -138,9 +145,8 @@ function EZComments_EZCommentsblock_modify($blockinfo)
                              'gethookedmodules', 
                              array('hookmodname'=> 'EZComments'));
 
-
     // Create output object
-    $pnRender = &new pnRender('EZComments'); 
+    $pnRender = new pnRender('EZComments'); 
     // As Admin output changes often, we do not want caching.
     $pnRender->caching = false; 
     // assign the block vars
@@ -164,19 +170,20 @@ function EZComments_EZCommentsblock_update($blockinfo)
           $vars['showusername'], 
           $vars['linkusername'], 
           $vars['mod'], 
-          $vars['showdate']) = pnVarCleanFromInput('numentries', 
-                                                   'showusername', 
-                                                   'linkusername', 
-                                                   'mod',
-                                                   'showdate'); 
+          $vars['showdate'],
+          $vars['showpending']) = pnVarCleanFromInput('numentries', 
+                                                      'showusername', 
+                                                      'linkusername', 
+                                                      'mod',
+                                                      'showdate',
+                                                      'showpending'); 
     // write back the new contents
     $blockinfo['content'] = pnBlockVarsToContent($vars); 
     // clear the block cache
-    $pnRender = &new pnRender('EZComments');
+    $pnRender = new pnRender('EZComments');
     $pnRender->clear_cache('ezcomments_block_ezcomments.htm');
 
     return $blockinfo;
 } 
-
 
 ?>

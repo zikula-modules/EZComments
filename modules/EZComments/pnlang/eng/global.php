@@ -144,6 +144,7 @@ define('_EZCOMMENTS_NUMENTRIES',            'Number of comments to display');
 define('_EZCOMMENTS_SHOWUSERNAME',          'Show username?');
 define('_EZCOMMENTS_LINKUSERNAME',          'Link username to profile?');
 define('_EZCOMMENTS_SHOWDATE',              'Show Date?');
+define('_EZCOMMENTS_SHOWPENDING',           'Show pending comments?');
 define('_EZCOMMENTS_SELECT_MODULE',         'Show comments for the following module');
 define('_EZCOMMENTS_ALLMODULES',            'All');
 

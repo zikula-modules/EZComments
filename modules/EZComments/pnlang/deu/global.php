@@ -144,6 +144,7 @@ define('_EZCOMMENTS_NUMENTRIES',            'Anzahl der anzuzeigenden Kommentare
 define('_EZCOMMENTS_SHOWUSERNAME',          'Benutzernamen anzeigen?');
 define('_EZCOMMENTS_LINKUSERNAME',          'Benutzername mit Link zum Profil versehen?');
 define('_EZCOMMENTS_SHOWDATE',              'Datum des Kommentars anzeigen?');
+define('_EZCOMMENTS_SHOWPENDING',           'Noch nicht freigeschaltete Kommentare anzeigen?');
 define('_EZCOMMENTS_SELECT_MODULE',         'Kommentare für das folgende Modul anzeigen');
 define('_EZCOMMENTS_ALLMODULES',            'Alle');
 

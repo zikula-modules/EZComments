@@ -144,6 +144,7 @@ define('_EZCOMMENTS_NUMENTRIES',            'Aantal te tonen commentaren');
 define('_EZCOMMENTS_SHOWUSERNAME',          'Gebruikersnaam tonen?');
 define('_EZCOMMENTS_LINKUSERNAME',          'Gebruikersnaam aan profiel koppelen?');
 define('_EZCOMMENTS_SHOWDATE',              'Datum tonen?');
+define('_EZCOMMENTS_SHOWPENDING',           'Wachtende commentaren tonen?');
 define('_EZCOMMENTS_SELECT_MODULE',         'Commentaar tonen voor onderstaande modules:');
 define('_EZCOMMENTS_ALLMODULES',            'Alle');
 
