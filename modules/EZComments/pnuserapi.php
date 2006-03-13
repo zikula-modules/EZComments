@@ -1,12 +1,12 @@
-<?php 
+<?php
 /**
  * $Id$
- * 
+ *
  * * EZComments *
- * 
+ *
  * Attach comments to any module calling hooks
- * 
- * 
+ *
+ *
  * * License *
  *
  * This program is free software; you can redistribute it and/or
@@ -30,23 +30,23 @@
  * @subpackage  EZComments
  */
 
- 
+
 /**
  * get comments for a specific item inside a module
- * 
+ *
  * This function provides the main user interface to the comments
- * module. 
- * 
+ * module.
+ *
  * @param     $args['mod']   Name of the module to get comments for
  * @param     $args['objectid']  ID of the item to get comments for
- * @param     $args['search']    an array with words to search for and a boolean 
+ * @param     $args['search']    an array with words to search for and a boolean
  * @param     $args['startnum']  First comment
  * @param     $args['numitems']  number of comments
  * @param     $args['sortorder'] order to sort the comments
  * @param     $args['sortby']    field to sort the comments by
  * @param     $args['status']    get all comments of this status
  * @return    array              array of items, or false on failure
- */ 
+ */
 function EZComments_userapi_getall($args)
 {
     extract($args);
@@ -61,13 +61,13 @@ function EZComments_userapi_getall($args)
         $status = -1;
     }
 
-    $items = array(); 
+    $items = array();
 
     // Security check
     if (isset($mod) && isset($objectid)) {
         if (!pnSecAuthAction(0, 'EZComments::', "$mod:$objectid:", ACCESS_READ)) {
             return $items;
-        } 
+        }
     } else {
         if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_OVERVIEW)) {
             return $items;
@@ -79,8 +79,8 @@ function EZComments_userapi_getall($args)
     $pntable =& pnDBGetTables();
 
     $EZCommentstable = $pntable['EZComments'];
-    $EZCommentscolumn = &$pntable['EZComments_column']; 
-    
+    $EZCommentscolumn = &$pntable['EZComments_column'];
+
     // form where clause
     $whereclause = array();
     if (isset($mod)) {
@@ -98,7 +98,7 @@ function EZComments_userapi_getall($args)
         $where_array = array();
         foreach($search['words'] as $word) {
             $word = pnVarPrepForStore($word);
-            $where_array[] = "( $EZCommentscolumn[subject] LIKE '%$word%' 
+            $where_array[] = "( $EZCommentscolumn[subject] LIKE '%$word%'
                              OR $EZCommentscolumn[comment] LIKE '%$word%' )";
         }
         if ($search['bool'] == 'AND') {
@@ -145,14 +145,14 @@ function EZComments_userapi_getall($args)
                    $EZCommentscolumn[anonwebsite]
             FROM $EZCommentstable
             $wherestring $orderstring $orderby";
-    $result = $dbconn->SelectLimit($sql, $numitems, $startnum-1);            
+    $result = $dbconn->SelectLimit($sql, $numitems, $startnum-1);
 
     // Check for an error with the database code, and if so set an appropriate
     // error message and return
     if ($dbconn->ErrorNo() != 0) {
         pnSessionSetVar('errormsg', _GETFAILED);
         return false;
-    } 
+    }
 
     // Put items into result array.  Note that each item is checked
     // individually to ensure that the user is allowed access to it before it
@@ -178,20 +178,20 @@ function EZComments_userapi_getall($args)
 							   'ipaddr',
 							   'type',
 							   'anonwebsite');
-        } 
-    } 
+        }
+    }
     $result->Close();
     // Return the items
     return $items;
-} 
+}
 
 
 /**
  * create a new comment
- * 
- * This function creates a new comment and returns its ID. 
+ *
+ * This function creates a new comment and returns its ID.
  * Access checking is done.
- * 
+ *
  * @param    $args['mod']    Name of the module to create comments for
  * @param    $args['objectid']   ID of the item to create comments for
  * @param    $args['comment']    The comment itself
@@ -200,7 +200,7 @@ function EZComments_userapi_getall($args)
  * @param    $args['uid']        The user ID (optional)
  * @param    $args['type']       The type of comment (optional) currently trackback, pingback are only allowed values
  * @return   integer             ID of new comment on success, false on failure
- */ 
+ */
 function EZComments_userapi_create($args)
 {
     extract($args);
@@ -210,7 +210,7 @@ function EZComments_userapi_create($args)
         (!isset($comment))) {
         pnSessionSetVar('errormsg', _MODARGSERROR);
         return false;
-    } 
+    }
 
     if (!isset($replyto) || empty($replyto)) {
         $replyto = -1;
@@ -238,14 +238,14 @@ function EZComments_userapi_create($args)
     if (!pnSecAuthAction(0, "EZComments::$type", "$mod:$objectid:", ACCESS_COMMENT)) {
         pnSessionSetVar('errormsg', _EZCOMMENTS_NOAUTH);
         return false;
-    } 
+    }
 
     // Get datbase setup
     $dbconn =& pnDBGetConn(true);
     $pntable =& pnDBGetTables();
 
     $EZCommentstable = $pntable['EZComments'];
-    $EZCommentscolumn = &$pntable['EZComments_column']; 
+    $EZCommentscolumn = &$pntable['EZComments_column'];
 
     // Get next ID in table
     $nextId = $dbconn->GenId($EZCommentstable);
@@ -270,7 +270,7 @@ function EZComments_userapi_create($args)
     if($type=='trackback' || $type=='pingback' ) {
         $status[] = 1;
     }
-	
+
 	// check for a blacklisted return
 	if (in_array(2, $status)) {
 		pnSessionSetVar('errormsg', _EZCOMMENTS_COMMENTBLACKLISTED);
@@ -282,7 +282,7 @@ function EZComments_userapi_create($args)
 		$maxstatus = 1 ;
 	}
 
-    list($mod, 
+    list($mod,
          $objectid,
          $url,
          $uid,
@@ -294,8 +294,8 @@ function EZComments_userapi_create($args)
          $maxstatus,
 		 $ipaddr,
 		 $type,
-		 $anonwebsite) = pnVarPrepForStore($mod, 
-                                        $objectid, 
+		 $anonwebsite) = pnVarPrepForStore($mod,
+                                        $objectid,
                                         $url,
                                         $uid,
                                         $comment,
@@ -307,7 +307,7 @@ function EZComments_userapi_create($args)
 										$ipaddr,
                                         $type,
 										$anonwebsite);
-                                       
+
     // Add item
     $sql = "INSERT INTO $EZCommentstable (
               $EZCommentscolumn[id],
@@ -341,13 +341,13 @@ function EZComments_userapi_create($args)
 			  '$ipaddr',
 			  '$type',
 			  '$anonwebsite')";
-    $dbconn->Execute($sql); 
+    $dbconn->Execute($sql);
 
     // Check for an error with the database code
     if ($dbconn->ErrorNo() != 0) {
         pnSessionSetVar('errormsg', _CREATEFAILED);
         return false;
-    } 
+    }
 
     // set an approriate status/errormsg
     switch ($maxstatus) {
@@ -360,10 +360,10 @@ function EZComments_userapi_create($args)
     }
 
     // Get the ID of the item that we inserted.
-    $id = $dbconn->PO_Insert_ID($EZCommentstable, $EZCommentscolumn['id']); 
-    
+    $id = $dbconn->PO_Insert_ID($EZCommentstable, $EZCommentscolumn['id']);
+
     // Inform admin about new comment
-    if (pnModGetVar('EZComments', 'MailToAdmin') && $status == 0) {
+    if (pnModGetVar('EZComments', 'MailToAdmin') && $maxstatus == 0) {
         $pnRender =& new pnRender('EZComments');
 		$pnRender->caching = false;
         $pnRender->assign('comment', $comment);
@@ -373,12 +373,12 @@ function EZComments_userapi_create($args)
         $pnRender->assign('baseURL', pnGetBaseURL());
         $mailsubject = _EZCOMMENTS_MAILSUBJECT;
         $mailbody = $pnRender->fetch('ezcomments_mail_newcomment.htm');
-        pnModAPIFunc('Mailer', 'user', 'sendmessage', 
-                     array('toaddress' => pnConfigGetVar('adminmail'), 'toname' => pnConfigGetVar('sitename'),  
-                            'fromaddress' => pnConfigGetVar('adminmail'), 'fromname' => pnConfigGetVar('sitename'), 
+        pnModAPIFunc('Mailer', 'user', 'sendmessage',
+                     array('toaddress' => pnConfigGetVar('adminmail'), 'toname' => pnConfigGetVar('sitename'),
+                            'fromaddress' => pnConfigGetVar('adminmail'), 'fromname' => pnConfigGetVar('sitename'),
                            'subject' => $mailsubject, 'body' => $mailbody));
     }
-    if (pnModGetVar('EZComments', 'moderationmail') && $status == 1) {
+    if (pnModGetVar('EZComments', 'moderationmail') && $maxstatus == 1) {
         $pnRender =& new pnRender('EZComments');
 		$pnRender->caching = false;
         $pnRender->assign('comment', $comment);
@@ -388,38 +388,38 @@ function EZComments_userapi_create($args)
         $pnRender->assign('baseURL', pnGetBaseURL());
         $mailsubject = _EZCOMMENTS_MODMAILSUBJECT;
         $mailbody = $pnRender->fetch('ezcomments_mail_modcomment.htm');
-        pnModAPIFunc('Mailer', 'user', 'sendmessage', 
-                     array('toaddress' => pnConfigGetVar('adminmail'), 'toname' => pnConfigGetVar('sitename'),  
-                            'fromaddress' => pnConfigGetVar('adminmail'), 'fromname' => pnConfigGetVar('sitename'), 
+        pnModAPIFunc('Mailer', 'user', 'sendmessage',
+                     array('toaddress' => pnConfigGetVar('adminmail'), 'toname' => pnConfigGetVar('sitename'),
+                            'fromaddress' => pnConfigGetVar('adminmail'), 'fromname' => pnConfigGetVar('sitename'),
                            'subject' => $mailsubject, 'body' => $mailbody));
     }
     // pnModCallHooks('item', 'create', $tid, 'tid');
     return $id;
-} 
+}
 
 /**
  * get comments for a specific item inside a module
- * 
+ *
  * This function provides the main user interface to the comments
- * module. 
- * 
+ * module.
+ *
  * @param $args['id'] ID of the comment
  * @returns array
  * @return details, or false on failure
- */ 
+ */
 function EZComments_userapi_get($args)
 {
     extract($args);
     if (!isset($id)) {
         pnSessionSetVar('errormsg', _MODARGSERROR);
         return false;
-    } 
+    }
     // Get datbase setup
     $dbconn =& pnDBGetConn(true);
     $pntable =& pnDBGetTables();
 
     $EZCommentstable = $pntable['EZComments'];
-    $EZCommentscolumn = &$pntable['EZComments_column']; 
+    $EZCommentscolumn = &$pntable['EZComments_column'];
     // Get items
     $sql = "SELECT $EZCommentscolumn[modname],
                    $EZCommentscolumn[objectid],
@@ -437,26 +437,26 @@ function EZComments_userapi_get($args)
 				   $EZCommentscolumn[anonwebsite]
             FROM $EZCommentstable
             WHERE $EZCommentscolumn[id] = '$id'";
-    $result =& $dbconn->Execute($sql); 
+    $result =& $dbconn->Execute($sql);
     // Check for an error with the database code, and if so set an appropriate
     // error message and return
     if ($dbconn->ErrorNo() != 0) {
         pnSessionSetVar('errormsg', _GETFAILED);
         return false;
-    } 
+    }
 
     if ($result->EOF) {
         pnSessionSetVar('errormsg', _GETFAILED);
         return false;
-    } 
+    }
     // Put items into result array.  Note that each item is checked
     // individually to ensure that the user is allowed access to it before it
     // is added to the results array
-    list($mod, 
+    list($mod,
          $objectid,
          $url,
-         $date, 
-         $uid, 
+         $date,
+         $uid,
          $comment,
          $subject,
          $replyto,
@@ -468,15 +468,15 @@ function EZComments_userapi_get($args)
 		 $anonwebsite) = $result->fields;
     if (!pnSecAuthAction(0, 'EZComments::', "$mod:$objectid:$id", ACCESS_READ)) {
         return false;
-    } 
-     
+    }
+
     $result->Close();
     // Return the items
-    return compact('mod', 
+    return compact('mod',
                    'objectid',
                    'url',
-                   'date', 
-                   'uid', 
+                   'date',
+                   'uid',
                    'comment',
                    'subject',
                    'replyto',
@@ -486,15 +486,15 @@ function EZComments_userapi_get($args)
 				   'ipaddr',
 				   'type',
 				   'anonwebsite');
-} 
+}
 
 /**
  * Utility function to count the number of items held by this module
- * 
+ *
  * Credits to Lee Eason from http://pnflashgames.com for giving the idea
- * to allow a module to find the number of comments that have been added 
+ * to allow a module to find the number of comments that have been added
  * to the module as a whole or to an individual item.
- * 
+ *
  * @param     $args['mod']  name of the module to get the number of comments for
  * @param     $args['objectid'] the objectid to get the number of comments for
  * @param     $args['status']    Status of the comments to get (default: all)
@@ -504,15 +504,15 @@ function EZComments_userapi_countitems($args)
 {
     if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_OVERVIEW)) {
         return false;
-    } 
-    
+    }
+
     // Get datbase setup
     $dbconn =& pnDBGetConn(true);
     $pntable =& pnDBGetTables();
 
     $EZCommentstable =& $pntable['EZComments'];
-    $EZCommentscolumn =& $pntable['EZComments_column']; 
-    
+    $EZCommentscolumn =& $pntable['EZComments_column'];
+
     $sql = "SELECT COUNT(1)
             FROM $EZCommentstable";
 
@@ -526,8 +526,8 @@ function EZComments_userapi_countitems($args)
             // Count comments for a specific item in a specific mod
             $objectid = pnVarPrepForStore($args['objectid']);
             $queryargs[] = "$EZCommentscolumn[objectid]='$objectid'";
-        } 
-    } 
+        }
+    }
 
 	$statussql = '';
 	if (isset($args['status']) && is_numeric($args['status']) && $args['status'] >= 0 && $args['status'] <= 2) {
@@ -551,16 +551,16 @@ function EZComments_userapi_countitems($args)
 }
 
 /**
- * utility function to return a list of template sets for 
+ * utility function to return a list of template sets for
  * displaying the comments input/output
- * 
+ *
  * @return   array   array of template set names (directories)
  */
 function EZComments_userapi_gettemplates()
 {
     if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_READ)) {
         return false;
-    } 
+    }
 
     $modinfo = pnModGetInfo(pnModGetIDFromName('EZComments'));
 
@@ -570,8 +570,8 @@ function EZComments_userapi_gettemplates()
         if ($f != '.' && $f != '..' && $f != 'CVS' && !ereg("[.]", $f) && $f != 'plugins') {
             $templates[] = $f;
         }
-    } 
-    closedir($handle); 
+    }
+    closedir($handle);
 
     return $templates;
 
@@ -580,7 +580,7 @@ function EZComments_userapi_gettemplates()
 /**
  * work out the status for a comment
  *
- * this function checks a piece of textagainst 
+ * this function checks a piece of textagainst
  * the defined moderation rules and returns the an appropriate status
  *
  * @param  var string to check
@@ -650,7 +650,7 @@ function _EZComments_userapi_checksubmitter($type = '')
 			return 1;
 		}
 	}
-	 
+
     return 0;
 }
 
@@ -664,7 +664,7 @@ function EZComments_userapi_getcommentingusers($args)
 {
     extract($args);
 
-    $items = array(); 
+    $items = array();
 
     // Security check
 	if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_OVERVIEW)) {
@@ -676,7 +676,7 @@ function EZComments_userapi_getcommentingusers($args)
     $pntable =& pnDBGetTables();
 
     $EZCommentstable = $pntable['EZComments'];
-    $EZCommentscolumn = &$pntable['EZComments_column']; 
+    $EZCommentscolumn = &$pntable['EZComments_column'];
 
 	// setup the query
 	$sql = "SELECT DISTINCT $EZCommentscolumn[uid] FROM $EZCommentstable WHERE $EZCommentscolumn[status] = 0";
@@ -712,14 +712,14 @@ function EZComments_userapi_getallbymodule($args)
     $pntable =& pnDBGetTables();
 
     $EZCommentstable = $pntable['EZComments'];
-    $EZCommentscolumn = &$pntable['EZComments_column']; 
+    $EZCommentscolumn = &$pntable['EZComments_column'];
 
-	$sql = "SELECT $EZCommentscolumn[objectid], 
-				   $EZCommentscolumn[url], 
+	$sql = "SELECT $EZCommentscolumn[objectid],
+				   $EZCommentscolumn[url],
 				   count(*)
-	        FROM $EZCommentstable 
-			WHERE $EZCommentscolumn[modname] = '$mod' 
-			GROUP BY $EZCommentscolumn[objectid] 
+	        FROM $EZCommentstable
+			WHERE $EZCommentscolumn[modname] = '$mod'
+			GROUP BY $EZCommentscolumn[objectid]
 			ORDER BY $EZCommentscolumn[objectid]";
     $result = $dbconn->Execute($sql);
 
@@ -728,7 +728,7 @@ function EZComments_userapi_getallbymodule($args)
     if ($dbconn->ErrorNo() != 0) {
         pnSessionSetVar('errormsg', _GETFAILED);
         return false;
-    } 
+    }
 
     // Put items into result array.  Note that each item is checked
     // individually to ensure that the user is allowed access to it before it
@@ -736,7 +736,7 @@ function EZComments_userapi_getallbymodule($args)
     for (; !$result->EOF; $result->MoveNext()) {
         list($objectid, $url, $count) = $result->fields;
 		$items[] = compact('objectid', 'url', 'count');
-    } 
+    }
     $result->Close();
     // Return the items
     return $items;
