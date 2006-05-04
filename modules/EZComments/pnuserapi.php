@@ -370,6 +370,7 @@ function EZComments_userapi_create($args)
         $pnRender->assign('url', $url);
         $pnRender->assign('moderate', pnModURL('EZComments', 'admin', 'modify', array('id' => $id)));
         $pnRender->assign('delete', pnModURL('EZComments', 'admin', 'delete', array('id' => $id)));
+        $pnRender->assign('baseURL', pnGetBaseURL());
         $mailsubject = _EZCOMMENTS_MAILSUBJECT;
         $mailbody = $pnRender->fetch('ezcomments_mail_newcomment.htm');
         pnModAPIFunc('Mailer', 'user', 'sendmessage',
@@ -384,6 +385,7 @@ function EZComments_userapi_create($args)
         $pnRender->assign('url', $url);
         $pnRender->assign('moderate', pnModURL('EZComments', 'admin', 'modify', array('id' => $id)));
         $pnRender->assign('delete', pnModURL('EZComments', 'admin', 'delete', array('id' => $id)));
+        $pnRender->assign('baseURL', pnGetBaseURL());
         $mailsubject = _EZCOMMENTS_MODMAILSUBJECT;
         $mailbody = $pnRender->fetch('ezcomments_mail_modcomment.htm');
         pnModAPIFunc('Mailer', 'user', 'sendmessage',
