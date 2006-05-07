@@ -114,6 +114,7 @@ function EZComments_user_view($args)
 
     $pnRender->assign('comments',   $comments);
 	$pnRender->assign('commentcount', $commentcount);
+	$pnRender->assign('modinfo',    pnModGetInfo(pnModGetIDFromName($mod)));
     $pnRender->assign('order',      $EZComments_order);
     $pnRender->assign('allowadd',   pnSecAuthAction(0, 'EZComments::', "$mod:$objectid: ", ACCESS_COMMENT));
     $pnRender->assign('loggedin',   pnUserLoggedIn());
@@ -432,8 +433,16 @@ function EZComments_user_feed()
     $pnRender =& new pnRender('EZComments');
 
 	// get the last x comments
-	$pnRender->assign('comments', pnModAPIFunc('EZComments', 'user', 'getall', 
+	$pnRender->assign('comments', $comments = pnModAPIFunc('EZComments', 'user', 'getall', 
 		array('numitems' => $feedcount, 'sortorder' => 'DESC', 'mod' => $mod, 'objectid' => $objectid, 'status' => 0)));
+
+    // grab the item url from one of the comments
+    if (isset($comments[0]['url'])) {
+        $pnRender->assign('itemurl', $comments[0]['url']);
+    } else {
+        // attempt to guess the url (api compliant mods only....)
+        $pnRender->assign('itemurl', pnModURL($mod, 'user', 'display', array('objectid' => $objectid)));
+    }
 
 	// display the feed and notify the core that we're done
 	$pnRender->display("ezcomments_user_$feedtype.htm");
