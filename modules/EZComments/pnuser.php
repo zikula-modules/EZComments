@@ -359,7 +359,7 @@ function EZComments_prepareCommentsForDisplay($items)
         } else {
             $comment['uname'] = pnConfigGetVar('Anonymous');
         }
-        $comment['del'] = (pnSecAuthAction(0, 'EZComments::', "$comment[modname]:$comment[objectid]:$comment[id]", ACCESS_DELETE));
+        $comment['del'] = (pnSecAuthAction(0, 'EZComments::', "$comment[mod]:$comment[objectid]:$comment[id]", ACCESS_DELETE));
         $comments[] = $comment;
     }
     return $comments;
