@@ -65,7 +65,7 @@ function EZComments_user_view($args)
     $objectid = $args['objectid'];
 
     // security check
-    if (!pnSecAuthAction(0, 'EZComments::', "$mod:$objectid: ", ACCESS_OVERVIEW)) {
+    if (!pnSecAuthAction(0, 'EZComments::', "$mod:$objectid:", ACCESS_OVERVIEW)) {
         return _EZCOMMENTS_NOAUTH;
     }
 
@@ -116,7 +116,7 @@ function EZComments_user_view($args)
 	$pnRender->assign('commentcount', $commentcount);
 	$pnRender->assign('modinfo',    pnModGetInfo(pnModGetIDFromName($mod)));
     $pnRender->assign('order',      $EZComments_order);
-    $pnRender->assign('allowadd',   pnSecAuthAction(0, 'EZComments::', "$mod:$objectid: ", ACCESS_COMMENT));
+    $pnRender->assign('allowadd',   pnSecAuthAction(0, 'EZComments::', "$mod:$objectid:", ACCESS_COMMENT));
     $pnRender->assign('loggedin',   pnUserLoggedIn());
     if (!is_array($args['extrainfo'])) {
         $pnRender->assign('redirect',   $args['extrainfo']);
