@@ -32,7 +32,7 @@
 
 // Information for the modules admin
 $modversion['name']        = 'EZComments';
-$modversion['version']     = '1.3';
+$modversion['version']     = '1.4';
 $modversion['description'] = 'Attach comments to pages using hooks';
 
 // I suspect these are not respected as the should

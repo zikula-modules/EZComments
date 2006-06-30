@@ -580,7 +580,7 @@ function EZComments_userapi_gettemplates()
 /**
  * work out the status for a comment
  *
- * this function checks a piece of textagainst
+ * this function checks a piece of text against
  * the defined moderation rules and returns the an appropriate status
  *
  * @param  var string to check
@@ -600,6 +600,12 @@ function _EZComments_userapi_checkcomment($var)
         if (stristr($var, $blacklistedword)) return 2;
     }
 
+    // count the number of links
+    $linkcount = count(explode('http:', $var));
+
+    // check link count for blacklisting
+    if ($linkcount - 1 >= pnModGetVar('EZComments', 'blacklinkcount')) return 2;
+
     // check words to trigger a moderated comment
     $modlistedwords = explode("\n", pnModGetVar('EZComments', 'modlist'));
     foreach($modlistedwords as $modlistedword) {
@@ -608,8 +614,8 @@ function _EZComments_userapi_checkcomment($var)
         if (stristr($var, $modlistedword)) return 1;
     }
 
-    // check link count
-    if (count(explode('http:', $var))-1 >= pnModGetVar('EZComments', 'modlinkcount')) return 1;
+    // check link count for moderation
+    if ($linkcount - 1 >= pnModGetVar('EZComments', 'modlinkcount')) return 1;
 
 	// comment passed
     return 0;

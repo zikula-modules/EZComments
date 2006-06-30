@@ -106,6 +106,7 @@ define('_EZCOMMENTS_BOTTOM',                'Bottom');
 define('_EZCOMMENTS_MODERERATE',              'Enable comment moderation');
 define('_EZCOMMENTS_MODLINKCOUNT',            'Number of links in comment before moderation');
 define('_EZCOMMENTS_MODLIST',                 'Words to trigger moderation');
+define('_EZCOMMENTS_BLACKLINKCOUNT',          'Number of links in comment before blacklisting');
 define('_EZCOMMENTS_BLACKLIST',               'Words to blacklist from comments');
 define('_EZCOMMENTS_BLACKLISTNOTE',           'Note: Comments containing words listed here will be completely ignored by the comments module');
 define('_EZCOMMENTS_SEPERATELINE',            'Separate multiple words with new lines');

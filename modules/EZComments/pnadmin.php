@@ -409,6 +409,7 @@ function EZComments_admin_modifyconfig()
  * @param        moderation flag to turn on comment moderation
  * @param        modlinkcount number of links in comment to trigger moderation
  * @param        modlist list of words to trigger moderation
+ * @param        blacklinkcount number of links in comment to trigger blacklisting
  * @param        blacklist list of words to trigger rejection of comment
  * @param        alwaymoderate flag to require all comments are moderated
  * @param        logip flag to control logging of ip addresses
@@ -425,11 +426,11 @@ function EZComments_admin_updateconfig($args)
     } 
 
     list($MailToAdmin, $moderationmail, $template, $itemsperpage, $anonusersinfo, $moderation, $dontmoderateifcommented,
-         $modlinkcount, $modlist, $blacklist, $alwaysmoderate, $proxyblacklist, $logip, $feedtype, $feedcount, 
-         $enablepager, $commentsperpage) =
-        pnVarCleanFromInput('MailToAdmin', 'moderationmail', 'template', 'itemsperpage', 'anonusersinfo', 'moderation', 'dontmoderateifcommented', 
-                            'modlinkcount', 'modlist', 'blacklist', 'alwaysmoderate', 'proxyblacklist', 'logip', 'feedtype', 'feedcount', 
-							'enablepager', 'commentsperpage');
+         $modlinkcount, $modlist, $blacklinkcount, $blacklist, $alwaysmoderate, $proxyblacklist, $logip, $feedtype,
+         $feedcount, $enablepager, $commentsperpage) =
+        pnVarCleanFromInput('MailToAdmin', 'moderationmail', 'template', 'itemsperpage', 'anonusersinfo', 'moderation', 'dontmoderateifcommented',
+                            'modlinkcount', 'modlist', 'blacklinkcount', 'blacklist', 'alwaysmoderate', 'proxyblacklist', 'logip', 'feedtype',
+                            'feedcount', 'enablepager', 'commentsperpage');
     extract($args);
 
     if (!isset($MailToAdmin)) {
@@ -476,6 +477,11 @@ function EZComments_admin_updateconfig($args)
         $modlist = '';
     }
     pnModSetVar('EZComments', 'modlist', $modlist);
+
+    if (!isset($blacklinkcount)) {
+        $blacklinkcount = 5;
+    }
+    pnModSetVar('EZComments', 'blacklinkcount', $blacklinkcount);
 
     if (!isset($blacklist)) {
         $blacklist = '';

@@ -113,6 +113,7 @@ function EZComments_init()
     pnModSetVar('EZComments', 'moderationlist', '');
     pnModSetVar('EZComments', 'blacklist',      '');
     pnModSetVar('EZComments', 'modlinkcount',   2);
+    pnModSetVar('EZComments', 'blacklinkcount', 5);
     pnModSetVar('EZComments', 'moderationmail', false);
     pnModSetVar('EZComments', 'alwaysmoderate', false);
     pnModSetVar('EZComments', 'proxyblacklist', false);
@@ -325,6 +326,11 @@ function EZComments_upgrade($oldversion)
 	if ($oldversion == '1.2') {
 		pnModSetVar('EZComments', 'enablepager', false);
 		pnModSetVar('EZComments', 'commentsperpage', '25');
+		$oldversion = '1.3';
+	}
+
+	if ($oldversion == '1.3') {
+        pnModSetVar('EZComments', 'blacklinkcount', 5);
 	}
 
     return true;
