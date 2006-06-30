@@ -7,15 +7,15 @@
 	<input type="hidden" name="id" value="<!--[$id|pnvarprepfordisplay]-->" />
     <!--[if $anonname neq '']-->
 	<div class="pn-adminformrow">
-        <label for="ezcomments_status"><!--[pnml name="_EZCOMMENTS_ANONNAME"]--></label>
+        <label for="ezcomments_anonname"><!--[pnml name="_EZCOMMENTS_ANONNAME"]--></label>
         <input id="ezcomments_anonname" name="anonname" type="text" size="32" maxlength="255" value="<!--[$anonname|pnvarprepfordisplay]-->" />
 	</div>
 	<div class="pn-adminformrow">
-		<label for="ezcomments_status"><!--[pnml name="_EZCOMMENTS_ANONMAIL"]--></label>
+		<label for="ezcomments_anonmail"><!--[pnml name="_EZCOMMENTS_ANONMAIL"]--></label>
         <input id="ezcomments_anonmail" name="anonmail" type="text" size="32" maxlength="255" value="<!--[$anonmail|pnvarprepfordisplay]-->" />
 	</div>
 	<div class="pn-adminformrow">
-		<label for="ezcomments_status"><!--[pnml name="_EZCOMMENTS_ANONWEBSITE"]--></label>
+		<label for="ezcomments_anonwebsite"><!--[pnml name="_EZCOMMENTS_ANONWEBSITE"]--></label>
         <input id="ezcomments_anonwebsite" name="anonwebsite" type="text" size="32" maxlength="255" value="<!--[$anonwebsite|pnvarprepfordisplay]-->" />
 	</div>
     <!--[else]-->
@@ -25,17 +25,17 @@
 	</div>
     <!--[/if]-->
 	<div class="pn-adminformrow">
-		<label for="ezcomments_name"><!--[pnml name="_EZCOMMENTS_IPADDR"]--></label>
+		<label for="ezcomments_ipaddr"><!--[pnml name="_EZCOMMENTS_IPADDR"]--></label>
 		<!--[pnml name=_EZCOMMENTS_IPADDRNOTLOGGED assign=notloggedstring]-->
 		<span><!--[$ipaddr|default:$notloggedstring|pnvarprepfordisplay]--></span>
 	</div>
 	<div class="pn-adminformrow">
-		<label for="ezcomments_name"><!--[pnml name="_EZCOMMENTS_SUBJECT"]--></label>
-		<input id="ezcomments_name" name="subject" type="text" size="32" maxlength="255" value="<!--[$subject|pnvarprepfordisplay]-->" />
+		<label for="ezcomments_subject"><!--[pnml name="_EZCOMMENTS_SUBJECT"]--></label>
+		<input id="ezcomments_subject" name="subject" type="text" size="32" maxlength="255" value="<!--[$subject|pnvarprepfordisplay]-->" />
 	</div>
 	<div class="pn-adminformrow">
-		<label for="ezcomments_number"><!--[pnml name="_EZCOMMENTS_COMMENT"]--></label>
-		<textarea id="ezcomments_number" name="comment" rows="5" cols="50"><!--[$comment|pnvarprepfordisplay]--></textarea>
+		<label for="ezcomments_comment"><!--[pnml name="_EZCOMMENTS_COMMENT"]--></label>
+		<textarea id="ezcomments_comment" name="comment" rows="5" cols="50"><!--[$comment|pnvarprepfordisplay]--></textarea>
 	</div>
 	<div class="pn-adminformrow">
 		<label for="ezcomments_status"><!--[pnml name="_EZCOMMENTS_STATUS"]--></label>
