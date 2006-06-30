@@ -168,8 +168,7 @@ function EZComments_adminapi_delete($args)
     // Get arguments from argument array 
     extract($args);
 
-    // Argument check - make sure that all required arguments are present,
-    // if not then set an appropriate error message and return
+    // Argument check
     if ((isset($id) && !is_numeric($id))) {
         pnSessionSetVar('errormsg', _MODARGSERROR);
         return false;
@@ -195,16 +194,12 @@ function EZComments_adminapi_delete($args)
     $table = $pntable['EZComments'];
     $column = &$pntable['EZComments_column'];
 
-    // Delete the item - the formatting here is not mandatory, but it does
-    // make the SQL statement relatively easy to read.  Also, separating
-    // out the sql statement from the Execute() command allows for simpler
-    // debug operation if it is ever needed
+    // Delete the item
     $sql = "DELETE FROM $table
             WHERE $column[id] = '" . (int)pnVarPrepForStore($id) ."'";
     $dbconn->Execute($sql);
 
-    // Check for an error with the database code, and if so set an
-    // appropriate error message and return
+    // Check for an error with the database code
     if ($dbconn->ErrorNo() != 0) {
         pnSessionSetVar('errormsg', _DELETEFAILED);
         return false;
@@ -227,14 +222,10 @@ function EZComments_adminapi_delete($args)
  */
 function EZComments_adminapi_update($args)
 {
-    // Get arguments from argument array - all arguments to this function
-    // should be obtained from the $args array, getting them from other
-    // places such as the environment is not allowed, as that makes
-    // assumptions that will not hold in future versions of PostNuke
+    // Get arguments from argument array
     extract($args);
 
-    // Argument check - make sure that all required arguments are present,
-    // if not then set an appropriate error message and return
+    // Argument check
     if ((!isset($subject)) ||
         (!isset($comment)) ||
         (isset($id) && !is_numeric($id)) ||
@@ -248,10 +239,7 @@ function EZComments_adminapi_update($args)
     if (!isset($anonmail)) $anonmail = '';
     if (!isset($anonwebsite)) $anonwebsite = '';
 
-    // The user API function is called.  This takes the item ID which
-    // we obtained from the input and gets us the information on the
-    // appropriate item.  If the item does not exist we post an appropriate
-    // message and return
+    // Get the item
     $item = pnModAPIFunc('EZComments', 'user', 'get', array('id' => $id));
 
     if (!$item) {
@@ -260,9 +248,6 @@ function EZComments_adminapi_update($args)
     }
 
     // Security check.
-    // In this case we had to wait until we could obtain the item
-    // name to complete the instance information so this is the first
-    // chance we get to do the check
     if (!pnSecAuthAction(0, 'EZComments::', "::$id", ACCESS_EDIT)) {
         pnSessionSetVar('errormsg', _MODULENOAUTH);
         return false;
@@ -271,23 +256,12 @@ function EZComments_adminapi_update($args)
     // Get datbase setup
     $dbconn =& pnDBGetConn(true);
     $pntable =& pnDBGetTables();
-
-    // It's good practice to name the table and column definitions you
-    // are getting - $table and $column don't cut it in more complex
-    // modules
     $EZCommentstable = $pntable['EZComments'];
     $EZCommentscolumn = &$pntable['EZComments_column']; 
 
-    // All variables that come in to or go out of PostNuke should be handled
-    // by the relevant pnVar*() functions to ensure that they are safe. 
-    // Failure to do this could result in opening security wholes at either 
-    // the web, filesystem, display, or database layers. 
     list($subject, $comment, $id, $status) = pnVarPrepForStore($subject, $comment, $id, $status);
 
-    // Update the item - the formatting here is not mandatory, but it does
-    // make the SQL statement relatively easy to read.  Also, separating
-    // out the sql statement from the Execute() command allows for simpler
-    // debug operation if it is ever needed
+    // Update the item
     $sql = "UPDATE $EZCommentstable
             SET $EZCommentscolumn[subject] = '".$subject."',
                 $EZCommentscolumn[comment] = '".$comment."',
@@ -320,10 +294,7 @@ function EZComments_adminapi_update($args)
  */
 function EZComments_adminapi_deletemodule($args)
 {
-    // Get arguments from argument array - all arguments to this function
-    // should be obtained from the $args array, getting them from other
-    // places such as the environment is not allowed, as that makes
-    // assumptions that will not hold in future versions of PostNuke
+    // Get arguments from argument array
     extract($args);
 
     // optional arguments
@@ -365,8 +336,7 @@ function EZComments_adminapi_purge($args)
     // Get arguments from argument array 
     extract($args);
 
-    // Argument check - make sure that all required arguments are present,
-    // if not then set an appropriate error message and return
+    // Argument check
     if (!isset($purgerejected) && !isset($purgepending)) {
         pnSessionSetVar('errormsg', _MODARGSERROR);
         return false;
@@ -417,23 +387,16 @@ function EZComments_adminapi_purge($args)
  */
 function EZComments_adminapi_updatestatus($args)
 {
-    // Get arguments from argument array - all arguments to this function
-    // should be obtained from the $args array, getting them from other
-    // places such as the environment is not allowed, as that makes
-    // assumptions that will not hold in future versions of PostNuke
+    // Get arguments from argument array
     extract($args);
 
-    // Argument check - make sure that all required arguments are present,
-    // if not then set an appropriate error message and return
+    // Argument check
     if (isset($id) && !is_numeric($id) && isset($status) && !is_numeric($status)) {
         pnSessionSetVar('errormsg', _MODARGSERROR);
         return false;
     }
 
-    // The user API function is called.  This takes the item ID which
-    // we obtained from the input and gets us the information on the
-    // appropriate item.  If the item does not exist we post an appropriate
-    // message and return
+    // Get the comment
     $item = pnModAPIFunc('EZComments', 'user', 'get', array('id' => $id));
 
     if (!$item) {
@@ -442,9 +405,6 @@ function EZComments_adminapi_updatestatus($args)
     }
 
     // Security check.
-    // In this case we had to wait until we could obtain the item
-    // name to complete the instance information so this is the first
-    // chance we get to do the check
     if (!pnSecAuthAction(0, 'EZComments::', "::$id", ACCESS_EDIT)) {
         pnSessionSetVar('errormsg', _MODULENOAUTH);
         return false;
@@ -453,30 +413,19 @@ function EZComments_adminapi_updatestatus($args)
     // Get datbase setup
     $dbconn =& pnDBGetConn(true);
     $pntable =& pnDBGetTables();
-
-    // It's good practice to name the table and column definitions you
-    // are getting - $table and $column don't cut it in more complex
-    // modules
     $EZCommentstable = $pntable['EZComments'];
     $EZCommentscolumn = &$pntable['EZComments_column']; 
 
-    // All variables that come in to or go out of PostNuke should be handled
-    // by the relevant pnVar*() functions to ensure that they are safe. 
-    // Failure to do this could result in opening security wholes at either 
-    // the web, filesystem, display, or database layers. 
+    // 
     list($id, $status) = pnVarPrepForStore($id, $status);
 
-    // Update the item - the formatting here is not mandatory, but it does
-    // make the SQL statement relatively easy to read.  Also, separating
-    // out the sql statement from the Execute() command allows for simpler
-    // debug operation if it is ever needed
+    // Update the item
     $sql = "UPDATE $EZCommentstable
             SET $EZCommentscolumn[status] = '".(int)$status."'
             WHERE $EZCommentscolumn[id] = '".(int)$id."'";
     $dbconn->Execute($sql);
 
-    // Check for an error with the database code, and if so set an
-    // appropriate error message and return
+    // Check for an error with the database code
     if ($dbconn->ErrorNo() != 0) {
         pnSessionSetVar('errormsg', _UPDATEFAILED);
         return false;

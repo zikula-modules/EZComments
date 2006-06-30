@@ -86,12 +86,7 @@ function EZComments_admin_main()
     // assign the items to the template
     $pnRender->assign('items', $comments);
 
-    // assign the values for the smarty plugin to produce a pager in case of there
-    // being many items to display.
-    //
-    // Note that this function includes another user API function.  The
-    // function returns a simple count of the total number of items in the item
-    // table so that the pager function can do its job properly
+    // assign the values for the smarty plugin to produce a pager
     $pnRender->assign('pager', array('numitems'     => pnModAPIFunc('EZComments',
                                                                     'user',
                                                                     'countitems'),
@@ -126,10 +121,7 @@ function EZComments_admin_modify($args)
         $id = $objectid;
     }
 
-    // The user API function is called.  This takes the item ID which we
-    // obtained from the input and gets us the information on the appropriate
-    // item.  If the item does not exist we post an appropriate message and
-    // return
+    // Get the item
     $item = pnModAPIFunc('EZComments', 'user', 'get', array('id' => $id));
 
     if (!$item) {
@@ -141,16 +133,13 @@ function EZComments_admin_modify($args)
         return pnVarPrepHTMLDisplay(_MODULENOAUTH);
     }
 
-    // Create output object - this object will store all of our output so that
-    // we can return it easily when required
+    // Create output object
     $pnRender =& new pnRender('EZComments');
 
     // As Admin output changes often, we do not want caching.
     $pnRender->caching = false;
 
-    // Add a hidden variable for the item id.  This needs to be passed on to
-    // the update function so that it knows which item for which item to carry
-    // out the update
+    // Add a hidden variable for the item id.
     $pnRender->assign('id', $id);
 
     // assign the status flags
@@ -179,10 +168,7 @@ function EZComments_admin_modify($args)
  */
 function EZComments_admin_update($args)
 {
-    // Get parameters from whatever input we need.  All arguments to this
-    // function should be obtained from pnVarCleanFromInput(), getting them
-    // from other places such as the environment is not allowed, as that makes
-    // assumptions that will not hold in future versions of PostNuke
+    // Get parameters from whatever input we need
     list($id,
          $objectid,
          $subject,
@@ -207,20 +193,15 @@ function EZComments_admin_update($args)
         $id = $objectid;
     }
 
-    // Confirm authorisation code.  This checks that the form had a valid
-    // authorisation code attached to it.  If it did not then the function will
-    // proceed no further as it is possible that this is an attempt at sending
-    // in false data to the system
+    // Confirm authorisation code
     if (!pnSecConfirmAuthKey()) {
         pnSessionSetVar('errormsg', pnVarPrepHTMLDisplay(_BADAUTHKEY));
         return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
     }
 
-    // Notable by its absence there is no security check here.  This is because
-    // the security check is carried out within the API function and as such we
-    // do not duplicate the work here
+    // Notable by its absence there is no security check here
 
-    // The API function is called.
+    // Call the API to update the item.
     if(pnModAPIFunc('EZComments', 'admin', 'update',
                     array('id' => $id, 'subject' => $subject, 'comment' => $comment, 'status' => $status,
                           'anonname' => $anonname, 'anonmail' => $anonmail, 'anonwebsite' => $anonwebsite))) {
@@ -228,8 +209,6 @@ function EZComments_admin_update($args)
         pnSessionSetVar('statusmsg', pnVarPrepHTMLDisplay(_UPDATESUCCEDED));
     }
 
-    // This function generated no output, and so now it is complete we redirect
-    // the user to an appropriate page for them to carry on their work
     return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
 }
 
@@ -237,14 +216,7 @@ function EZComments_admin_update($args)
  * delete item
  *
  * This is a standard function that is called whenever an administrator
- * wishes to delete a current module item.  Note that this function is
- * the equivalent of both of the modify() and update() functions above as
- * it both creates a form and processes its output.  This is fine for
- * simpler functions, but for more complex operations such as creation and
- * modification it is generally easier to separate them into separate
- * functions.  There is no requirement in the PostNuke MDG to do one or the
- * other, so either or both can be used as seen appropriate by the module
- * developer
+ * wishes to delete a current module item.
  *
  * @author       The PostNuke Development Team
  * @param        id            the id of the item to be deleted
@@ -285,11 +257,9 @@ function EZComments_admin_delete($args)
 
     // Check for confirmation.
     if (empty($confirmation)) {
-        // No confirmation yet - display a suitable form to obtain confirmation
-        // of this action from the user
+        // No confirmation yet
 
-        // Create output object - this object will store all of our output so that
-        // we can return it easily when required
+        // Create output object
         $pnRender =& new pnRender('EZComments');
 
         // As Admin output changes often, we do not want caching.
@@ -318,8 +288,6 @@ function EZComments_admin_delete($args)
         pnSessionSetVar('statusmsg', pnVarPrepHTMLDisplay(_DELETESUCCEDED));
     }
 
-    // This function generated no output, and so now it is complete we redirect
-    // the user to an appropriate page for them to carry on their work
     if (!empty($redirect)) {
         return pnRedirect($redirect);
     } else {
@@ -584,8 +552,7 @@ function EZComments_admin_migrate()
         return pnRedirect(pnModURL('EZComments', 'admin'));
     } 
 
-    // Create output object - this object will store all of our output so that
-    // we can return it easily when required
+    // Create output object
     $pnRender =& new pnRender('EZComments');
 
     // As Admin output changes often, we do not want caching.
@@ -904,11 +871,9 @@ function EZComments_admin_deletemodule($args)
 
     // Check for confirmation.
     if (empty($confirmation)) {
-        // No confirmation yet - display a suitable form to obtain confirmation
-        // of this action from the user
+        // No confirmation yet
 
-        // Create output object - this object will store all of our output so that
-        // we can return it easily when required
+        // Create output object
         $pnRender =& new pnRender('EZComments');
 
         // As Admin output changes often, we do not want caching.
@@ -981,11 +946,9 @@ function EZComments_admin_deleteitem($args)
 
     // Check for confirmation.
     if (empty($confirmation)) {
-        // No confirmation yet - display a suitable form to obtain confirmation
-        // of this action from the user
+        // No confirmation yet
 
-        // Create output object - this object will store all of our output so that
-        // we can return it easily when required
+        // Create output object
         $pnRender =& new pnRender('EZComments');
 
         // As Admin output changes often, we do not want caching.
@@ -1015,8 +978,6 @@ function EZComments_admin_deleteitem($args)
         pnSessionSetVar('statusmsg', pnVarPrepHTMLDisplay(_DELETESUCCEDED));
     }
 
-    // This function generated no output, and so now it is complete we redirect
-    // the user to an appropriate page for them to carry on their work
     return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
 }
 
