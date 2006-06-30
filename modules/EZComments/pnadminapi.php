@@ -489,4 +489,15 @@ function EZComments_adminapi_updatestatus($args)
     return true;
 }
 
+/**
+ * count items
+ * 
+ * maintained for backwards compatability
+ * simply passes parameters onto the user api
+ */
+function ezcomments_adminapi_countitems($args)
+{
+    return pnModAPIFunc('EZComments', 'user', 'countitems', $args);
+}
+
 ?>
