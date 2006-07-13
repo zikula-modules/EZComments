@@ -119,6 +119,13 @@ define('_EZCOMMENTS_COMMENTBLACKLISTED',      'Your comment contains unacceptabl
 define('_EZCOMMENTS_PROXYBLACKLIST',          'Blacklist comments from insecure proxies');
 define('_EZCOMMENTS_DONTMODERATEIFCOMMENTED', 'Don\'t require moderation for comments from users who\'ve already commented');
 define('_EZCOMMENTS_MODERATIONON',            '<strong>Please note:</strong> Comment moderation is enabled and may delay your comment. There is no need to resubmit your comment.');
+define('_EZCOMMENTS_APPLYMODRULES',           'Re-apply moderation rules');
+define('_EZCOMMENTS_APPLYMODRULESINTRO',      'This page allows to to re-apply the defined moderation rules to all existing comments allowing all comments to be re-checked if you change your moderation rules.');
+define('_EZCOMMENTS_APPLYMODRULESALL',        'Apply moderation rules to all comments');
+define('_EZCOMMENTS_APPLYMODRULESSTATUS',     'Comments with the status');
+define('_EZCOMMENTS_TOBEREJECTED',            'The following comments will become rejected');
+define('_EZCOMMENTS_TOBEMODERATED',           'The following comments will require moderation');
+define('_EZCOMMENTS_APPLYNEWRULES',           'Apply new rules comments');
 
 // comment statuses
 define('_EZCOMMENTS_APPROVED',              'Approved');

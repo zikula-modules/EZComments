@@ -583,6 +583,7 @@ function EZComments_userapi_gettemplates()
  * this function checks a piece of text against
  * the defined moderation rules and returns the an appropriate status
  *
+ * @todo turn this into a normal API
  * @param  var string to check
  * @author Mark West
  * @access prviate
@@ -631,11 +632,17 @@ function _EZComments_userapi_checkcomment($var)
  * @access prviate
  * @return mixed int 1 to require moderation, 0 for instant submission, 2 for discarding the comment, void error
  */
-function _EZComments_userapi_checksubmitter($type = '')
+function _EZComments_userapi_checksubmitter($type = '', $uid = null)
 {
     // check for open proxies
     // credit to wordpress for this logic function wp_proxy_check()
     $ipnum = pnServerGetVar('REMOTE_ADDR');
+
+    // set the current uid if not present
+    if (!isset($uid)) {
+        pnUserGetVar('uid');
+    }
+
     if (pnModGetVar('EZComments', 'proxyblacklist') && !empty($ipnum) ) {
         $rev_ip = implode( '.', array_reverse( explode( '.', $ipnum ) ) );
         // opm.blitzed.org is appended to use thier proxy lookup service
@@ -650,7 +657,7 @@ function _EZComments_userapi_checksubmitter($type = '')
 	// i.e. one who has an approved comment already
 	if (pnUserLoggedIn() && pnModGetVar('EZComments', 'dontmoderateifcommented')) {
 		$commentedlist = pnModAPIFunc('EZcomments', 'user', 'getcommentingusers');
-		if (is_array($commentedlist) && in_array(pnUserGetVar('uid'), $commentedlist)) {
+		if (is_array($commentedlist) && in_array($uid, $commentedlist)) {
 			return 0;
 		} else {
 			return 1;

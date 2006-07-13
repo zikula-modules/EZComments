@@ -1,0 +1,22 @@
+<!--[*  $Id$  *]-->
+<!--[include file="ezcomments_admin_menu.htm"]-->
+<h2><!--[pnml name="_EZCOMMENTS_APPLYMODRULES"]--></h2>
+<p><!--[pnml name="_EZCOMMENTS_APPLYMODRULESINTRO"]--></p>
+<form class="pn-adminform" action="<!--[pnmodurl modname="EZComments" type="admin" func="applyrules"]-->" method="post" enctype="application/x-www-form-urlencoded">
+<div>
+    <input type="hidden" name="authid" value="<!--[pnsecgenauthkey module="EZComments"]-->" />
+    <input type="hidden" name="confirmation" value="1" />
+	<div class="pn-adminformrow">
+		<label for="ezcomments_allcomments"><!--[pnml name="_EZCOMMENTS_APPLYMODRULESALL"]--></label>
+		<input id="ezcomments_allcomments" name="allcomments" type="checkbox" value="1" />
+	</div>
+    <p><!--[pnml name=OR]--></p>
+	<div class="pn-adminformrow">
+		<label for="ezcomments_status"><!--[pnml name="_EZCOMMENTS_APPLYMODRULESSTATUS"]--></label>
+		<select id="ezcomments_status" name="status">
+			<!--[html_options options=$statuslevels selected=$status]-->
+		</select>
+	</div>
+    <input id="ezcomments_submit" name="submit" type="submit" value="<!--[pnml name="_SUBMIT"]-->" />
+</div>
+</form>
