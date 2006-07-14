@@ -19,9 +19,9 @@
 		<tr class="<!--[cycle values=pn-odd,pn-even]-->">
 			<td><input type="checkbox" name="comments[]" value="<!--[$item.id]-->" onclick="checkAllFields(2);" /></td>
 			<td>
-				<!--[if $item.status eq 0]--><!--[pnimg src=green.gif]--><!--[/if]-->
-				<!--[if $item.status eq 1]--><!--[pnimg src=yellow.gif]--><!--[/if]-->
-				<!--[if $item.status eq 2]--><!--[pnimg src=red.gif]--><!--[/if]-->
+				<!--[if $item.status eq 0]--><!--[pnimg src=green.gif altml=true titleml=true alt=_EZCOMMENTS_APPROVED title=_EZCOMMENTS_APPROVED]--><!--[/if]-->
+				<!--[if $item.status eq 1]--><!--[pnimg src=yellow.gif altml=true titleml=true alt=_EZCOMMENTS_PENDING title=_EZCOMMENTS_PENDING]--><!--[/if]-->
+				<!--[if $item.status eq 2]--><!--[pnimg src=red.gif altml=true titleml=true alt=_EZCOMMENTS_REJECTED title=_EZCOMMENTS_REJECTED]--><!--[/if]-->
 			</td>
 			<td>
 				<!--[if $item.uid neq 0]-->
