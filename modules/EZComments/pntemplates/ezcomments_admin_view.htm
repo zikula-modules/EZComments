@@ -1,7 +1,11 @@
 <!--[*  $Id$  *]-->
 <!--[include file="ezcomments_admin_menu.htm"]-->
 <!--[add_additional_header header='<script type="text/javascript" src="modules/EZComments/pnjavascript/toggle.js"></script>']-->
+<!--[if $showall neq 1]-->
 <h2><!--[pnml name=_EZCOMMENTS_LASTCOMMENTS c=$itemsperpage]--></h2>
+<!--[else]-->
+<h2><!--[pnml name=_EZCOMMENTS_ALLCOMMENTS s=$status|commentstatus]--></h2>
+<!--[/if]-->
 <form action="<!--[pnmodurl modname=EZComments type=admin]-->" method="post">
 <div>
 <label for="ezcomments_filter"><!--[pnml name=_EZCOMMENTS_FILTERBYSTATUS]--></label>
