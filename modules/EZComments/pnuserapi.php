@@ -266,8 +266,22 @@ function EZComments_userapi_create($args)
 		}
 		$status[] = _EZComments_userapi_checksubmitter();
 	}
+    // akismet
+    $loggedin = pnUserLoggedIn();
+    $apikey = pnModGetVar('EZComments', 'apikey');
+    if (!empty($apikey)) {
+        if (!pnModAPIFunc('EZComments', 'akismet', 'check', 
+                          array('author' => $loggedin ?  pnUserGetVar('uname') : $anonname,
+                                'authoremail' => $loggedin ? pnUserGetVar('email') : $anonmail,
+                                'authorurl' => $loggedin ? pnUserGetVar('url') : $anonwebsite,
+                                'content' => $comment,
+                                'permalink' => $url))) {
+            $status[] = 1;
+        }
+    }
+
 	// always moderate trackback or pingback comments
-    if($type=='trackback' || $type=='pingback' ) {
+    if ($type == 'trackback' || $type == 'pingback' ) {
         $status[] = 1;
     }
 
