@@ -2,10 +2,25 @@
 <!--[include file="ezcomments_admin_menu.htm"]-->
 <!--[add_additional_header header='<script type="text/javascript" src="modules/EZComments/pnjavascript/toggle.js"></script>']-->
 <h2><!--[pnml name=_EZCOMMENTS_LASTCOMMENTS c=$itemsperpage]--></h2>
+<form action="<!--[pnmodurl modname=EZComments type=admin]-->" method="post">
+<div>
+<input type="hidden" name="showall" value="<!--[$showall|pnvarprepfordisplay]-->" />
+<label for="ezcomments_filter"><!--[pnml name=_EZCOMMENTS_FILTERBYSTATUS]--></label>
+<select id="ezcomments_filter" name="status">
+<option value="-1"<!--[if $status eq -1]--> selected="selected"<!--[/if]-->><!--[pnml name=_ALL]--></option>
+<option value="0"<!--[if $status eq 0]--> selected="selected"<!--[/if]-->><!--[pnml name=_EZCOMMENTS_APPROVED]--></option>
+<option value="1"<!--[if $status eq 1]--> selected="selected"<!--[/if]-->><!--[pnml name=_EZCOMMENTS_PENDING]--></option>
+<option value="2"<!--[if $status eq 2]--> selected="selected"<!--[/if]-->><!--[pnml name=_EZCOMMENTS_REJECTED]--></option>
+</select>
+<label for="ezcomments_showall"><!--[pnml name=_EZCOMMENTS_SHOWALL]--></label>
+<input id="ezcomments_showall" type="checkbox" name="showall" value="1"<!--[if $showall eq 1]--> checked="checked"<!--[/if]-->
+<input type="submit" value="<!--[pnml name=_SUBMIT]-->" />
+</div>
+</form>
 <form id="ezcomments_view" action="<!--[pnmodurl modname=EZComments type=admin func=processselected]-->" method="post">
 <div>
 <input type="hidden" name="authid" value="<!--[pnsecgenauthkey modname=EZComments]-->" />
-<table class="pn-admintable">
+<table id="ezcomments_comments" class="pn-admintable">
 	<tr>
 		<th><input type="checkbox" onclick="checkAllFields(1);" id="checkAll" /></th>
 		<th><!--[pnml name=_EZCOMMENTS_STATUS]--></th>

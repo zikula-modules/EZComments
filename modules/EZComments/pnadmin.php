@@ -50,8 +50,10 @@ function EZComments_admin_main()
         $status = -1;
     }
 
-    // get the show all filter
+    // presentation values
     $showall = (bool)pnVarCleanFromInput('showall');
+    $itemsperpage = $showall == true ? -1 : pnModGetVar('EZComments', 'itemsperpage');
+    $startnum = pnVarCleanFromInput('startnum');
     if (!isset($showall)) {
          $showall = false;
     }
@@ -64,16 +66,13 @@ function EZComments_admin_main()
 
     // assign the module vars
     $pnRender->assign(pnModGetVar('EZComments'));
-    // presentation values
-    $itemsperpage = pnModGetVar('EZComments', 'itemsperpage');
-    $startnum = pnVarCleanFromInput('startnum');
 
     // call the api to get all current comments
     $items = pnModAPIFunc('EZComments',
                           'user',
                           'getall',
                           array('startnum' => $showall == true ? true : $startnum,
-                                'numitems' => $showall == true ? -1 : $itemsperpage,
+                                'numitems' => $itemsperpage,
                                 'status'   => $status));
 
     if ($items === false) {
@@ -99,13 +98,12 @@ function EZComments_admin_main()
     // assign the items to the template
     $pnRender->assign('items', $comments);
 
-    // assign the status
+    // assign values for the filters
     $pnRender->assign('status', $status);
+    $pnRender->assign('showall', $showall);
 
     // assign the values for the smarty plugin to produce a pager
-    $pnRender->assign('pager', array('numitems'     => pnModAPIFunc('EZComments',
-                                                                    'user',
-                                                                    'countitems'),
+    $pnRender->assign('pager', array('numitems'     => pnModAPIFunc('EZComments', 'user', 'countitems', array('status' => $status)),
                                      'itemsperpage' => $itemsperpage));
 
     // Return the output

@@ -199,5 +199,6 @@ define('_EZCOMMENTS_COMMENTSPERPAGE',         'Comments per page (user view)');
 
 // status filter
 define('_EZCOMMENTS_FILTERBYSTATUS',          'Filter by status :');
+define('_EZCOMMENTS_SHOWALL',                 'Show all comments');
 
 ?>
