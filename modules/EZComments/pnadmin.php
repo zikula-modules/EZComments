@@ -1049,6 +1049,9 @@ function EZComments_admin_applyrules($args)
     // ensure the api is loaded so we can access the private function
     pnModAPILoad('EZComments', 'user');
 
+    // these processes could take some time
+    set_time_limit(0);
+
     // apply the moderation filter to each comment
     $moderatedcomments = array();
     $blacklistedcomments = array();
