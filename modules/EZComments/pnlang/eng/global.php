@@ -196,4 +196,8 @@ define('_EZCOMMENTS_LEAVEACOMMENT',           'Leave a Comment');
 // pager defines
 define('_EZCOMMENTS_ENABLEPAGER',             'Enable pager (user view)');
 define('_EZCOMMENTS_COMMENTSPERPAGE',         'Comments per page (user view)');
+
+// status filter
+define('_EZCOMMENTS_FILTERBYSTATUS',          'Filter by status :');
+
 ?>

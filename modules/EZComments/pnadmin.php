@@ -44,6 +44,18 @@ function EZComments_admin_main()
         return _EZCOMMENTS_NOAUTH;
     } 
 
+    // get the status filter
+    $status = pnVarCleanFromInput('status');
+    if (!isset($status) || !is_numeric($status) || $status < -1 || $status > 2) {
+        $status = -1;
+    }
+
+    // get the show all filter
+    $showall = (bool)pnVarCleanFromInput('showall');
+    if (!isset($showall)) {
+         $showall = false;
+    }
+
     // Create output object
     $pnRender =& new pnRender('EZComments');
 
@@ -60,8 +72,9 @@ function EZComments_admin_main()
     $items = pnModAPIFunc('EZComments',
                           'user',
                           'getall',
-                          array('startnum' => $startnum,
-                                'numitems' => $itemsperpage));
+                          array('startnum' => $showall == true ? true : $startnum,
+                                'numitems' => $showall == true ? -1 : $itemsperpage,
+                                'status'   => $status));
 
     if ($items === false) {
         return _EZCOMMENTS_FAILED;
@@ -85,6 +98,9 @@ function EZComments_admin_main()
 
     // assign the items to the template
     $pnRender->assign('items', $comments);
+
+    // assign the status
+    $pnRender->assign('status', $status);
 
     // assign the values for the smarty plugin to produce a pager
     $pnRender->assign('pager', array('numitems'     => pnModAPIFunc('EZComments',
