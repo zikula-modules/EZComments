@@ -441,10 +441,10 @@ function EZComments_admin_updateconfig($args)
 
     list($MailToAdmin, $moderationmail, $template, $itemsperpage, $anonusersinfo, $moderation, $dontmoderateifcommented,
          $modlinkcount, $modlist, $blacklinkcount, $blacklist, $alwaysmoderate, $proxyblacklist, $logip, $feedtype,
-         $feedcount, $enablepager, $commentsperpage, $apikey) =
+         $feedcount, $enablepager, $commentsperpage, $akismet, $apikey) =
         pnVarCleanFromInput('MailToAdmin', 'moderationmail', 'template', 'itemsperpage', 'anonusersinfo', 'moderation', 'dontmoderateifcommented',
                             'modlinkcount', 'modlist', 'blacklinkcount', 'blacklist', 'alwaysmoderate', 'proxyblacklist', 'logip', 'feedtype',
-                            'feedcount', 'enablepager', 'commentsperpage', 'apikey');
+                            'feedcount', 'enablepager', 'commentsperpage', 'akismet', 'apikey');
     extract($args);
 
     if (!isset($MailToAdmin)) {
@@ -536,6 +536,11 @@ function EZComments_admin_updateconfig($args)
         $enablepager = false;
     }
     pnModSetVar('EZComments', 'enablepager', $enablepager);
+
+    if (!isset($akismet)) {
+        $akismet = 0;
+    }
+    pnModSetVar('EZComments', 'akismet', $akismet);
 
     if (!isset($apikey)) {
         $apikey = '';

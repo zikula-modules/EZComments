@@ -208,6 +208,7 @@ define('_EZCOMMENTS_AKISMET',                 'Akismet spam dectection service')
 define('_EZCOMMENTS_AKISMETNOTE',             '<a href="http://akismet.com/">Akismet</a> is a spam detection service that can, in many 
 cases, eliminate comment and trackback spam. To use akismet you need a <a href="http://www.wordpress.com">wordpress.com</a> API key.
 Simply signup for an account at wordpress.com but don\'t create a blog - your API key will be in your profile.');
+define('_EZCOMMENTS_ENABLEAKISMET',           'Enable akismet');
 define('_EZCOMMENTS_WORDPRESSAPIKEY',         'Wordpress.com API key');
 
 ?>

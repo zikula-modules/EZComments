@@ -268,8 +268,7 @@ function EZComments_userapi_create($args)
 	}
     // akismet
     $loggedin = pnUserLoggedIn();
-    $apikey = pnModGetVar('EZComments', 'apikey');
-    if (!empty($apikey)) {
+    if (pnModGetVar('EZComments', 'akismet')) {
         if (!pnModAPIFunc('EZComments', 'akismet', 'check', 
                           array('author' => $loggedin ?  pnUserGetVar('uname') : $anonname,
                                 'authoremail' => $loggedin ? pnUserGetVar('email') : $anonmail,
