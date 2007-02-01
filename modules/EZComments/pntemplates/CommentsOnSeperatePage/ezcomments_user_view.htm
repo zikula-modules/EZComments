@@ -51,7 +51,7 @@
           <br />
           <form action="<!--[pnmodurl modname=EZComments type=admin func=delete id=$comments[comments].id]-->" method="post">
           <div>
-            <input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" /> 
+            <input type="hidden" name="redirect" id="EZComments_redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" /> 
             <input type="submit" value="<!--[pnml name=_EZCOMMENTS_DEL]-->" />
           </div>
           </form>
@@ -68,9 +68,9 @@
 	<form action="<!--[pnmodurl modname=EZComments type=user func=comment]-->" method="post">
 	<div>
 		<input type="hidden" name="authid" id="authid" value="<!--[pnsecgenauthkey module=EZComments]-->" /> 
-		<input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" /> 
-		<input type="hidden" name="EZComments_modname" id="EZComments_modname" value="<!--[pnmodgetname]-->" /> 
-		<input type="hidden" name="EZComments_objectid" id="EZComments_objectid" value="<!--[$objectid|pnvarprepfordisplay]-->" /> 
+		<input type="hidden" name="redirect" id="EZComments_redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" /> 
+		<input type="hidden" name="modname" id="EZComments_modname" value="<!--[pnmodgetname]-->" /> 
+		<input type="hidden" name="objectid" id="EZComments_objectid" value="<!--[$objectid|pnvarprepfordisplay]-->" /> 
 		<input type="submit" value="<!--[pnml name=_EZCOMMENTS_COMMENT_ADD]-->" />
 	</div>
 	</form>

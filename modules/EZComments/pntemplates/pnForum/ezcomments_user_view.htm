@@ -139,30 +139,30 @@
         <form id="post" action="<!--[pnmodurl modname=EZComments func=create]-->" method="post">
         <div>
           <input type="hidden" name="authid" id="authid" value="<!--[pnsecgenauthkey module=EZComments]-->" />
-          <input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" />
-          <input type="hidden" name="EZComments_modname" id="EZComments_modname" value="<!--[pnmodgetname]-->" />
-          <input type="hidden" name="EZComments_objectid" id="EZComments_objectid" value="<!--[$objectid|pnvarprepfordisplay]-->" />
+          <input type="hidden" name="redirect" id="EZComments_redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" />
+          <input type="hidden" name="modname" id="EZComments_modname" value="<!--[pnmodgetname]-->" />
+          <input type="hidden" name="objectid" id="EZComments_objectid" value="<!--[$objectid|pnvarprepfordisplay]-->" />
           <div>
             <label for="subject"><!--[pnml name=_EZCOMMENTS_SUBJECT]--></label>
             <br />
-            <input type="text" name="EZComments_subject" id="subject" size="50" maxlength="255" />
+            <input type="text" name="subject" id="subject" size="50" maxlength="255" />
           </div>
           <!--[if $loggedin neq true and $anonusersinfo eq true]-->
           <div>
             <label for="anonname"><!--[pnml name=_EZCOMMENTS_ANONNAME]--></label>
             <br />
-            <input type="text" name="EZComments_anonname" id="anonname" size="50" maxlength="255" />
+            <input type="text" name="anonname" id="anonname" size="50" maxlength="255" />
           </div>
           <div>
             <label for="anonmail"><!--[pnml name=_EZCOMMENTS_ANONMAIL]--></label>
             <br />
-            <input type="text" name="EZComments_anonmail" id="anonmail" size="50" maxlength="255" />
+            <input type="text" name="anonmail" id="anonmail" size="50" maxlength="255" />
           </div>
           <!--[/if]-->
           <div>
             <label for="message"><!--[pnml name=_EZCOMMENTS_COMMENT]--></label>
             <br />
-            <textarea name="EZComments_comment" id="message" cols="35" rows="10"></textarea>
+            <textarea name="comment" id="message" cols="35" rows="10"></textarea>
           </div>
        	  <!--[pnmodishooked tmodname="pn_bbcode" smodname="EZComments" assign=bbcode]-->
           <!--[if $bbcode]-->

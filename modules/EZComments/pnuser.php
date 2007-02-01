@@ -70,9 +70,9 @@ function EZComments_user_view($args)
     }
 
     // we may get some input in from the navigation bar
-    list ($EZComments_template, $EZComments_order) = pnVarCleanFromInput('EZComments_template', 'EZComments_order');
+    list ($template, $order) = pnVarCleanFromInput('template', 'order');
 
-    if ($EZComments_order == 1) {
+    if ($order == 1) {
         $sortorder = 'DESC';
     } else {
         $sortorder = 'ASC';
@@ -115,7 +115,7 @@ function EZComments_user_view($args)
     $pnRender->assign('comments',   $comments);
 	$pnRender->assign('commentcount', $commentcount);
 	$pnRender->assign('modinfo',    pnModGetInfo(pnModGetIDFromName($mod)));
-    $pnRender->assign('order',      $EZComments_order);
+    $pnRender->assign('order',      $order);
     $pnRender->assign('allowadd',   pnSecAuthAction(0, 'EZComments::', "$mod:$objectid:", ACCESS_COMMENT));
     $pnRender->assign('loggedin',   pnUserLoggedIn());
     if (!is_array($args['extrainfo'])) {
@@ -134,8 +134,8 @@ function EZComments_user_view($args)
 
     // find out which template to use
     $template = pnModGetVar('EZComments', 'template');
-    if (!empty($EZComments_template)) {
-        $template = $EZComments_template;
+    if (!empty($template)) {
+        $template = $template;
     } else if (isset($args['template'])) {
         $template = $args['template'];
     }
@@ -152,36 +152,36 @@ function EZComments_user_view($args)
  * This function displays a comment form, if you do not want users to
  * comment on the same page as the item is.
  * 
- * @param    $EZComments_comment     the comment (taken from HTTP put)
- * @param    $EZComments_modname     the name of the module the comment is for (taken from HTTP put)
- * @param    $EZComments_objectid    ID of the item the comment is for (taken from HTTP put)
- * @param    $EZComments_redirect    URL to return to (taken from HTTP put)
- * @param    $EZComments_subject     The subject of the comment (if any) (taken from HTTP put)
- * @param    $EZComments_replyto     The ID of the comment for which this an anser to (taken from HTTP put)
- * @param    $EZComments_template    The name of the template file to use (with extension)
+ * @param    $comment     the comment (taken from HTTP put)
+ * @param    $modname     the name of the module the comment is for (taken from HTTP put)
+ * @param    $objectid    ID of the item the comment is for (taken from HTTP put)
+ * @param    $redirect    URL to return to (taken from HTTP put)
+ * @param    $subject     The subject of the comment (if any) (taken from HTTP put)
+ * @param    $replyto     The ID of the comment for which this an anser to (taken from HTTP put)
+ * @param    $template    The name of the template file to use (with extension)
  * @todo     Check out it this function can be merged with _view!
  * @since    0.2
  */
 function EZComments_user_comment($args)
 {
-    list($EZComments_modname,
-         $EZComments_objectid,
-         $EZComments_redirect,
-         $EZComments_comment,
-         $EZComments_subject,
-         $EZComments_replyto,
-         $EZComments_template) = pnVarCleanFromInput('EZComments_modname',
-                                                     'EZComments_objectid',
-                                                     'EZComments_redirect',
-                                                     'EZComments_comment',
-                                                     'EZComments_subject',
-                                                     'EZComments_replyto',
-                                                     'EZComments_template');
+    list($modname,
+         $objectid,
+         $redirect,
+         $comment,
+         $subject,
+         $replyto,
+         $template) = pnVarCleanFromInput('modname',
+                                          'objectid',
+                                          'redirect',
+                                          'comment',
+                                          'subject',
+                                          'replyto',
+                                          'template');
 
     extract($args);
 
     // check if commenting is setup for the input module
-    if (!pnModAvailable($EZComments_modname) || !pnModIsHooked('EZComments', $EZComments_modname)) {
+    if (!pnModAvailable($modname) || !pnModIsHooked('EZComments', $modname)) {
         return _EZCOMMENTS_NOAUTH;
     }
 
@@ -220,15 +220,15 @@ function EZComments_user_comment($args)
 
     $pnRender->assign('comments',     $comments);
 	$pnRender->assign('commentcount', $commentcount);
-    $pnRender->assign('order',        $EZComments_order);
-    $pnRender->assign('allowadd',     pnSecAuthAction(0, 'EZComments::', "$EZComments_modname:$EZComments_objectid: ", ACCESS_COMMENT));
+    $pnRender->assign('order',        $order);
+    $pnRender->assign('allowadd',     pnSecAuthAction(0, 'EZComments::', "$modname:$objectid: ", ACCESS_COMMENT));
     $pnRender->assign('addurl',       pnModURL('EZComments', 'user', 'create'));
     $pnRender->assign('loggedin',     pnUserLoggedIn());
-    $pnRender->assign('redirect',     $EZComments_redirect);
-    $pnRender->assign('mod',          pnVarPrepForDisplay($EZComments_modname));
-    $pnRender->assign('objectid',     pnVarPrepForDisplay($EZComments_objectid));
-    $pnRender->assign('subject',      pnVarPrepForDisplay($EZComments_subject));
-    $pnRender->assign('replyto',      pnVarPrepForDisplay($EZComments_replyto));
+    $pnRender->assign('redirect',     $redirect);
+    $pnRender->assign('mod',          pnVarPrepForDisplay($modname));
+    $pnRender->assign('objectid',     pnVarPrepForDisplay($objectid));
+    $pnRender->assign('subject',      pnVarPrepForDisplay($subject));
+    $pnRender->assign('replyto',      pnVarPrepForDisplay($replyto));
 
     // assign all module vars (they may be useful...)
     $pnRender->assign(pnModGetVar('EZComments'));
@@ -239,8 +239,8 @@ function EZComments_user_comment($args)
 
     // find out which template to use
     $template = pnModGetVar('EZComments', 'template');
-    if (!empty($EZComments_template)) {
-        $template = $EZComments_template;
+    if (!empty($template)) {
+        $template = $template;
     } else if (isset($args['template'])) {
         $template = $args['template'];
     }
@@ -264,12 +264,12 @@ function EZComments_user_comment($args)
  * This is a standard function that is called with the results of the
  * form supplied by EZComments_user_view to create a new item
  * 
- * @param    $EZComments_comment     the comment (taken from HTTP put)
- * @param    $EZComments_modname     the name of the module the comment is for (taken from HTTP put)
- * @param    $EZComments_objectid    ID of the item the comment is for (taken from HTTP put)
- * @param    $EZComments_redirect    URL to return to (taken from HTTP put)
- * @param    $EZComments_subject     The subject of the comment (if any) (taken from HTTP put)
- * @param    $EZComments_replyto     The ID of the comment for which this an anser to (taken from HTTP put)
+ * @param    $comment     the comment (taken from HTTP put)
+ * @param    $modname     the name of the module the comment is for (taken from HTTP put)
+ * @param    $objectid    ID of the item the comment is for (taken from HTTP put)
+ * @param    $redirect    URL to return to (taken from HTTP put)
+ * @param    $subject     The subject of the comment (if any) (taken from HTTP put)
+ * @param    $replyto     The ID of the comment for which this an anser to (taken from HTTP put)
  * @since    0.1
  */
 function EZComments_user_create($args)
@@ -277,50 +277,50 @@ function EZComments_user_create($args)
     // Confirm authorisation code.
     if (!pnSecConfirmAuthKey()) {
         pnSessionSetVar('errormsg', _BADAUTHKEY);
-        return pnRedirect($EZComments_redirect);
+        return pnRedirect($redirect);
     } 
 
-    list($EZComments_modname,
-         $EZComments_objectid,
-         $EZComments_redirect,
-         $EZComments_comment,
-         $EZComments_subject,
-         $EZComments_replyto) = pnVarCleanFromInput('EZComments_modname',
-                                                    'EZComments_objectid',
-                                                    'EZComments_redirect',
-                                                    'EZComments_comment',
-                                                    'EZComments_subject',
-                                                    'EZComments_replyto');
+    list($modname,
+         $objectid,
+         $redirect,
+         $comment,
+         $subject,
+         $replyto) = pnVarCleanFromInput('modname',
+                                         'objectid',
+                                         'redirect',
+                                         'comment',
+                                         'subject',
+                                         'replyto');
 
     // check if the user logged in and if we're allowing anon users to 
     // set a name and e-mail address
     if (!pnUserLoggedIn()) {
-        list($EZComments_anonname, $EZComments_anonmail, $EZComments_anonwebsite) = pnVarCleanFromInput('EZComments_anonname', 'EZComments_anonmail', 'EZComments_anonwebsite');
+        list($anonname, $anonmail, $anonwebsite) = pnVarCleanFromInput('anonname', 'anonmail', 'anonwebsite');
     } else {
-        $EZComments_anonname = '';
-        $EZComments_anonmail = '';
-		$EZComments_anonwebsite = '';
+        $anonname = '';
+        $anonmail = '';
+		$anonwebsite = '';
     }
 
     // decoding the URL. Credits to tmyhre for fixing.
-    $EZComments_redirect = rawurldecode($EZComments_redirect);
-    $EZComments_redirect = str_replace('&amp;', '&', $EZComments_redirect);
+    $redirect = rawurldecode($redirect);
+    $redirect = str_replace('&amp;', '&', $redirect);
 
     $id = pnModAPIFunc('EZComments',
                        'user',
                        'create',
-                       array('mod'         => $EZComments_modname,
-                             'objectid'    => $EZComments_objectid,
-                             'url'         => $EZComments_redirect,
-                             'comment'     => $EZComments_comment,
-                             'subject'     => $EZComments_subject,
-                             'replyto'     => $EZComments_replyto,
+                       array('mod'         => $modname,
+                             'objectid'    => $objectid,
+                             'url'         => $redirect,
+                             'comment'     => $comment,
+                             'subject'     => $subject,
+                             'replyto'     => $replyto,
                              'uid'         => pnUserGetVar('uid'),
-                             'anonname'    => $EZComments_anonname,
-                             'anonmail'    => $EZComments_anonmail,
-							 'anonwebsite' => $EZComments_anonwebsite));
+                             'anonname'    => $anonname,
+                             'anonmail'    => $anonmail,
+							 'anonwebsite' => $anonwebsite));
 
-    return pnRedirect($EZComments_redirect);
+    return pnRedirect($redirect);
 } 
 
 /**

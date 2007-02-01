@@ -35,12 +35,12 @@
     <form action="<!--[pngetcurrenturi]-->" method="post" enctype="application/x-www-form-urlencoded">
     <div>
       <!--[pnml name=_EZCOMMENTS_DISPLAY]-->
-      <select name="EZComments_template">
+      <select name="template">
         <option value="Plain" <!--[if $template eq Plain]-->selected="selected"<!--[/if]-->><!--[pnml name=_EZCOMMENTS_FLAT]--></option>
         <option value="Threaded" <!--[if $template eq Threaded]-->selected="selected"<!--[/if]-->><!--[pnml name=_EZCOMMENTS_THREADED]--></option>
       </select>
       <!--[pnml name=_EZCOMMENTS_ORDER]-->
-      <select name="EZComments_order">
+      <select name="order">
         <option value="0" <!--[if $order eq 0]-->selected="selected"<!--[/if]-->><!--[pnml name=_EZCOMMENTS_OLDESTFIRST]--></option>
         <option value="1" <!--[if $order eq 1]-->selected="selected"<!--[/if]-->><!--[pnml name=_EZCOMMENTS_NEWESTFIRST]--></option>
       </select>
@@ -91,10 +91,10 @@
     <form action="<!--[pnmodurl modname=EZComments func=comment]-->" method="post">
     <div>
       <input type="hidden" name="authid" id="authid" value="<!--[pnsecgenauthkey module=EZComments]-->" /> 
-      <input type="hidden" name="EZComments_redirect" id="EZComments_redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" />
-      <input type="hidden" name="EZComments_modname" id="EZComments_modname" value="<!--[$mod|pnvarprepfordisplay]-->" />
-      <input type="hidden" name="EZComments_objectid" id="EZComments_objectid" value="<!--[$objectid|pnvarprepfordisplay]-->" /> 
-      <input type="hidden" name="EZComments_template" id="EZComments_template" value="<!--[$template|pnvarprepfordisplay]-->" /> 
+      <input type="hidden" name="redirect" id="EZComments_redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" />
+      <input type="hidden" name="modname" id="EZComments_modname" value="<!--[$mod|pnvarprepfordisplay]-->" />
+      <input type="hidden" name="objectid" id="EZComments_objectid" value="<!--[$objectid|pnvarprepfordisplay]-->" /> 
+      <input type="hidden" name="template" id="EZComments_template" value="<!--[$template|pnvarprepfordisplay]-->" /> 
       <input type="submit" value="<!--[pnml name=_EZCOMMENTS_COMMENT_ADD]-->" />
     </div>
     </form>
