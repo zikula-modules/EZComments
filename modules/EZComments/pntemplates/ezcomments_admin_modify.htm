@@ -1,5 +1,6 @@
 <!--[*  $Id$  *]-->
 <!--[include file="ezcomments_admin_menu.htm"]-->
+<div class="pn-admincontainer">
 <h2><!--[pnml name="_EZCOMMENTS_EDIT"]--></h2>
 <form class="pn-adminform" action="<!--[pnmodurl modname="EZComments" type="admin" func="update"]-->" method="post" enctype="application/x-www-form-urlencoded">
 <div>
@@ -43,11 +44,10 @@
 			<!--[html_options options=$statuslevels selected=$status]-->
 		</select>
 	</div>
-	<div class="pn-adminformrow">
-		<!--[pnmodcallhooks hookobject=item hookaction=modify hookid=$tid module=EZComments]-->
-	</div>
+	<!--[pnmodcallhooks hookobject=item hookaction=modify hookid=$tid module=EZComments]-->
 	<div class="pn-adminformrow">
 		<input name="submit" type="submit" value="<!--[pnml name="_UPDATE"]-->" />
 	</div>
 </div>
 </form>
+</div>

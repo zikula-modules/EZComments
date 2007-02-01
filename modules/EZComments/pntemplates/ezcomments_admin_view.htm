@@ -1,6 +1,7 @@
 <!--[*  $Id$  *]-->
 <!--[include file="ezcomments_admin_menu.htm"]-->
 <!--[add_additional_header header='<script type="text/javascript" src="modules/EZComments/pnjavascript/toggle.js"></script>']-->
+<div class="pn-admincontainer">
 <!--[if $showall neq 1]-->
 <h2><!--[pnml name=_EZCOMMENTS_LASTCOMMENTS c=$itemsperpage]--></h2>
 <!--[else]-->
@@ -16,7 +17,7 @@
 <option value="2"<!--[if $status eq 2]--> selected="selected"<!--[/if]-->><!--[pnml name=_EZCOMMENTS_REJECTED]--></option>
 </select>
 <label for="ezcomments_showall"><!--[pnml name=_EZCOMMENTS_SHOWALL]--></label>
-<input id="ezcomments_showall" type="checkbox" name="showall" value="1"<!--[if $showall eq 1]--> checked="checked"<!--[/if]-->
+<input id="ezcomments_showall" type="checkbox" name="showall" value="1"<!--[if $showall eq 1]--> checked="checked"<!--[/if]--> />
 <input type="submit" value="<!--[pnml name=_SUBMIT]-->" />
 </div>
 </form>
@@ -24,6 +25,7 @@
 <div>
 <input type="hidden" name="authid" value="<!--[pnsecgenauthkey modname=EZComments]-->" />
 <table id="ezcomments_comments" class="pn-admintable">
+	<thead>
 	<tr>
 		<th><input type="checkbox" onclick="checkAllFields(1);" id="checkAll" /></th>
 		<th><!--[pnml name=_EZCOMMENTS_STATUS]--></th>
@@ -33,6 +35,8 @@
 		<th><!--[pnml name=_EZCOMMENTS_COMMENT]--></th>
 		<th><!--[pnml name=_OPTIONS]--></th>
 	</tr>
+	</thead>
+	<tbody>
 	<!--[foreach from=$items item=item]-->
 		<tr class="<!--[cycle values=pn-odd,pn-even]-->">
 			<td><input type="checkbox" name="comments[]" value="<!--[$item.id]-->" onclick="checkAllFields(2);" /></td>
@@ -63,6 +67,7 @@
 			</td>
 		</tr>
 	<!--[/foreach]-->
+	</tbody>
 </table>
 <!--[pnml name=_EZCOMMENTSWITHSELECTED]-->
 <select name="action">
@@ -76,3 +81,4 @@
 </div>
 </form>
 <!--[pager show="page" rowcount=$pager.numitems limit=$pager.itemsperpage posvar=startnum shift=1]-->
+</div>

@@ -1,5 +1,6 @@
 <!--[*  $Id$  *]-->
 <!--[include file="ezcomments_admin_menu.htm"]-->
+<div class="pn-admincontainer">
 <h2><!--[pnml name="_EZCOMMENTS_DELETE"]--></h2>
 <form class="pn-adminform" action="<!--[pnmodurl modname="EZComments" type="admin" func="deletemodule"]-->" method="post" enctype="application/x-www-form-urlencoded">
 <div>
@@ -10,7 +11,7 @@
 		<label for="ezcomments_submit"><!--[pnml name="_EZCOMMENTS_CONFIRMDELETEMODULE" m=$name]--></label>
 		<input id="ezcomments_submit" name="submit" type="submit" value="<!--[pnml name="_DELETE"]-->" />
 	</div>
-	<div style="clear:both"></div>
 </div>
 </form>
 <a href="<!--[pnmodurl modname="EZComments" type="admin" func="main"]-->"><!--[pnml name="_EZCOMMENTS_CANCELDELETEMODULE" m=$name]--></a>
+</div>

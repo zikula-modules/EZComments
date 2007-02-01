@@ -1,5 +1,6 @@
 <!--[*  $Id$  *]-->
 <!--[include file="ezcomments_admin_menu.htm"]-->
+<div class="pn-admincontainer">
 <h2><!--[pnml name="_MODIFYCONFIG"]--></h2>
 <form class="pn-adminform" action="<!--[pnmodurl modname="EZComments" type="admin" func="updateconfig"]-->" method="post" enctype="application/x-www-form-urlencoded">
 <div>
@@ -145,12 +146,10 @@
 			<input id="ezcomments_feedcount" name="feedcount" size="3" value="<!--[$feedcount|pnvarprepfordisplay]-->" />
 		</div>
 	</fieldset>
+	<!--[pnmodcallhooks hookobject="module" hookaction="modifyconfig" hookid="EZComments" module="EZComments"]-->
 	<div class="pn-adminformrow">
-		<!--[pnmodcallhooks hookobject="module" hookaction="modifyconfig" hookid="EZComments" module="EZComments"]-->
+		<input name="submit" type="submit" value="<!--[pnml name="_EZCOMMENTS_OK"]-->" />
 	</div>
-	<div class="pn-adminformrow">
-	<input name="submit" type="submit" value="<!--[pnml name="_EZCOMMENTS_OK"]-->" />
-	</div>
-	<div style="clear:both"></div>
 </div>
 </form>
+</div>

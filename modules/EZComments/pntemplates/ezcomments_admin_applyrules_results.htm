@@ -1,5 +1,6 @@
 <!--[*  $Id$  *]-->
 <!--[include file="ezcomments_admin_menu.htm"]-->
+<div class="pn-admincontainer">
 <h2><!--[pnml name="_EZCOMMENTS_APPLYMODRULES"]--></h2>
 <form id="ezcomments_view" action="<!--[pnmodurl modname=EZComments type=admin func=applyrules]-->" method="post">
 <div>
@@ -9,6 +10,7 @@
 <input type="hidden" name="status" value="<!--[$status|pnvarprepfordisplay]-->" />
 <h3><!--[pnml name=_EZCOMMENTS_TOBEREJECTED]--></h3>
 <table class="pn-admintable">
+	<thead>
 	<tr>
 		<th><!--[pnml name=_EZCOMMENTS_STATUS]--></th>
 		<th><!--[pnml name=_EZCOMMENTS_USERNAME]--></th>
@@ -17,6 +19,8 @@
 		<th><!--[pnml name=_EZCOMMENTS_COMMENT]--></th>
 		<th><!--[pnml name=_OPTIONS]--></th>
 	</tr>
+	</thead>
+	<tbody>
 	<!--[foreach from=$blacklistedcomments item=item]-->
 		<tr class="<!--[cycle values=pn-odd,pn-even]-->">
 			<td>
@@ -86,9 +90,11 @@
 			</td>
 		</tr>
 	<!--[/foreach]-->
+	</table>
 </table>
 <div class="pn-adminformrow">
 	<input name="submit" type="submit" value="<!--[pnml name="_EZCOMMENTS_APPLYNEWRULES"]-->" />
 </div>
 </div>
 </form>
+</div>
