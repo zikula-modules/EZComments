@@ -575,19 +575,30 @@ function EZComments_userapi_gettemplates()
         return false;
     }
 
-    $modinfo = pnModGetInfo(pnModGetIDFromName('EZComments'));
-
     $templates = array();
-    $handle = opendir('modules/'.pnVarPrepForOS($modinfo['directory']).'/pntemplates/');
-    while ($f = readdir($handle)) {
-        if ($f != '.' && $f != '..' && $f != 'CVS' && !ereg("[.]", $f) && $f != 'plugins') {
-            $templates[] = $f;
+
+    $modinfo = pnModGetInfo(pnModGetIDFromName('EZComments'));
+    $osmoddir = pnVarPrepForOS($modinfo['directory']);
+    $ostheme = pnVarPrepForOS(pnUserGetTheme());
+    $rootdirs = array('modules/'.$osmoddir.'/pntemplates/',
+                      'config/templates/'.$osmoddir.'/',
+                      'themes/'.$ostheme.'/templates/'.$osmoddir.'/');
+
+    // read each directory for template sets
+    foreach ($rootdirs as $rootdir) {
+        $handle = opendir($rootdir);
+        while ($f = readdir($handle)) {
+            if ($f != '.' && $f != '..' && $f != '.svn' && $f != 'CVS' && !ereg("[.]", $f) && $f != 'plugins') {
+                $templates[] = $f;
+            }
         }
+        closedir($handle);
     }
-    closedir($handle);
+
+    // remove any duplicates
+    $templates = array_unique($templates);
 
     return $templates;
-
 }
 
 /**

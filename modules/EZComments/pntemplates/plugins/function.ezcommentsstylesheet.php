@@ -63,7 +63,9 @@ function smarty_function_ezcommentsstylesheet($params, &$smarty)
     }
 
     $ostemplate = pnVarPrepForOS($template);
-	
+
+    // config directory
+    $configpath    = "config/templates/EZComments/$ostemplate/style.css";
 	// theme directory
     $theme         = pnVarPrepForOS(pnUserGetTheme());
     $themepath     = "themes/$theme/templates/modules/EZComments/$ostemplate/style.css";
@@ -72,7 +74,8 @@ function smarty_function_ezcommentsstylesheet($params, &$smarty)
 
 	// search for the style sheet
     $csssrc = '';
-	foreach (array($themepath,
+	foreach (array($configpath,
+                   $themepath,
 	               $modpath) as $path) {
         if (file_exists("$path") && is_readable("$path")) {
 		    $csssrc = "$path";
