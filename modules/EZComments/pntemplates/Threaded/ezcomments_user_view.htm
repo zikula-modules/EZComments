@@ -59,7 +59,7 @@
     <!--[pnmodurl modname=EZComments type=admin func=delete redirect=$redirect id=$comments[comments].id assign=url_del]-->
 	<a id="comment<!--[$comments[comments].id]-->"></a>
     <div style="margin-left: <!--[math equation="x * 2" x=$comments[comments].level]-->em">  
-      <div style="width:99%; background-color:<!--[$bgcolor1]-->; padding:4px;">
+      <div style="width:99%; background-color:<!--[pnthemegetvar name=bgcolor1]-->; padding:4px;">
         <strong><!--[$comments[comments].subject]--></strong>
         <div>
           <!--[pnml name=_EZCOMMENTS_COMMENT_FROM]--> 
