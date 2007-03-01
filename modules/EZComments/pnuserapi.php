@@ -544,7 +544,7 @@ function EZComments_userapi_countitems($args)
 
 	$statussql = '';
 	if (isset($args['status']) && is_numeric($args['status']) && $args['status'] >= 0 && $args['status'] <= 2) {
-		$status = pnVarPrepForStore($status);
+		$args['status'] = pnVarPrepForStore($args['status']);
 		$queryargs[] = "$EZCommentscolumn[status] = '$args[status]'";
 	}
 
