@@ -115,7 +115,7 @@ function EZComments_user_view($args)
     $pnRender->assign('comments',   $comments);
 	$pnRender->assign('commentcount', $commentcount);
 	$pnRender->assign('modinfo',    pnModGetInfo(pnModGetIDFromName($mod)));
-    $pnRender->assign('order',      $order);
+    $pnRender->assign('sortorder',  $sortorder);
     $pnRender->assign('allowadd',   pnSecAuthAction(0, 'EZComments::', "$mod:$objectid:", ACCESS_COMMENT));
     $pnRender->assign('loggedin',   pnUserLoggedIn());
     if (!is_array($args['extrainfo'])) {
@@ -180,6 +180,16 @@ function EZComments_user_comment($args)
 
     extract($args);
 
+    // we may get some input in from the navigation bar
+    list ($template, $order) = pnVarCleanFromInput('template', 'order');
+
+    if ($order == 1) {
+        $sortorder = 'DESC';
+    } else {
+        $sortorder = 'ASC';
+    }
+    $status = 0;
+
     // check if commenting is setup for the input module
     if (!pnModAvailable($modname) || !pnModIsHooked('EZComments', $modname)) {
         return _EZCOMMENTS_NOAUTH;
@@ -220,7 +230,7 @@ function EZComments_user_comment($args)
 
     $pnRender->assign('comments',     $comments);
 	$pnRender->assign('commentcount', $commentcount);
-    $pnRender->assign('order',        $order);
+    $pnRender->assign('sortorder',    $sortorder);
     $pnRender->assign('allowadd',     pnSecAuthAction(0, 'EZComments::', "$modname:$objectid: ", ACCESS_COMMENT));
     $pnRender->assign('addurl',       pnModURL('EZComments', 'user', 'create'));
     $pnRender->assign('loggedin',     pnUserLoggedIn());
