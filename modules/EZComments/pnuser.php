@@ -353,10 +353,15 @@ function EZComments_prepareCommentsForDisplay($items)
         if ($item['uid'] > 0) {
             // get the user vars and merge into the comment array
             $userinfo = pnUserGetVars($item['uid']);
-			// the users url will clash with the comment url so lets move it out of the way
-            if (isset($userinfo['url'])) {
-                $userinfo['website'] = $userinfo['url'];
+            // at least for now .8x doesn't include DUD in this api call so lets add some useful ones!
+            if (!isset($userinfo['url'])) {
+                $userinfo['url'] = pnUserGetVar('_YOURHOMEPAGE', $item['uid']);
+                $userinfo['user_avatar'] = pnUserGetVar('_YOURAVATAR', $item['uid']);
+                $userinfo['pn_user_from'] = pnUserGetVar('_YLOCATION', $item['uid']);
+                $userinfo['pn_user_sig'] = pnUserGetVar('_SIGNATURE', $item['uid']);
             }
+			// the users url will clash with the comment url so lets move it out of the way
+            $userinfo['website'] = $userinfo['url'];
             $comment  = array_merge ($userinfo, $comment);
 
             // work out if the user is online
