@@ -224,7 +224,7 @@ function EZComments_userapi_create($args)
         $date= "'" . pnVarPrepForStore($date) . "'";
     }
 
-	if (!isset($type) && !is_string($type) && $type != 'trackback' && $type != 'pingback') {
+	if (!isset($type) || !is_string($type) || ($type != 'trackback' && $type != 'pingback')) {
 		$type = '';
 	}
 

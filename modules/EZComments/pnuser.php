@@ -115,7 +115,7 @@ function EZComments_user_view($args)
     $pnRender->assign('comments',   $comments);
 	$pnRender->assign('commentcount', $commentcount);
 	$pnRender->assign('modinfo',    pnModGetInfo(pnModGetIDFromName($mod)));
-    $pnRender->assign('sortorder',  $sortorder);
+    $pnRender->assign('order',      $sortorder);
     $pnRender->assign('allowadd',   pnSecAuthAction(0, 'EZComments::', "$mod:$objectid:", ACCESS_COMMENT));
     $pnRender->assign('loggedin',   pnUserLoggedIn());
     if (!is_array($args['extrainfo'])) {
@@ -230,7 +230,7 @@ function EZComments_user_comment($args)
 
     $pnRender->assign('comments',     $comments);
 	$pnRender->assign('commentcount', $commentcount);
-    $pnRender->assign('sortorder',    $sortorder);
+    $pnRender->assign('order',        $sortorder);
     $pnRender->assign('allowadd',     pnSecAuthAction(0, 'EZComments::', "$modname:$objectid: ", ACCESS_COMMENT));
     $pnRender->assign('addurl',       pnModURL('EZComments', 'user', 'create'));
     $pnRender->assign('loggedin',     pnUserLoggedIn());
@@ -354,7 +354,9 @@ function EZComments_prepareCommentsForDisplay($items)
             // get the user vars and merge into the comment array
             $userinfo = pnUserGetVars($item['uid']);
 			// the users url will clash with the comment url so lets move it out of the way
-			$userinfo['website'] = $userinfo['url'];
+            if (isset($userinfo['url'])) {
+                $userinfo['website'] = $userinfo['url'];
+            }
             $comment  = array_merge ($userinfo, $comment);
 
             // work out if the user is online
