@@ -110,7 +110,7 @@ function EZComments_init()
     pnModSetVar('EZComments', 'itemsperpage',   25);
     pnModSetVar('EZComments', 'anonusersinfo',  false);
     pnModSetVar('EZComments', 'moderation',     0);
-    pnModSetVar('EZComments', 'moderationlist', '');
+    pnModSetVar('EZComments', 'modlist',        '');
     pnModSetVar('EZComments', 'blacklist',      '');
     pnModSetVar('EZComments', 'modlinkcount',   2);
     pnModSetVar('EZComments', 'blacklinkcount', 5);
@@ -123,6 +123,8 @@ function EZComments_init()
 	pnModSetVar('EZComments', 'feedcount', '10');
 	pnModSetVar('EZComments', 'enablepager', false);
 	pnModSetVar('EZComments', 'commentsperpage', '25');
+    pnModSetVar('EZComments', 'akismet', false);
+    pnModSetVar('EZComments', 'apikey', '');
 
     // Initialisation successful
     return true;
@@ -270,7 +272,7 @@ function EZComments_upgrade($oldversion)
         }
         // add additional vars for comment moderation, blacklists and link count for moderation
         pnModSetVar('EZComments', 'moderation', 0);
-        pnModSetVar('EZComments', 'moderationlist', '');
+        pnModSetVar('EZComments', 'modlist', '');
         pnModSetVar('EZComments', 'blacklist', '');
         pnModSetVar('EZComments', 'modlinkcount', 2);
         pnModSetVar('EZComments', 'moderationmail', false);
@@ -331,6 +333,8 @@ function EZComments_upgrade($oldversion)
 
 	if ($oldversion == '1.3') {
         pnModSetVar('EZComments', 'blacklinkcount', 5);
+        pnModSetVar('EZComments', 'akismet', false);
+        pnModSetVar('EZComments', 'apikey', '');
 	}
 
     return true;

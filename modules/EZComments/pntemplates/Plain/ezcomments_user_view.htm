@@ -58,7 +58,7 @@
     <!--[pnmodurl modname=EZComments func=comment EZComments_redirect=$redirect EZComments_modname=$mod EZComments_objectid=$objectid EZComments_replyto=$comments[comments].id EZComments_template=$template assign=url_comment]-->
     <!--[pnmodurl modname=EZComments type=admin func=delete redirect=$redirect id=$comments[comments].id assign=url_del]-->
       <a id="comment<!--[$comments[comments].id]-->"></a>
-      <div style="width:99%; background-color:<!--[$bgcolor1]-->; padding:4px;">
+      <div style="width:99%; background-color:<!--[pnthemegetvar name=bgcolor1]-->; padding:4px;">
         <strong><!--[$comments[comments].subject]--></strong>
         <div>
           <!--[pnml name=_EZCOMMENTS_COMMENT_FROM]--> 
@@ -68,7 +68,7 @@
           <!--[$comments[comments].uname|pnvarprepfordisplay]-->
           <!--[/if]-->
         </div>
-        <div class="pn-sub"><!--[pnml name=_EZCOMMENTS_COMMENT_ON]--> <!--[$comments[comments].date|date_format:"%d.%m.%y, %H:%M"]--></div>
+        <div class="pn-sub"><!--[pnml name=_EZCOMMENTS_COMMENT_ON]--> <!--[$comments[comments].date|pndate_format]--></div>
         <!--[if $comments[comments].uid neq 0]-->
         <div class="pn-sub"> 
           [ <a class="pn-sub" href="<!--[$url_userinfo|pnvarprepfordisplay]-->"><!--[pnml name=_USERINFO]--></a> ]

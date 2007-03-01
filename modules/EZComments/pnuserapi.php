@@ -586,13 +586,15 @@ function EZComments_userapi_gettemplates()
 
     // read each directory for template sets
     foreach ($rootdirs as $rootdir) {
-        $handle = opendir($rootdir);
-        while ($f = readdir($handle)) {
-            if ($f != '.' && $f != '..' && $f != '.svn' && $f != 'CVS' && !ereg("[.]", $f) && $f != 'plugins') {
-                $templates[] = $f;
+        if (is_dir($rootdir)) {
+            $handle = opendir($rootdir);
+            while ($f = readdir($handle)) {
+                if ($f != '.' && $f != '..' && $f != '.svn' && $f != 'CVS' && !ereg("[.]", $f) && $f != 'plugins') {
+                    $templates[] = $f;
+                }
             }
+            closedir($handle);
         }
-        closedir($handle);
     }
 
     // remove any duplicates
