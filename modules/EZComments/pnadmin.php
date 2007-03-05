@@ -23,7 +23,7 @@
  * @author      Joerg Napp <jnapp@users.sourceforge.net>
  * @author      Mark West <markwest at postnuke dot com>
  * @author      Jean-Michel Vedrine
- * @version     1.4
+ * @version     1.5
  * @link        http://noc.postnuke.com/projects/ezcomments/ Support and documentation
  * @license     http://www.gnu.org/copyleft/gpl.html GNU General Public License
  * @package     Postnuke
@@ -403,6 +403,12 @@ function EZComments_admin_modifyconfig()
     // assign all available template sets
     $pnRender->assign('templates', pnModAPIFunc('EZComments', 'user', 'gettemplates'));
 
+    // is the akismet module available
+    $pnRender->assign('akismetavailable', pnModAvailable('akismet'));
+
+    // assign the status flags
+    $pnRender->assign('statuslevels', array('1' => _EZCOMMENTS_PENDING, '2' => _EZCOMMENTS_REJECTED));
+
     // Return the output
     return $pnRender->fetch('ezcomments_admin_modifyconfig.htm');
 }
@@ -441,10 +447,10 @@ function EZComments_admin_updateconfig($args)
 
     list($MailToAdmin, $moderationmail, $template, $itemsperpage, $anonusersinfo, $moderation, $dontmoderateifcommented,
          $modlinkcount, $modlist, $blacklinkcount, $blacklist, $alwaysmoderate, $proxyblacklist, $logip, $feedtype,
-         $feedcount, $enablepager, $commentsperpage, $akismet, $apikey, $anonusersrequirename) =
+         $feedcount, $enablepager, $commentsperpage, $akismet, $akismetstatus, $anonusersrequirename) =
         pnVarCleanFromInput('MailToAdmin', 'moderationmail', 'template', 'itemsperpage', 'anonusersinfo', 'moderation', 'dontmoderateifcommented',
                             'modlinkcount', 'modlist', 'blacklinkcount', 'blacklist', 'alwaysmoderate', 'proxyblacklist', 'logip', 'feedtype',
-                            'feedcount', 'enablepager', 'commentsperpage', 'akismet', 'apikey', 'anonusersrequirename');
+                            'feedcount', 'enablepager', 'commentsperpage', 'akismet', 'akismetstatus', 'anonusersrequirename');
     extract($args);
 
     if (!isset($MailToAdmin)) {
@@ -542,10 +548,10 @@ function EZComments_admin_updateconfig($args)
     }
     pnModSetVar('EZComments', 'akismet', $akismet);
 
-    if (!isset($apikey)) {
-        $apikey = '';
+    if (!isset($akismetstatus)) {
+        $akismetstatus = 1;
     }
-    pnModSetVar('EZComments', 'apikey', $apikey);
+    pnModSetVar('EZComments', 'akismetstatus', $akismetstatus);
 
     if (!isset($anonusersrequirename)) {
         $anonusersrequirename = 0;

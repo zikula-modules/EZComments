@@ -23,7 +23,7 @@
  * @author      Joerg Napp <jnapp@users.sourceforge.net>
  * @author      Mark West <markwest at postnuke dot com>
  * @author      Jean-Michel Vedrine
- * @version     1.4
+ * @version     1.5
  * @link        http://noc.postnuke.com/projects/ezcomments/ Support and documentation
  * @license     http://www.gnu.org/copyleft/gpl.html GNU General Public License
  * @package     Postnuke
@@ -223,9 +223,14 @@ function EZComments_userapi_create($args)
     if (!isset($replyto) || empty($replyto)) {
         $replyto = -1;
     }
+    $loggedin = pnUserLoggedIn();
+	if (!$loggedin) {
+        $uid = 0;
+    }
     if (!isset($uid) || !is_numeric($uid)) {
         $uid = pnUserGetVar('uid');
     }
+
     if (!isset($date)) {
         $date = 'NOW()';
     } else {
@@ -276,14 +281,14 @@ function EZComments_userapi_create($args)
 	}
     // akismet
     $loggedin = pnUserLoggedIn();
-    if (pnModGetVar('EZComments', 'akismet')) {
-        if (!pnModAPIFunc('EZComments', 'akismet', 'check', 
+    if (pnModAvailable('akismet') && pnModGetVar('EZComments', 'akismet')) {
+        if (pnModAPIFunc('akismet', 'user', 'isspam', 
                           array('author' => $loggedin ?  pnUserGetVar('uname') : $anonname,
                                 'authoremail' => $loggedin ? pnUserGetVar('email') : $anonmail,
                                 'authorurl' => $loggedin ? pnUserGetVar('url') : $anonwebsite,
                                 'content' => $comment,
                                 'permalink' => $url))) {
-            $status[] = 1;
+            $status[] = pnModGetVar('EZComments', 'akismetstatus');
         }
     }
 
@@ -363,7 +368,6 @@ function EZComments_userapi_create($args)
 			  '$type',
 			  '$anonwebsite')";
     $dbconn->Execute($sql);
-
     // Check for an error with the database code
     if ($dbconn->ErrorNo() != 0) {
         pnSessionSetVar('errormsg', _CREATEFAILED);

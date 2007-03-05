@@ -126,6 +126,7 @@
 	<fieldset>
 		<legend><!--[pnml name=_EZCOMMENTS_AKISMET]--></legend>
 		<p><!--[pnml name=_EZCOMMENTS_AKISMETNOTE html=true]--></p>
+		<!--[if $akismetavailable]-->
 		<div class="pn-adminformrow">
 			<label for="ezcomments_akismet"><!--[pnml name="_EZCOMMENTS_ENABLEAKISMET"]--></label>
 			<!--[if $akismet eq 1]-->
@@ -135,9 +136,12 @@
 			<!--[/if]-->
 		</div>
 		<div class="pn-adminformrow">
-			<label for="ezcomments_apikey"><!--[pnml name="_EZCOMMENTS_WORDPRESSAPIKEY"]--></label>
-			<input id="ezcomments_apikey" name="apikey" size="12" maxlength="12" value="<!--[$apikey|pnvarprepfordisplay]-->" />
+			<label for="ezcomments_akismetstatus"><!--[pnml name="_EZCOMMENTS_AKISMETSTATUS"]--></label>
+			<select id="ezcomments_akismetstatus" name="akismetstatus">
+				<!--[html_options options=$statuslevels selected=$akismetstatus]-->
+			</select>
 		</div>
+		<!--[/if]-->
 	</fieldset>
 	<fieldset>
 		<legend><!--[pnml name=_EZCOMMENTS_FEEDS]--></legend>

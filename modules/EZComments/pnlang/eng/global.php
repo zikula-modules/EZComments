@@ -206,10 +206,9 @@ define('_EZCOMMENTS_SHOWALL',                 'Show all comments');
 // askismet
 define('_EZCOMMENTS_AKISMET',                 'Akismet spam dectection service');
 define('_EZCOMMENTS_AKISMETNOTE',             '<a href="http://akismet.com/">Akismet</a> is a spam detection service that can, in many 
-cases, eliminate comment and trackback spam. To use akismet you need a <a href="http://www.wordpress.com">wordpress.com</a> API key.
-Simply signup for an account at wordpress.com but don\'t create a blog - your API key will be in your profile.');
+cases, eliminate comment and trackback spam. To use akismet you need to install and configure the <a href="http://noc.postnuke.com/projects/ezcomments">Akismet module</a>.');
 define('_EZCOMMENTS_ENABLEAKISMET',           'Enable akismet');
-define('_EZCOMMENTS_WORDPRESSAPIKEY',         'Wordpress.com API key');
+define('_EZCOMMENTS_AKISMETSTATUS',           'Status level to apply to comments flagged as spam by akismet');
 
 // username requried for guest comments
 define('_EZCOMMENTS_ANON_NAME',               'Require name for unregistered user');

@@ -23,7 +23,7 @@
  * @author      Joerg Napp <jnapp@users.sourceforge.net>
  * @author      Mark West <markwest at postnuke dot com>
  * @author      Jean-Michel Vedrine
- * @version     1.4
+ * @version     1.5
  * @link        http://noc.postnuke.com/projects/ezcomments/ Support and documentation
  * @license     http://www.gnu.org/copyleft/gpl.html GNU General Public License
  * @package     Postnuke
@@ -336,7 +336,14 @@ function EZComments_upgrade($oldversion)
         pnModSetVar('EZComments', 'blacklinkcount', 5);
         pnModSetVar('EZComments', 'akismet', false);
         pnModSetVar('EZComments', 'apikey', '');
+		$oldversion = '1.4';
 	}
+
+	if ($oldversion == '1.4') {
+        pnModSetVar('EZComments', 'anonusersrequirename', false);
+        pnModDelVar('EZComments', 'apikey');
+        pnMoDSetVar('EZComments', 'akismetstatus', 1);
+    }
 
     return true;
 } 
