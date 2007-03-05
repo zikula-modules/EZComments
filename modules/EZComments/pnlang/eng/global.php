@@ -41,11 +41,12 @@ define('_EZCOMMENTS_USERNAME',              'User');
 define('_EZCOMMENTS_MODULE',                'Module');
 define('_EZCOMMENTS_TEMPLATE',              'Default template');
 define('_EZCOMMENTS_ALLCOMMENTS',           'All %s% comments');
-
 define('_EZCOMMENTS_EDIT',                  'Edit Comment');
 define('_EZCOMMENTS_ITEMSPERPAGE',          'Comments per page (admin view)');
 define('_EZCOMMENTS_ALLOWANONUSERSETINFO',  'Allow unregistered users to set user information');
 
+// user errors/status messages
+define('_EZCOMMENTS_EMPTYCOMMENT',          'Error! Sorry! The comment contains no text');
 
 //cleanup of orphaned comments
 define('_EZCOMMENTS_CLEANUP_NOTHINGTODO',   'No orphaned comments');
