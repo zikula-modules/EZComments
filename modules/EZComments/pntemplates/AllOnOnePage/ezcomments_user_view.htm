@@ -87,7 +87,7 @@
     </div>
     <!--[if $loggedin neq true and $anonusersinfo eq true]-->
     <div>
-      <label for="anonname"><!--[pnml name=_EZCOMMENTS_ANONNAME]--></label>
+      <label for="anonname"><!--[pnml name=_EZCOMMENTS_ANONNAME]--><!--[if $anonusersrequirename eq true]--> <span><!--[pnml name=_EZCOMMENTS_ANON_NAME_FORM]--></span><!--[/if]--></label>
       <br />
       <input type="text" name="anonname" id="anonname" size="50" maxlength="255" />
     </div>
