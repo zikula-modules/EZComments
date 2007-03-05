@@ -1,5 +1,10 @@
 <!--[pnml name=_EZCOMMENTS_MODMAILBODY]-->:
+<!--[pnml name=_USERNAME]-->: <!--[$user|htmlentities|pnvarprepfordisplay]-->
+<!--[pnml name=_DATE]-->: <!--[$date|pndate_format|pnvarprepfordisplay]-->
+<!--[pnml name=_EZCOMMENTS_SUBJECT]-->: <!--[$subject|pnvarprepfordisplay]-->
+<!--[$comment|pnvarprepfordisplay]-->
 <!--[$comment]-->
-<!--[pnml name=_EZCOMMENTS_SHOW]-->: <!--[$baseURL]--><!--[$url]-->
+
+<!--[pnml name=_EZCOMMENTS_SHOW]-->: <!--[pngetbaseurl]--><!--[$url]-->
 <!--[pnml name=_EZCOMMENTS_MODERATE2]-->: <!--[$moderate]-->
 <!--[pnml name=_EZCOMMENTS_DELETE]-->: <!--[$delete ]-->
