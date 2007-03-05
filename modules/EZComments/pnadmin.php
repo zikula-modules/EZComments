@@ -1090,7 +1090,19 @@ function EZComments_admin_applyrules($args)
     foreach ($comments as $comment) {
         $subjectstatus = _EZComments_userapi_checkcomment($comment['subject']);
         $commentstatus = _EZComments_userapi_checkcomment($comment['comment']);
-        if (($subjectstatus == 0 && $commentstatus == 0) && $comment['status'] != 0) {
+        // akismet
+        if (pnModAvailable('akismet') && pnModGetVar('EZComments', 'akismet')
+		    && pnModAPIFunc('akismet', 'user', 'isspam', 
+                              array('author' => ($comment['uid'] > 0) ?  pnUserGetVar('uname', $comment['uid']) : $comment['anonname'],
+                                    'authoremail' => ($comment['uid'] > 0) ? pnUserGetVar('email', $comment['uid']) : $comment['anonmail'],
+                                    'authorurl' => ($comment['uid'] > 0) ? pnUserGetVar('url', $comment['uid']) : $comment['anonwebsite'],
+                                    'content' => $comment['comment'],
+                                    'permalink' => $comment['url']))) {
+            $akismetstatus = pnModGetVar('EZComments', 'akismetstatus');
+        } else {
+            $akismetstatus = $commentstatus;
+        }
+        if (($subjectstatus == 0 && $commentstatus == 0 && $akismetstatus == 0) && $comment['status'] != 0) {
             continue;
         }
         $options = array();
@@ -1103,10 +1115,10 @@ function EZComments_admin_applyrules($args)
             }
         }
         $comment['options'] = $options;
-        if (($subjectstatus == 1 || $commentstatus == 1) && $comment['status'] != 1) {
+        if (($subjectstatus == 1 || $commentstatus == 1 || $akismetstatus == 1) && $comment['status'] != 1) {
             $moderatedcomments[] = $comment;
         }
-        if (($subjectstatus == 2 || $commentstatus == 2) && $comment['status'] != 2) {
+        if (($subjectstatus == 2 || $commentstatus == 2 || $akismetstatus == 2) && $comment['status'] != 2) {
             $blacklistedcomments[] = $comment;
         }
     }
