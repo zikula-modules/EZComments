@@ -205,13 +205,21 @@ function EZComments_userapi_create($args)
 {
     extract($args);
 
-    if ((!isset($mod)) ||
-        (!isset($objectid)) ||
-        (!isset($comment))) {
+    if (!isset($mod) ||
+        !isset($objectid) ||
+        !isset($comment)) {
         pnSessionSetVar('errormsg', _MODARGSERROR);
         return false;
     }
 
+    // check unregistered user included name (if required)
+	$anonname = trim($anonname);
+	if (!pnUserLoggedIn()) {
+    	if (pnModGetVar('EZComments', 'anonusersrequirename') && empty($anonname)) {
+        	pnSessionSetVar('errormsg', _EZCOMMENTS_ANON_NAME_REJECT);
+	        return false;
+    	}
+	}
     if (!isset($replyto) || empty($replyto)) {
         $replyto = -1;
     }
@@ -394,13 +402,11 @@ function EZComments_userapi_create($args)
 		}
 		$pnRender->assign('id', $id);        $mailsubject = _EZCOMMENTS_MAILSUBJECT;
         $mailbody = $pnRender->fetch('ezcomments_mail_newcomment.htm');
-var_dump($mailbody);
         pnModAPIFunc('Mailer', 'user', 'sendmessage',
                      array('toaddress' => pnConfigGetVar('adminmail'), 'toname' => pnConfigGetVar('sitename'),
                             'fromaddress' => pnConfigGetVar('adminmail'), 'fromname' => pnConfigGetVar('sitename'),
                            'subject' => $mailsubject, 'body' => $mailbody));
     }
-die;
     if (pnModGetVar('EZComments', 'moderationmail') && $maxstatus == 1) {
         $pnRender =& new pnRender('EZComments');
 		$pnRender->caching = false;

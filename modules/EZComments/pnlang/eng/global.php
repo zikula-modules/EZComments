@@ -211,4 +211,9 @@ Simply signup for an account at wordpress.com but don\'t create a blog - your AP
 define('_EZCOMMENTS_ENABLEAKISMET',           'Enable akismet');
 define('_EZCOMMENTS_WORDPRESSAPIKEY',         'Wordpress.com API key');
 
+// username requried for guest comments
+define('_EZCOMMENTS_ANON_NAME',               'Require name for unregistered user');
+define('_EZCOMMENTS_ANON_NAME_FORM',          '(required for unregistered users)');
+define('_EZCOMMENTS_ANON_NAME_REJECT',        'Error! Sorry! The name field is required. Comment rejected');
+
 ?>

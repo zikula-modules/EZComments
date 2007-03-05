@@ -441,10 +441,10 @@ function EZComments_admin_updateconfig($args)
 
     list($MailToAdmin, $moderationmail, $template, $itemsperpage, $anonusersinfo, $moderation, $dontmoderateifcommented,
          $modlinkcount, $modlist, $blacklinkcount, $blacklist, $alwaysmoderate, $proxyblacklist, $logip, $feedtype,
-         $feedcount, $enablepager, $commentsperpage, $akismet, $apikey) =
+         $feedcount, $enablepager, $commentsperpage, $akismet, $apikey, $anonusersrequirename) =
         pnVarCleanFromInput('MailToAdmin', 'moderationmail', 'template', 'itemsperpage', 'anonusersinfo', 'moderation', 'dontmoderateifcommented',
                             'modlinkcount', 'modlist', 'blacklinkcount', 'blacklist', 'alwaysmoderate', 'proxyblacklist', 'logip', 'feedtype',
-                            'feedcount', 'enablepager', 'commentsperpage', 'akismet', 'apikey');
+                            'feedcount', 'enablepager', 'commentsperpage', 'akismet', 'apikey', 'anonusersrequirename');
     extract($args);
 
     if (!isset($MailToAdmin)) {
@@ -546,6 +546,11 @@ function EZComments_admin_updateconfig($args)
         $apikey = '';
     }
     pnModSetVar('EZComments', 'apikey', $apikey);
+
+    if (!isset($anonusersrequirename)) {
+        $anonusersrequirename = 0;
+    }
+    pnModSetVar('EZComments', 'anonusersrequirename', $anonusersrequirename);
 
     pnSessionSetVar('statusmsg', _CONFIGUPDATED);
     return pnRedirect(pnModURL('EZComments', 'admin', 'main'));

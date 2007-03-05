@@ -364,6 +364,7 @@ function EZComments_prepareCommentsForDisplay($items)
             }
 			// the users url will clash with the comment url so lets move it out of the way
             $userinfo['website'] = $userinfo['url'];
+            $comment['anonname'] = '';
             $comment  = array_merge ($userinfo, $comment);
 
             // work out if the user is online
@@ -377,8 +378,12 @@ function EZComments_prepareCommentsForDisplay($items)
                 $comment['onlinestatus'] = false;
             }
         } else {
-            $comment['uname'] = pnConfigGetVar('Anonymous');
-        }
+			// if anonymous, uname is empty
+			$comment['uname'] = '';
+			if ($comment['anonname'] == '') {
+				$comment['anonname'] = pnConfigGetVar('anonymous');
+	        }
+		}
         $comment['del'] = (pnSecAuthAction(0, 'EZComments::', "$comment[mod]:$comment[objectid]:$comment[id]", ACCESS_DELETE));
         $comments[] = $comment;
     }

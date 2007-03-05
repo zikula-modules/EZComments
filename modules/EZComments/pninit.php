@@ -125,6 +125,7 @@ function EZComments_init()
 	pnModSetVar('EZComments', 'commentsperpage', '25');
     pnModSetVar('EZComments', 'akismet', false);
     pnModSetVar('EZComments', 'apikey', '');
+    pnModSetVar('EZComments', 'anonusersrequirename', false);
 
     // Initialisation successful
     return true;

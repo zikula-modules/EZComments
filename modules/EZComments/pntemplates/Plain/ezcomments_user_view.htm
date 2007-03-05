@@ -62,10 +62,10 @@
         <strong><!--[$comments[comments].subject]--></strong>
         <div>
           <!--[pnml name=_EZCOMMENTS_COMMENT_FROM]--> 
-          <!--[if $comments[comments].anonname neq '']-->
-          <!--[$comments[comments].anonname|pnvarprepfordisplay]-->
-          <!--[else]-->
+          <!--[if $comments[comments].uname neq '']-->
           <!--[$comments[comments].uname|pnvarprepfordisplay]-->
+		  <!--[else]-->
+          <!--[$comments[comments].anonname|pnvarprepfordisplay]-->
           <!--[/if]-->
         </div>
         <div class="pn-sub"><!--[pnml name=_EZCOMMENTS_COMMENT_ON]--> <!--[$comments[comments].date|pndate_format]--></div>
