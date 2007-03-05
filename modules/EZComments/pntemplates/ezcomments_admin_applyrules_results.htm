@@ -50,9 +50,11 @@
 			</td>
 		</tr>
 	<!--[/foreach]-->
+	</tbody>
 </table>
 <h3><!--[pnml name=_EZCOMMENTS_TOBEMODERATED]--></h3>
 <table class="pn-admintable">
+	<thead>
 	<tr>
 		<th><!--[pnml name=_EZCOMMENTS_STATUS]--></th>
 		<th><!--[pnml name=_EZCOMMENTS_USERNAME]--></th>
@@ -61,6 +63,8 @@
 		<th><!--[pnml name=_EZCOMMENTS_COMMENT]--></th>
 		<th><!--[pnml name=_OPTIONS]--></th>
 	</tr>
+	</thead>
+	<tbody>
 	<!--[foreach from=$moderatedcomments item=item]-->
 		<tr class="<!--[cycle values=pn-odd,pn-even]-->">
 			<td>
@@ -90,7 +94,7 @@
 			</td>
 		</tr>
 	<!--[/foreach]-->
-	</table>
+	</tbody>
 </table>
 <div class="pn-adminformrow">
 	<input name="submit" type="submit" value="<!--[pnml name="_EZCOMMENTS_APPLYNEWRULES"]-->" />
