@@ -315,13 +315,15 @@ function EZComments_user_create($args)
     // decoding the URL. Credits to tmyhre for fixing.
     $redirect = rawurldecode($redirect);
     $redirect = str_replace('&amp;', '&', $redirect);
+    // now parse out the hostname from the url for storing in the DB
+    $url = str_replace(pnGetBaseURL(), '', $redirect);
 
     $id = pnModAPIFunc('EZComments',
                        'user',
                        'create',
                        array('mod'         => $modname,
                              'objectid'    => $objectid,
-                             'url'         => $redirect,
+                             'url'         => $url,
                              'comment'     => $comment,
                              'subject'     => $subject,
                              'replyto'     => $replyto,
@@ -330,7 +332,7 @@ function EZComments_user_create($args)
                              'anonmail'    => $anonmail,
 							 'anonwebsite' => $anonwebsite));
 
-    return pnRedirect($redirect);
+    return pnRedirect($redirect.'#comments');
 } 
 
 /**
