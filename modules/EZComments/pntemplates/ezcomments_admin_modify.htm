@@ -6,6 +6,7 @@
 <div>
 	<input type="hidden" name="authid" value="<!--[pnsecgenauthkey module="EZComments"]-->" />
 	<input type="hidden" name="id" value="<!--[$id|pnvarprepfordisplay]-->" />
+	<input type="hidden" name="redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" />
     <!--[if $anonname neq '']-->
 	<div class="pn-adminformrow">
         <label for="ezcomments_anonname"><!--[pnml name="_EZCOMMENTS_ANONNAME"]--></label>
@@ -50,4 +51,9 @@
 	</div>
 </div>
 </form>
+<!--[if $redirect neq '']-->
+<a href="<!--[$redirect|pnvarprepfordisplay]-->"><!--[pnml name="_CANCELEDIT"]--></a>
+<!--[else]-->
+<a href="<!--[pnmodurl modname="EZComments" type="admin" func="main"]-->"><!--[pnml name="_CANCELEDIT"]--></a>
+<!--[/if]-->
 </div>
