@@ -284,12 +284,6 @@ function EZComments_user_comment($args)
  */
 function EZComments_user_create($args)
 {
-    // Confirm authorisation code.
-    if (!pnSecConfirmAuthKey()) {
-        pnSessionSetVar('errormsg', _BADAUTHKEY);
-        return pnRedirect($redirect);
-    } 
-
     list($modname,
          $objectid,
          $redirect,
@@ -301,6 +295,13 @@ function EZComments_user_create($args)
                                          'comment',
                                          'subject',
                                          'replyto');
+    $redirect = urldecode($redirect);
+
+    // Confirm authorisation code.
+    if (!pnSecConfirmAuthKey()) {
+        pnSessionSetVar('errormsg', _BADAUTHKEY);
+        return pnRedirect($redirect);
+    } 
 
     // check we've actually got a comment....
     if (!isset($comment) || empty($comment)) {
