@@ -1,8 +1,23 @@
 $Id$
 
+EZComments Project Team
+
+Jörg Napp (Founder)
+Mark West
+Frank Schummertz
+Jean-Michel Vedrine
+Steffen Voss
+
+
 Credits to:
 
 Everybody who uses this module and gave feedback, especially to the following kind persons:
+
+Wordpress
+  -- all of the comment moderation features are inspired by Wordpress (http://www.wordpress.org)
+
+Akismet
+  -- For, hopefully, making EZComments spam free!
 
 Mark West
   -- for looking through the code and providing a lot of bugfixes
@@ -22,9 +37,6 @@ David Mach
 Steffen Voss 
   -- for doing the first beta tests on the module
   -- for small additions to the code and new default templates (pnForum look&feel)
-
-Wordpress
-  -- all of the comment moderation features are inspired by Wordpress (http://www.wordpress.org)
 
 Imoq 
   -- for providing the spanish translation

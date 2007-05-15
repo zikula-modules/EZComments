@@ -1,13 +1,32 @@
 $Id$
 
-Copy to your modules folder, initialize, activate
-Edit the modules you want to have comments for, and activate EZComments
+EZComments commenting system for PostNuke
 
-Full documentation and forum can be found on http://noc.postnuke.com/projects/ezcomments/
+Requirements
+------------
+
+- PostNuke 0.76x or later
 
 
-jnapp@users.sourceforge.net
-http://noc.postnuke.com/projects/ezcomments/
+Installation
+------------
+Installation of the module follows the same procedure as other PostNuke modules. Copy the akismet directory
+to your modules directory (modules/). From the modules admin panel regenerate the modules list then initialize
+and activate the akismet module.
 
-Support für PostNuke in deutscher Sprache:
-http://www.post-nuke.net
+
+Usage
+-----
+EZComments is a display hook module and requires activating for each module that you wish to enable commenting on.
+
+For example. 
+
+To enable commenting on news articles go to Administration->System->Modules. Locate the news module entry and 
+click the hooks link. Check the EZComments option and submit the form. Now when a news article is displayed comments
+and a comment form will be displayed 
+
+Support
+-------
+English support can be found at http://www.markwest.me.uk/
+German support can be found at http://support.pn-cms.de/
+Project Homepage (for reporting bugs and feature requests only - no support) -http://noc.postnuke.com/projects/ezcomments/

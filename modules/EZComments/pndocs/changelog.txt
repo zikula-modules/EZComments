@@ -3,6 +3,12 @@ $Id$
 
 Changelog
 
+1.5  - Migrated akismet support to seperate module
+     - Added option to require anonymous commenters to provide a 'name'
+     - Added better support for PostNuke 0.8x
+
+1.4  - Integrated akismet support
+
 1.3  - Added a pager to the users view of comments
 
 1.2  - Added additional field for anonymous users website

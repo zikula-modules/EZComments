@@ -13,3 +13,6 @@ Things left to be done:
    modify their own comments
 
  - find bugs ;-)
+
+ - Additional feature requests can be submitted to the project page
+   at http://noc.postnuke.com/projects/ezcomments/
