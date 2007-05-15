@@ -637,7 +637,7 @@ function EZComments_admin_migrate_go()
         // return _EZCOMMENTS_NOAUTH;
     } 
     // Parameter
-    $migrate = pnVarCleanFromInput('EZComments_migrate');
+    $migrate = pnVarCleanFromInput('migrate');
     if (!isset($migrate)){ 
         return _EZCOMMENTS_MODSARGSERROR;
     }
