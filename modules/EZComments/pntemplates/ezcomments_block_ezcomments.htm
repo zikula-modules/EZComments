@@ -6,7 +6,7 @@
 		<!--[else]-->
 			<a href="<!--[$comment.url|pnvarprepfordisplay]-->#comment<!--[$comment.id|pnvarprepfordisplay]-->"><!--[$comment.comment|strip_tags:false|truncate:30|pnvarprepfordisplay]--></a>
 		<!--[/if]-->
-		<!--[if $showusername]-->
+		<!--[if $showusername and $comment.uname neq '']-->
 			<!--[pnml name=_BY]-->
 			<!--[if $linkusername]-->
 				<a href="user.php?op=userinfo&amp;uname=<!--[$comment.uname|pnvarprepfordisplay]-->"><!--[$comment.uname|pnvarprepfordisplay]--></a>
