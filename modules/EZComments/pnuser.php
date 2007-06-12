@@ -170,13 +170,13 @@ function EZComments_user_comment($args)
          $comment,
          $subject,
          $replyto,
-         $template) = pnVarCleanFromInput('modname',
-                                          'objectid',
-                                          'redirect',
-                                          'comment',
-                                          'subject',
-                                          'replyto',
-                                          'template');
+         $template) = pnVarCleanFromInput('EZComments_modname',
+                                          'EZComments_objectid',
+                                          'EZComments_redirect',
+                                          'EZComments_comment',
+                                          'EZComments_subject',
+                                          'EZComments_replyto',
+                                          'EZComments_template');
 
     extract($args);
 
