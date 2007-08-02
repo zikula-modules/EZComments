@@ -40,24 +40,42 @@
  */
 function EZComments_pntables()
 {
+    // Initialise table array
     $pntable = array();
-    $EZComments = pnConfigGetVar('prefix') . '_ezcomments';
-    $pntable['EZComments'] = $EZComments;
-    $pntable['EZComments_column'] = array('id'          => $EZComments . '.id',
-                                          'modname'     => $EZComments . '.modname',
-                                          'objectid'    => $EZComments . '.objectid',
-                                          'url'         => $EZComments . '.url',
-                                          'date'        => $EZComments . '.date',
-                                          'uid'         => $EZComments . '.uid',
-                                          'comment'     => $EZComments . '.comment',
-                                          'subject'     => $EZComments . '.subject',
-                                          'replyto'     => $EZComments . '.replyto',
-                                          'anonname'    => $EZComments . '.anonname',
-                                          'anonmail'    => $EZComments . '.anonmail',
-                                          'status'      => $EZComments . '.status',
-										  'ipaddr'      => $EZComments . '.ipaddr',
-										  'type'        => $EZComments . '.type',
-										  'anonwebsite' => $EZComments . '.anonwebsite');
+
+    // Full table definition
+    $pntable['EZComments'] = DBUtil::getLimitedTablename('ezcomments');
+    $pntable['EZComments_column'] = array('id'          => 'pn_id',
+                                          'modname'     => 'pn_modname',
+                                          'objectid'    => 'pn_objectid',
+                                          'url'         => 'pn_url',
+                                          'date'        => 'pn_date',
+                                          'uid'         => 'pn_uid',
+                                          'comment'     => 'pn_comment',
+                                          'subject'     => 'pn_subject',
+                                          'replyto'     => 'pn_replyto',
+                                          'anonname'    => 'pn_anonname',
+                                          'anonmail'    => 'pn_anonmail',
+                                          'status'      => 'pn_status',
+										  'ipaddr'      => 'pn_ipaddr',
+										  'type'        => 'pn_type',
+										  'anonwebsite' => 'pn_anonwebsite');
+    $pntable['EZComments_column_def'] = array('id'          => 'I AUTOINCREMENT PRIMARY',
+                                              'modname'     => "C(64) NOTNULL DEFAULT ''",
+                                              'objectid'    => "X NOTNULL DEFAULT ''",
+                                              'url'         => "X NOTNULL DEFAULT ''",
+                                              'date'        => "T NOTNULL DEFAULT '1970-01-01 00:00:00'",
+                                              'uid'         => "I NOTNULL DEFAULT '0'",
+                                              'comment'     => "X NOTNULL DEFAULT ''",
+                                              'subject'     => "X NOTNULL DEFAULT ''",
+                                              'replyto'     => "I NOTNULL DEFAULT '0'",
+                                              'anonname'    => "C(255) NOTNULL DEFAULT ''",
+                                              'anonmail'    => "C(255) NOTNULL DEFAULT ''",
+                                              'status'      => "I1 NOTNULL DEFAULT '0'",
+                                              'ipaddr'      => "C(85) NOTNULL DEFAULT ''",
+                                              'type'        => "C(64) NOTNULL DEFAULT ''",
+                                              'anonwebsite' => "C(255) NOTNULL DEFAULT ''");
+
     return $pntable;
 }
 

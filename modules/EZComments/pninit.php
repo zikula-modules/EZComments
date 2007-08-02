@@ -40,67 +40,26 @@
  */
 function EZComments_init()
 { 
-    // Create tables
-    $dbconn =& pnDBGetConn(true);
-    $pntable =& pnDBGetTables();
-
-    $EZCommentstable = $pntable['EZComments'];
-    $EZCommentscolumn = &$pntable['EZComments_column'];
-
-    $sql = "CREATE TABLE $EZCommentstable (
-              $EZCommentscolumn[id]           int(11)      NOT NULL auto_increment,
-              $EZCommentscolumn[modname]      varchar(64)  NOT NULL default '',
-              $EZCommentscolumn[objectid]     text         NOT NULL,
-              $EZCommentscolumn[url]          text         NOT NULL,
-              $EZCommentscolumn[date]         datetime     default NULL,
-              $EZCommentscolumn[uid]          int(11)      default '0',
-              $EZCommentscolumn[comment]      text         NOT NULL,
-              $EZCommentscolumn[subject]      text         NOT NULL,
-              $EZCommentscolumn[replyto]      int(11)      NOT NULL default '-1',
-              $EZCommentscolumn[anonname]     varchar(255) NOT NULL default '',
-              $EZCommentscolumn[anonmail]     varchar(255) NOT NULL default '',
-              $EZCommentscolumn[status]       int(4)       NOT NULL default 0,
-              $EZCommentscolumn[ipaddr]       varchar(85)  NOT NULL default '',
-              $EZCommentscolumn[type]         varchar(64)  NOT NULL default '',
-              $EZCommentscolumn[anonwebsite]  varchar(255) NOT NULL default '',
-              PRIMARY KEY(id)
-              ) COMMENT='Table for EZComments'";
-    $dbconn->Execute($sql);
-
-    if ($dbconn->ErrorNo() != 0) { 
-        pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED1  . ': ' . $dbconn->ErrorMsg());
+    // create table
+    if (!DBUtil::createTable('EZComments')) {
         return false;
-    } 
+    }
+
     // register Hook
-    if (!pnModRegisterHook('item',
-                           'display',
-                           'GUI',
-                           'EZComments',
-                           'user',
-                           'view')) {
+    if (!pnModRegisterHook('item', 'display', 'GUI', 'EZComments', 'user', 'view')) {
         pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED2);
         return false;
     } 
     
     // register  delete Hook (Timo)
     // TODO: Check the Hook's name!
-    if (!pnModRegisterHook('item',
-                           'delete',
-                           'API',
-                           'EZComments',
-                           'admin',
-                           'deletebyitem')) {
+    if (!pnModRegisterHook('item', 'delete', 'API', 'EZComments', 'admin', 'deletebyitem')) {
         pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED2);
         return false;
     }
 
     // register the module delete hook
-    if (!pnModRegisterHook('module',
-                           'remove',
-                           'API',
-                           'EZComments',
-                           'admin',
-                           'deletemodule')) {
+    if (!pnModRegisterHook('module', 'remove', 'API', 'EZComments', 'admin', 'deletemodule')) {
         pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED2);
     }    
 
@@ -359,41 +318,22 @@ function EZComments_upgrade($oldversion)
  */
 function EZComments_delete()
 {
-    $dbconn =& pnDBGetConn(true);
-    $pntable =& pnDBGetTables();
-    $sql = "DROP TABLE $pntable[EZComments]";
-    $dbconn->Execute($sql);
-    if ($dbconn->ErrorNo() != 0) {
-        pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED3);
+    // drop table
+    if (!DBUtil::dropTable('EZComments')) {
         return false;
-    } 
+    }
 
-    if (!pnModUnregisterHook('item',
-                             'display',
-                             'GUI',
-                             'EZComments',
-                             'user',
-                             'view')) {
+    if (!pnModUnregisterHook('item', 'display', 'GUI', 'EZComments', 'user', 'view')) {
         pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED4);
         return false;
     } 
 
-    if (!pnModUnregisterHook('item',
-                             'delete',
-                             'API',
-                             'EZComments',
-                             'admin',
-                             'deletebyitem')) {
+    if (!pnModUnregisterHook('item', 'delete', 'API', 'EZComments', 'admin', 'deletebyitem')) {
         pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED4);
         return false;
     }
 
-    if (!pnModUnregisterHook('module',
-                             'remove',
-                             'API',
-                             'EZComments',
-                             'admin',
-                             'deletemodule')) {
+    if (!pnModUnregisterHook('module', 'remove', 'API', 'EZComments', 'admin', 'deletemodule')) {
         pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED4);
         return false;
     }
