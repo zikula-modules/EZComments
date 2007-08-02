@@ -98,4 +98,3 @@ function smarty_function_ezcommentsstylesheet($params, &$smarty)
     }
     $GLOBALS['additional_header'][] = $tag;        
 }
-?>

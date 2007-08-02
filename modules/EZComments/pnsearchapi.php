@@ -93,4 +93,3 @@ function ezcomments_searchapi_search($args)
     $pnRender->assign('comments', $comments);
     return $pnRender->fetch('ezcomments_search_results.htm');
 }
-?>

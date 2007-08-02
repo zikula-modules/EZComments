@@ -145,4 +145,4 @@ define('_EZCOMMENTS_SHOWDATE',              'Show Date?');
 define('_EZCOMMENTS_SELECT_MODULE',         'Show comments for the following module');
 define('_EZCOMMENTS_ALLMODULES',            'All');
 
-?>
+

@@ -58,4 +58,3 @@ function smarty_modifier_commentstatus($string)
     }
 }
 
-?>

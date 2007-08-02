@@ -95,4 +95,4 @@ function smarty_function_ezcommentsadminlinks($params, &$smarty)
     return $adminlinks;
 }
 
-?>
+

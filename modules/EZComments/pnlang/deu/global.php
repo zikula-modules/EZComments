@@ -221,4 +221,4 @@ define('_EZCOMMENTS_ANON_NAME_REJECT',        'Fehler! Das Namensfeld ist notwen
 
 
 
-?>
+

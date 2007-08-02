@@ -131,4 +131,3 @@ function EZComments_migrateapi_pnFlashGames()
     return true;
 }
 
-?>

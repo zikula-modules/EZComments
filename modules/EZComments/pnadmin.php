@@ -1159,4 +1159,3 @@ function EZComments_admin_applyrules($args)
     }
 }
 
-?>

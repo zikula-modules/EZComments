@@ -48,4 +48,3 @@ function smarty_modifier_issued($string)
     return strftime("%G-%m-%dT%H:%M:%S", strtotime($string));
 }
 
-?>

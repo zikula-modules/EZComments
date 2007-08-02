@@ -188,4 +188,3 @@ define('_EZCOMMENTS_LEAVEACOMMENT',           'Laissez un commentaire');
 define('_EZCOMMENTS_ENABLEPAGER',             'Activer la pagination (Vue utilisateur)');
 define('_EZCOMMENTS_COMMENTSPERPAGE',         'Commentaires par page (Vue utilisateu)');
 
-?>

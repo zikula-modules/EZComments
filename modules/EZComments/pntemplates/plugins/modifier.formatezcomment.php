@@ -64,4 +64,4 @@ function smarty_modifier_formatezcomment($string)
     return $string;
 }
 
-?>
+

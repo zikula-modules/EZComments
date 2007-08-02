@@ -345,4 +345,3 @@ function EZComments_delete()
     return true;
 } 
 
-?>

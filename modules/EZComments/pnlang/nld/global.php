@@ -188,4 +188,4 @@ define('_EZCOMMENTS_LEAVEACOMMENT',           'Laat commentaar achter');
 // pager defines
 define('_EZCOMMENTS_ENABLEPAGER',             'Gebruik meerdere pagina\'s (in gebruikersoverzicht)');
 define('_EZCOMMENTS_COMMENTSPERPAGE',         'Aantal commentaren per pagina (in gebruikersoverzicht)');
-?>
+

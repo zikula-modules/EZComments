@@ -449,4 +449,3 @@ function ezcomments_adminapi_countitems($args)
     return pnModAPIFunc('EZComments', 'user', 'countitems', $args);
 }
 
-?>

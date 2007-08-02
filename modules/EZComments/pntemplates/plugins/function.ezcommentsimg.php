@@ -190,4 +190,3 @@ function smarty_function_ezcommentsimg($params, &$smarty)
         return $imgtag;        
     }      
 }
-?>

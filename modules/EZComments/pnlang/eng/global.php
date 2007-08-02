@@ -218,4 +218,3 @@ define('_EZCOMMENTS_ANON_NAME',               'Require name for unregistered use
 define('_EZCOMMENTS_ANON_NAME_FORM',          '(required for unregistered users)');
 define('_EZCOMMENTS_ANON_NAME_REJECT',        'Error! Sorry! The name field is required. Comment rejected');
 
-?>

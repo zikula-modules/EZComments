@@ -186,4 +186,3 @@ function EZComments_EZCommentsblock_update($blockinfo)
     return $blockinfo;
 } 
 
-?>

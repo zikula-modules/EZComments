@@ -109,4 +109,3 @@ function EZComments_migrateapi_reviews()
     return true;
 }
 
-?>

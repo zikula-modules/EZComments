@@ -54,4 +54,3 @@ $modversion['securityschema'] = array('EZComments::'         => 'Module:Item ID:
                                       'EZComments:trackback' => 'Module:Item ID:',
                                       'EZComments:pingback'  => 'Module:Item ID:'
                                       );
-?>

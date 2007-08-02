@@ -128,4 +128,3 @@ function EZComments_migrateapi_polls()
     return true;
 }
 
-?>

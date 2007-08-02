@@ -79,4 +79,3 @@ function EZComments_pntables()
     return $pntable;
 }
 
-?>

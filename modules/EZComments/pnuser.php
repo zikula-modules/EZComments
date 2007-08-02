@@ -481,4 +481,3 @@ function EZComments_user_feed()
 
 }
 
-?>

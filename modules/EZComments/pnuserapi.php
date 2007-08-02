@@ -810,4 +810,3 @@ function EZComments_userapi_getallbymodule($args)
 
 }
 
-?>
