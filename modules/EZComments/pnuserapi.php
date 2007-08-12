@@ -307,31 +307,19 @@ function EZComments_userapi_create($args)
 		$maxstatus = 1 ;
 	}
 
-    list($mod,
-         $objectid,
-         $url,
-         $uid,
-         $comment,
-         $subject,
-         $replyto,
-         $anonname,
-         $anonmail,
-         $maxstatus,
-		 $ipaddr,
-		 $type,
-		 $anonwebsite) = DataUtil::formatForStore($mod,
-                                        $objectid,
-                                        $url,
-                                        $uid,
-                                        $comment,
-                                        $subject,
-                                        $replyto,
-                                        $anonname,
-                                        $anonmail,
-                                        $maxstatus,
-										$ipaddr,
-                                        $type,
-										$anonwebsite);
+    $mod            = DataUtil::formatForStore($mod);
+    $objectid       = DataUtil::formatForStore($objectid);
+    $url            = DataUtil::formatForStore($url);
+    $uid            = DataUtil::formatForStore($uid);
+    $comment        = DataUtil::formatForStore($comment);
+    $subject        = DataUtil::formatForStore($subject);
+    $replyto        = DataUtil::formatForStore($replyto);
+    $anonname       = DataUtil::formatForStore($anonname);
+    $anonmail       = DataUtil::formatForStore($anonmail);
+    $maxstatus      = DataUtil::formatForStore($maxstatus);
+	$ipaddr         = DataUtil::formatForStore($ipaddr);
+	$type           = DataUtil::formatForStore($type);
+	$anonwebsite    = DataUtil::formatForStore($anonwebsite);
 
     // Add item
     $sql = "INSERT INTO $EZCommentstable (
