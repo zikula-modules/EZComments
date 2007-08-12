@@ -65,11 +65,11 @@ function EZComments_userapi_getall($args)
 
     // Security check
     if (isset($mod) && isset($objectid)) {
-        if (!pnSecAuthAction(0, 'EZComments::', "$mod:$objectid:", ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission('EZComments::', "$mod:$objectid:", ACCESS_READ)) {
             return $items;
         }
     } else {
-        if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_OVERVIEW)) {
+        if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_OVERVIEW)) {
             return $items;
         }
     }
@@ -84,10 +84,10 @@ function EZComments_userapi_getall($args)
     // form where clause
     $whereclause = array();
     if (isset($mod)) {
-        $querymodname = pnVarPrepForStore($mod);
+        $querymodname = DataUtil::formatForStore($mod);
         $whereclause[] = "$EZCommentscolumn[modname] = '$querymodname'";
         if (isset($objectid)) {
-            $queryobjectid = pnVarPrepForStore($objectid);
+            $queryobjectid = DataUtil::formatForStore($objectid);
             $whereclause[] = "$EZCommentscolumn[objectid] = '$queryobjectid'";
         }
     }
@@ -97,7 +97,7 @@ function EZComments_userapi_getall($args)
     if (isset($search)) {
         $where_array = array();
         foreach($search['words'] as $word) {
-            $word = pnVarPrepForStore($word);
+            $word = DataUtil::formatForStore($word);
             $where_array[] = "( $EZCommentscolumn[subject] LIKE '%$word%'
                              OR $EZCommentscolumn[comment] LIKE '%$word%' )";
         }
@@ -150,8 +150,7 @@ function EZComments_userapi_getall($args)
     // Check for an error with the database code, and if so set an appropriate
     // error message and return
     if ($dbconn->ErrorNo() != 0) {
-        pnSessionSetVar('errormsg', _GETFAILED);
-        return false;
+        return LogUtil::registerError(_GETFAILED, 'index.php');
     }
 
     // Put items into result array.  Note that each item is checked
@@ -159,7 +158,7 @@ function EZComments_userapi_getall($args)
     // is added to the results array
     for (; !$result->EOF; $result->MoveNext()) {
         list($id, $mod, $objectid, $url, $date, $uid, $comment, $subject, $replyto, $anonname, $anonmail, $status, $ipaddr, $type, $anonwebsite) = $result->fields;
-        if (pnSecAuthAction(0, 'EZComments::', "$mod:$objectid:$id", ACCESS_READ)) {
+        if (SecurityUtil::checkPermission('EZComments::', "$mod:$objectid:$id", ACCESS_READ)) {
             if ($uid == 1 && empty($anonname)) {
                 $anonname = pnConfigGetVar('anonymous');
             }
@@ -234,7 +233,7 @@ function EZComments_userapi_create($args)
     if (!isset($date)) {
         $date = 'NOW()';
     } else {
-        $date= "'" . pnVarPrepForStore($date) . "'";
+        $date= "'" . DataUtil::formatForStore($date) . "'";
     }
 
 	if (!isset($type) || !is_string($type) || ($type != 'trackback' && $type != 'pingback')) {
@@ -248,7 +247,7 @@ function EZComments_userapi_create($args)
 	}
 
     // Security check
-    if (!pnSecAuthAction(0, "EZComments::$type", "$mod:$objectid:", ACCESS_COMMENT)) {
+    if (!SecurityUtil::checkPermission("EZComments::$type", "$mod:$objectid:", ACCESS_COMMENT)) {
         pnSessionSetVar('errormsg', _EZCOMMENTS_NOAUTH);
         return false;
     }
@@ -320,7 +319,7 @@ function EZComments_userapi_create($args)
          $maxstatus,
 		 $ipaddr,
 		 $type,
-		 $anonwebsite) = pnVarPrepForStore($mod,
+		 $anonwebsite) = DataUtil::formatForStore($mod,
                                         $objectid,
                                         $url,
                                         $uid,
@@ -389,8 +388,7 @@ function EZComments_userapi_create($args)
 
     // Inform admin about new comment
     if (pnModGetVar('EZComments', 'MailToAdmin') && $maxstatus == 0) {
-        $pnRender =& new pnRender('EZComments');
-		$pnRender->caching = false;
+        $pnRender =& pnRender::getInstance('EZComments', false);
         $pnRender->assign('comment', $comment);
         $pnRender->assign('url', $url);
         $pnRender->assign('moderate', pnModURL('EZComments', 'admin', 'modify', array('id' => $id)));
@@ -450,83 +448,32 @@ function EZComments_userapi_create($args)
  */
 function EZComments_userapi_get($args)
 {
-    extract($args);
-    if (!isset($id)) {
-        pnSessionSetVar('errormsg', _MODARGSERROR);
-        return false;
+    if (!isset($args['id']) || empty($args['id']) ) {
+        return LogUtil::registerError(_MODARGSERROR);
     }
-    // Get datbase setup
-    $dbconn =& pnDBGetConn(true);
-    $pntable =& pnDBGetTables();
+    
+    // init empty comment
+    $comment = array();
 
-    $EZCommentstable = $pntable['EZComments'];
-    $EZCommentscolumn = &$pntable['EZComments_column'];
-    // Get items
-    $sql = "SELECT $EZCommentscolumn[modname],
-                   $EZCommentscolumn[objectid],
-                   $EZCommentscolumn[url],
-                   $EZCommentscolumn[date],
-                   $EZCommentscolumn[uid],
-                   $EZCommentscolumn[comment],
-                   $EZCommentscolumn[subject],
-                   $EZCommentscolumn[replyto],
-                   $EZCommentscolumn[anonname],
-                   $EZCommentscolumn[anonmail],
-                   $EZCommentscolumn[status],
-                   $EZCommentscolumn[ipaddr],
-                   $EZCommentscolumn[type],
-				   $EZCommentscolumn[anonwebsite]
-            FROM $EZCommentstable
-            WHERE $EZCommentscolumn[id] = '$id'";
-    $result =& $dbconn->Execute($sql);
-    // Check for an error with the database code, and if so set an appropriate
-    // error message and return
-    if ($dbconn->ErrorNo() != 0) {
-        pnSessionSetVar('errormsg', _GETFAILED);
-        return false;
+    // load table information
+    pnModDBInfoLoad('EZComments', 'EZComments');
+    
+    $permFilter[]  = array ('realm'            =>  0,
+                            'component_left'   =>  'EZComments',
+                            'component_middle' =>  '',
+                            'component_right'  =>  '',
+                            'instance_left'    =>  'modname',
+                            'instance_middle'  =>  'objectid',
+                            'instance_right'   =>  'id',
+                            'level'            =>  ACCESS_READ);
+    
+    $comment = DBUtil::selectObjectByID('EZComments', $args['id']); 
+    
+    if($comment <> false && is_array($comment)) {
+        // BC compatibility
+        $comment['mod'] = $comment['modname'];
     }
-
-    if ($result->EOF) {
-        pnSessionSetVar('errormsg', _GETFAILED);
-        return false;
-    }
-    // Put items into result array.  Note that each item is checked
-    // individually to ensure that the user is allowed access to it before it
-    // is added to the results array
-    list($mod,
-         $objectid,
-         $url,
-         $date,
-         $uid,
-         $comment,
-         $subject,
-         $replyto,
-         $anonname,
-         $anonmail,
-         $status,
-		 $ipaddr,
-		 $type,
-		 $anonwebsite) = $result->fields;
-    if (!pnSecAuthAction(0, 'EZComments::', "$mod:$objectid:$id", ACCESS_READ)) {
-        return false;
-    }
-
-    $result->Close();
-    // Return the items
-    return compact('mod',
-                   'objectid',
-                   'url',
-                   'date',
-                   'uid',
-                   'comment',
-                   'subject',
-                   'replyto',
-                   'anonname',
-                   'anonmail',
-                   'status',
-				   'ipaddr',
-				   'type',
-				   'anonwebsite');
+    return $comment;
 }
 
 /**
@@ -543,7 +490,7 @@ function EZComments_userapi_get($args)
  */
 function EZComments_userapi_countitems($args)
 {
-    if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_OVERVIEW)) {
+    if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_OVERVIEW)) {
         return false;
     }
 
@@ -561,18 +508,18 @@ function EZComments_userapi_countitems($args)
 
     if (isset($args['mod'])) {
         // Count comments for a specific module
-        $mod = pnVarPrepForStore($args['mod']);
+        $mod = DataUtil::formatForStore($args['mod']);
         $queryargs[] = "$EZCommentscolumn[modname]='$mod'";
         if (isset($args['objectid'])) {
             // Count comments for a specific item in a specific mod
-            $objectid = pnVarPrepForStore($args['objectid']);
+            $objectid = DataUtil::formatForStore($args['objectid']);
             $queryargs[] = "$EZCommentscolumn[objectid]='$objectid'";
         }
     }
 
 	$statussql = '';
 	if (isset($args['status']) && is_numeric($args['status']) && $args['status'] >= 0 && $args['status'] <= 2) {
-		$args['status'] = pnVarPrepForStore($args['status']);
+		$args['status'] = DataUtil::formatForStore($args['status']);
 		$queryargs[] = "$EZCommentscolumn[status] = '$args[status]'";
 	}
 
@@ -599,15 +546,15 @@ function EZComments_userapi_countitems($args)
  */
 function EZComments_userapi_gettemplates()
 {
-    if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_READ)) {
+    if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_READ)) {
         return false;
     }
 
     $templates = array();
 
     $modinfo = pnModGetInfo(pnModGetIDFromName('EZComments'));
-    $osmoddir = pnVarPrepForOS($modinfo['directory']);
-    $ostheme = pnVarPrepForOS(pnUserGetTheme());
+    $osmoddir = DataUtil::formatForOS($modinfo['directory']);
+    $ostheme = DataUtil::formatForOS(pnUserGetTheme());
     $rootdirs = array('modules/'.$osmoddir.'/pntemplates/',
                       'config/templates/'.$osmoddir.'/',
                       'themes/'.$ostheme.'/templates/'.$osmoddir.'/');
@@ -734,7 +681,7 @@ function EZComments_userapi_getcommentingusers($args)
     $items = array();
 
     // Security check
-	if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_OVERVIEW)) {
+	if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_OVERVIEW)) {
 		return $items;
 	}
 
@@ -764,7 +711,7 @@ function EZComments_userapi_getallbymodule($args)
     $items = array();
 
     // Security check
-	if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_OVERVIEW)) {
+	if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_OVERVIEW)) {
 		return false;
 	}
 
@@ -772,7 +719,7 @@ function EZComments_userapi_getallbymodule($args)
 	if (!isset($mod) || !is_string($mod)) {
 		return false;
 	}
-	$mod = pnVarPrepForOS($mod);
+	$mod = DataUtil::formatForOS($mod);
 
     // Get datbase setup
     $dbconn =& pnDBGetConn(true);

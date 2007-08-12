@@ -42,7 +42,7 @@
  */
 function EZComments_adminapi_getUsedModules()
 {
-    if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
+    if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
         return false;
     } 
     
@@ -81,7 +81,7 @@ function EZComments_adminapi_getUsedModules()
  **/
 function EZComments_adminapi_deleteall($args)
 {
-    if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
+    if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
         return false;
     } 
 
@@ -133,7 +133,7 @@ function EZComments_adminapi_deletebyitem($args)
 	}
     $objectid = $args['objectid'];
     
-    if (!pnSecAuthAction(0, 'EZComments::', "$mod:$objectid:", ACCESS_ADMIN)) {
+    if (!SecurityUtil::checkPermission('EZComments::', "$mod:$objectid:", ACCESS_ADMIN)) {
         return false;
     } 
 
@@ -183,7 +183,7 @@ function EZComments_adminapi_delete($args)
     }
 
     // Security check 
-    if (!pnSecAuthAction(0, 'EZComments::', "::$id", ACCESS_DELETE)) {
+    if (!SecurityUtil::checkPermission('EZComments::', "::$id", ACCESS_DELETE)) {
         pnSessionSetVar('errormsg', _MODULENOAUTH);
         return false;
     }
@@ -248,7 +248,7 @@ function EZComments_adminapi_update($args)
     }
 
     // Security check.
-    if (!pnSecAuthAction(0, 'EZComments::', "::$id", ACCESS_EDIT)) {
+    if (!SecurityUtil::checkPermission('EZComments::', "::$id", ACCESS_EDIT)) {
         pnSessionSetVar('errormsg', _MODULENOAUTH);
         return false;
     }
@@ -343,7 +343,7 @@ function EZComments_adminapi_purge($args)
     }
 
     // Security check 
-    if (!pnSecAuthAction(0, 'EZComments::', "::", ACCESS_DELETE)) {
+    if (!SecurityUtil::checkPermission('EZComments::', "::", ACCESS_DELETE)) {
         pnSessionSetVar('errormsg', _MODULENOAUTH);
         return false;
     }
@@ -405,7 +405,7 @@ function EZComments_adminapi_updatestatus($args)
     }
 
     // Security check.
-    if (!pnSecAuthAction(0, 'EZComments::', "::$id", ACCESS_EDIT)) {
+    if (!SecurityUtil::checkPermission('EZComments::', "::$id", ACCESS_EDIT)) {
         pnSessionSetVar('errormsg', _MODULENOAUTH);
         return false;
     }

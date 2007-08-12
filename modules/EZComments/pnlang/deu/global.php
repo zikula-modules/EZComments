@@ -18,6 +18,13 @@
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
 // ----------------------------------------------------------------------
 
+// new for 2.0 (.8only)
+define('_EZCOMMENTS_ILLEGALSTATUS', 'falscher Status');
+define('_EZCOMMENTS_ANONNAMEMISSING', 'Name für den anonymen Benutzer fehlt');
+define('_EZCOMMENTS_ANONMAILMISSING', 'Emailadresse des anonymen Benutzers fehlt oder ist ungültig');
+define('_EZCOMMENTS_ANONWEBSITEINVALID', 'Webseite des anonymen Benutzers ist ungültig');
+// end of new defines
+
 define('_EZCOMMENTS',                       'Kommentare');
 
 // admin interface
@@ -179,7 +186,7 @@ define('_EZCOMMENTS_REJECT',                 'ablehnen');
 define('_EZCOMMENTS_HOLD',                   'auf "wartend" setzen');
 
 // comment stats
-define('_EZCOMMENTS_STATS',                  'Kommentarstatistiken');
+define('_EZCOMMENTS_STATS',                  'Statistiken');
 define('_EZCOMMENTS_TOTAL',                  'Gesamtanzahl');
 define('_EZCOMMENTS_ITEM',                   'Element-ID');
 define('_EZCOMMENTS_CONFIRMDELETEMODULE',    'Die Löschung aller zum Modul %m% gehörigen Kommentaren bestätigen');

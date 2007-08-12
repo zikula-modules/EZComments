@@ -40,29 +40,26 @@
  */
 function EZComments_admin_main() 
 {
-    if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
-        return _EZCOMMENTS_NOAUTH;
+    if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
+        return LogUtil::registerPermissionError('index.php');
     } 
 
     // get the status filter
-    $status = pnVarCleanFromInput('status');
+    $status = FormUtil::getPassedValue('status', -1, 'GETPOST');
     if (!isset($status) || !is_numeric($status) || $status < -1 || $status > 2) {
         $status = -1;
     }
 
     // presentation values
-    $showall = (bool)pnVarCleanFromInput('showall');
+    $showall = (bool)FormUtil::getPassedValue('showall', true, 'GETPOST');
     $itemsperpage = $showall == true ? -1 : pnModGetVar('EZComments', 'itemsperpage');
-    $startnum = pnVarCleanFromInput('startnum');
+    $startnum = FormUtil::getPassedValue('startnum', null, 'GETPOST');
     if (!isset($showall)) {
          $showall = false;
     }
 
     // Create output object
-    $pnRender =& new pnRender('EZComments');
-
-    // As admin output changes often, we do not want caching.
-    $pnRender->caching = false;
+    $pnRender = pnRender::getInstance('EZComments', false);
 
     // assign the module vars
     $pnRender->assign(pnModGetVar('EZComments'));
@@ -76,17 +73,17 @@ function EZComments_admin_main()
                                 'status'   => $status));
 
     if ($items === false) {
-        return _EZCOMMENTS_FAILED;
+        return LogUtil::registerError(_EZCOMMENTS_FAILED);
     } 
 
     // loop through each item adding the relevant links
     $comments = array();
     foreach ($items as $item) {
         $options = array();
-        if (pnSecAuthAction(0, 'EZComments::', "$item[mod]:$item[objectid]:$item[id]", ACCESS_EDIT)) {
+        if (SecurityUtil::checkPermission('EZComments::', "$item[mod]:$item[objectid]:$item[id]", ACCESS_EDIT)) {
             $options[] = array('url'   => pnModURL('EZComments', 'admin', 'modify', array('id' => $item['id'])),
                                'title' => _EDIT);
-            if (pnSecAuthAction(0, 'EZComments::', "$item[mod]:$item[objectid]:$item[id]", ACCESS_DELETE)) {
+            if (SecurityUtil::checkPermission('EZComments::', "$item[mod]:$item[objectid]:$item[id]", ACCESS_DELETE)) {
                 $options[] = array('url'   => pnModURL('EZComments', 'admin', 'delete', array('id' => $item['id'])),
                                    'title' => _DELETE);
             }
@@ -111,130 +108,33 @@ function EZComments_admin_main()
 }
 
 /**
- * modify an item
+ * modify a comment
  *
  * This is a standard function that is called whenever an administrator
- * wishes to modify a current module item
+ * wishes to modify a comment
  *
  * @author       The PostNuke Development Team
- * @param        tid          the id of the item to be modified
+ * @param        tid          the id of the comment to be modified
  * @return       string       the modification page
  */
 function EZComments_admin_modify($args)
 {
     // get our input
-    list($id,
-         $objectid,
-         $redirect)= pnVarCleanFromInput('id',
-                                         'objectid',
-                                         'redirect');
-
-    // extract any input passed directly to the function
-    extract($args);
-
-    // check for a generic object id
-    if (!empty($objectid)) {
-        $id = $objectid;
-    }
-
-    // Get the item
-    $item = pnModAPIFunc('EZComments', 'user', 'get', array('id' => $id));
-
-    if (!$item) {
-        return pnVarPrepHTMLDisplay(_NOSUCHITEM);
-    }
+    $id = FormUtil::getPassedValue('id', isset($args['id']) ? $args['id'] : null,             'GETPOST');
 
     // Security check 
-    if (!pnSecAuthAction(0, 'EZComments::', "::$id", ACCESS_EDIT)) {
-        return pnVarPrepHTMLDisplay(_MODULENOAUTH);
+    if(!SecurityUtil::checkPermission('EZComments::', '::' . $id, ACCESS_EDIT)) {
+        return LogUtil::registerPermissionError('index.php');
     }
 
-    // Create output object
-    $pnRender =& new pnRender('EZComments');
+    // load edithandler class from file
+    Loader::requireOnce('modules/EZComments/pnincludes/ezcomments_admin_modifyhandler.class.php');
 
-    // As Admin output changes often, we do not want caching.
-    $pnRender->caching = false;
-
-    // Add a hidden variable for the item id.
-    $pnRender->assign('id', $id);
-
-    // Add the return to return to after modifying the item.
-    $pnRender->assign('redirect', $redirect);
-
-    // assign the status flags
-    $pnRender->assign('statuslevels', array('0' => _EZCOMMENTS_APPROVED, '1' => _EZCOMMENTS_PENDING, '2' => _EZCOMMENTS_REJECTED));
-
-    // For the assignment of name and number we can just assign the associative
-    // array $item.
-    $pnRender->assign($item);
+    // Create pnForm output object
+    $pnf = FormUtil::newpnForm('EZComments');
 
     // Return the output that has been generated by this function
-    return $pnRender->fetch('ezcomments_admin_modify.htm');
-}
-
-/**
- * Update the item
- *
- * This is a standard function that is called with the results of the
- * form supplied by Example_admin_modify() to update a current item
- *
- * @author       The PostNuke Development Team
- * @param        id              the id of the item to be modified
- * @param        subject         the subject of the item to be updated
- * @param        comment         the main text of the item to be updated
- * @param        status          the status level for the item
- * @return       bool            true on sucess, false on failure
- */
-function EZComments_admin_update($args)
-{
-    // Get parameters from whatever input we need
-    list($id,
-         $objectid,
-         $subject,
-         $comment,
-         $anonname,
-         $anonmail,
-         $anonwebsite,
-         $status,
-         $redirect) = pnVarCleanFromInput('id',
-                                          'objectid',
-                                          'subject',
-                                          'comment',
-                                          'anonname',
-                                          'anonmail',
-                                          'anonwebsite',
-                                          'status',
-                                          'redirect');
-
-    // extract any input passed directly to the function
-    extract($args);
-
-    // check for a generic object id
-    if (!empty($objectid)) {
-        $id = $objectid;
-    }
-
-    // Confirm authorisation code
-    if (!pnSecConfirmAuthKey()) {
-        pnSessionSetVar('errormsg', pnVarPrepHTMLDisplay(_BADAUTHKEY));
-        return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
-    }
-
-    // Notable by its absence there is no security check here
-
-    // Call the API to update the item.
-    if(pnModAPIFunc('EZComments', 'admin', 'update',
-                    array('id' => $id, 'subject' => $subject, 'comment' => $comment, 'status' => $status,
-                          'anonname' => $anonname, 'anonmail' => $anonmail, 'anonwebsite' => $anonwebsite))) {
-        // Success
-        pnSessionSetVar('statusmsg', pnVarPrepHTMLDisplay(_UPDATESUCCEDED));
-    }
-
-    if(!empty($redirect)) {
-        return pnRedirect($redirect);
-    } else {
-        return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
-    }
+    return $pnf->pnFormExecute('ezcomments_admin_modify.htm', new EZComments_admin_modifyhandler());
 }
 
 /**
@@ -272,12 +172,12 @@ function EZComments_admin_delete($args)
     $item = pnModAPIFunc('EZComments', 'user', 'get', array('id' => $id));
 
     if (!$item) {
-        return pnVarPrepHTMLDisplay(_NOSUCHITEM);
+        return LogUtil::registerError(_NOSUCHITEM, pnModURL('EZComments', 'admin', 'main'));
     }
 
     // Security check
-    if (!pnSecAuthAction(0, 'EZComments::', "::$id", ACCESS_DELETE)) {
-        return pnVarPrepHTMLDisplay(_MODULENOAUTH);
+    if(!SecurityUtil::checkPermission('EZComments::', '::' . $id, ACCESS_DELETE)) {
+        return LogUtil::registerPermissionError('index.php');
     }
 
     // Check for confirmation.
@@ -285,10 +185,7 @@ function EZComments_admin_delete($args)
         // No confirmation yet
 
         // Create output object
-        $pnRender =& new pnRender('EZComments');
-
-        // As Admin output changes often, we do not want caching.
-        $pnRender->caching = false;
+        $pnRender = pnRender::getInstance('EZComments', false);
 
         // Add a hidden field for the item ID to the output
         $pnRender->assign('id', $id);
@@ -310,7 +207,7 @@ function EZComments_admin_delete($args)
     // The API function is called. 
     if (pnModAPIFunc('EZComments', 'admin', 'delete', array('id' => $id))) {
         // Success
-        pnSessionSetVar('statusmsg', pnVarPrepHTMLDisplay(_DELETESUCCEDED));
+        LogUtil::registerStatus(_DELETESUCCEDED);
     }
 
     if (!empty($redirect)) {
@@ -354,25 +251,25 @@ function EZComments_admin_processselected($args)
 				// The API function is called. 
 				if (pnModAPIFunc('EZComments', 'admin', 'delete', array('id' => $comment))) {
 					// Success
-					pnSessionSetVar('statusmsg', pnVarPrepHTMLDisplay(_DELETESUCCEDED));
+					LogUtil::registerStatus(_DELETESUCCEDED);
 				}
 				break;
 			case 'approve':
 				if (pnModAPIFunc('EZComments', 'admin', 'updatestatus', array('id' => $comment, 'status' => 0))) {
 					// Success
-					pnSessionSetVar('statusmsg', pnVarPrepHTMLDisplay(_UPDATESUCCEDED));
+					LogUtil::registerStatus(_UPDATESUCCEDED);
 				}
 				break;
 			case 'hold':
 				if (pnModAPIFunc('EZComments', 'admin', 'updatestatus', array('id' => $comment, 'status' => 1))) {
 					// Success
-					pnSessionSetVar('statusmsg', pnVarPrepHTMLDisplay(_UPDATESUCCEDED));
+					LogUtil::registerStatus(_UPDATESUCCEDED);
 				}
 				break;
 			case 'reject':
 				if (pnModAPIFunc('EZComments', 'admin', 'updatestatus', array('id' => $comment, 'status' => 2))) {
 					// Success
-					pnSessionSetVar('statusmsg', pnVarPrepHTMLDisplay(_UPDATESUCCEDED));
+					LogUtil::registerStatus(_UPDATESUCCEDED);
 				}
 				break;
 		}
@@ -398,15 +295,12 @@ function EZComments_admin_processselected($args)
  */
 function EZComments_admin_modifyconfig() 
 {
-    if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
-        return _EZCOMMENTS_NOAUTH;
-    } 
+    if(!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
+        return LogUtil::registerPermissionError('index.php');
+    }
 
     // Create output object
-    $pnRender =& new pnRender('EZComments');
-
-    // As admin output changes often, we do not want caching.
-    $pnRender->caching = false;
+    $pnRender = pnRender::getInstance('EZComments', false);
 
     // assign the module vars
     $pnRender->assign(pnModGetVar('EZComments'));
@@ -447,9 +341,9 @@ function EZComments_admin_modifyconfig()
  */
 function EZComments_admin_updateconfig($args)
 {
-    if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
-        return _EZCOMMENTS_NOAUTH;
-    } 
+    if(!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
+        return LogUtil::registerPermissionError('index.php');
+    }
 
     if (!pnSecConfirmAuthKey()) {
         pnSessionSetVar('errormsg', _BADAUTHKEY);
@@ -584,9 +478,10 @@ function EZComments_admin_updateconfig($args)
  */
 function EZComments_admin_migrate()
 {
-    if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
-        return _EZCOMMENTS_NOAUTH;
-    } 
+    if(!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
+        return LogUtil::registerPermissionError('index.php');
+    }
+
     $migrated=unserialize(pnModGetVar('EZComments', 'migrated'));
     $d = opendir('modules/EZComments/pnmigrateapi');
     $selectitems = array();
@@ -605,10 +500,7 @@ function EZComments_admin_migrate()
     } 
 
     // Create output object
-    $pnRender =& new pnRender('EZComments');
-
-    // As Admin output changes often, we do not want caching.
-    $pnRender->caching = false;
+    $pnRender = pnRender::getInstance('EZComments', false);
 
     // assign the migratation options
      $pnRender->assign('selectitems', $selectitems);
@@ -629,9 +521,10 @@ function EZComments_admin_migrate()
 function EZComments_admin_migrate_go()
 {
     // Permissions
-    if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
-        return _EZCOMMENTS_NOAUTH;
-    } 
+    if(!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
+        return LogUtil::registerPermissionError('index.php');
+    }
+
     // Authentication key
     if (!pnSecConfirmAuthKey()) {
         // return _EZCOMMENTS_NOAUTH;
@@ -666,9 +559,10 @@ function EZComments_admin_migrate_go()
  */
 function EZComments_admin_cleanup()
 {
-    if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
-        return _EZCOMMENTS_NOAUTH;
-    } 
+    if(!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
+        return LogUtil::registerPermissionError('index.php');
+    }
+
     if (!pnModAPILoad('EZComments', 'admin')) {
         return _EZCOMMENTS_LOADFAILED;
     } 
@@ -694,7 +588,7 @@ function EZComments_admin_cleanup()
         $selectitems[$mod] = $mod;
     }
 
-    $pnRender =& new pnRender('EZComments');
+    $pnRender = pnRender::getInstance('EZComments', false);
     $pnRender->assign('selectitems', $selectitems);
 
     return $pnRender->fetch('ezcomments_admin_cleanup.htm');
@@ -712,9 +606,10 @@ function EZComments_admin_cleanup()
 function EZComments_admin_cleanup_go()
 { 
     // Permissions
-    if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
-        return _EZCOMMENTS_NOAUTH;
-    } 
+    if(!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
+        return LogUtil::registerPermissionError('index.php');
+    }
+
     // Authentication key
     if (!pnSecConfirmAuthKey()) {
         // return _EZCOMMENTS_NOAUTH;
@@ -757,8 +652,8 @@ function EZComments_admin_purge($args)
     extract($args);
 
     // Security check
-    if (!pnSecAuthAction(0, 'EZComments::', "::", ACCESS_DELETE)) {
-        return pnVarPrepHTMLDisplay(_MODULENOAUTH);
+    if(!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_DELETE)) {
+        return LogUtil::registerPermissionError('index.php');
     }
 
     // Check for confirmation.
@@ -768,10 +663,7 @@ function EZComments_admin_purge($args)
 
         // Create output object - this object will store all of our output so that
         // we can return it easily when required
-        $pnRender =& new pnRender('EZComments');
-
-        // As Admin output changes often, we do not want caching.
-        $pnRender->caching = false;
+        $pnRender = pnRender::getInstance('EZComments', false);
 
         // Return the output that has been generated by this function
         return $pnRender->fetch('ezcomments_admin_purge.htm');
@@ -788,7 +680,7 @@ function EZComments_admin_purge($args)
     if (pnModAPIFunc('EZComments', 'admin', 'purge', 
         array('purgepending' => $purgepending, 'purgerejected' => $purgerejected))) {
         // Success
-        pnSessionSetVar('statusmsg', pnVarPrepHTMLDisplay(_DELETESUCCEDED));
+        LogUtil::registerStatus(_DELETESUCCEDED);
     }
 
     // This function generated no output, and so now it is complete we redirect
@@ -805,15 +697,12 @@ function EZComments_admin_purge($args)
 function EZComments_admin_stats($args)
 {
 	// security check
-    if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
-        return _EZCOMMENTS_NOAUTH;
-    } 
+    if(!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
+        return LogUtil::registerPermissionError('index.php');
+    }
 
     // Create output object
-    $pnRender =& new pnRender('EZComments');
-
-    // As admin output changes often, we do not want caching.
-    $pnRender->caching = false;
+    $pnRender = pnRender::getInstance('EZComments', false);
 
     // assign the module vars
     $pnRender->assign(pnModGetVar('EZComments'));
@@ -850,18 +739,15 @@ function EZComments_admin_stats($args)
 function EZComments_admin_modulestats()
 {
 	// security check
-    if (!pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
-        return _EZCOMMENTS_NOAUTH;
-    } 
+    if(!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
+        return LogUtil::registerPermissionError('index.php');
+    }
 
 	// get our input
 	$mod = pnVarCleanFromInput('mod');
 
     // Create output object
-    $pnRender =& new pnRender('EZComments');
-
-    // As admin output changes often, we do not want caching.
-    $pnRender->caching = false;
+    $pnRender = pnRender::getInstance('EZComments', false);
 
     // assign the module vars
     $pnRender->assign(pnModGetVar('EZComments'));
@@ -909,8 +795,8 @@ function EZComments_admin_deletemodule($args)
     extract($args);
 
     // Security check
-    if (!pnSecAuthAction(0, 'EZComments::', "$mod::", ACCESS_DELETE)) {
-        return pnVarPrepHTMLDisplay(_MODULENOAUTH);
+    if(!SecurityUtil::checkPermission('EZComments::', $mod . '::', ACCESS_DELETE)) {
+        return LogUtil::registerPermissionError('index.php');
     }
 
 	// get our module info
@@ -923,10 +809,7 @@ function EZComments_admin_deletemodule($args)
         // No confirmation yet
 
         // Create output object
-        $pnRender =& new pnRender('EZComments');
-
-        // As Admin output changes often, we do not want caching.
-        $pnRender->caching = false;
+        $pnRender = pnRender::getInstance('EZComments', false);
 
         // Add a hidden field for the item ID to the output
         $pnRender->assign('modid', $modid);
@@ -949,7 +832,7 @@ function EZComments_admin_deletemodule($args)
 	// array reflects this
     if (pnModAPIFunc('EZComments', 'admin', 'deletemodule', array('extrainfo' => array('module' => $modinfo['name'])))) {
         // Success
-        pnSessionSetVar('statusmsg', pnVarPrepHTMLDisplay(_DELETESUCCEDED));
+        LogUtil::registerStatus(_DELETESUCCEDED);
     }
 
     // This function generated no output, and so now it is complete we redirect
@@ -984,8 +867,8 @@ function EZComments_admin_deleteitem($args)
 	}
 
     // Security check
-    if (!pnSecAuthAction(0, 'EZComments::', "$mod:$objectid:", ACCESS_DELETE)) {
-        return pnVarPrepHTMLDisplay(_MODULENOAUTH);
+    if(!SecurityUtil::checkPermission('EZComments::', $mod . ':' . $objectid . ':', ACCESS_DELETE)) {
+        return LogUtil::registerPermissionError('index.php');
     }
 
 	// get our module info
@@ -998,10 +881,7 @@ function EZComments_admin_deleteitem($args)
         // No confirmation yet
 
         // Create output object
-        $pnRender =& new pnRender('EZComments');
-
-        // As Admin output changes often, we do not want caching.
-        $pnRender->caching = false;
+        $pnRender = pnRender::getInstance('EZComments', false);
 
         // Add a hidden field for the item ID to the output
         $pnRender->assign('objectid', $objectid);
@@ -1024,7 +904,7 @@ function EZComments_admin_deleteitem($args)
 	// array reflects this
     if (pnModAPIFunc('EZComments', 'admin', 'deletebyitem', array('mod' => $modinfo['name'], 'objectid' => $objectid))) {
         // Success
-        pnSessionSetVar('statusmsg', pnVarPrepHTMLDisplay(_DELETESUCCEDED));
+        LogUtil::registerStatus(_DELETESUCCEDED);
     }
 
     return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
@@ -1049,8 +929,8 @@ function EZComments_admin_applyrules($args)
     extract($args);
 
     // Security check
-    if (!pnSecAuthAction(0, 'EZComments::', '', ACCESS_DELETE)) {
-        return pnVarPrepHTMLDisplay(_MODULENOAUTH);
+    if(!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_DELETE)) {
+        return LogUtil::registerPermissionError('index.php');
     }
 
 	// get our module info
@@ -1059,10 +939,7 @@ function EZComments_admin_applyrules($args)
 	}
 
     // Create output object
-    $pnRender =& new pnRender('EZComments');
-
-    // As Admin output changes often, we do not want caching.
-    $pnRender->caching = false;
+    $pnRender = pnRender::getInstance('EZComments', false);
 
     // Check for confirmation.
     if (empty($confirmation)) {
@@ -1117,10 +994,10 @@ function EZComments_admin_applyrules($args)
             continue;
         }
         $options = array();
-        if (pnSecAuthAction(0, 'EZComments::', "$item[mod]:$item[objectid]:$item[id]", ACCESS_EDIT)) {
+        if (SecurityUtil::checkPermission('EZComments::', "$item[mod]:$item[objectid]:$item[id]", ACCESS_EDIT)) {
             $options[] = array('url'   => pnModURL('EZComments', 'admin', 'modify', array('id' => $item['id'])),
                                'title' => _EDIT);
-            if (pnSecAuthAction(0, 'EZComments::', "$item[mod]:$item[objectid]:$item[id]", ACCESS_DELETE)) {
+            if (SecurityUtil::checkPermission('EZComments::', "$item[mod]:$item[objectid]:$item[id]", ACCESS_DELETE)) {
                 $options[] = array('url'   => pnModURL('EZComments', 'admin', 'delete', array('id' => $item['id'])),
                                    'title' => _DELETE);
             }

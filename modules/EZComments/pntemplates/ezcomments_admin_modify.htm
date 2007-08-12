@@ -1,59 +1,62 @@
 <!--[*  $Id$  *]-->
 <!--[include file="ezcomments_admin_menu.htm"]-->
+
 <div class="pn-admincontainer">
 <h2><!--[pnml name="_EZCOMMENTS_EDIT"]--></h2>
-<form class="pn-adminform" action="<!--[pnmodurl modname="EZComments" type="admin" func="update"]-->" method="post" enctype="application/x-www-form-urlencoded">
-<div>
-	<input type="hidden" name="authid" value="<!--[pnsecgenauthkey module="EZComments"]-->" />
-	<input type="hidden" name="id" value="<!--[$id|pnvarprepfordisplay]-->" />
-	<input type="hidden" name="redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" />
-    <!--[if $anonname neq '']-->
-	<div class="pn-adminformrow">
-        <label for="ezcomments_anonname"><!--[pnml name="_EZCOMMENTS_ANONNAME"]--></label>
-        <input id="ezcomments_anonname" name="anonname" type="text" size="32" maxlength="255" value="<!--[$anonname|pnvarprepfordisplay]-->" />
-	</div>
-	<div class="pn-adminformrow">
-		<label for="ezcomments_anonmail"><!--[pnml name="_EZCOMMENTS_ANONMAIL"]--></label>
-        <input id="ezcomments_anonmail" name="anonmail" type="text" size="32" maxlength="255" value="<!--[$anonmail|pnvarprepfordisplay]-->" />
-	</div>
-	<div class="pn-adminformrow">
-		<label for="ezcomments_anonwebsite"><!--[pnml name="_EZCOMMENTS_ANONWEBSITE"]--></label>
-        <input id="ezcomments_anonwebsite" name="anonwebsite" type="text" size="32" maxlength="255" value="<!--[$anonwebsite|pnvarprepfordisplay]-->" />
-	</div>
-    <!--[else]-->
-	<div class="pn-adminformrow">
-		<label for="ezcomments_name"><!--[pnml name="_EZCOMMENTS_USERNAME"]--></label>
-		<span><!--[pnusergetvar name=uname uid=$uid]--></span>
-	</div>
-    <!--[/if]-->
-	<div class="pn-adminformrow">
-		<label for="ezcomments_ipaddr"><!--[pnml name="_EZCOMMENTS_IPADDR"]--></label>
-		<!--[pnml name=_EZCOMMENTS_IPADDRNOTLOGGED assign=notloggedstring]-->
-		<span><!--[$ipaddr|default:$notloggedstring|pnvarprepfordisplay]--></span>
-	</div>
-	<div class="pn-adminformrow">
-		<label for="ezcomments_subject"><!--[pnml name="_EZCOMMENTS_SUBJECT"]--></label>
-		<input id="ezcomments_subject" name="subject" type="text" size="32" maxlength="255" value="<!--[$subject|pnvarprepfordisplay]-->" />
-	</div>
-	<div class="pn-adminformrow">
-		<label for="ezcomments_comment"><!--[pnml name="_EZCOMMENTS_COMMENT"]--></label>
-		<textarea id="ezcomments_comment" name="comment" rows="5" cols="50"><!--[$comment|pnvarprepfordisplay]--></textarea>
-	</div>
-	<div class="pn-adminformrow">
-		<label for="ezcomments_status"><!--[pnml name="_EZCOMMENTS_STATUS"]--></label>
-		<select id="ezcomments_status" name="status">
-			<!--[html_options options=$statuslevels selected=$status]-->
-		</select>
-	</div>
-	<!--[pnmodcallhooks hookobject=item hookaction=modify hookid=$id module=EZComments]-->
-	<div class="pn-adminformrow">
-		<input name="submit" type="submit" value="<!--[pnml name="_UPDATE"]-->" />
-	</div>
+<!--[ pnform ]-->
+    <!--[ pnformvalidationsummary ]-->
+    <div>
+	    <input type="hidden" name="id" value="<!--[$id|pnvarprepfordisplay]-->" />
+	    <input type="hidden" name="redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" />
+        <!--[if $anonname neq '']-->
+	    <div class="pn-adminformrow">
+	        <!--[ pnformlabel for="ezcomments_anonname" text='_EZCOMMENTS_ANONNAME' ]-->
+            <!--[ pnformtextinput id="ezcomments_anonname" text=$anonname size="32" maxLength="255" ]-->
+	    </div>
+        
+	    <div class="pn-adminformrow">
+	        <!--[ pnformlabel for="ezcomments_anonmail" text='_EZCOMMENTS_ANONMAIL' ]-->
+            <!--[ pnformtextinput id="ezcomments_anonmail" text=$anonmail size="32" maxLength="255" ]-->
+	    </div>
+        
+	    <div class="pn-adminformrow">
+	        <!--[ pnformlabel for="ezcomments_anonwebsite" text='_EZCOMMENTS_ANONWEBSITE' ]-->
+            <!--[ pnformtextinput id="ezcomments_anonwebsite" text=$anonwebsite size="32" maxLength="255" ]-->
+	    </div>
+
+        <!--[ else ]-->
+        
+    	<div class="pn-adminformrow">
+	        <!--[ pnformlabel for="ezcomments_name" text='_EZCOMMENTS_USERNAME' ]-->
+    		<span id="ezcomments_name"><!--[pnusergetvar name=uname uid=$uid]--></span>
+    	</div>
+        
+        <!--[ /if ]-->
+
+    	<div class="pn-adminformrow">
+	        <!--[ pnformlabel for="ezcomments_ipaddr" text='_EZCOMMENTS_IPADDR' ]-->
+    		<!--[pnml name=_EZCOMMENTS_IPADDRNOTLOGGED assign=notloggedstring]-->
+    		<span id="ezcomments_ipaddr"><!--[$ipaddr|default:$notloggedstring|pnvarprepfordisplay]--></span>
+    	</div>
+    	<div class="pn-adminformrow">
+	        <!--[ pnformlabel for="ezcomments_subject" text='_EZCOMMENTS_SUBJECT' ]-->
+            <!--[ pnformtextinput id="ezcomments_subject" text=$subject|pnvarprepfordisplay size="32" maxLength="255" ]-->
+    	</div>
+    	<div class="pn-adminformrow">
+	        <!--[ pnformlabel for="ezcomments_comment" text='_EZCOMMENTS_COMMENT' ]-->
+            <!--[ pnformtextinput id="ezcomments_comment" textMode="multiline" rows="5" cols="50" text=$comment|pnvarprepfordisplay size="32" maxLength="255" ]-->
+    	</div>
+    	<div class="pn-adminformrow">
+	        <!--[ pnformlabel for="ezcomments_status" text='_EZCOMMENTS_STATUS' ]-->
+            <!--[ pnformdropdownlist id="ezcomments_status" items=$statuslevels selectedValue=$status ]-->
+    	</div>
+
+        <p>
+            <!--[pnformbutton id="submit" commandName="submit" text="_UPDATE"]-->&nbsp;<!--[pnformbutton id="cancel" commandName="cancel" text="_CANCELEDIT"]-->
+        </p>
+
+    </div>
+<!--[ /pnform ]-->
+
 </div>
-</form>
-<!--[if $redirect neq '']-->
-<a href="<!--[$redirect|pnvarprepfordisplay]-->"><!--[pnml name="_CANCELEDIT"]--></a>
-<!--[else]-->
-<a href="<!--[pnmodurl modname="EZComments" type="admin" func="main"]-->"><!--[pnml name="_CANCELEDIT"]--></a>
-<!--[/if]-->
-</div>
+

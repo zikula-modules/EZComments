@@ -65,8 +65,8 @@ function EZComments_user_view($args)
     $objectid = $args['objectid'];
 
     // security check
-    if (!pnSecAuthAction(0, 'EZComments::', "$mod:$objectid:", ACCESS_OVERVIEW)) {
-        return _EZCOMMENTS_NOAUTH;
+    if (!SecurityUtil::checkPermission('EZComments::', "$mod:$objectid:", ACCESS_OVERVIEW)) {
+        return LogUtil::registerPermissionError('index.php');
     }
 
     // we may get some input in from the navigation bar
@@ -97,7 +97,7 @@ function EZComments_user_view($args)
                            compact('mod', 'objectid','sortorder','status','numitems','startnum'));
 
     if ($items === false) {
-        return _EZCOMMENTS_FAILED;
+        return LogUtil::registerError(_EZCOMMENTS_FAILED, 'index.php');
     }     
 
     $comments = EZComments_prepareCommentsForDisplay($items);
@@ -107,16 +107,14 @@ function EZComments_user_view($args)
 		$commentcount = count($comments);
 	}
     // create the pnRender object
-    $pnRender =& new pnRender('EZComments');
-
     // don't use caching (for now...)
-    $pnRender->caching=false;
+    $pnRender = pnRender::getInstance('EZComments', false);
 
     $pnRender->assign('comments',   $comments);
 	$pnRender->assign('commentcount', $commentcount);
 	$pnRender->assign('modinfo',    pnModGetInfo(pnModGetIDFromName($mod)));
     $pnRender->assign('order',      $sortorder);
-    $pnRender->assign('allowadd',   pnSecAuthAction(0, 'EZComments::', "$mod:$objectid:", ACCESS_COMMENT));
+    $pnRender->assign('allowadd',   SecurityUtil::checkPermission('EZComments::', "$mod:$objectid:", ACCESS_COMMENT));
     $pnRender->assign('loggedin',   pnUserLoggedIn());
     if (!is_array($args['extrainfo'])) {
         $pnRender->assign('redirect',   $args['extrainfo']);
@@ -139,11 +137,11 @@ function EZComments_user_view($args)
     } else if (isset($args['template'])) {
         $template = $args['template'];
     }
-    if (!$pnRender->template_exists(pnVarPrepForOS($template . '/ezcomments_user_view.htm'))) {
+    if (!$pnRender->template_exists(DataUtil::formatForOS($template . '/ezcomments_user_view.htm'))) {
         $template = pnModGetVar('EZComments', 'template');
     }
     $pnRender->assign('template', $template);
-    return $pnRender->fetch(pnVarPrepForOS($template) . '/ezcomments_user_view.htm');
+    return $pnRender->fetch(DataUtil::formatForOS($template) . '/ezcomments_user_view.htm');
 } 
 
 /**
@@ -192,7 +190,7 @@ function EZComments_user_comment($args)
 
     // check if commenting is setup for the input module
     if (!pnModAvailable($modname) || !pnModIsHooked('EZComments', $modname)) {
-        return _EZCOMMENTS_NOAUTH;
+        return LogUtil::registerError(_EZCOMMENTS_NOAUTH, 'index.php');
     }
 
 	// check if we're using the pager
@@ -213,7 +211,7 @@ function EZComments_user_comment($args)
                            compact('mod', 'objectid','sortorder','status','numitems','startnum'));
 
     if ($items === false) {
-        return _EZCOMMENTS_FAILED;
+        return LogUtil::registerError(_EZCOMMENTS_FAILED, 'index.php');;
     }     
 
     $comments = EZComments_prepareCommentsForDisplay($items);
@@ -223,22 +221,20 @@ function EZComments_user_comment($args)
 		$commentcount = count($comments);
 	}
 
-    $pnRender =& new pnRender('EZComments');
-
     // don't use caching (for now...)
-    $pnRender->caching=false;
+    $pnRender = pnRender::getInstance('EZComments', false);
 
     $pnRender->assign('comments',     $comments);
 	$pnRender->assign('commentcount', $commentcount);
     $pnRender->assign('order',        $sortorder);
-    $pnRender->assign('allowadd',     pnSecAuthAction(0, 'EZComments::', "$modname:$objectid: ", ACCESS_COMMENT));
+    $pnRender->assign('allowadd',     SecurityUtil::checkPermission('EZComments::', "$modname:$objectid: ", ACCESS_COMMENT));
     $pnRender->assign('addurl',       pnModURL('EZComments', 'user', 'create'));
     $pnRender->assign('loggedin',     pnUserLoggedIn());
     $pnRender->assign('redirect',     $redirect);
-    $pnRender->assign('mod',          pnVarPrepForDisplay($modname));
-    $pnRender->assign('objectid',     pnVarPrepForDisplay($objectid));
-    $pnRender->assign('subject',      pnVarPrepForDisplay($subject));
-    $pnRender->assign('replyto',      pnVarPrepForDisplay($replyto));
+    $pnRender->assign('mod',          DataUtil::formatForDisplay($modname));
+    $pnRender->assign('objectid',     DataUtil::formatForDisplay($objectid));
+    $pnRender->assign('subject',      DataUtil::formatForDisplay($subject));
+    $pnRender->assign('replyto',      DataUtil::formatForDisplay($replyto));
 
     // assign all module vars (they may be useful...)
     $pnRender->assign(pnModGetVar('EZComments'));
@@ -255,17 +251,17 @@ function EZComments_user_comment($args)
         $template = $args['template'];
     }
 
-    if (!$pnRender->template_exists(pnVarPrepForOS($template . '/ezcomments_user_comment.htm'))) {
+    if (!$pnRender->template_exists(DataUtil::formatForOS($template . '/ezcomments_user_comment.htm'))) {
         $template = pnModGetVar('EZComments', 'template');
     }
     $pnRender->assign('template', $template);
 
 
-    if (!$pnRender->template_exists(pnVarPrepForOS($template . '/ezcomments_user_comment.htm'))) {
-        return _EZCOMMENTS_FAILED;
+    if (!$pnRender->template_exists(DataUtil::formatForOS($template . '/ezcomments_user_comment.htm'))) {
+        return LogUtil::registerError(_EZCOMMENTS_FAILED, 'index.php');;
     }
 
-    return $pnRender->fetch(pnVarPrepForOS($template) . '/ezcomments_user_comment.htm');
+    return $pnRender->fetch(DataUtil::formatForOS($template) . '/ezcomments_user_comment.htm');
 }
 
 /**
@@ -391,7 +387,7 @@ function EZComments_prepareCommentsForDisplay($items)
 				$comment['anonname'] = pnConfigGetVar('anonymous');
 	        }
 		}
-        $comment['del'] = (pnSecAuthAction(0, 'EZComments::', "$comment[mod]:$comment[objectid]:$comment[id]", ACCESS_DELETE));
+        $comment['del'] = (SecurityUtil::checkPermission('EZComments::', "$comment[mod]:$comment[objectid]:$comment[id]", ACCESS_DELETE));
         $comments[] = $comment;
     }
     return $comments;
@@ -461,7 +457,7 @@ function EZComments_user_feed()
 	}
 
     // create the pnRender object
-    $pnRender =& new pnRender('EZComments');
+    $pnRender = pnRender::getInstance('EZComments');
 
 	// get the last x comments
 	$pnRender->assign('comments', $comments = pnModAPIFunc('EZComments', 'user', 'getall', 

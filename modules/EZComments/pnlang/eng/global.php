@@ -18,6 +18,13 @@
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
 // ----------------------------------------------------------------------
 
+// new for 2.0 (.8only)
+define('_EZCOMMENTS_ILLEGALSTATUS', 'wrong status');
+define('_EZCOMMENTS_ANONNAMEMISSING', 'Name for anonymous user is missing');
+define('_EZCOMMENTS_ANONMAILMISSING', 'email address of anonymous user is missing or invalid');
+define('_EZCOMMENTS_ANONWEBSITEINVALID', 'website of anonymous user is invalid');
+// end of new defines
+
 define('_EZCOMMENTS',                       'Comments');
 
 // admin interface
