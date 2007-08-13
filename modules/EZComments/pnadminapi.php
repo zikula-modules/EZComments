@@ -168,40 +168,27 @@ function EZComments_adminapi_delete($args)
     extract($args);
 
     // Argument check
-    if ((isset($id) && !is_numeric($id))) {
-        pnSessionSetVar('errormsg', _MODARGSERROR);
-        return false;
+    if ((isset($args['id']) && !is_numeric($args['id']))) {
+        return LogUtil::registerError(_MODARGSERROR);
     }
 
     // The user API function is called.
     $item = pnModAPIFunc('EZComments', 'user', 'get', array('id' => $id));
 
     if (!$item) {
-        pnSessionSetVar('errormsg', _NOSUCHITEM);
-        return false;
+        return LogUtil::registerError(_NOSUCHITEM);
     }
 
     // Security check 
-    if (!SecurityUtil::checkPermission('EZComments::', "::$id", ACCESS_DELETE)) {
-        pnSessionSetVar('errormsg', _MODULENOAUTH);
-        return false;
+    if (!SecurityUtil::checkPermission('EZComments::', '::' . $id, ACCESS_DELETE)) {
+        return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));
     }
 
-    // Get datbase setup
-    $dbconn =& pnDBGetConn(true);
-    $pntable =& pnDBGetTables();
-    $table = $pntable['EZComments'];
-    $column = &$pntable['EZComments_column'];
-
-    // Delete the item
-    $sql = "DELETE FROM $table
-            WHERE $column[id] = '" . (int)pnVarPrepForStore($id) ."'";
-    $dbconn->Execute($sql);
+    $res = DBUtil::deleteObjectByID('EZComments', (int)pnVarPrepForStore($id));
 
     // Check for an error with the database code
-    if ($dbconn->ErrorNo() != 0) {
-        pnSessionSetVar('errormsg', _DELETEFAILED);
-        return false;
+    if ($res == false) {
+        return LogUtil::registerError(_DELETEFAILED);
     }
 
     // Let any hooks know that we have deleted an item.
@@ -221,65 +208,41 @@ function EZComments_adminapi_delete($args)
  */
 function EZComments_adminapi_update($args)
 {
-    // Get arguments from argument array
-    extract($args);
-
     // Argument check
-    if ((!isset($subject)) ||
-        (!isset($comment)) ||
-        (isset($id) && !is_numeric($id)) ||
-        (isset($status) && !is_numeric($status))) {
-        pnSessionSetVar('errormsg', _MODARGSERROR);
-        return false;
+    if ((!isset($args['subject'])) ||
+        (!isset($args['comment'])) ||
+        (isset($args['id']) && !is_numeric($args['id'])) ||
+        (isset($args['status']) && !is_numeric($args['status']))) {
+        return LogUtil::registerError(_MODARGSERROR);
     }
 
     // optional arguments
-    if (!isset($anonname)) $anonname = '';
-    if (!isset($anonmail)) $anonmail = '';
-    if (!isset($anonwebsite)) $anonwebsite = '';
+    if (!isset($args['anonname']))    $args['anonname'] = '';
+    if (!isset($args['anonmail']))    $args['anonmail'] = '';
+    if (!isset($args['anonwebsite'])) $args['anonwebsite'] = '';
 
     // Get the item
-    $item = pnModAPIFunc('EZComments', 'user', 'get', array('id' => $id));
+    $item = pnModAPIFunc('EZComments', 'user', 'get', array('id' => $args['id']));
 
     if (!$item) {
-        pnSessionSetVar('errormsg', _NOSUCHITEM);
-        return false;
+        return LogUtil::registerError(_NOSUCHITEM);
     }
 
     // Security check.
     if (!SecurityUtil::checkPermission('EZComments::', "::$id", ACCESS_EDIT)) {
-        pnSessionSetVar('errormsg', _MODULENOAUTH);
-        return false;
+        return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));
     }
 
-    // Get datbase setup
-    $dbconn =& pnDBGetConn(true);
-    $pntable =& pnDBGetTables();
-    $EZCommentstable = $pntable['EZComments'];
-    $EZCommentscolumn = &$pntable['EZComments_column']; 
-
-    list($subject, $comment, $id, $status) = pnVarPrepForStore($subject, $comment, $id, $status);
-
-    // Update the item
-    $sql = "UPDATE $EZCommentstable
-            SET $EZCommentscolumn[subject] = '".$subject."',
-                $EZCommentscolumn[comment] = '".$comment."',
-                $EZCommentscolumn[anonname] = '".$anonname."',
-                $EZCommentscolumn[anonmail] = '".$anonmail."',
-                $EZCommentscolumn[anonwebsite] = '".$anonwebsite."',
-                $EZCommentscolumn[status] = '".(int)$status."'
-            WHERE $EZCommentscolumn[id] = '".(int)$id."'";
-    $dbconn->Execute($sql);
+    $res = DBUtil::updateObject($args, 'EZComments');
 
     // Check for an error with the database code, and if so set an
     // appropriate error message and return
-    if ($dbconn->ErrorNo() != 0) {
-        pnSessionSetVar('errormsg', _UPDATEFAILED);
-        return false;
+    if ($res == false) {
+        return LogUtil::registerError(_UPDATEFAILED);
     }
 
     // Let any hooks know that we have updated an item.
-    pnModCallHooks('item', 'update', $id, array('module' => 'EZComments'));
+    pnModCallHooks('item', 'update', $args['id'], array('module' => 'EZComments'));
 
     // Let the calling process know that we have finished successfully
     return true;

@@ -120,7 +120,7 @@ class EZComments_admin_modifyhandler
                                 array('id'          => $this->id, 
                                       'subject'     => $data['ezcomments_subject'], 
                                       'comment'     => $data['ezcomments_comment'], 
-                                      'status'      => $data['ezcomments_status'],
+                                      'status'      => (int)$data['ezcomments_status'],
                                       'anonname'    => $data['ezcomments_anonname'], 
                                       'anonmail'    => $data['ezcomments_anonmail'], 
                                       'anonwebsite' => $data['ezcomments_anonwebsite']))) {
