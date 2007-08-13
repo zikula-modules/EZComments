@@ -6,8 +6,6 @@
 <!--[ pnform ]-->
     <!--[ pnformvalidationsummary ]-->
     <div>
-	    <input type="hidden" name="id" value="<!--[$id|pnvarprepfordisplay]-->" />
-	    <input type="hidden" name="redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" />
         <!--[if $anonname neq '']-->
 	    <div class="pn-adminformrow">
 	        <!--[ pnformlabel for="ezcomments_anonname" text='_EZCOMMENTS_ANONNAME' ]-->
@@ -49,6 +47,14 @@
     	<div class="pn-adminformrow">
 	        <!--[ pnformlabel for="ezcomments_status" text='_EZCOMMENTS_STATUS' ]-->
             <!--[ pnformdropdownlist id="ezcomments_status" items=$statuslevels selectedValue=$status ]-->
+    	</div>
+    	<div class="pn-adminformrow">
+	        <!--[ pnformlabel for="ezcomments_delete" text='_EZCOMMENTS_DEL' ]-->
+            <!--[ pnformcheckbox id="ezcomments_delete" ]-->
+    	</div>
+    	<div class="pn-adminformrow">
+	        <!--[ pnformlabel for="ezcomments_sendmeback" text='_EZCOMMENTS_SENDMEBACK' ]-->
+            <!--[ pnformcheckbox id="ezcomments_sendmeback" checked=$redirect ]-->
     	</div>
 
         <p>

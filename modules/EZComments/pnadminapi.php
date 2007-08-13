@@ -145,7 +145,6 @@ function EZComments_adminapi_deletebyitem($args)
 
     $sql = "DELETE FROM $table
             WHERE $column[modname] = '$mod' AND $column[objectid] = '$objectid'";
-
     $result =& $dbconn->Execute($sql);
 
     if ($dbconn->ErrorNo() != 0) {

@@ -23,6 +23,7 @@ define('_EZCOMMENTS_ILLEGALSTATUS', 'falscher Status');
 define('_EZCOMMENTS_ANONNAMEMISSING', 'Name für den anonymen Benutzer fehlt');
 define('_EZCOMMENTS_ANONMAILMISSING', 'Emailadresse des anonymen Benutzers fehlt oder ist ungültig');
 define('_EZCOMMENTS_ANONWEBSITEINVALID', 'Webseite des anonymen Benutzers ist ungültig');
+define('_EZCOMMENTS_SENDMEBACK', 'Nach Abschluß zurück zum kommentierten Inhalt');
 // end of new defines
 
 define('_EZCOMMENTS',                       'Kommentare');

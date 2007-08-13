@@ -102,10 +102,10 @@
 					<a title="<!--[pnml name='_EZCOMMENTS_SEND_PM']-->" href="<!--[pnmodurl modname=Messages func=compose uname=$comments[comments].uname]-->"><!--[pnimg src="sendpm.gif" alt='_EZCOMMENTS_SEND_PM' altml=true]--></a>
 				<!--[/if]-->
 				<!--[if $comments[comments].del]-->
-				<form class="ezcomments_deleteform" action="<!--[pnmodurl modname=EZComments type=admin func=delete id=$comments[comments].id]-->" method="post">
+				<form class="ezcomments_deleteform" action="<!--[pnmodurl modname=EZComments type=admin func=modify id=$comments[comments].id]-->" method="post">
 					<div>
 						<input type="hidden" name="redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" />
-						<input type="submit" value="<!--[pnml name=_EZCOMMENTS_DEL]-->" />
+						<input type="submit" value="<!--[pnml name=_EDIT]-->" />
 					</div>
 				</form>
 				<!--[/if]-->
