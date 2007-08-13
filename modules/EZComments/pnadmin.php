@@ -238,176 +238,19 @@ function EZComments_admin_processselected($args)
  */
 function EZComments_admin_modifyconfig() 
 {
+    // Security check 
     if(!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
         return LogUtil::registerPermissionError('index.php');
     }
 
-    // Create output object
-    $pnRender = pnRender::getInstance('EZComments', false);
+    // load edithandler class from file
+    Loader::requireOnce('modules/EZComments/pnincludes/ezcomments_admin_modifyconfighandler.class.php');
 
-    // assign the module vars
-    $pnRender->assign(pnModGetVar('EZComments'));
+    // Create pnForm output object
+    $pnf = FormUtil::newpnForm('EZComments');
 
-    // assign all available template sets
-    $pnRender->assign('templates', pnModAPIFunc('EZComments', 'user', 'gettemplates'));
-
-    // is the akismet module available
-    $pnRender->assign('akismetavailable', pnModAvailable('akismet'));
-
-    // assign the status flags
-    $pnRender->assign('statuslevels', array('1' => _EZCOMMENTS_PENDING, '2' => _EZCOMMENTS_REJECTED));
-
-    // Return the output
-    return $pnRender->fetch('ezcomments_admin_modifyconfig.htm');
-}
-
-/**
- * Update the configuration
- *
- * This is a standard function to update the configuration parameters of the
- * module given the information passed back by the modification form
- * Modify configuration
- *
- * @author       Jim McDonald
- * @param        MailtoAdmin    flag to mail admin on a new comment
- * @param        moderationemail flag to mail admin on a new commennt needing moderation
- * @param        template  the template set to render the comments and submission form
- * @param        itemsperpage number of comments to display per page in admin view
- * @param        anonusersinfo flag to allow anonymous users to submit custom user information
- * @param        moderation flag to turn on comment moderation
- * @param        modlinkcount number of links in comment to trigger moderation
- * @param        modlist list of words to trigger moderation
- * @param        blacklinkcount number of links in comment to trigger blacklisting
- * @param        blacklist list of words to trigger rejection of comment
- * @param        alwaymoderate flag to require all comments are moderated
- * @param        logip flag to control logging of ip addresses
- */
-function EZComments_admin_updateconfig($args)
-{
-    if(!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
-        return LogUtil::registerPermissionError('index.php');
-    }
-
-    if (!pnSecConfirmAuthKey()) {
-        pnSessionSetVar('errormsg', _BADAUTHKEY);
-        return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
-    } 
-
-    list($MailToAdmin, $moderationmail, $template, $itemsperpage, $anonusersinfo, $moderation, $dontmoderateifcommented,
-         $modlinkcount, $modlist, $blacklinkcount, $blacklist, $alwaysmoderate, $proxyblacklist, $logip, $feedtype,
-         $feedcount, $enablepager, $commentsperpage, $akismet, $akismetstatus, $anonusersrequirename) =
-        pnVarCleanFromInput('MailToAdmin', 'moderationmail', 'template', 'itemsperpage', 'anonusersinfo', 'moderation', 'dontmoderateifcommented',
-                            'modlinkcount', 'modlist', 'blacklinkcount', 'blacklist', 'alwaysmoderate', 'proxyblacklist', 'logip', 'feedtype',
-                            'feedcount', 'enablepager', 'commentsperpage', 'akismet', 'akismetstatus', 'anonusersrequirename');
-    extract($args);
-
-    if (!isset($MailToAdmin)) {
-        $MailToAdmin = 0;
-    }
-    pnModSetVar('EZComments', 'MailToAdmin', $MailToAdmin);
-    
-    if (!isset($moderationmail)) {
-        $moderationmail = 0;
-    }
-    pnModSetVar('EZComments', 'moderationmail', $moderationmail);
-
-    if (!isset($template)) {
-        $template = 'AllOnOnePage';
-    }
-    pnModSetVar('EZComments', 'template', $template);
-
-    if (!isset($itemsperpage)) {
-        $itemsperpage = 25;
-    }
-    pnModSetVar('EZComments', 'itemsperpage', $itemsperpage);
-
-    if (!isset($anonusersinfo)) {
-        $anonusersinfo = 0;
-    }
-    pnModSetVar('EZComments', 'anonusersinfo', $anonusersinfo);
-
-    if (!isset($moderation)) {
-        $moderation = 0;
-    }
-    pnModSetVar('EZComments', 'moderation', $moderation);
-
-    if (!isset($dontmoderateifcommented)) {
-        $dontmoderateifcommented = 0;
-    }
-    pnModSetVar('EZComments', 'dontmoderateifcommented', $dontmoderateifcommented);
-
-    if (!isset($modlinkcount)) {
-        $modlinkcount = 2;
-    }
-    pnModSetVar('EZComments', 'modlinkcount', $modlinkcount);
-
-    if (!isset($modlist)) {
-        $modlist = '';
-    }
-    pnModSetVar('EZComments', 'modlist', $modlist);
-
-    if (!isset($blacklinkcount)) {
-        $blacklinkcount = 5;
-    }
-    pnModSetVar('EZComments', 'blacklinkcount', $blacklinkcount);
-
-    if (!isset($blacklist)) {
-        $blacklist = '';
-    }
-    pnModSetVar('EZComments', 'blacklist', $blacklist);
-
-    if (!isset($alwaysmoderate)) {
-        $alwaysmoderate = 0;
-    }
-    pnModSetVar('EZComments', 'alwaysmoderate', $alwaysmoderate);
-
-    if (!isset($proxyblacklist)) {
-        $proxyblacklist = 0;
-    }
-    pnModSetVar('EZComments', 'proxyblacklist', $proxyblacklist);
-
-    if (!isset($logip)) {
-        $logip = 0;
-    }
-    pnModSetVar('EZComments', 'logip', $logip);
-
-    if (!isset($feedtype)) {
-        $feedtype = 'rss';
-    }
-    pnModSetVar('EZComments', 'feedtype', $feedtype);
-
-    if (!isset($feedcount)) {
-        $feedcount = '10';
-    }
-    pnModSetVar('EZComments', 'feedcount', $feedcount);
-
-    if (!isset($commentsperpage)) {
-        $commentsperpage = '25';
-    }
-    pnModSetVar('EZComments', 'commentsperpage', $commentsperpage);
-
-    if (!isset($enablepager)) {
-        $enablepager = false;
-    }
-    pnModSetVar('EZComments', 'enablepager', $enablepager);
-
-    if (!isset($akismet)) {
-        $akismet = 0;
-    }
-    pnModSetVar('EZComments', 'akismet', $akismet);
-
-    if (!isset($akismetstatus)) {
-        $akismetstatus = 1;
-    }
-    pnModSetVar('EZComments', 'akismetstatus', $akismetstatus);
-
-    if (!isset($anonusersrequirename)) {
-        $anonusersrequirename = 0;
-    }
-    pnModSetVar('EZComments', 'anonusersrequirename', $anonusersrequirename);
-
-    pnSessionSetVar('statusmsg', _CONFIGUPDATED);
-    return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
+    // Return the output that has been generated by this function
+    return $pnf->pnFormExecute('ezcomments_admin_modifyconfig.htm', new EZComments_admin_modifyconfighandler());
 }
 
 /**

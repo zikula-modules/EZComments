@@ -2,166 +2,119 @@
 <!--[include file="ezcomments_admin_menu.htm"]-->
 <div class="pn-admincontainer">
 <h2><!--[pnml name="_MODIFYCONFIG"]--></h2>
-<form class="pn-adminform" action="<!--[pnmodurl modname="EZComments" type="admin" func="updateconfig"]-->" method="post" enctype="application/x-www-form-urlencoded">
+<!--[ pnform ]-->
 <div>
-	<input type="hidden" name="authid" value="<!--[pnsecgenauthkey module="EZComments"]-->" />
-	<fieldset>
-		<legend><!--[pnml name=_EZCOMMENTS_MISCSETTINGS]--></legend>
-		<div class="pn-adminformrow">
-			<label for="ezcomments_template"><!--[pnml name="_EZCOMMENTS_TEMPLATE"]--></label>
-			<select id="ezcomments_template" name="template">
-				<!--[html_options values=$templates output=$templates selected=$template]-->
-			</select>
-		</div>
-		<div class="pn-adminformrow">
-			<label for="ezcomments_anonusersinfo"><!--[pnml name="_EZCOMMENTS_ALLOWANONUSERSETINFO"]--></label>
-			<!--[if $anonusersinfo eq 1]-->
-			<input id="ezcomments_anonusersinfo" name="anonusersinfo" type="checkbox" value="1" checked="checked" />
-			<!--[else]-->
-			<input id="ezcomments_anonusersinfo" name="anonusersinfo" type="checkbox" value="1" />
-			<!--[/if]-->
-		</div>
-		<div class="pn-adminformrow">
-			<label for="ezcomments_anonusersrequirename"><!--[pnml name="_EZCOMMENTS_ANON_NAME"]--></label>
-			<!--[if $anonusersrequirename eq 1]-->
-			<input id="ezcomments_anonusersrequirename" name="anonusersrequirename" type="checkbox" value="1" checked="checked" />
-			<!--[else]-->
-			<input id="ezcomments_anonusersrequirename" name="anonusersrequirename" type="checkbox" value="1" />
-			<!--[/if]-->
-		</div>
-		<div class="pn-adminformrow">
-			<label for="ezcomments_logip"><!--[pnml name="_EZCOMMENTS_LOGIPADDR"]--></label>
-			<!--[if $logip eq 1]-->
-			<input id="ezcomments_logip" name="logip" type="checkbox" value="1" checked="checked" />
-			<!--[else]-->
-			<input id="ezcomments_logip" name="logip" type="checkbox" value="1" />
-			<!--[/if]-->
-		</div>
-		<div class="pn-adminformrow">
-			<label for="ezcomments_itemsperpage"><!--[pnml name="_EZCOMMENTS_ITEMSPERPAGE"]--></label>
-			<input id="ezcomments_itemsperpage" name="itemsperpage" type="text" value="<!--[$itemsperpage|pnvarprepfordisplay]-->" />
-		</div>
-		<div class="pn-adminformrow">
-			<label for="ezcomments_enablepager"><!--[pnml name="_EZCOMMENTS_ENABLEPAGER"]--></label>
-			<input id="ezcomments_enablepager" name="enablepager" type="checkbox" <!--[if $enablepager]--> checked="checked"<!--[/if]--> />
-		</div>
-		<div class="pn-adminformrow">
-			<label for="ezcomments_commentsperpage"><!--[pnml name="_EZCOMMENTS_COMMENTSPERPAGE"]--></label>
-			<input id="ezcomments_commentsperpage" name="commentsperpage" type="text" value="<!--[$commentsperpage|pnvarprepfordisplay]-->" />
-		</div>
-	</fieldset>
-	<fieldset>
-		<legend><!--[pnml name=_EZCOMMENTS_NOTIFICATIONSETTINGS]--></legend>
-		<div class="pn-adminformrow">
-			<label for="ezcomments_email"><!--[pnml name="_EZCOMMENTS_SENDINFOMAIL"]--></label>
-			<!--[if $MailToAdmin eq 1]-->
-			<input id="ezcomments_email" name="MailToAdmin" type="checkbox" value="1" checked="checked" />
-			<!--[else]-->
-			<input id="ezcomments_email" name="MailToAdmin" type="checkbox" value="1" />
-			<!--[/if]-->
-		</div>
-		<div class="pn-adminformrow">
-			<label for="ezcomments_email"><!--[pnml name="_EZCOMMENTS_SENDINFOMAILMOD"]--></label>
-			<!--[if $moderationmail eq 1]-->
-			<input id="ezcomments_moderationmail" name="moderationmail" type="checkbox" value="1" checked="checked" />
-			<!--[else]-->
-			<input id="ezcomments_moderationmail" name="moderationmail" type="checkbox" value="1" />
-			<!--[/if]-->
-		</div>
-	</fieldset>
-	<fieldset>
-		<legend><!--[pnml name=_EZCOMMENTS_MODERATIONSETTINGS]--></legend>
-		<div class="pn-adminformrow">
-			<label for="ezcomments_moderation"><!--[pnml name="_EZCOMMENTS_MODERERATE"]--></label>
-			<!--[if $moderation eq 1]-->
-			<input id="ezcomments_moderation" name="moderation" type="checkbox" value="1" checked="checked" />
-			<!--[else]-->
-			<input id="ezcomments_moderation" name="moderation" type="checkbox" value="1" />
-			<!--[/if]-->
-		</div>
-		<div class="pn-adminformrow">
-			<label for="ezcomments_alwaysmoderate"><!--[pnml name="_EZCOMMENTS_ALWAYSMODERERATE"]--></label>
-			<!--[if $alwaysmoderate eq 1]-->
-			<input id="ezcomments_alwaysmoderate" name="alwaysmoderate" type="checkbox" value="1" checked="checked" />
-			<!--[else]-->
-			<input id="ezcomments_alwaysmoderate" name="alwaysmoderate" type="checkbox" value="1" />
-			<!--[/if]-->
-		</div>
-		<div class="pn-adminformrow">
-			<label for="ezcomments_dontmoderateifcommented"><!--[pnml name="_EZCOMMENTS_DONTMODERATEIFCOMMENTED"]--></label>
-			<!--[if $dontmoderateifcommented eq 1]-->
-			<input id="ezcomments_dontmoderateifcommented" name="dontmoderateifcommented" type="checkbox" value="1" checked="checked" />
-			<!--[else]-->
-			<input id="ezcomments_dontmoderateifcommented" name="dontmoderateifcommented" type="checkbox" value="1" />
-			<!--[/if]-->
-		</div>
-		<div class="pn-adminformrow">
-			<label for="ezcomments_modlinkcount"><!--[pnml name="_EZCOMMENTS_MODLINKCOUNT"]--></label>
-			<input id="ezcomments_modlinkcount" name="modlinkcount" type="text" value="<!--[$modlinkcount|pnvarprepfordisplay]-->" />
-		</div>
-		<div class="pn-adminformrow">
-			<label for="ezcomments_modlist"><!--[pnml name="_EZCOMMENTS_MODLIST"]--></label>
-			<textarea id="ezcomments_modlist" name="modlist" rows="5" cols="50"><!--[$modlist|pnvarprepfordisplay]--></textarea>
-			<p><!--[pnml name=_EZCOMMENTS_SEPERATELINE]--></p>
-		</div>
-		<div class="pn-adminformrow">
-			<label for="ezcomments_blacklinkcount"><!--[pnml name="_EZCOMMENTS_BLACKLINKCOUNT"]--></label>
-			<input id="ezcomments_blacklinkcount" name="blacklinkcount" type="text" value="<!--[$blacklinkcount|pnvarprepfordisplay]-->" />
-		</div>
-		<div class="pn-adminformrow">
-			<label for="ezcomments_blacklist"><!--[pnml name="_EZCOMMENTS_BLACKLIST"]--></label>
-			<textarea id="ezcomments_blacklist" name="blacklist" rows="5" cols="50"><!--[$blacklist|pnvarprepfordisplay]--></textarea>
-			<p><!--[pnml name=_EZCOMMENTS_SEPERATELINE]--></p>
-			<p><!--[pnml name=_EZCOMMENTS_BLACKLISTNOTE]--></p>
-		</div>
-		<div class="pn-adminformrow">
-			<label for="ezcomments_proxyblacklist"><!--[pnml name="_EZCOMMENTS_PROXYBLACKLIST"]--></label>
-			<!--[if $proxyblacklist eq 1]-->
-			<input id="ezcomments_proxyblacklist" name="proxyblacklist" type="checkbox" value="1" checked="checked" />
-			<!--[else]-->
-			<input id="ezcomments_proxyblacklist" name="proxyblacklist" type="checkbox" value="1" />
-			<!--[/if]-->
-		</div>
-	</fieldset>
-	<fieldset>
-		<legend><!--[pnml name=_EZCOMMENTS_AKISMET]--></legend>
-		<p><!--[pnml name=_EZCOMMENTS_AKISMETNOTE html=true]--></p>
-		<!--[if $akismetavailable]-->
-		<div class="pn-adminformrow">
-			<label for="ezcomments_akismet"><!--[pnml name="_EZCOMMENTS_ENABLEAKISMET"]--></label>
-			<!--[if $akismet eq 1]-->
-			<input id="ezcomments_akismet" name="akismet" type="checkbox" value="1" checked="checked" />
-			<!--[else]-->
-			<input id="ezcomments_akismet" name="akismet" type="checkbox" value="1" />
-			<!--[/if]-->
-		</div>
-		<div class="pn-adminformrow">
-			<label for="ezcomments_akismetstatus"><!--[pnml name="_EZCOMMENTS_AKISMETSTATUS"]--></label>
-			<select id="ezcomments_akismetstatus" name="akismetstatus">
-				<!--[html_options options=$statuslevels selected=$akismetstatus]-->
-			</select>
-		</div>
-		<!--[/if]-->
-	</fieldset>
-	<fieldset>
-		<legend><!--[pnml name=_EZCOMMENTS_FEEDS]--></legend>
-		<p><!--[pnml name=_EZCOMMENTS_FEEDNOTE]--></p>
-		<div class="pn-adminformrow">
-			<label for="ezcomments_feedtype"><!--[pnml name="_EZCOMMENTS_FEEDTYPE"]--></label>
-			<select id="ezcomments_feedtype" name="feedtype">
-				<option value="atom"<!--[if $feedtype eq 'atom']--> selected="selected"<!--[/if]-->><!--[pnml name=_EZCOMMENTS_ATOM]--></option>
-				<option value="rss"<!--[if $feedtype eq 'rss']--> selected="selected"<!--[/if]-->><!--[pnml name=_EZCOMMENTS_RSS]--></option>
-			</select>
-		</div>
-		<div class="pn-adminformrow">
-			<label for="ezcomments_feedcount"><!--[pnml name="_EZCOMMENTS_FEEDCOUNT"]--></label>
-			<input id="ezcomments_feedcount" name="feedcount" size="3" value="<!--[$feedcount|pnvarprepfordisplay]-->" />
-		</div>
-	</fieldset>
-	<!--[pnmodcallhooks hookobject="module" hookaction="modifyconfig" hookid="EZComments" module="EZComments"]-->
-	<div class="pn-adminformrow">
-		<input name="submit" type="submit" value="<!--[pnml name="_EZCOMMENTS_OK"]-->" />
-	</div>
+    <!--[ pnformvalidationsummary ]-->
+    <fieldset>
+        <legend><!--[pnml name=_EZCOMMENTS_MISCSETTINGS]--></legend>
+        <div class="pn-adminformrow">
+            <!--[ pnformlabel for="ezcomments_template" text='_EZCOMMENTS_TEMPLATE' ]-->
+            <!--[ pnformdropdownlist id="ezcomments_template" items=$templates selectedValue=$pncore.EZComments.template ]-->
+        </div>
+        <div class="pn-adminformrow">
+            <!--[ pnformlabel for="ezcomments_anonusersinfo" text='_EZCOMMENTS_ALLOWANONUSERSETINFO' ]-->
+            <!--[ pnformcheckbox id="ezcomments_anonusersinfo" checked=$pncore.EZComments.anonusersinfo ]-->
+        </div>
+        <div class="pn-adminformrow">
+            <!--[ pnformlabel for="ezcomments_anonusersrequirename" text='_EZCOMMENTS_ANON_NAME' ]-->
+            <!--[ pnformcheckbox id="ezcomments_anonusersrequirename" checked=$pncore.EZComments.anonusersrequirename ]-->
+        </div>
+        <div class="pn-adminformrow">
+            <!--[ pnformlabel for="ezcomments_logip" text='_EZCOMMENTS_LOGIPADDR' ]-->
+            <!--[ pnformcheckbox id="ezcomments_logip" checked=$pncore.EZComments.logip ]-->
+        </div>
+        <div class="pn-adminformrow">
+            <!--[ pnformlabel for="ezcomments_itemsperpage" text='_EZCOMMENTS_ITEMSPERPAGE' ]-->
+            <!--[ pnformtextinput id="ezcomments_itemsperpage" text=$pncore.EZComments.itemsperpage|pnvarprepfordisplay size="5" maxLength="5" ]-->
+        </div>
+        <div class="pn-adminformrow">
+            <!--[ pnformlabel for="ezcomments_enablepager" text='_EZCOMMENTS_ENABLEPAGER' ]-->
+            <!--[ pnformcheckbox id="ezcomments_enablepager" checked=$pncore.EZComments.enablepager ]-->
+        </div>
+        <div class="pn-adminformrow">
+            <!--[ pnformlabel for="ezcomments_commentsperpage" text='_EZCOMMENTS_COMMENTSPERPAGE' ]-->
+            <!--[ pnformtextinput id="ezcomments_commentsperpage" text=$pncore.EZComments.commentsperpage|pnvarprepfordisplay size="5" maxLength="5" ]-->
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend><!--[pnml name=_EZCOMMENTS_NOTIFICATIONSETTINGS]--></legend>
+        <div class="pn-adminformrow">
+            <!--[ pnformlabel for="ezcomments_MailToAdmin" text='_EZCOMMENTS_SENDINFOMAIL' ]-->
+            <!--[ pnformcheckbox id="ezcomments_MailToAdmin" checked=$pncore.EZComments.MailToAdmin ]-->
+        </div>
+        <div class="pn-adminformrow">
+            <!--[ pnformlabel for="ezcomments_moderationemail" text='_EZCOMMENTS_SENDINFOMAILMOD' ]-->
+            <!--[ pnformcheckbox id="ezcomments_moderationmail" checked=$pncore.EZComments.moderationmail ]-->
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend><!--[pnml name=_EZCOMMENTS_MODERATIONSETTINGS]--></legend>
+        <div class="pn-adminformrow">
+            <!--[ pnformlabel for="ezcomments_moderation" text='_EZCOMMENTS_MODERERATE' ]-->
+            <!--[ pnformcheckbox id="ezcomments_moderation" checked=$pncore.EZComments.moderation ]-->
+        </div>
+        <div class="pn-adminformrow">
+            <!--[ pnformlabel for="ezcomments_alwaysmoderate" text='_EZCOMMENTS_ALWAYSMODERERATE' ]-->
+            <!--[ pnformcheckbox id="ezcomments_alwaysmoderate" checked=$pncore.EZComments.alwaysmoderate ]-->
+        </div>
+        <div class="pn-adminformrow">
+            <!--[ pnformlabel for="ezcomments_dontmoderateifcommented" text='_EZCOMMENTS_DONTMODERATEIFCOMMENTED' ]-->
+            <!--[ pnformcheckbox id="ezcomments_dontmoderateifcommented" checked=$pncore.EZComments.dontmoderateifcommented ]-->
+        </div>
+        <div class="pn-adminformrow">
+            <!--[ pnformlabel for="ezcomments_modlinkcount" text='_EZCOMMENTS_MODLINKCOUNT' ]-->
+            <!--[ pnformtextinput id="ezcomments_modlinkcount" text=$pncore.EZComments.modlinkcount|pnvarprepfordisplay size="5" maxLength="5" ]-->
+        </div>
+        <div class="pn-adminformrow">
+            <!--[ pnformlabel for="ezcomments_modlist" text='_EZCOMMENTS_MODLIST' ]-->
+            <!--[ pnformtextinput id="ezcomments_modlist" textMode="multiline" rows="5" cols="50" text=$modlist|pnvarprepfordisplay ]-->
+            <p><!--[pnml name=_EZCOMMENTS_SEPERATELINE]--></p>
+        </div>
+        <div class="pn-adminformrow">
+            <!--[ pnformlabel for="ezcomments_blacklinkcount" text='_EZCOMMENTS_BLACKLINKCOUNT' ]-->
+            <!--[ pnformtextinput id="ezcomments_blacklinkcount" text=$pncore.EZComments.blacklinkcount|pnvarprepfordisplay size="5" maxLength="5" ]-->
+        </div>
+        <div class="pn-adminformrow">
+            <!--[ pnformlabel for="ezcomments_blacklist" text='_EZCOMMENTS_BLACKLIST' ]-->
+            <!--[ pnformtextinput id="ezcomments_blacklist" textMode="multiline" rows="5" cols="50" text=$blacklist|pnvarprepfordisplay ]-->
+            <p><!--[pnml name=_EZCOMMENTS_SEPERATELINE]--></p>
+            <p><!--[pnml name=_EZCOMMENTS_BLACKLISTNOTE]--></p>
+        </div>
+        <div class="pn-adminformrow">
+            <!--[ pnformlabel for="ezcomments_proxyblacklist" text='_EZCOMMENTS_PROXYBLACKLIST' ]-->
+            <!--[ pnformcheckbox id="ezcomments_proxyblacklist" checked=$pncore.EZComments.proxyblacklist ]-->
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend><!--[pnml name=_EZCOMMENTS_AKISMET]--></legend>
+        <p><!--[pnml name=_EZCOMMENTS_AKISMETNOTE html=true]--></p>
+        <!--[if $akismetavailable]-->
+        <div class="pn-adminformrow">
+            <!--[ pnformlabel for="ezcomments_akismet" text='_EZCOMMENTS_ENABLEAKISMET' ]-->
+            <!--[ pnformcheckbox id="ezcomments_akismet" checked=$pncore.EZComments.akismet ]-->
+        </div>
+        <div class="pn-adminformrow">
+            <!--[ pnformlabel for="ezcomments_akismetstatus" text='_EZCOMMENTS_AKISMETSTATUS' ]-->
+            <!--[ pnformdropdownlist id="ezcomments_akismetstatus" items=$statuslevels selectedValue=$pncore.EZComments.akismetstatus ]-->
+        </div>
+        <!--[/if]-->
+    </fieldset>
+    <fieldset>
+        <legend><!--[pnml name=_EZCOMMENTS_FEEDS]--></legend>
+        <p><!--[pnml name=_EZCOMMENTS_FEEDNOTE]--></p>
+        <div class="pn-adminformrow">
+            <!--[ pnformlabel for="ezcomments_feedtype" text='_EZCOMMENTS_FEEDTYPE' ]-->
+            <!--[ pnformdropdownlist id="ezcomments_status" items=$feeds selectedValue=$pncore.EZComments.feedtype ]-->
+        </div>
+        <div class="pn-adminformrow">
+            <!--[ pnformlabel for="ezcomments_feedcount" text='_EZCOMMENTS_FEEDCOUNT' ]-->
+            <!--[ pnformtextinput id="ezcomments_feedcount" text=$pncore.EZComments.feedcount|pnvarprepfordisplay size="5" maxLength="5" ]-->
+        </div>
+    </fieldset>
+    <!--[pnmodcallhooks hookobject="module" hookaction="modifyconfig" hookid="EZComments" module="EZComments"]-->
+    <div class="pn-adminformrow">
+        <!--[pnformbutton id="submit" commandName="submit" text="_SUBMIT"]-->
+    </div>
 </div>
-</form>
+<!--[ /pnform ]-->
 </div>
