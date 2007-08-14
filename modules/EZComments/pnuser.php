@@ -300,8 +300,7 @@ function EZComments_user_create($args)
 
     // check we've actually got a comment....
     if (!isset($comment) || empty($comment)) {
-        return LogUtil::registerError(_EZCOMMENTS_EMPTYCOMMENT);
-        return pnRedirect($redirect.'#comments');
+        return LogUtil::registerError(_EZCOMMENTS_EMPTYCOMMENT, $redirect.'#comments');
     }
 
     // check if the user logged in and if we're allowing anon users to 
