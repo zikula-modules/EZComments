@@ -30,7 +30,6 @@ define('_EZCOMMENTS_MISSINGVALUE', 'missing value');
 define('_EZCOMMENTS',                       'Comments');
 
 // admin interface
-define('_EZCOMMENTS_NOAUTH',                'No access to comments.');
 define('_EZCOMMENTS_ONLYREG',               'Only logged in users are allowed to comment.');
 define('_EZCOMMENTS_GOTOREG',               'register/log in');
 define('_EZCOMMENTS_ADD',                   'Submit Comment');

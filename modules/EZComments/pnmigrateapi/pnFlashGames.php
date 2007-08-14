@@ -47,18 +47,7 @@ function EZComments_migrateapi_pnFlashGames()
 {
 	// Security check
 	if (!pnSecAuthAction(0, 'EZComments::', "::", ACCESS_ADMIN)) {
-		pnSessionSetVar('errormsg', 'pnFlashGames comments migration: Not Admin');
-		return false;
-	} 
-	// Load API
-	if (!pnModAPILoad('EZComments', 'user')) {
-		pnSessionSetVar('errormsg', 'pnFlashGames comments migration: Unable to load EZComments API ');
-		return false;
-	} 
-	// You must load the api for pnFlashGames in order to see it's tables
-	if (!pnModAPILoad('pnFlashGames', 'user')) {
-		pnSessionSetVar('errormsg', 'pnFlashGames comments migration: Unable to load pnFlashGames API ');
-		return false;
+		return LogUtil::registerError('pnFlashGames comments migration: Not Admin');
 	} 
 
 	// Get datbase setup
@@ -85,8 +74,7 @@ function EZComments_migrateapi_pnFlashGames()
 
 	$result = $dbconn->Execute($sql); 
 	if ($dbconn->ErrorNo() != 0) {
-		pnSessionSetVar('errormsg', 'pnFlashGames migration: DB Error: ' . $sql . ' -- ' . mysql_error());
-		return false;
+		return LogUtil::registerError('pnFlashGames migration: DB Error: ' . $sql . ' -- ' . mysql_error());
 	} 
 
 	// array to rebuild the parents
@@ -108,8 +96,7 @@ function EZComments_migrateapi_pnFlashGames()
 								 'date'     => $date));
 
     	if (!$id) {
-			pnSessionSetVar('errormsg', 'pnFlashGames comments migration: Error creating comment');
-		    return false;
+			return LogUtil::registerError('pnFlashGames comments migration: Error creating comment');
 	    } 
 		$comments[$tid] = array('newid' => $id, 
 		                        'pid'   => $replyto);
@@ -127,7 +114,6 @@ function EZComments_migrateapi_pnFlashGames()
 			$result = $dbconn->Execute($sql); 
 		}
 	}
-	pnSessionSetVar('errormsg', 'pnFlashGames migration successful');
-    return true;
+	LogUtil::registerStatus('pnFlashGames migration successful');
 }
 

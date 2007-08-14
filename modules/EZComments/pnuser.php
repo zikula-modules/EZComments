@@ -190,7 +190,7 @@ function EZComments_user_comment($args)
 
     // check if commenting is setup for the input module
     if (!pnModAvailable($modname) || !pnModIsHooked('EZComments', $modname)) {
-        return LogUtil::registerError(_EZCOMMENTS_NOAUTH, 'index.php');
+        return LogUtil::registerPermissionError('index.php');
     }
 
 	// check if we're using the pager
@@ -294,14 +294,13 @@ function EZComments_user_create($args)
     $redirect = urldecode($redirect);
 
     // Confirm authorisation code.
-    if (!pnSecConfirmAuthKey()) {
-        pnSessionSetVar('errormsg', _BADAUTHKEY);
-        return pnRedirect($redirect);
+    if (!SecurityUtil::confirmAuthKey()) {
+        return LogUtil::registerAuthidError($redirect);
     } 
 
     // check we've actually got a comment....
     if (!isset($comment) || empty($comment)) {
-        pnSessionSetVar('errormsg', _EZCOMMENTS_EMPTYCOMMENT);
+        return LogUtil::registerError(_EZCOMMENTS_EMPTYCOMMENT);
         return pnRedirect($redirect.'#comments');
     }
 

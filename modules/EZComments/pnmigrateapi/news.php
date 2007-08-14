@@ -44,8 +44,7 @@ function EZComments_migrateapi_news()
 {
     // Security check
     if (!pnSecAuthAction(0, 'EZComments::', "::", ACCESS_ADMIN)) {
-        pnSessionSetVar('errormsg', 'News migration: Not Admin');
-        return false;
+        return LogUtil::registerError('News migration: Not Admin');
     } 
 
     // Get datbase setup
@@ -73,8 +72,7 @@ function EZComments_migrateapi_news()
 
     $result =& $dbconn->Execute($sql); 
     if ($dbconn->ErrorNo() != 0) {
-        pnSessionSetVar('errormsg', 'News migration: DB Error');
-        return false;
+        return LogUtil::registerError('News migration: DB Error');
     } 
 
     // array to rebuild the patents
@@ -101,8 +99,7 @@ function EZComments_migrateapi_news()
                                  'date'     => $date));
 
         if (!$id) {
-            pnSessionSetVar('errormsg', 'News migration: Error creating comment');
-            return false;
+            return LogUtil::registerError('News migration: Error creating comment');
         } 
         $comments[$tid] = array('newid' => $id, 
                                 'pid'   => $replyto);
@@ -124,7 +121,6 @@ function EZComments_migrateapi_news()
     // activate the ezcomments hook for the news module
     pnModAPIFunc('Modules', 'admin', 'enablehooks', array('callermodname' => 'News', 'hookmodname' => 'EZComments'));
 
-    pnSessionSetVar('errormsg', 'News migration successful');
-    return true;
+    LogUtil::registerStatus('News migration successful');
 }
 

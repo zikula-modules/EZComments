@@ -47,20 +47,20 @@ function EZComments_init()
 
     // register Hook
     if (!pnModRegisterHook('item', 'display', 'GUI', 'EZComments', 'user', 'view')) {
-        pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED2);
+        return LogUtil::registerError(_EZCOMMENTS_FAILED2);
         return false;
     } 
     
     // register  delete Hook (Timo)
     // TODO: Check the Hook's name!
     if (!pnModRegisterHook('item', 'delete', 'API', 'EZComments', 'admin', 'deletebyitem')) {
-        pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED2);
+        return LogUtil::registerError(_EZCOMMENTS_FAILED2);
         return false;
     }
 
     // register the module delete hook
     if (!pnModRegisterHook('module', 'remove', 'API', 'EZComments', 'admin', 'deletemodule')) {
-        pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED2);
+        return LogUtil::registerError(_EZCOMMENTS_FAILED2);
     }    
 
     pnModSetVar('EZComments', 'MailToAdmin',    false);
@@ -118,7 +118,7 @@ function EZComments_upgrade($oldversion)
         $sql = "ALTER TABLE $oldtable RENAME $EZCommentstable";
         $dbconn->Execute($sql);
         if ($dbconn->ErrorNo() != 0) {
-            pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED5 . ': ' . $dbconn->ErrorMsg());
+            return LogUtil::registerError(_EZCOMMENTS_FAILED5 . ': ' . $dbconn->ErrorMsg());
             return false;
         }
         
@@ -128,7 +128,7 @@ function EZComments_upgrade($oldversion)
                         ADD $EZCommentscolumn[replyto] int(11) NOT NULL default '-1'";
         $dbconn->Execute($sql);
         if ($dbconn->ErrorNo() != 0) {
-            pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED5 . ': ' . $dbconn->ErrorMsg());
+            return LogUtil::registerError(_EZCOMMENTS_FAILED5 . ': ' . $dbconn->ErrorMsg());
             return false;
         }
         $oldversion = '0.2';
@@ -145,7 +145,7 @@ function EZComments_upgrade($oldversion)
                                'EZComments_delete',
                                'admin',
                                'deletebyitem')) {
-            pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED2);
+            return LogUtil::registerError(_EZCOMMENTS_FAILED2);
             return false;
         }
         $oldversion = '0.3 CVS';
@@ -162,7 +162,7 @@ function EZComments_upgrade($oldversion)
                                  'EZComments_delete',
                                  'admin',
                                  'deletebyitem')) {
-            pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED4);
+            return LogUtil::registerError(_EZCOMMENTS_FAILED4);
             return false;
         }
         if (!pnModRegisterHook('item',
@@ -171,7 +171,7 @@ function EZComments_upgrade($oldversion)
                                'EZComments',
                                'admin',
                                'deletebyitem')) {
-            pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED2);
+            return LogUtil::registerError(_EZCOMMENTS_FAILED2);
             return false;
         }
         foreach ($hookedmodules as $modname => $hooktype) {
@@ -196,7 +196,7 @@ function EZComments_upgrade($oldversion)
                                'EZComments',
                                'admin',
                                'deletemodule')) {
-            pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED2);
+            return LogUtil::registerError(_EZCOMMENTS_FAILED2);
         }    
         foreach ($hookedmodules as $modname => $hooktype) {
             // disable the hooks for this module
@@ -215,7 +215,7 @@ function EZComments_upgrade($oldversion)
                         ADD $EZCommentscolumn[anonmail] varchar(255) NOT NULL default ''";
         $dbconn->Execute($sql);
         if ($dbconn->ErrorNo() != 0) {
-            pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED5 . ': ' . $dbconn->ErrorMsg());
+            return LogUtil::registerError(_EZCOMMENTS_FAILED5 . ': ' . $dbconn->ErrorMsg());
             return false;
         }
         $oldversion = '0.7';
@@ -227,7 +227,7 @@ function EZComments_upgrade($oldversion)
                         ADD $EZCommentscolumn[status] int(4) NOT NULL default 0";
         $dbconn->Execute($sql);
         if ($dbconn->ErrorNo() != 0) {
-            pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED5 . ': ' . $dbconn->ErrorMsg());
+            return LogUtil::registerError(_EZCOMMENTS_FAILED5 . ': ' . $dbconn->ErrorMsg());
             return false;
         }
         // add additional vars for comment moderation, blacklists and link count for moderation
@@ -249,7 +249,7 @@ function EZComments_upgrade($oldversion)
                         ADD $EZCommentscolumn[ipaddr] varchar(85) NOT NULL default ''";
         $dbconn->Execute($sql);
         if ($dbconn->ErrorNo() != 0) {
-            pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED5 . ': ' . $dbconn->ErrorMsg());
+            return LogUtil::registerError(_EZCOMMENTS_FAILED5 . ': ' . $dbconn->ErrorMsg());
             return false;
         }
 		$oldversion = '0.9';
@@ -261,7 +261,7 @@ function EZComments_upgrade($oldversion)
                         ADD $EZCommentscolumn[type] varchar(64) NOT NULL default ''";
         $dbconn->Execute($sql);
         if ($dbconn->ErrorNo() != 0) {
-            pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED5 . ': ' . $dbconn->ErrorMsg());
+            return LogUtil::registerError(_EZCOMMENTS_FAILED5 . ': ' . $dbconn->ErrorMsg());
             return false;
         }
 		$oldversion = '1.0';
@@ -279,7 +279,7 @@ function EZComments_upgrade($oldversion)
                         ADD $EZCommentscolumn[anonwebsite] varchar(255) NOT NULL default ''";
         $dbconn->Execute($sql);
         if ($dbconn->ErrorNo() != 0) {
-            pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED5 . ': ' . $dbconn->ErrorMsg());
+            return LogUtil::registerError(_EZCOMMENTS_FAILED5 . ': ' . $dbconn->ErrorMsg());
             return false;
         }
 		$oldversion = '1.2';
@@ -324,17 +324,17 @@ function EZComments_delete()
     }
 
     if (!pnModUnregisterHook('item', 'display', 'GUI', 'EZComments', 'user', 'view')) {
-        pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED4);
+        return LogUtil::registerError(_EZCOMMENTS_FAILED4);
         return false;
     } 
 
     if (!pnModUnregisterHook('item', 'delete', 'API', 'EZComments', 'admin', 'deletebyitem')) {
-        pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED4);
+        return LogUtil::registerError(_EZCOMMENTS_FAILED4);
         return false;
     }
 
     if (!pnModUnregisterHook('module', 'remove', 'API', 'EZComments', 'admin', 'deletemodule')) {
-        pnSessionSetVar('errormsg', _EZCOMMENTS_FAILED4);
+        return LogUtil::registerError(_EZCOMMENTS_FAILED4);
         return false;
     }
 

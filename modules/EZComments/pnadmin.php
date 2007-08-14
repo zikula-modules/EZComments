@@ -182,9 +182,8 @@ function EZComments_admin_processselected($args)
 
     // If we get here it means that the user has confirmed the action
     // Confirm authorisation code.
-    if (!pnSecConfirmAuthKey()) {
-        pnSessionSetVar('errormsg', pnVarPrepHTMLDisplay(_BADAUTHKEY));
-        return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
+    if (!SecurityUtil::confirmAuthKey()) {
+        return LogUtil::registerAuthidError(pnModURL('EZComments', 'admin', 'main'));
     }
 
     // loop round each comment deleted them in turn 
@@ -281,7 +280,7 @@ function EZComments_admin_migrate()
     closedir($d);
 
     if (!$selectitems) {
-        pnSessionSetVar('statusmsg', _EZCOMMENTS_MIGRATE_NOTHINGTODO);
+        LogUtil::registerStatus(_EZCOMMENTS_MIGRATE_NOTHINGTODO);
         return pnRedirect(pnModURL('EZComments', 'admin'));
     } 
 
@@ -312,8 +311,8 @@ function EZComments_admin_migrate_go()
     }
 
     // Authentication key
-    if (!pnSecConfirmAuthKey()) {
-        // return _EZCOMMENTS_NOAUTH;
+    if (!SecurityUtil::confirmAuthKey()) {
+        return LogUtil::registerAuthidError(pnModURL('EZComments', 'admin', 'main'));
     } 
     // Parameter
     $migrate = pnVarCleanFromInput('migrate');
@@ -349,10 +348,6 @@ function EZComments_admin_cleanup()
         return LogUtil::registerPermissionError('index.php');
     }
 
-    if (!pnModAPILoad('EZComments', 'admin')) {
-        return _EZCOMMENTS_LOADFAILED;
-    } 
-
     // build a simple array of all available modules
     $mods = pnModGetAllMods();
     $allmods = array();
@@ -365,7 +360,7 @@ function EZComments_admin_cleanup()
     $orphanedmods = array_diff($usedmods, $allmods);
 
     if (!$orphanedmods) {
-        pnSessionSetVar('statusmsg', _EZCOMMENTS_CLEANUP_NOTHINGTODO);
+        LogUtil::registerStatus(_EZCOMMENTS_CLEANUP_NOTHINGTODO);
         return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
     } 
 
@@ -397,12 +392,8 @@ function EZComments_admin_cleanup_go()
     }
 
     // Authentication key
-    if (!pnSecConfirmAuthKey()) {
-        // return _EZCOMMENTS_NOAUTH;
-    } 
-    // API
-    if (!pnModAPILoad('EZComments', 'admin')) {
-        return _EZCOMMENTS_LOADFAILED;
+    if (!SecurityUtil::confirmAuthKey()) {
+        return LogUtil::registerAuthidError(pnModURL('EZComments', 'admin', 'main'));
     } 
 
     $module = pnVarCleanFromInput('EZComments_module');
@@ -457,9 +448,8 @@ function EZComments_admin_purge($args)
 
     // If we get here it means that the user has confirmed the action
     // Confirm authorisation code.
-    if (!pnSecConfirmAuthKey()) {
-        pnSessionSetVar('errormsg', pnVarPrepHTMLDisplay(_BADAUTHKEY));
-        return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
+    if (!SecurityUtil::confirmAuthKey()) {
+        return LogUtil::registerAuthidError(pnModURL('EZComments', 'admin', 'main'));
     }
 
     // The API function is called. 
@@ -607,9 +597,8 @@ function EZComments_admin_deletemodule($args)
 
     // If we get here it means that the user has confirmed the action
     // Confirm authorisation code.
-    if (!pnSecConfirmAuthKey()) {
-        pnSessionSetVar('errormsg', pnVarPrepHTMLDisplay(_BADAUTHKEY));
-        return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
+    if (!SecurityUtil::confirmAuthKey()) {
+        return LogUtil::registerAuthidError(pnModURL('EZComments', 'admin', 'main'));
     }
 
     // The API function is called. 
@@ -648,7 +637,7 @@ function EZComments_admin_deleteitem($args)
 
 	// input check
 	if (!isset($mod) || !is_string($mod) || !isset($objectid) || !is_numeric($objectid)) {
-		pnSessionSetVar('errormsg', _MODARGSERROR);
+		return LogUtil::registerError(_MODARGSERROR);
 		return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
 	}
 
@@ -679,9 +668,8 @@ function EZComments_admin_deleteitem($args)
 
     // If we get here it means that the user has confirmed the action
     // Confirm authorisation code.
-    if (!pnSecConfirmAuthKey()) {
-        pnSessionSetVar('errormsg', pnVarPrepHTMLDisplay(_BADAUTHKEY));
-        return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
+    if (!SecurityUtil::confirmAuthKey()) {
+        return LogUtil::registerAuthidError(pnModURL('EZComments', 'admin', 'main'));
     }
 
     // The API function is called. 
@@ -740,9 +728,8 @@ function EZComments_admin_applyrules($args)
 
     // If we get here it means that the user has confirmed the action
     // Confirm authorisation code.
-    if (!pnSecConfirmAuthKey()) {
-        pnSessionSetVar('errormsg', pnVarPrepHTMLDisplay(_BADAUTHKEY));
-        //return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
+    if (!SecurityUtil::confirmAuthKey()) {
+        return LogUtil::registerAuthidError(pnModURL('EZComments', 'admin', 'main'));
     }
 
     // get the matching comments
@@ -751,9 +738,6 @@ function EZComments_admin_applyrules($args)
         $args['status'] = $status;
     }
     $comments = pnModAPIFunc('EZComments', 'user', 'getall', $args);
-
-    // ensure the api is loaded so we can access the private function
-    pnModAPILoad('EZComments', 'user');
 
     // these processes could take some time
     set_time_limit(0);
@@ -814,7 +798,7 @@ function EZComments_admin_applyrules($args)
             $comment['status'] = 2;
             pnModAPIFunc('EZComments', 'admin', 'update', $comment);
         }
-        pnSessionSetVar('statusmsg', 'New comment rules applied');
+        LogUtil::registerStatus('New comment rules applied');
         return pnRedirect(pnModURL('EZComments', 'admin'));
     }
 }

@@ -300,13 +300,13 @@ function EZComments_adminapi_purge($args)
 
     // Argument check
     if (!isset($purgerejected) && !isset($purgepending)) {
-        pnSessionSetVar('errormsg', _MODARGSERROR);
+        return LogUtil::registerError(_MODARGSERROR);
         return false;
     }
 
     // Security check 
     if (!SecurityUtil::checkPermission('EZComments::', "::", ACCESS_DELETE)) {
-        pnSessionSetVar('errormsg', _MODULENOAUTH);
+        return LogUtil::registerError(_MODULENOAUTH);
         return false;
     }
 
@@ -321,7 +321,7 @@ function EZComments_adminapi_purge($args)
                 WHERE $column[status] = '2'";
         $dbconn->Execute($sql);
         if ($dbconn->ErrorNo() != 0) {
-            pnSessionSetVar('errormsg', _DELETEFAILED);
+            return LogUtil::registerError(_DELETEFAILED);
             return false;
         }
     }
@@ -331,7 +331,7 @@ function EZComments_adminapi_purge($args)
                 WHERE $column[status] = '1'";
         $dbconn->Execute($sql);
         if ($dbconn->ErrorNo() != 0) {
-            pnSessionSetVar('errormsg', _DELETEFAILED);
+            return LogUtil::registerError(_DELETEFAILED);
             return false;
         }
     }
@@ -354,7 +354,7 @@ function EZComments_adminapi_updatestatus($args)
 
     // Argument check
     if (isset($id) && !is_numeric($id) && isset($status) && !is_numeric($status)) {
-        pnSessionSetVar('errormsg', _MODARGSERROR);
+        return LogUtil::registerError(_MODARGSERROR);
         return false;
     }
 
@@ -362,13 +362,13 @@ function EZComments_adminapi_updatestatus($args)
     $item = pnModAPIFunc('EZComments', 'user', 'get', array('id' => $id));
 
     if (!$item) {
-        pnSessionSetVar('errormsg', _NOSUCHITEM);
+        return LogUtil::registerError(_NOSUCHITEM);
         return false;
     }
 
     // Security check.
     if (!SecurityUtil::checkPermission('EZComments::', "::$id", ACCESS_EDIT)) {
-        pnSessionSetVar('errormsg', _MODULENOAUTH);
+        return LogUtil::registerError(_MODULENOAUTH);
         return false;
     }
 
@@ -389,7 +389,7 @@ function EZComments_adminapi_updatestatus($args)
 
     // Check for an error with the database code
     if ($dbconn->ErrorNo() != 0) {
-        pnSessionSetVar('errormsg', _UPDATEFAILED);
+        return LogUtil::registerError(_UPDATEFAILED);
         return false;
     }
 

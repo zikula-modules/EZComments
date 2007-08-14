@@ -207,16 +207,14 @@ function EZComments_userapi_create($args)
     if (!isset($mod) ||
         !isset($objectid) ||
         !isset($comment)) {
-        pnSessionSetVar('errormsg', _MODARGSERROR);
-        return false;
+        return LogUtil::registerError(_MODARGSERROR);
     }
 
     // check unregistered user included name (if required)
 	$anonname = trim($anonname);
 	if (!pnUserLoggedIn()) {
     	if (pnModGetVar('EZComments', 'anonusersrequirename') && empty($anonname)) {
-        	pnSessionSetVar('errormsg', _EZCOMMENTS_ANON_NAME_REJECT);
-	        return false;
+        	return LogUtil::registerError(_EZCOMMENTS_ANON_NAME_REJECT);
     	}
 	}
     if (!isset($replyto) || empty($replyto)) {
@@ -248,8 +246,7 @@ function EZComments_userapi_create($args)
 
     // Security check
     if (!SecurityUtil::checkPermission("EZComments::$type", "$mod:$objectid:", ACCESS_COMMENT)) {
-        pnSessionSetVar('errormsg', _EZCOMMENTS_NOAUTH);
-        return false;
+        return LogUtil::registerPermissionError('index.php');
     }
 
     // Get datbase setup
@@ -298,8 +295,7 @@ function EZComments_userapi_create($args)
 
 	// check for a blacklisted return
 	if (in_array(2, $status)) {
-		pnSessionSetVar('errormsg', _EZCOMMENTS_COMMENTBLACKLISTED);
-		return false;
+		return LogUtil::registerError(_EZCOMMENTS_COMMENTBLACKLISTED);
 	}
 	// check for a moderated return
 	$maxstatus = 0;
@@ -357,17 +353,16 @@ function EZComments_userapi_create($args)
     $dbconn->Execute($sql);
     // Check for an error with the database code
     if ($dbconn->ErrorNo() != 0) {
-        pnSessionSetVar('errormsg', _CREATEFAILED);
-        return false;
+        return LogUtil::registerError(_CREATEFAILED);
     }
 
     // set an approriate status/errormsg
     switch ($maxstatus) {
         case '0' :
-            pnSessionSetVar('statusmsg', _EZCOMMENTS_CREATED);
+            LogUtil::registerStatus(_EZCOMMENTS_CREATED);
             break;
         case '1' :
-            pnSessionSetVar('statusmsg', _EZCOMMENTS_HELDFORMODERATION);
+            LogUtil::registerStatus(_EZCOMMENTS_HELDFORMODERATION);
             break;
     }
 
@@ -728,7 +723,7 @@ function EZComments_userapi_getallbymodule($args)
     // Check for an error with the database code, and if so set an appropriate
     // error message and return
     if ($dbconn->ErrorNo() != 0) {
-        pnSessionSetVar('errormsg', _GETFAILED);
+        return LogUtil::registerError(_GETFAILED);
         return false;
     }
 

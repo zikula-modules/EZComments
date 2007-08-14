@@ -44,7 +44,7 @@ function EZComments_migrateapi_reviews()
 {
     // Security check
     if (!pnSecAuthAction(0, 'EZComments::', "::", ACCESS_ADMIN)) {
-        pnSessionSetVar('errormsg', 'News migration: Not Admin');
+        return LogUtil::registerError('News migration: Not Admin');
         return false;
     } 
 
@@ -73,8 +73,7 @@ function EZComments_migrateapi_reviews()
 
     $result =& $dbconn->Execute($sql); 
     if ($dbconn->ErrorNo() != 0) {
-        pnSessionSetVar('errormsg', 'News migration: DB Error');
-        return false;
+        return LogUtil::registerError('News migration: DB Error');
     } 
 
     // array to rebuild the patents
@@ -96,8 +95,7 @@ function EZComments_migrateapi_reviews()
                                  'date'     => $date));
 
         if (!$id) {
-            pnSessionSetVar('errormsg', 'News migration: Error creating comment');
-            return false;
+            return LogUtil::registerError('News migration: Error creating comment');
         } 
     } 
     $result->Close(); 
@@ -105,7 +103,6 @@ function EZComments_migrateapi_reviews()
     // activate the ezcomments hook for the news module
     pnModAPIFunc('Modules', 'admin', 'enablehooks', array('callermodname' => 'Reviews', 'hookmodname' => 'EZComments'));
 
-    pnSessionSetVar('errormsg', 'News migration successful');
-    return true;
+    LogUtil::registerStatus('News migration successful');
 }
 
