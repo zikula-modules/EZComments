@@ -411,3 +411,29 @@ function ezcomments_adminapi_countitems($args)
     return pnModAPIFunc('EZComments', 'user', 'countitems', $args);
 }
 
+
+/**
+ * get available admin panel links
+ *
+ * @author Mark West
+ * @return array array of admin links
+ */
+function EZComments_adminapi_getlinks()
+{
+    $links = array();
+
+    pnModLangLoad('EZComments', 'admin');
+
+    if (pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
+        $links[] = array('url' => pnModURL('EZComments', 'admin'), 'text' => _EZCOMMENTS_ADMIN_MAIN);
+        $links[] = array('url' => pnModURL('EZComments', 'admin', 'cleanup'), 'text' => _EZCOMMENTS_CLEANUP);
+        $links[] = array('url' => pnModURL('EZComments', 'admin', 'migrate'), 'text' => _EZCOMMENTS_MIGRATE);
+        $links[] = array('url' => pnModURL('EZComments', 'admin', 'purge'), 'text' => _EZCOMMENTS_PURGE, 'linebreak' => true);
+        $links[] = array('url' => pnModURL('EZComments', 'admin', 'stats'), 'text' =>  _EZCOMMENTS_STATS);
+        $links[] = array('url' => pnModURL('EZComments', 'admin', 'applyrules'), 'text' => _EZCOMMENTS_APPLYMODRULES);
+        $links[] = array('url' => pnModURL('EZComments', 'admin', 'modifyconfig'), 'text' => _MODIFYCONFIG);
+    }
+
+    return $links;
+}
+
