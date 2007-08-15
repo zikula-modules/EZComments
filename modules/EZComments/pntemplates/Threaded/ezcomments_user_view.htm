@@ -55,7 +55,7 @@
     <!--[*  We assign these URLS here to keep the template easier to read *]-->
     <!--[assign var="url_userinfo" value="user.php?op=userinfo&module=User&uname=`$comments[comments].uname`"]-->
     <!--[pnmodurl modname=Messages func=compose uname=$comments[comments].uname assign=url_message]-->
-    <!--[pnmodurl modname=EZComments func=comment EZComments_redirect=$redirect EZComments_modname=$mod EZComments_objectid=$objectid EZComments_replyto=$comments[comments].id EZComments_template=$template assign=url_comment]-->
+    <!--[pnmodurl modname=EZComments func=comment redirect=$redirect|rawurlencode modname=$mod objectid=$objectid replyto=$comments[comments].id template=$template assign=url_comment]-->
     <!--[pnmodurl modname=EZComments type=admin func=delete redirect=$redirect id=$comments[comments].id assign=url_del]-->
 	<a id="comment<!--[$comments[comments].id]-->"></a>
     <div style="margin-left: <!--[math equation="x * 2" x=$comments[comments].level]-->em">  
@@ -92,7 +92,7 @@
     <div>
       <input type="hidden" name="authid" id="authid" value="<!--[pnsecgenauthkey module=EZComments]-->" /> 
       <input type="hidden" name="redirect" id="EZComments_redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" />
-      <input type="hidden" name="modname" id="EZComments_modname" value="<!--[$mod|pnvarprepfordisplay]-->" />
+      <input type="hidden" name="mod" id="EZComments_modname" value="<!--[$mod|pnvarprepfordisplay]-->" />
       <input type="hidden" name="objectid" id="EZComments_objectid" value="<!--[$objectid|pnvarprepfordisplay]-->" /> 
       <input type="hidden" name="template" id="EZComments_template" value="<!--[$template|pnvarprepfordisplay]-->" /> 
       <input type="submit" value="<!--[pnml name=_EZCOMMENTS_COMMENT_ADD]-->" />

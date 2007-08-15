@@ -151,7 +151,7 @@ function EZComments_user_view($args)
  * comment on the same page as the item is.
  * 
  * @param    $comment     the comment (taken from HTTP put)
- * @param    $modname     the name of the module the comment is for (taken from HTTP put)
+ * @param    $mod         the name of the module the comment is for (taken from HTTP put)
  * @param    $objectid    ID of the item the comment is for (taken from HTTP put)
  * @param    $redirect    URL to return to (taken from HTTP put)
  * @param    $subject     The subject of the comment (if any) (taken from HTTP put)
@@ -162,19 +162,19 @@ function EZComments_user_view($args)
  */
 function EZComments_user_comment($args)
 {
-    list($modname,
+    list($mod,
          $objectid,
          $redirect,
          $comment,
          $subject,
          $replyto,
-         $template) = pnVarCleanFromInput('EZComments_modname',
-                                          'EZComments_objectid',
-                                          'EZComments_redirect',
-                                          'EZComments_comment',
-                                          'EZComments_subject',
-                                          'EZComments_replyto',
-                                          'EZComments_template');
+         $template) = pnVarCleanFromInput('mod',
+                                          'objectid',
+                                          'redirect',
+                                          'comment',
+                                          'subject',
+                                          'replyto',
+                                          'template');
 
     extract($args);
 
@@ -189,7 +189,7 @@ function EZComments_user_comment($args)
     $status = 0;
 
     // check if commenting is setup for the input module
-    if (!pnModAvailable($modname) || !pnModIsHooked('EZComments', $modname)) {
+    if (!pnModAvailable($mod) || !pnModIsHooked('EZComments', $mod)) {
         return LogUtil::registerPermissionError('index.php');
     }
 
@@ -227,11 +227,11 @@ function EZComments_user_comment($args)
     $pnRender->assign('comments',     $comments);
 	$pnRender->assign('commentcount', $commentcount);
     $pnRender->assign('order',        $sortorder);
-    $pnRender->assign('allowadd',     SecurityUtil::checkPermission('EZComments::', "$modname:$objectid: ", ACCESS_COMMENT));
+    $pnRender->assign('allowadd',     SecurityUtil::checkPermission('EZComments::', "$mod:$objectid: ", ACCESS_COMMENT));
     $pnRender->assign('addurl',       pnModURL('EZComments', 'user', 'create'));
     $pnRender->assign('loggedin',     pnUserLoggedIn());
     $pnRender->assign('redirect',     $redirect);
-    $pnRender->assign('mod',          DataUtil::formatForDisplay($modname));
+    $pnRender->assign('mod',          DataUtil::formatForDisplay($mod));
     $pnRender->assign('objectid',     DataUtil::formatForDisplay($objectid));
     $pnRender->assign('subject',      DataUtil::formatForDisplay($subject));
     $pnRender->assign('replyto',      DataUtil::formatForDisplay($replyto));
@@ -271,7 +271,7 @@ function EZComments_user_comment($args)
  * form supplied by EZComments_user_view to create a new item
  * 
  * @param    $comment     the comment (taken from HTTP put)
- * @param    $modname     the name of the module the comment is for (taken from HTTP put)
+ * @param    $mod         the name of the module the comment is for (taken from HTTP put)
  * @param    $objectid    ID of the item the comment is for (taken from HTTP put)
  * @param    $redirect    URL to return to (taken from HTTP put)
  * @param    $subject     The subject of the comment (if any) (taken from HTTP put)
@@ -280,12 +280,12 @@ function EZComments_user_comment($args)
  */
 function EZComments_user_create($args)
 {
-    list($modname,
+    list($mod,
          $objectid,
          $redirect,
          $comment,
          $subject,
-         $replyto) = pnVarCleanFromInput('modname',
+         $replyto) = pnVarCleanFromInput('mod',
                                          'objectid',
                                          'redirect',
                                          'comment',
@@ -322,7 +322,7 @@ function EZComments_user_create($args)
     $id = pnModAPIFunc('EZComments',
                        'user',
                        'create',
-                       array('mod'         => $modname,
+                       array('mod'         => $mod,
                              'objectid'    => $objectid,
                              'url'         => $url,
                              'comment'     => $comment,
