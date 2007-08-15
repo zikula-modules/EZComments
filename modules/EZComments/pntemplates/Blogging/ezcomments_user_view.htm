@@ -1,0 +1,103 @@
+<!--[* $Id: ezcomments_user_view.htm,v 1.12 2005/10/06 12:57:30 markwest Exp $ *]-->
+<!--[*comment formatting based on the trisexual wordpress theme from http://www.aamukaste.org/wpthemes/?p=5 *]-->
+<!--[ezcommentsstylesheet template=Blogging xhtml=true]-->
+<div id="comments">
+<!--[if $comments eq true or $allowadd eq true]-->
+	<h3><!--[$commentcount]--> <!--[pnml name=_EZCOMMENTS_COMMENTSOFAR]--></h3>
+	<!--[pngetstatusmsg assign=statusmsg]-->
+	<!--[if $statusmsg neq '']-->
+	<em style="color:red"><!--[$statusmsg|pnvarprepfordisplay]--></em>
+	<!--[/if]-->
+<!--[/if]-->
+
+<!--[if $comments eq true]-->
+	<!--[pngetbaseurl assign=baseurl]-->
+	<!--[assign var=defaultgravatar value='`$baseur`l/images/blank_gravatar.png']-->
+    <!--[foreach name=comments from=$comments item=comment]-->
+	<div id="comment-<!--[$comment.id]-->" <!--[if $comment.uid eq 0]-->class="comment"<!--[else]-->class="officialuser"<!--[/if]-->>
+		<!--[if $comment.uid eq 0]-->
+			<a href="<!--[$comment.anonwebsite|pnvarprepfordisplay]-->" title="Visit <!--[$comment.anonname|pnvarprepfordisplay]-->"><img src="<!--[gravatar email=$comment.anonmail size=50 default=$defaultgravatar]-->" alt="<!--[$comment.anonname|pnvarprepfordisplay]-->'s Avatar" class="gravatar" /></a>
+		<!--[else]-->
+			<!--[if $comment.website neq '']-->
+			<a href="<!--[$comment.website|pnvarprepfordisplay]-->"><img src="<!--[gravatar email=$comment.email size=50 default=$defaultgravatar]-->" alt="<!--[$comment.uname|pnvarprepfordisplay]-->'s Avatar" class="gravatar" /></a>
+			<!--[else]-->
+			<img src="<!--[gravatar email=$comment.email size=50 default=$defaultgravatar]-->" alt="<!--[$comments[comments].uname]-->'s Avatar" class="gravatar" />
+			<!--[/if]-->
+		<!--[/if]-->
+		<h4>
+			<a href="#comment-<!--[$comment.id]-->" class="commentnumber" title="Link to Comment <!--[$comment.id]-->"><!--[$smarty.foreach.comments.iteration]-->.</a>
+			<!--[if $comment.uid eq 0]-->
+				<a href="<!--[$comment.anonwebsite|pnvarprepfordisplay]-->" rel="external nofollow"><!--[$comment.anonname|pnvarprepfordisplay]--></a> <!--[pnml name=_EZCOMMENTS_WROTEON]--> <!--[$comment.date|pndate_format:datebrief]--> <!--[pnml name=_EZCOMMENTS_AT]--> <!--[$comment.date|pndate_format:timebrief]-->
+			<!--[else]-->
+				<!--[if $comment.website neq '']-->
+					<a href="<!--[$comment.website|pnvarprepfordisplay]-->" rel="external"><!--[$comment.uname|pnvarprepfordisplay]--></a> <!--[pnml name=_EZCOMMENTS_WROTEON]--> <!--[$comment.date|pndate_format:datebrief]--> <!--[pnml name=_EZCOMMENTS_AT]--> <!--[$comment.date|pndate_format:timebrief]-->
+				<!--[else]-->
+					<!--[$comment.uname|pnvarprepfordisplay]--> <!--[pnml name=_EZCOMMENTS_WROTEON]--> <!--[$comment.date|pndate_format:datebrief]--> <!--[pnml name=_EZCOMMENTS_AT]--> <!--[$comment.date|pndate_format:timebrief]-->
+				<!--[/if]-->
+			<!--[/if]-->
+		</h4>
+		<!--[$comment.comment|formatezcomment|pnmodcallhooks:EZComments|pnvarprephtmldisplay]-->
+	</div>
+    <!--[/foreach]-->
+	<!--[if $enablepager]-->
+		<!--[pager show="page" rowcount=$pager.numitems limit=$pager.itemsperpage posvar=comments_startnum shift=1]-->
+	<!--[/if]-->
+<!--[/if]-->
+
+<!--[if $allowadd]-->
+<div id="commentform">
+	<a id="postcomment"></a><h3>Leave a Comment</h3>
+	<form id="post" action="<!--[pnmodurl modname=EZComments func=create]-->" method="post">
+	<div>
+          <input type="hidden" name="authid" id="authid" value="<!--[pnsecgenauthkey module=EZComments]-->" />
+          <input type="hidden" name="redirect" id="EZComments_redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" />
+          <input type="hidden" name="mod" id="EZComments_modname" value="<!--[pnmodgetname]-->" />
+          <input type="hidden" name="objectid" id="EZComments_objectid" value="<!--[$objectid|pnvarprepfordisplay]-->" />
+          <!--[if $loggedin neq true and $anonusersinfo eq true]-->
+          <div>
+            <input type="text" name="anonname" id="anonname" size="35" maxlength="255" />
+            <label for="anonname"><!--[pnml name=_EZCOMMENTS_ANONNAME]--></label>
+          </div>
+          <div>
+            <input type="text" name="anonmail" id="anonmail" size="35" maxlength="255" />
+            <label for="anonmail"><!--[pnml name=_EZCOMMENTS_ANONMAIL]--></label>
+          </div>
+          <div>
+            <input type="text" name="website" id="anonwebsite" size="35" maxlength="255" />
+            <label for="anonwebsite"><!--[pnml name=_EZCOMMENTS_ANONWEBSITE]--></label>
+          </div>
+          <!--[/if]-->
+		  <div class="commentforminfo"><!--[allowedhtml]--></div>
+          <div>
+            <textarea name="comment" id="message" cols="60" rows="10"></textarea>
+          </div>
+		  <div class="commentforminfo">
+       	  <!--[pnmodishooked tmodname="pn_bbcode" smodname="EZComments" assign=bbcode]-->
+          <!--[if $bbcode]-->
+            <!--[pnmodfunc modname=pn_bbcode type=user func=bbcodes textfieldid=message ]-->
+          <!--[/if]-->
+       	  <!--[pnmodishooked tmodname="pn_bbsmile" smodname="EZComments" assign=smilies]-->
+          <!--[if $smilies]-->
+            <!--[pnmodfunc modname=pn_bbsmile func=bbsmiles textfieldid=message]-->
+          <!--[/if]-->
+		  </div>
+		  <!--[if $moderation]-->
+		  <div class="commentforminfo"><!--[pnml name=_EZCOMMENTS_MODERATIONON html=true]--></div>
+          <!--[/if]-->
+		  <!--[if $gravatarsignup]-->
+			<p style="clear:both;">
+				<input style="width:auto;" name="gravatar" id="gravatar" value="gravatar" type="checkbox" onclick="gravatarCheckBox(checked);" />
+				<label for="get_gravatar"><!--[pnml name=_EZCOMMENTS_GRAVATARSIGNUP]--></label>
+			</p>
+			<div id="gravatarsignup" style="display: none;">
+			<p><!--[pnml name=_EZCOMMENTS_GRAVATARSIGNUPINFO]--><br /><br />
+			 <label for="gravatar_password"><!--[pnml name=_EZCOMMENTS_GRAVATARPASSWORD]--></label> <input name="password" id="gravatar_password" value="" size="28" tabindex="5" type="password" />
+			</p>
+			</div>
+          <!--[/if]-->
+          <input type="submit" value="<!--[pnml name=_EZCOMMENTS_ADD]-->" />
+	</div>
+	</form>
+</div>
+<!--[/if]-->
+</div>
