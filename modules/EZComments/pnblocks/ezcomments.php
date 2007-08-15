@@ -166,21 +166,22 @@ function EZComments_EZCommentsblock_modify($blockinfo)
  */
 function EZComments_EZCommentsblock_update($blockinfo)
 {
-    list ($vars['numentries'], 
-          $vars['showusername'], 
-          $vars['linkusername'], 
-          $vars['mod'], 
-          $vars['showdate'],
-          $vars['showpending']) = pnVarCleanFromInput('numentries', 
-                                                      'showusername', 
-                                                      'linkusername', 
-                                                      'mod',
-                                                      'showdate',
-                                                      'showpending'); 
+    // Get current content
+    $vars = pnBlockVarsFromContent($blockinfo['content']);
+
+    // alter the corresponding variable
+    $vars['numentries'] = (int)FormUtil::getPassedValue('numentries', 5, 'POST');
+    $vars['showusername'] = (bool)FormUtil::getPassedValue('showusername', false, 'POST');
+    $vars['linkusername'] = (bool)FormUtil::getPassedValue('linkusername', false, 'POST');
+    $vars['showdate'] = (bool)FormUtil::getPassedValue('showdate', false, 'POST');
+    $vars['showpending'] = (bool)FormUtil::getPassedValue('showpending', false, 'POST');
+    $vars['mod'] = (string)FormUtil::getPassedValue('mod', '', 'POST');
+
     // write back the new contents
     $blockinfo['content'] = pnBlockVarsToContent($vars); 
+
     // clear the block cache
-    $pnRender = new pnRender('EZComments');
+    $pnRender = pnRender::getInstance('EZComments');
     $pnRender->clear_cache('ezcomments_block_ezcomments.htm');
 
     return $blockinfo;
