@@ -46,8 +46,8 @@ function EZComments_adminapi_getUsedModules()
         return false;
     } 
     
-    $dbconn =& pnDBGetConn(true);
-    $pntable =& pnDBGetTables();
+    $dbconn = pnDBGetConn(true);
+    $pntable = pnDBGetTables();
 
     $table = $pntable['EZComments'];
     $column = &$pntable['EZComments_column']; 
@@ -55,7 +55,7 @@ function EZComments_adminapi_getUsedModules()
     $sql = "SELECT    $column[modname]
             FROM      $table
             GROUP BY  $column[modname]";
-    $result =& $dbconn->Execute($sql);
+    $result = $dbconn->Execute($sql);
 
     if ($dbconn->ErrorNo() != 0) {
         return false;
@@ -90,8 +90,8 @@ function EZComments_adminapi_deleteall($args)
     }
     
     
-    $dbconn =& pnDBGetConn(true);
-    $pntable =& pnDBGetTables();
+    $dbconn = pnDBGetConn(true);
+    $pntable = pnDBGetTables();
 
     $table = $pntable['EZComments'];
     $column = &$pntable['EZComments_column']; 
@@ -99,7 +99,7 @@ function EZComments_adminapi_deleteall($args)
     $sql = "DELETE FROM $table
             WHERE $column[modname] = '$args[module]'";
             
-    $result =& $dbconn->Execute($sql);
+    $result = $dbconn->Execute($sql);
 
     if ($dbconn->ErrorNo() != 0) {
     echo $dbconn->ErrorMsg;
@@ -137,15 +137,15 @@ function EZComments_adminapi_deletebyitem($args)
         return false;
     } 
 
-    $dbconn =& pnDBGetConn(true);
-    $pntable =& pnDBGetTables();
+    $dbconn = pnDBGetConn(true);
+    $pntable = pnDBGetTables();
 
     $table = $pntable['EZComments'];
     $column = &$pntable['EZComments_column'];
 
     $sql = "DELETE FROM $table
             WHERE $column[modname] = '$mod' AND $column[objectid] = '$objectid'";
-    $result =& $dbconn->Execute($sql);
+    $result = $dbconn->Execute($sql);
 
     if ($dbconn->ErrorNo() != 0) {
         echo $dbconn->ErrorMsg;
@@ -273,15 +273,15 @@ function EZComments_adminapi_deletemodule($args)
     }
 
     // Database information
-    $dbconn =& pnDBGetConn(true);
-    $pntable =& pnDBGetTables();
+    $dbconn = pnDBGetConn(true);
+    $pntable = pnDBGetTables();
     $EZCommentstable = $pntable['EZComments'];
     $EZCommentscolumn = &$pntable['EZComments_column']; 
 
     // Get items
     $sql = "DELETE FROM $EZCommentstable
             WHERE $EZCommentscolumn[modname] = '" . pnVarPrepForStore($mod) . "'";
-    $result =& $dbconn->Execute($sql);
+    $result = $dbconn->Execute($sql);
 
     return $extrainfo;
 }
@@ -311,8 +311,8 @@ function EZComments_adminapi_purge($args)
     }
 
     // Get datbase setup
-    $dbconn =& pnDBGetConn(true);
-    $pntable =& pnDBGetTables();
+    $dbconn = pnDBGetConn(true);
+    $pntable = pnDBGetTables();
     $table = $pntable['EZComments'];
     $column = &$pntable['EZComments_column'];
 
@@ -373,8 +373,8 @@ function EZComments_adminapi_updatestatus($args)
     }
 
     // Get datbase setup
-    $dbconn =& pnDBGetConn(true);
-    $pntable =& pnDBGetTables();
+    $dbconn = pnDBGetConn(true);
+    $pntable = pnDBGetTables();
     $EZCommentstable = $pntable['EZComments'];
     $EZCommentscolumn = &$pntable['EZComments_column']; 
 

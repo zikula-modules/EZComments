@@ -48,8 +48,8 @@ function EZComments_migrateapi_polls()
     } 
 
     // Get datbase setup
-    $dbconn =& pnDBGetConn(true);
-    $pntable =& pnDBGetTables();
+    $dbconn = pnDBGetConn(true);
+    $pntable = pnDBGetTables();
 
     $EZCommentstable  = $pntable['EZComments'];
     $EZCommentscolumn = &$pntable['EZComments_column']; 
@@ -70,7 +70,7 @@ function EZComments_migrateapi_polls()
              FROM  $Commentstable LEFT JOIN $Usertable
                ON $Commentscolumn[name] = $Usercolumn[uname]";
 
-    $result =& $dbconn->Execute($sql); 
+    $result = $dbconn->Execute($sql); 
     if ($dbconn->ErrorNo() != 0) {
         return LogUtil::registerError('Polls migration: DB Error');
     } 
@@ -114,7 +114,7 @@ function EZComments_migrateapi_polls()
                        SET $EZCommentscolumn[replyto]=" . $comments[$v['pid']]['newid'] . "
                      WHERE $EZCommentscolumn[id]=$v[newid]";
         
-            $result =& $dbconn->Execute($sql); 
+            $result = $dbconn->Execute($sql); 
         }
     }
     

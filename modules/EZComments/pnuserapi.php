@@ -75,8 +75,8 @@ function EZComments_userapi_getall($args)
     }
 
     // Get datbase setup
-    $dbconn =& pnDBGetConn(true);
-    $pntable =& pnDBGetTables();
+    $dbconn = pnDBGetConn(true);
+    $pntable = pnDBGetTables();
 
     $EZCommentstable = $pntable['EZComments'];
     $EZCommentscolumn = &$pntable['EZComments_column'];
@@ -250,8 +250,8 @@ function EZComments_userapi_create($args)
     }
 
     // Get datbase setup
-    $dbconn =& pnDBGetConn(true);
-    $pntable =& pnDBGetTables();
+    $dbconn = pnDBGetConn(true);
+    $pntable = pnDBGetTables();
 
     $EZCommentstable = $pntable['EZComments'];
     $EZCommentscolumn = &$pntable['EZComments_column'];
@@ -371,7 +371,7 @@ function EZComments_userapi_create($args)
 
     // Inform admin about new comment
     if (pnModGetVar('EZComments', 'MailToAdmin') && $maxstatus == 0) {
-        $pnRender =& pnRender::getInstance('EZComments', false);
+        $pnRender = pnRender::getInstance('EZComments', false);
         $pnRender->assign('comment', $comment);
         $pnRender->assign('url', $url);
         $pnRender->assign('moderate', pnModURL('EZComments', 'admin', 'modify', array('id' => $id)));
@@ -393,7 +393,7 @@ function EZComments_userapi_create($args)
                            'subject' => $mailsubject, 'body' => $mailbody));
     }
     if (pnModGetVar('EZComments', 'moderationmail') && $maxstatus == 1) {
-        $pnRender =& new pnRender('EZComments');
+        $pnRender = new pnRender('EZComments');
 		$pnRender->caching = false;
         $pnRender->assign('comment', $comment);
         $pnRender->assign('url', $url);
@@ -478,11 +478,11 @@ function EZComments_userapi_countitems($args)
     }
 
     // Get datbase setup
-    $dbconn =& pnDBGetConn(true);
-    $pntable =& pnDBGetTables();
+    $dbconn = pnDBGetConn(true);
+    $pntable = pnDBGetTables();
 
-    $EZCommentstable =& $pntable['EZComments'];
-    $EZCommentscolumn =& $pntable['EZComments_column'];
+    $EZCommentstable = $pntable['EZComments'];
+    $EZCommentscolumn = $pntable['EZComments_column'];
 
     $sql = "SELECT COUNT(1)
             FROM $EZCommentstable";
@@ -511,7 +511,7 @@ function EZComments_userapi_countitems($args)
 		$wheresql .= ' WHERE '.implode(' AND ', $queryargs);
 	}
 	$sql .= $wheresql;
-    $result =& $dbconn->Execute($sql);
+    $result = $dbconn->Execute($sql);
 
     if ($dbconn->ErrorNo() != 0) {
         return false;
@@ -669,8 +669,8 @@ function EZComments_userapi_getcommentingusers($args)
 	}
 
     // Get datbase setup
-    $dbconn =& pnDBGetConn(true);
-    $pntable =& pnDBGetTables();
+    $dbconn = pnDBGetConn(true);
+    $pntable = pnDBGetTables();
 
     $EZCommentstable = $pntable['EZComments'];
     $EZCommentscolumn = &$pntable['EZComments_column'];
@@ -705,8 +705,8 @@ function EZComments_userapi_getallbymodule($args)
 	$mod = DataUtil::formatForOS($mod);
 
     // Get datbase setup
-    $dbconn =& pnDBGetConn(true);
-    $pntable =& pnDBGetTables();
+    $dbconn = pnDBGetConn(true);
+    $pntable = pnDBGetTables();
 
     $EZCommentstable = $pntable['EZComments'];
     $EZCommentscolumn = &$pntable['EZComments_column'];

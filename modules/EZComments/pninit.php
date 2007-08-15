@@ -102,8 +102,8 @@ function EZComments_init()
 function EZComments_upgrade($oldversion)
 { 
     // setup the db connection
-    $dbconn =& pnDBGetConn(true);
-    $pntable =& pnDBGetTables();
+    $dbconn = pnDBGetConn(true);
+    $pntable = pnDBGetTables();
     $EZCommentstable = $pntable['EZComments'];
     $EZCommentscolumn = &$pntable['EZComments_column'];
 

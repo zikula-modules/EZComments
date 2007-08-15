@@ -51,17 +51,17 @@ function EZComments_migrateapi_pnFlashGames()
 	} 
 
 	// Get datbase setup
-    $dbconn =& pnDBGetConn(true);
-    $pntable =& pnDBGetTables();
+    $dbconn = pnDBGetConn(true);
+    $pntable = pnDBGetTables();
 
-    $Commentstable =& $pntable['pnFlashGames_comments'];
-    $Commentscolumn =& $pntable['pnFlashGames_comments_column'];
+    $Commentstable = $pntable['pnFlashGames_comments'];
+    $Commentscolumn = $pntable['pnFlashGames_comments_column'];
 
-	$EZCommentstable  =& $pntable['EZComments'];
-	$EZCommentscolumn =& $pntable['EZComments_column']; 
+	$EZCommentstable  = $pntable['EZComments'];
+	$EZCommentscolumn = $pntable['EZComments_column']; 
 
-	$Usertable =& $pntable['users'];
-	$Usercolumn =& $pntable['users_column'];
+	$Usertable = $pntable['users'];
+	$Usercolumn = $pntable['users_column'];
 
 	$sql = "SELECT $Commentscolumn[gid], 
 	               $Commentscolumn[uname],

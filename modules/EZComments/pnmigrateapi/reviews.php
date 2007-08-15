@@ -49,8 +49,8 @@ function EZComments_migrateapi_reviews()
     } 
 
     // Get datbase setup
-    $dbconn =& pnDBGetConn(true);
-    $pntable =& pnDBGetTables();
+    $dbconn = pnDBGetConn(true);
+    $pntable = pnDBGetTables();
 
     $EZCommentstable  = $pntable['EZComments'];
     $EZCommentscolumn = &$pntable['EZComments_column']; 
@@ -71,7 +71,7 @@ function EZComments_migrateapi_reviews()
              FROM  $Commentstable LEFT JOIN $Usertable
                ON $Commentscolumn[userid] = $Usercolumn[uname]";
 
-    $result =& $dbconn->Execute($sql); 
+    $result = $dbconn->Execute($sql); 
     if ($dbconn->ErrorNo() != 0) {
         return LogUtil::registerError('News migration: DB Error');
     } 
