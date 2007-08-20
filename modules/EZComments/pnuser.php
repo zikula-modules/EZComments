@@ -97,7 +97,7 @@ function EZComments_user_view($args)
                            compact('mod', 'objectid','sortorder','status','numitems','startnum'));
 
     if ($items === false) {
-        return LogUtil::registerError(_EZCOMMENTS_FAILED, 'index.php');
+        return LogUtil::registerError(_EZCOMMENTS_FAILED, null, 'index.php');
     }     
 
     $comments = EZComments_prepareCommentsForDisplay($items);
@@ -211,7 +211,7 @@ function EZComments_user_comment($args)
                            compact('mod', 'objectid','sortorder','status','numitems','startnum'));
 
     if ($items === false) {
-        return LogUtil::registerError(_EZCOMMENTS_FAILED, 'index.php');;
+        return LogUtil::registerError(_EZCOMMENTS_FAILED, null, 'index.php');;
     }     
 
     $comments = EZComments_prepareCommentsForDisplay($items);
@@ -258,7 +258,7 @@ function EZComments_user_comment($args)
 
 
     if (!$pnRender->template_exists(DataUtil::formatForOS($template . '/ezcomments_user_comment.htm'))) {
-        return LogUtil::registerError(_EZCOMMENTS_FAILED, 'index.php');;
+        return LogUtil::registerError(_EZCOMMENTS_FAILED, null, 'index.php');;
     }
 
     return $pnRender->fetch(DataUtil::formatForOS($template) . '/ezcomments_user_comment.htm');
@@ -300,7 +300,7 @@ function EZComments_user_create($args)
 
     // check we've actually got a comment....
     if (!isset($comment) || empty($comment)) {
-        return LogUtil::registerError(_EZCOMMENTS_EMPTYCOMMENT, $redirect.'#comments');
+        return LogUtil::registerError(_EZCOMMENTS_EMPTYCOMMENT, null, $redirect.'#comments');
     }
 
     // check if the user logged in and if we're allowing anon users to 
