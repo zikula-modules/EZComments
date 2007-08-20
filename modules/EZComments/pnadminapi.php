@@ -43,7 +43,7 @@
 function EZComments_adminapi_getUsedModules()
 {
     if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
-        return false;
+        return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));
     } 
     
     $dbconn = pnDBGetConn(true);
@@ -82,7 +82,7 @@ function EZComments_adminapi_getUsedModules()
 function EZComments_adminapi_deleteall($args)
 {
     if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
-        return false;
+        return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));
     } 
 
     if (!isset($args['module'])) { 
@@ -134,7 +134,7 @@ function EZComments_adminapi_deletebyitem($args)
     $objectid = $args['objectid'];
     
     if (!SecurityUtil::checkPermission('EZComments::', "$mod:$objectid:", ACCESS_ADMIN)) {
-        return false;
+        return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));
     } 
 
     $dbconn = pnDBGetConn(true);
@@ -301,13 +301,11 @@ function EZComments_adminapi_purge($args)
     // Argument check
     if (!isset($purgerejected) && !isset($purgepending)) {
         return LogUtil::registerError(_MODARGSERROR);
-        return false;
     }
 
     // Security check 
     if (!SecurityUtil::checkPermission('EZComments::', "::", ACCESS_DELETE)) {
-        return LogUtil::registerError(_MODULENOAUTH);
-        return false;
+        return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));
     }
 
     // Get datbase setup
@@ -322,7 +320,6 @@ function EZComments_adminapi_purge($args)
         $dbconn->Execute($sql);
         if ($dbconn->ErrorNo() != 0) {
             return LogUtil::registerError(_DELETEFAILED);
-            return false;
         }
     }
 
@@ -332,7 +329,6 @@ function EZComments_adminapi_purge($args)
         $dbconn->Execute($sql);
         if ($dbconn->ErrorNo() != 0) {
             return LogUtil::registerError(_DELETEFAILED);
-            return false;
         }
     }
 
@@ -355,7 +351,6 @@ function EZComments_adminapi_updatestatus($args)
     // Argument check
     if (isset($id) && !is_numeric($id) && isset($status) && !is_numeric($status)) {
         return LogUtil::registerError(_MODARGSERROR);
-        return false;
     }
 
     // Get the comment
@@ -363,13 +358,11 @@ function EZComments_adminapi_updatestatus($args)
 
     if (!$item) {
         return LogUtil::registerError(_NOSUCHITEM);
-        return false;
     }
 
     // Security check.
     if (!SecurityUtil::checkPermission('EZComments::', "::$id", ACCESS_EDIT)) {
-        return LogUtil::registerError(_MODULENOAUTH);
-        return false;
+        return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));
     }
 
     // Get datbase setup
@@ -390,7 +383,6 @@ function EZComments_adminapi_updatestatus($args)
     // Check for an error with the database code
     if ($dbconn->ErrorNo() != 0) {
         return LogUtil::registerError(_UPDATEFAILED);
-        return false;
     }
 
     // Let any hooks know that we have updated an item.

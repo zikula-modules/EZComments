@@ -50,11 +50,11 @@ function ezcomments_searchapi_info()
  **/
 function ezcomments_searchapi_options()
 {
-    if (!pnModAvailable('EZComments') || !pnSecAuthAction(0, 'EZComments::', '::', ACCESS_READ)) {
+    if (!pnModAvailable('EZComments') || !SecurityUtil::checkPermission('EZComments::', '::', ACCESS_READ)) {
         return;
     }
     pnModLangLoad('EZComments', 'user');
-    $pnRender = &new pnRender('EZComments');
+    $pnRender = pnRender::getInstance('EZComments');
     return $pnRender->fetch('ezcomments_search_form.htm');
 }
 
@@ -69,11 +69,11 @@ function ezcomments_searchapi_options()
 function ezcomments_searchapi_search($args)
 {
     // First security check
-    if (!pnModAvailable('EZComments') || !pnSecAuthAction(0, 'EZComments::', '::', ACCESS_READ)) {
+    if (!pnModAvailable('EZComments') || !SecurityUtil::checkPermission('EZComments::', '::', ACCESS_READ)) {
         return;
     }
-    $q=$args['q'];
-    $bool=$args['bool'];
+    $q    = $args['q'];
+    $bool = $args['bool'];
 
     // an array with words to search for.
     $words = explode(' ', $q);
@@ -88,8 +88,7 @@ function ezcomments_searchapi_search($args)
         return _EZCOMMENTS_NOCOMMENTSFOUND . '<br /><br /><br />';
     }
 
-    $pnRender = &new pnRender('EZComments');
-    $pnRender->caching = false;
+    $pnRender = pnRender::getInstance('EZComments', false);
     $pnRender->assign('comments', $comments);
     return $pnRender->fetch('ezcomments_search_results.htm');
 }
