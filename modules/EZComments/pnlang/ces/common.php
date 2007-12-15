@@ -25,7 +25,7 @@ define('_EZCOMMENTS_GOTOREG',               'Registrovat/Pøihlásit');
 define('_EZCOMMENTS_ADD',                   'Pøidat');
 define('_EZCOMMENTS_DEL',                   'Smazat komentáø');
 define('_EZCOMMENTS_COMMENT_ADD',           'Pøidat nový komentáø');
-define('_EZCOMMENTS_COMMENT_ANSWER'         'Odpovìï');
+define('_EZCOMMENTS_COMMENT_ANSWER',        'Odpovìï');
 define('_EZCOMMENTS_COMMENT_FROM',          'od');
 define('_EZCOMMENTS_COMMENT_ON',            'pro');
 define('_EZCOMMENTS_CREATED',               'Komentáø byl pøidán');
