@@ -693,6 +693,7 @@ function EZComments_userapi_getallbymodule($args)
 
     $items = array();
 
+
     // Security check
 	if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_OVERVIEW)) {
 		return false;
@@ -740,3 +741,58 @@ function EZComments_userapi_getallbymodule($args)
 
 }
 
+/**
+ * advanced checkPermission-function
+ *
+ * This function is neccessary because the regular permission system
+ * of the CMS does not provide all functionallity we need. For example, if
+ * EZComments is hooked to the MyProfile module a profile owner must be able
+ * to delete comments other users wrote into his profile page.
+ * This function first does the regular postnuke checkPermission call and if
+ * this function call is "false", we'll do some more checks
+ *
+ * @author	Florian Schießl
+ * @param	$args['module']		string		module's name
+ * @param	$args['objectid']	int			object's id
+ * @param	$args['commentid']	int			id of comment
+ * @param	$args['level']		string		security level for SecurityUtil
+ *
+ * @return	boolean
+ */
+function EZComments_userapi_checkPermission($args) {
+  	
+	$module 	= $args['module'];
+  	$objectid 	= $args['objectid'];
+  	$commentid	= $args['commentid'];
+  	$level 		= $args['level']; 
+	$inst 		= $module.":".$objectid.":".$commentid;	   	
+
+	// parameter check
+  	if ((!isset($module)) || (!isset($level)) || (!isset($objectid)) || (!isset($commentid))) return false;
+
+  	// regular securityUtil::checkPermission check. Return true on success
+	if (SecurityUtil::checkPermission('EZComments::', $inst, $level)) return true;
+
+	// for functin admin::modify there is no obejct id and module name submitted.
+	// let us get these information in this case
+	if (($module == '') && ($objectid == '')) {
+		$comment = DBUtil::selectObjectByID('EZComments',$commentid);
+		// if there is no comment id an error has occurred. Lets die...
+		if (!($comment['id'] > 0)) return false;
+		// if the user id is the viewer he should be allowed to manage his own comments
+		if ($comment['uid'] == pnUserGetVar('uid')) return true;
+		// otherwise retrieve the information
+		$module = 	$comment['modname'];
+		$objectid =	$comment['objectid'];
+	}
+
+	// module-specific checks
+	switch ($module) {
+	  	case 'Profile':		// user-id is the object id
+	  	case 'MyProfile':	// user-id is the object id
+	  		if ($objectid == (int)pnUserGetVar('uid')) return true;
+	  		else return false;
+	}
+  	return false;
+}
+?>

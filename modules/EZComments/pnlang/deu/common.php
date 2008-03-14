@@ -19,6 +19,7 @@
 // ----------------------------------------------------------------------
 
 // new for 2.0 (.8only)
+define('_EZCOMMENTSTABTITLE', 'Pinnwand');
 define('_EZCOMMENTS_ILLEGALSTATUS', 'falscher Status');
 define('_EZCOMMENTS_ANONNAMEMISSING', 'Name für den anonymen Benutzer fehlt');
 define('_EZCOMMENTS_ANONMAILMISSING', 'Emailadresse des anonymen Benutzers fehlt oder ist ungültig');

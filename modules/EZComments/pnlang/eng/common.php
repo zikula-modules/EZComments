@@ -19,12 +19,14 @@
 // ----------------------------------------------------------------------
 
 // new for 2.0 (.8only)
-define('_EZCOMMENTS_ILLEGALSTATUS', 'wrong status');
-define('_EZCOMMENTS_ANONNAMEMISSING', 'Name for anonymous user is missing');
-define('_EZCOMMENTS_ANONMAILMISSING', 'email address of anonymous user is missing or invalid');
-define('_EZCOMMENTS_ANONWEBSITEINVALID', 'website of anonymous user is invalid');
-define('_EZCOMMENTS_SENDMEBACK', 'Send me back to the commented content after finishing');
-define('_EZCOMMENTS_MISSINGVALUE', 'missing value');
+define('_EZCOMMENTS_TABTITLE', 				'pinboard');
+define('_EZCOMMENTS_MANAGEMYCOMMENTS', 		'Manage my comments');
+define('_EZCOMMENTS_ILLEGALSTATUS', 		'wrong status');
+define('_EZCOMMENTS_ANONNAMEMISSING', 		'Name for anonymous user is missing');
+define('_EZCOMMENTS_ANONMAILMISSING', 		'email address of anonymous user is missing or invalid');
+define('_EZCOMMENTS_ANONWEBSITEINVALID', 	'website of anonymous user is invalid');
+define('_EZCOMMENTS_SENDMEBACK', 			'Send me back to the commented content after finishing');
+define('_EZCOMMENTS_MISSINGVALUE', 			'missing value');
 // end of new defines
 
 define('_EZCOMMENTS',                       'Comments');

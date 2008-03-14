@@ -23,6 +23,7 @@
  * @author      Joerg Napp <jnapp@users.sourceforge.net>
  * @author      Mark West <markwest at postnuke dot com>
  * @author      Jean-Michel Vedrine
+ * @author		Florian Schieﬂl <florian.schiessl at ifs-net.de>
  * @version     1.5
  * @link        http://noc.postnuke.com/projects/ezcomments/ Support and documentation
  * @license     http://www.gnu.org/copyleft/gpl.html GNU General Public License
@@ -40,9 +41,11 @@
  */
 function EZComments_admin_main() 
 {
-    if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
-        return LogUtil::registerPermissionError('index.php');
-    } 
+	// Security check not neccessary because we'll filter all comments and the
+	// single permissions for these comments later
+//    if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
+//        return LogUtil::registerPermissionError('index.php');
+//    } 
 
     // get the status filter
     $status = FormUtil::getPassedValue('status', -1, 'GETPOST');
@@ -79,14 +82,19 @@ function EZComments_admin_main()
     // loop through each item adding the relevant links
     $comments = array();
     foreach ($items as $item) {
-        $options = array(array('url' => $item['url'] . '#comments',
-                               'title' => _VIEW));
-        if (SecurityUtil::checkPermission('EZComments::', "$item[mod]:$item[objectid]:$item[id]", ACCESS_EDIT)) {
+	    $securityCheck = pnModAPIFunc('EZComments','user','checkPermission',array(
+					'module'	=> $item['mod'],
+					'objectid'	=> $item['objectid'],
+					'commentid'	=> $item['id'],
+					'level'		=> ACCESS_EDIT			));
+        if ($securityCheck) {
+	        $options = array(array('url' => $item['url'] . '#comments',
+	                               'title' => _VIEW)); 
             $options[] = array('url'   => pnModURL('EZComments', 'admin', 'modify', array('id' => $item['id'])),
                                'title' => _EDIT);
-        }
-        $item['options'] = $options;
-        $comments[] = $item;
+            $item['options'] = $options;
+            $comments[] = $item;
+	    }
     }
 
     // assign the items to the template
@@ -120,10 +128,17 @@ function EZComments_admin_modify($args)
     $id = FormUtil::getPassedValue('id', isset($args['id']) ? $args['id'] : null,             'GETPOST');
 
     // Security check 
-    if(!SecurityUtil::checkPermission('EZComments::', '::' . $id, ACCESS_EDIT)) {
-        return LogUtil::registerPermissionError('index.php');
+    $securityCheck = pnModAPIFunc('EZComments','user','checkPermission',array(
+					'module'	=> '',
+					'objectid'	=> '',
+					'commentid'	=> $id,
+					'level'		=> ACCESS_EDIT			));
+    if(!$securityCheck) {
+      	$redirect = base64_decode(FormUtil::getPassedValue('redirect'));
+      	if (!isset($redirect)) $redirect = 'index.php';
+        return LogUtil::registerPermissionError($redirect);
     }
-
+    
     // load edithandler class from file
     Loader::requireOnce('modules/EZComments/pnincludes/ezcomments_admin_modifyhandler.class.php');
 
@@ -241,6 +256,9 @@ function EZComments_admin_modifyconfig()
     if(!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
         return LogUtil::registerPermissionError('index.php');
     }
+//    if(!pnModAPIFunc('EZComments','user','checkPermission',array('module'))) {
+//        return LogUtil::registerPermissionError('index.php');
+//    }
 
     // load edithandler class from file
     Loader::requireOnce('modules/EZComments/pnincludes/ezcomments_admin_modifyconfighandler.class.php');

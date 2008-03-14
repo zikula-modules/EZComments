@@ -116,11 +116,11 @@ function EZComments_user_view($args)
     $pnRender->assign('order',      $sortorder);
     $pnRender->assign('allowadd',   SecurityUtil::checkPermission('EZComments::', "$mod:$objectid:", ACCESS_COMMENT));
     $pnRender->assign('loggedin',   pnUserLoggedIn());
-    if (!is_array($args['extrainfo'])) {
-        $pnRender->assign('redirect',   $args['extrainfo']);
-    } else {
-        $pnRender->assign('redirect',   $args['extrainfo']['returnurl']);
-    }
+    if (!is_array($args['extrainfo'])) $redirect = $args['extrainfo'];
+    else $redirect = $args['extrainfo']['returnurl'];
+    // encode the url - otherwise we can get some problems out there....
+    $redirect = base64_encode($redirect);
+    $pnRender->assign('redirect',	$redirect);
     $pnRender->assign('objectid',   $objectid);
 
     // assign all module vars (they may be useful...)
@@ -175,7 +175,6 @@ function EZComments_user_comment($args)
                                           'subject',
                                           'replyto',
                                           'template');
-
     extract($args);
 
     // we may get some input in from the navigation bar
@@ -291,7 +290,7 @@ function EZComments_user_create($args)
                                          'comment',
                                          'subject',
                                          'replyto');
-    $redirect = urldecode($redirect);
+    $redirect = base64_decode($redirect);
 
     // Confirm authorisation code.
     if (!SecurityUtil::confirmAuthKey()) {
@@ -314,7 +313,7 @@ function EZComments_user_create($args)
     }
 
     // decoding the URL. Credits to tmyhre for fixing.
-    $redirect = rawurldecode($redirect);
+//    $redirect = rawurldecode($redirect);
     $redirect = str_replace('&amp;', '&', $redirect);
     // now parse out the hostname from the url for storing in the DB
     $url = str_replace(pnGetBaseURL(), '', $redirect);
@@ -385,7 +384,11 @@ function EZComments_prepareCommentsForDisplay($items)
 				$comment['anonname'] = pnConfigGetVar('anonymous');
 	        }
 		}
-        $comment['del'] = (SecurityUtil::checkPermission('EZComments::', "$comment[mod]:$comment[objectid]:$comment[id]", ACCESS_DELETE));
+	    $comment['del'] = pnModAPIFunc('EZComments','user','checkPermission',array(
+					'module'	=> $comment['mod'],
+					'objectid'	=> $comment['objectid'],
+					'commentid'	=> $comment['id'],
+					'level'		=> ACCESS_DELETE			));
         $comments[] = $comment;
     }
     return $comments;

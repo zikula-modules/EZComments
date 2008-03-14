@@ -27,7 +27,7 @@ class EZComments_admin_modifyhandler
     {
         $this->id = (int)FormUtil::getPassedValue('id', -1, 'GETPOST');
         $objectid =      FormUtil::getPassedValue('objectid', '', 'GETPOST');
-        $redirect =      FormUtil::getPassedValue('redirect', '', 'GETPOST');
+        $redirect =      base64_decode(FormUtil::getPassedValue('redirect', '', 'GETPOST'));
 
         $pnRender->caching = false;
         $pnRender->add_core_data();
@@ -55,8 +55,13 @@ class EZComments_admin_modifyhandler
     function handleCommand(&$pnRender, &$args)
     {
         // Security check
-        if (!SecurityUtil::checkPermission('EZComments::', '::' . $this->id, ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError(pnModURL('MultiHook', 'admin', 'main'));
+	    $securityCheck = pnModAPIFunc('EZComments','user','checkPermission',array(
+						'module'	=> '',
+						'objectid'	=> '',
+						'commentid'	=> $this->id,
+						'level'		=> ACCESS_EDIT			));
+        if (!$securityCheck) {
+            return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));
         }
         
         $comment = pnModAPIFunc('EZComments', 'user', 'get', array('id' => $this->id));

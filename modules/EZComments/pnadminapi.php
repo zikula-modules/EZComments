@@ -180,7 +180,12 @@ function EZComments_adminapi_delete($args)
     }
 
     // Security check 
-    if (!SecurityUtil::checkPermission('EZComments::', '::' . $id, ACCESS_DELETE)) {
+    $securityCheck = pnModAPIFunc('EZComments','user','checkPermission',array(
+					'module'	=> '',
+					'objectid'	=> '',
+					'commentid'	=> (int)$args['id'],
+					'level'		=> ACCESS_DELETE			));
+    if (!$securityCheck) {
         return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));
     }
 
@@ -229,7 +234,12 @@ function EZComments_adminapi_update($args)
     }
 
     // Security check.
-    if (!SecurityUtil::checkPermission('EZComments::', "::$id", ACCESS_EDIT)) {
+    $securityCheck = pnModAPIFunc('EZComments','user','checkPermission',array(
+					'module'	=> '',
+					'objectid'	=> '',
+					'commentid'	=> (int)$args['id'],
+					'level'		=> ACCESS_EDIT			));
+    if (!$securityCheck) {
         return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));
     }
 
@@ -361,7 +371,12 @@ function EZComments_adminapi_updatestatus($args)
     }
 
     // Security check.
-    if (!SecurityUtil::checkPermission('EZComments::', "::$id", ACCESS_EDIT)) {
+    $securityCheck = pnModAPIFunc('EZComments','user','checkPermission',array(
+					'module'	=> '',
+					'objectid'	=> '',
+					'commentid'	=> $id,
+					'level'		=> ACCESS_EDIT			));
+    if (!$securityCheck) {
         return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));
     }
 

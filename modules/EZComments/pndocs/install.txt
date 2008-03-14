@@ -5,7 +5,7 @@ EZComments commenting system for PostNuke
 Requirements
 ------------
 
-- PostNuke 0.76x or later
+- PostNuke 0.8 or later
 
 
 Installation
