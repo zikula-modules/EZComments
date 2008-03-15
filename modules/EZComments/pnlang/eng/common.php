@@ -30,6 +30,8 @@ define('_EZCOMMENTS_UNKNOWNOWNER',			'unknown');
 define('_EZCOMMENTS_TABTITLE', 				'pinboard');
 define('_EZCOMMENTS_PINBOARDFOR',			'Pinboard for member');
 define('_EZCOMMENTS_HOOKREGFAILED',			'Registering EZComments hook for MyProfile module failed');
+define('_EZCOMMENTS_PINBOARDDEACT',			'The user has deactivated the pinboard for his account');
+define('_EZCOMMENTS_PINBOARDENTRYS',		'Pinboard entries');
 // my account panel
 define('_EZCOMMENTS_MANAGEMYCOMMENTS', 		'Manage my comments');
 
