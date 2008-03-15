@@ -19,8 +19,17 @@
 // ----------------------------------------------------------------------
 
 // new for 2.0 (.8only)
+
+// admin interface
+define('_EZCOMMENTS_OWNERUSERNAME',			'Content owner');
+define('_EZCOMMENTS_UNKNOWNOWNER',			'unknown');
+
+// myprofile plugin
 define('_EZCOMMENTS_TABTITLE', 				'pinboard');
+
+// my account panel
 define('_EZCOMMENTS_MANAGEMYCOMMENTS', 		'Manage my comments');
+
 define('_EZCOMMENTS_ILLEGALSTATUS', 		'wrong status');
 define('_EZCOMMENTS_ANONNAMEMISSING', 		'Name for anonymous user is missing');
 define('_EZCOMMENTS_ANONMAILMISSING', 		'email address of anonymous user is missing or invalid');
@@ -28,6 +37,11 @@ define('_EZCOMMENTS_ANONWEBSITEINVALID', 	'website of anonymous user is invalid'
 define('_EZCOMMENTS_SENDMEBACK', 			'Send me back to the commented content after finishing');
 define('_EZCOMMENTS_MISSINGVALUE', 			'missing value');
 // end of new defines
+
+
+
+
+
 
 define('_EZCOMMENTS',                       'Comments');
 

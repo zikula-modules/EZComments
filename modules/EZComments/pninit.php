@@ -304,6 +304,9 @@ function EZComments_upgrade($oldversion)
         pnMoDSetVar('EZComments', 'akismetstatus', 1);
     }
 
+	if ($oldversion == "1.5") {
+	  	DBUtil::changeTable('EZComments');
+	}
     return true;
 } 
 

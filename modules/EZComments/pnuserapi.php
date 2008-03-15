@@ -134,6 +134,7 @@ function EZComments_userapi_getall($args)
                    $EZCommentscolumn[url],
                    $EZCommentscolumn[date],
                    $EZCommentscolumn[uid],
+                   $EZCommentscolumn[owneruid],
                    $EZCommentscolumn[comment],
                    $EZCommentscolumn[subject],
                    $EZCommentscolumn[replyto],
@@ -157,7 +158,7 @@ function EZComments_userapi_getall($args)
     // individually to ensure that the user is allowed access to it before it
     // is added to the results array
     for (; !$result->EOF; $result->MoveNext()) {
-        list($id, $mod, $objectid, $url, $date, $uid, $comment, $subject, $replyto, $anonname, $anonmail, $status, $ipaddr, $type, $anonwebsite) = $result->fields;
+        list($id, $mod, $objectid, $url, $date, $uid, $owneruid, $comment, $subject, $replyto, $anonname, $anonmail, $status, $ipaddr, $type, $anonwebsite) = $result->fields;
         if (SecurityUtil::checkPermission('EZComments::', "$mod:$objectid:$id", ACCESS_READ)) {
             if ($uid == 1 && empty($anonname)) {
                 $anonname = pnConfigGetVar('anonymous');
@@ -168,6 +169,7 @@ function EZComments_userapi_getall($args)
                                'url',
                                'date',
                                'uid',
+                               'owneruid',
                                'comment',
                                'subject',
                                'replyto',
@@ -307,6 +309,7 @@ function EZComments_userapi_create($args)
     $objectid       = DataUtil::formatForStore($objectid);
     $url            = DataUtil::formatForStore($url);
     $uid            = DataUtil::formatForStore($uid);
+    $owneruid       = DataUtil::formatForStore($args['owneruid']);
     $comment        = DataUtil::formatForStore($comment);
     $subject        = DataUtil::formatForStore($subject);
     $replyto        = DataUtil::formatForStore($replyto);
@@ -325,6 +328,7 @@ function EZComments_userapi_create($args)
               $EZCommentscolumn[url],
               $EZCommentscolumn[date],
               $EZCommentscolumn[uid],
+              $EZCommentscolumn[owneruid],
               $EZCommentscolumn[comment],
               $EZCommentscolumn[subject],
               $EZCommentscolumn[replyto],
@@ -341,6 +345,7 @@ function EZComments_userapi_create($args)
               '$url',
               $date,
               '$uid',
+              '$owneruid',
               '$comment',
               '$subject',
               '$replyto',
@@ -355,6 +360,7 @@ function EZComments_userapi_create($args)
     if ($dbconn->ErrorNo() != 0) {
         return LogUtil::registerError(_CREATEFAILED);
     }
+
 
     // set an approriate status/errormsg
     switch ($maxstatus) {
@@ -766,6 +772,7 @@ function EZComments_userapi_checkPermission($args) {
   	$commentid	= $args['commentid'];
   	$level 		= $args['level']; 
 	$inst 		= $module.":".$objectid.":".$commentid;	   	
+	$uid		= pnUserGetVar('uid');
 
 	// parameter check
   	if ((!isset($module)) || (!isset($level)) || (!isset($objectid)) || (!isset($commentid))) return false;
@@ -773,26 +780,10 @@ function EZComments_userapi_checkPermission($args) {
   	// regular securityUtil::checkPermission check. Return true on success
 	if (SecurityUtil::checkPermission('EZComments::', $inst, $level)) return true;
 
-	// for functin admin::modify there is no obejct id and module name submitted.
-	// let us get these information in this case
-	if (($module == '') && ($objectid == '')) {
-		$comment = DBUtil::selectObjectByID('EZComments',$commentid);
-		// if there is no comment id an error has occurred. Lets die...
-		if (!($comment['id'] > 0)) return false;
-		// if the user id is the viewer he should be allowed to manage his own comments
-		if ($comment['uid'] == pnUserGetVar('uid')) return true;
-		// otherwise retrieve the information
-		$module = 	$comment['modname'];
-		$objectid =	$comment['objectid'];
-	}
-
-	// module-specific checks
-	switch ($module) {
-	  	case 'Profile':		// user-id is the object id
-	  	case 'MyProfile':	// user-id is the object id
-	  		if ($objectid == (int)pnUserGetVar('uid')) return true;
-	  		else return false;
-	}
+	// otherwise: get the comment, check the owner_uid and return the result
+	$comment = DBUtil::selectObjectByID('EZComments',$commentid);
+	if ($comment['owneruid'] == $uid) return true;	
+	// otherwise return false because no security check had a positive result
   	return false;
 }
 ?>

@@ -41,11 +41,6 @@
  */
 function EZComments_admin_main() 
 {
-	// Security check not neccessary because we'll filter all comments and the
-	// single permissions for these comments later
-//    if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
-//        return LogUtil::registerPermissionError('index.php');
-//    } 
 
     // get the status filter
     $status = FormUtil::getPassedValue('status', -1, 'GETPOST');
@@ -74,7 +69,6 @@ function EZComments_admin_main()
                           array('startnum' => $showall == true ? true : $startnum,
                                 'numitems' => $itemsperpage,
                                 'status'   => $status));
-
     if ($items === false) {
         return LogUtil::registerError(_EZCOMMENTS_FAILED);
     } 

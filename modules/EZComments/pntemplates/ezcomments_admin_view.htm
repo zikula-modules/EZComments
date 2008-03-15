@@ -30,6 +30,7 @@
 		<th><input type="checkbox" onclick="checkAllFields(1);" id="checkAll" /></th>
 		<th><!--[pnml name=_EZCOMMENTS_STATUS]--></th>
 		<th><!--[pnml name=_EZCOMMENTS_USERNAME]--></th>
+		<th><!--[pnml name=_EZCOMMENTS_OWNERUSERNAME]--></th>
 		<th><!--[pnml name=_EZCOMMENTS_MODULE]--></th>
 		<th><!--[pnml name=_EZCOMMENTS_TYPE]--></th>
 		<th><!--[pnml name=_EZCOMMENTS_COMMENT]--></th>
@@ -52,6 +53,14 @@
 					<!--[$item.anonname|pnvarprepfordisplay]-->
 				<!--[/if]-->
 				<br /><!--[$item.date|pndate_format]-->
+			</td>
+			<td>
+				<!--[pnusergetvar name=uname uid=$item.owneruid assign="owneruname"]-->
+				<!--[if $owneruname ne ""]-->
+					<!--[$owneruname]-->
+				<!--[else]-->
+					<!--[pnml name="_EZCOMMENTS_UNKNOWNOWNER"]-->
+				<!--[/if]-->
 			</td>
 			<td><a href="<!--[$item.url|pnvarprepfordisplay]-->"><!--[$item.mod|pnvarprepfordisplay]--></a></td>
 			<td><!--[$item.type|pnvarprepfordisplay]--></td>

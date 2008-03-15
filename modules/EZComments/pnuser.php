@@ -122,6 +122,9 @@ function EZComments_user_view($args)
     $redirect = base64_encode($redirect);
     $pnRender->assign('redirect',	$redirect);
     $pnRender->assign('objectid',   $objectid);
+    
+    // assign the user is of the content owner
+    $pnRender->assign('owneruid',	(int)$args['extrainfo']['owneruid']);
 
     // assign all module vars (they may be useful...)
     $pnRender->assign(pnModGetVar('EZComments'));
@@ -242,6 +245,9 @@ function EZComments_user_comment($args)
 	$pnRender->assign('pager', array('numitems'     => $commentcount,
 	                                 'itemsperpage' => $numitems));
 
+    // assign the user is of the content owner
+    $pnRender->assign('owneruid',	(int)FormUtil::getPassedValue('owneruid'));
+
     // find out which template to use
     $template = pnModGetVar('EZComments', 'template');
     if (!empty($template)) {
@@ -312,8 +318,10 @@ function EZComments_user_create($args)
 		$anonwebsite = '';
     }
 
-    // decoding the URL. Credits to tmyhre for fixing.
-//    $redirect = rawurldecode($redirect);
+	// check who is the commented content's owner
+	$owneruid = (int)FormUtil::getPassedValue('owneruid');
+	if (!isset($owneruid) || (!($owneruid > 1))) $owner_uid = 0;
+	
     $redirect = str_replace('&amp;', '&', $redirect);
     // now parse out the hostname from the url for storing in the DB
     $url = str_replace(pnGetBaseURL(), '', $redirect);
@@ -328,6 +336,7 @@ function EZComments_user_create($args)
                              'subject'     => $subject,
                              'replyto'     => $replyto,
                              'uid'         => pnUserGetVar('uid'),
+                             'owneruid'	   => $owneruid,
                              'anonname'    => $anonname,
                              'anonmail'    => $anonmail,
 							 'anonwebsite' => $anonwebsite));
