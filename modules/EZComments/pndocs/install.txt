@@ -23,8 +23,8 @@ To enable commenting on news articles go to Administration->System->Modules. Loc
 click the hooks link. Check the EZComments option and submit the form. Now when a news article is displayed comments
 and a comment form will be displayed 
 
-Integrating EZComents into any module:
---------------------------------------
+Integrating EZComments into any module:
+---------------------------------------
 If you want to make a module commentable (as module developer for example) integrate these codelines into your template
 at the place where you want to have your comment function.
 
