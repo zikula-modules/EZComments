@@ -29,6 +29,7 @@ define('_EZCOMMENTS_UNKNOWNOWNER',			'unknown');
 // myprofile plugin
 define('_EZCOMMENTS_TABTITLE', 				'pinboard');
 define('_EZCOMMENTS_PINBOARDFOR',			'Pinboard for member');
+define('_EZCOMMENTS_HOOKREGFAILED',			'Registering EZComments hook for MyProfile module failed');
 // my account panel
 define('_EZCOMMENTS_MANAGEMYCOMMENTS', 		'Manage my comments');
 

@@ -32,6 +32,7 @@ define('_EZCOMMENTS_UNKNOWNOWNER',			'unbekannt');
 // myprofile plugin
 define('_EZCOMMENTS_TABTITLE', 				'Pinnwand');
 define('_EZCOMMENTS_PINBOARDFOR',			'Pinnwand für das Communitymitglied');
+define('_EZCOMMENTS_HOOKREGFAILED',			'Der EZComments-Hook für MyProfile konnte nicht registriert werden');
 // my account panel
 define('_EZCOMMENTS_MANAGEMYCOMMENTS', 		'Kommentare verwalten');
 

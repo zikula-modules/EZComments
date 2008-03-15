@@ -27,12 +27,25 @@ function EZComments_myprofileapi_getURLAddOn($args)
  */
 function EZComments_myprofileapi_tab($args)
 {
+  	// is ezcomment hook activated for myprofile module?
+  	
+  	$result = pnModIsHooked('EZComments','MyProfile');
+  	if(!$result) {
+	  	if (!pnModAPIFunc('Modules', 'admin', 'enablehooks', array('callermodname' => 'MyProfile',
+	                                                               'hookmodname' => 'EZComments'))) {
+	        return LogUtil::registerError(_EZCOMMENTS_HOOKREGFAILED);
+	    }
+    }
+  	
+	// should the user's profile be commentable?  
+	$settings = pnModAPIFunc('MyProfile','user','getSettings',array('uid'=>$args['uid']));
+	die(prayer($settings));
+	
+  	// generate output
  	$render = pnRender::getInstance('EZComments');
  	$render->assign('uid',(int)$args['uid']);
  	$render->assign('uname',pnUserGetVar('uname',(int)$args['uid']));
 	$render->display('ezcomments_myprofile_tab.htm');
 	return;
 }
-
-
 ?>
