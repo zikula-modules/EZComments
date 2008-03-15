@@ -390,7 +390,6 @@ function EZComments_userapi_create($args)
 	else {
 	  	$toaddress	= pnConfigGetVar('adminmail');
 	  	$toname		= pnConfigGetVar('sitename');
-	  	die("no owner: $owneruid");
 	}
 
     // Inform the content owner or the admin about a new comment
