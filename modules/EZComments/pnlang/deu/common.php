@@ -5,6 +5,7 @@
 // Attach comments to any module calling hooks
 // ----------------------------------------------------------------------
 // Author: Jörg Napp
+// Author: Florian Schießl
 // ----------------------------------------------------------------------
 // LICENSE
 // This program is free software; you can redistribute it and/or
@@ -18,8 +19,22 @@
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
 // ----------------------------------------------------------------------
 
+
+
+
 // new for 2.0 (.8only)
-define('_EZCOMMENTSTABTITLE', 'Pinnwand');
+
+// admin interface
+define('_EZCOMMENTS_TOOWNERORADMIN',		'Die Benachrichtigung wird, wenn ein Inhaltsbesitzer ermittelt werden kann (z.B. der Benutzer, dessen Profil kommentiert wurde), an diesen geschickt. Ansonsten wird die Email an den Seitenadministrator verschickt.');
+define('_EZCOMMENTS_OWNERUSERNAME',			'Inhaltsbesitzer');
+define('_EZCOMMENTS_UNKNOWNOWNER',			'unbekannt');
+
+// myprofile plugin
+define('_EZCOMMENTS_TABTITLE', 				'Pinnwand');
+define('_EZCOMMENTS_PINBOARDFOR',			'Pinnwand für das Communitymitglied');
+// my account panel
+define('_EZCOMMENTS_MANAGEMYCOMMENTS', 		'Kommentare verwalten');
+
 define('_EZCOMMENTS_ILLEGALSTATUS', 'falscher Status');
 define('_EZCOMMENTS_ANONNAMEMISSING', 'Name für den anonymen Benutzer fehlt');
 define('_EZCOMMENTS_ANONMAILMISSING', 'Emailadresse des anonymen Benutzers fehlt oder ist ungültig');

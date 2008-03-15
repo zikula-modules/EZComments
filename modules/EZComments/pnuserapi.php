@@ -211,6 +211,7 @@ function EZComments_userapi_create($args)
         !isset($comment)) {
         return LogUtil::registerError(_MODARGSERROR);
     }
+    $owneruid = (int)$args['owneruid'];
 
     // check unregistered user included name (if required)
 	$anonname = trim($anonname);
@@ -309,7 +310,7 @@ function EZComments_userapi_create($args)
     $objectid       = DataUtil::formatForStore($objectid);
     $url            = DataUtil::formatForStore($url);
     $uid            = DataUtil::formatForStore($uid);
-    $owneruid       = DataUtil::formatForStore($args['owneruid']);
+    $owneruid       = DataUtil::formatForStore($owneruid);
     $comment        = DataUtil::formatForStore($comment);
     $subject        = DataUtil::formatForStore($subject);
     $replyto        = DataUtil::formatForStore($replyto);
@@ -361,7 +362,6 @@ function EZComments_userapi_create($args)
         return LogUtil::registerError(_CREATEFAILED);
     }
 
-
     // set an approriate status/errormsg
     switch ($maxstatus) {
         case '0' :
@@ -375,7 +375,25 @@ function EZComments_userapi_create($args)
     // Get the ID of the item that we inserted.
     $id = $dbconn->PO_Insert_ID($EZCommentstable, $EZCommentscolumn['id']);
 
-    // Inform admin about new comment
+	if (isset($owneruid) && ($owneruid > 0)) {
+	  	$owner['email'] = pnUserGetVar('email',$owneruid);
+	  	$owner['uname'] = pnUserGetVar('uname',$owneruid);
+	  	if ((strlen($owner['email']) > 0) && (strlen($owner['uname']) > 0)) {
+		    $toaddress 	= $owner['email'];
+		    $toname		= $owner['uname'];
+		}
+		else {
+		  	$toaddress	= pnConfigGetVar('adminmail');
+		  	$toname		= pnConfigGetVar('sitename');
+		}
+	}
+	else {
+	  	$toaddress	= pnConfigGetVar('adminmail');
+	  	$toname		= pnConfigGetVar('sitename');
+	  	die("no owner: $owneruid");
+	}
+
+    // Inform the content owner or the admin about a new comment
     if (pnModGetVar('EZComments', 'MailToAdmin') && $maxstatus == 0) {
         $pnRender = pnRender::getInstance('EZComments', false);
         $pnRender->assign('comment', $comment);
@@ -394,7 +412,7 @@ function EZComments_userapi_create($args)
 		$pnRender->assign('id', $id);        $mailsubject = _EZCOMMENTS_MAILSUBJECT;
         $mailbody = $pnRender->fetch('ezcomments_mail_newcomment.htm');
         pnModAPIFunc('Mailer', 'user', 'sendmessage',
-                     array('toaddress' => pnConfigGetVar('adminmail'), 'toname' => pnConfigGetVar('sitename'),
+                     array('toaddress' => $toaddress, 'toname' => $toname,
                             'fromaddress' => pnConfigGetVar('adminmail'), 'fromname' => pnConfigGetVar('sitename'),
                            'subject' => $mailsubject, 'body' => $mailbody));
     }
@@ -417,7 +435,7 @@ function EZComments_userapi_create($args)
         $mailsubject = _EZCOMMENTS_MODMAILSUBJECT;
         $mailbody = $pnRender->fetch('ezcomments_mail_modcomment.htm');
         pnModAPIFunc('Mailer', 'user', 'sendmessage',
-                     array('toaddress' => pnConfigGetVar('adminmail'), 'toname' => pnConfigGetVar('sitename'),
+                     array('toaddress' => $toaddress, 'toname' => $toname,
                             'fromaddress' => pnConfigGetVar('adminmail'), 'fromname' => pnConfigGetVar('sitename'),
                            'subject' => $mailsubject, 'body' => $mailbody));
     }
@@ -780,7 +798,7 @@ function EZComments_userapi_checkPermission($args) {
   	// regular securityUtil::checkPermission check. Return true on success
 	if (SecurityUtil::checkPermission('EZComments::', $inst, $level)) return true;
 
-	// otherwise: get the comment, check the owner_uid and return the result
+	// otherwise: get the comment, check the owneruid and return the result
 	$comment = DBUtil::selectObjectByID('EZComments',$commentid);
 	if ($comment['owneruid'] == $uid) return true;	
 	// otherwise return false because no security check had a positive result

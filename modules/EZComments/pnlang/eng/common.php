@@ -5,6 +5,7 @@
 // Attach comments to any module calling hooks
 // ----------------------------------------------------------------------
 // Author: Jörg Napp
+// Author: Florian Schießl
 // ----------------------------------------------------------------------
 // LICENSE
 // This program is free software; you can redistribute it and/or
@@ -21,12 +22,13 @@
 // new for 2.0 (.8only)
 
 // admin interface
+define('_EZCOMMENTS_TOOWNERORADMIN',		'The notification email will be sent to the owner of the content. If there is no owner known, the notification mail will be sent to the site administrator.');
 define('_EZCOMMENTS_OWNERUSERNAME',			'Content owner');
 define('_EZCOMMENTS_UNKNOWNOWNER',			'unknown');
 
 // myprofile plugin
 define('_EZCOMMENTS_TABTITLE', 				'pinboard');
-
+define('_EZCOMMENTS_PINBOARDFOR',			'Pinboard for member');
 // my account panel
 define('_EZCOMMENTS_MANAGEMYCOMMENTS', 		'Manage my comments');
 

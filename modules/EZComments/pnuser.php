@@ -286,16 +286,19 @@ function EZComments_user_comment($args)
 function EZComments_user_create($args)
 {
     list($mod,
+    	 $owneruid,
          $objectid,
          $redirect,
          $comment,
          $subject,
          $replyto) = pnVarCleanFromInput('mod',
+         								 'owneruid',
                                          'objectid',
                                          'redirect',
                                          'comment',
                                          'subject',
                                          'replyto');
+		if (!isset($owneruid) || (!($owneruid > 1))) $owner_uid = 0;
     $redirect = base64_decode($redirect);
 
     // Confirm authorisation code.
@@ -317,10 +320,6 @@ function EZComments_user_create($args)
         $anonmail = '';
 		$anonwebsite = '';
     }
-
-	// check who is the commented content's owner
-	$owneruid = (int)FormUtil::getPassedValue('owneruid');
-	if (!isset($owneruid) || (!($owneruid > 1))) $owner_uid = 0;
 	
     $redirect = str_replace('&amp;', '&', $redirect);
     // now parse out the hostname from the url for storing in the DB

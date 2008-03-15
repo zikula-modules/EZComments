@@ -4,7 +4,6 @@ EZComments commenting system for PostNuke
 
 Requirements
 ------------
-
 - PostNuke 0.8 or later
 
 
@@ -13,7 +12,6 @@ Installation
 Installation of the module follows the same procedure as other PostNuke modules. Copy the akismet directory
 to your modules directory (modules/). From the modules admin panel regenerate the modules list then initialize
 and activate the akismet module.
-
 
 Usage
 -----
@@ -24,6 +22,27 @@ For example.
 To enable commenting on news articles go to Administration->System->Modules. Locate the news module entry and 
 click the hooks link. Check the EZComments option and submit the form. Now when a news article is displayed comments
 and a comment form will be displayed 
+
+Integrating EZComents into any module:
+--------------------------------------
+If you want to make a module commentable (as module developer for example) integrate these codelines into your template
+at the place where you want to have your comment function.
+
+1. Step: Generate the return url. EZComments has to know from which page the comment was sent from. This is an example
+of the MyProfile profile module
+
+<!--[pnmodurl modname="MyProfile" func="display" uid=$uid pluginname="EZComments" order="1" assign="viewUrl"]-->
+
+2. Step. Call the hook: This is also an example from the MyProfile module. module has to be 
+the commentable module, returnurl is the url we constructed one line above this text and 
+owneruid should be the owner of the displayed content. This (owneruid) is very 
+importan because it allows the content owner (weblog owner, gallery owner, profile 
+owner) to moderate the comments other users submitted for his content. 
+Otherwise the admin (you?) have to moderate everything by hand!
+
+<!--[pnmodcallhooks hookobject=item hookaction=display hookid=$uid module="MyProfile" returnurl=$viewUrl owneruid=$uid implode=false]-->
+<!--[$hooks.EZComments]-->
+
 
 Support
 -------
