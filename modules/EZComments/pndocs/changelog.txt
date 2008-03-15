@@ -3,9 +3,10 @@ $Id$
 
 Changelog
 1.6	 - New database structure. Added field "owneruid". You can specify a new parameter "owneruid" whenever 
-	   you integrace EZComments. EZComments will store this value as "content owner" and allow this user
+	   you integrate EZComments. EZComments will store this value as "content owner" and allow this user
 	   to moderate all comments for his content.
 	 - Added MyProfile plugin
+	 - Added icon for user account panel: manage my comments
 
 1.5  - Migrated akismet support to seperate module
      - Added option to require anonymous commenters to provide a 'name'
