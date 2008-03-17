@@ -32,6 +32,7 @@ define('_EZCOMMENTS_PINBOARDFOR',			'Pinboard for member');
 define('_EZCOMMENTS_HOOKREGFAILED',			'Registering EZComments hook for MyProfile module failed');
 define('_EZCOMMENTS_PINBOARDDEACT',			'The user has deactivated the pinboard for his account');
 define('_EZCOMMENTS_PINBOARDENTRYS',		'Pinboard entries');
+define('_EZCOMMENTS_REGISTERTOVIEW',		'Pinboard entries are only visible for registered or logged in users.');
 // my account panel
 define('_EZCOMMENTS_MANAGEMYCOMMENTS', 		'Manage my comments');
 

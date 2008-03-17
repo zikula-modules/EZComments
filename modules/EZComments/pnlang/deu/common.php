@@ -35,7 +35,7 @@ define('_EZCOMMENTS_PINBOARDFOR',			'Pinnwand für das Communitymitglied');
 define('_EZCOMMENTS_HOOKREGFAILED',			'Der EZComments-Hook für MyProfile konnte nicht registriert werden');
 define('_EZCOMMENTS_PINBOARDDEACT',			'Der Benutzer hat seine Pinnwand deaktiviert');
 define('_EZCOMMENTS_PINBOARDENTRYS',		'Anzahl Pinnwandeinträge');
-
+define('_EZCOMMENTS_REGISTERTOVIEW',		'Pinnwandwinträge sind nur für registrierte Mitglieder sichtbar. Bitte dazu anmelden oder einloggen!');
 // my account panel
 define('_EZCOMMENTS_MANAGEMYCOMMENTS', 		'Kommentare verwalten');
 
