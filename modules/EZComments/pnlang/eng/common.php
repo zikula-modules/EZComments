@@ -27,7 +27,7 @@ define('_EZCOMMENTS_OWNERUSERNAME',			'Content owner');
 define('_EZCOMMENTS_UNKNOWNOWNER',			'unknown');
 
 // myprofile plugin
-define('_EZCOMMENTS_TABTITLE', 				'pinboard');
+define('_EZCOMMENTS_TABTITLE', 				'User\'s pinboard');
 define('_EZCOMMENTS_PINBOARDFOR',			'Pinboard for member');
 define('_EZCOMMENTS_HOOKREGFAILED',			'Registering EZComments hook for MyProfile module failed');
 define('_EZCOMMENTS_PINBOARDDEACT',			'The user has deactivated the pinboard for his account');
