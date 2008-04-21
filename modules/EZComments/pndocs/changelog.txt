@@ -2,9 +2,13 @@ $Id$
 
 
 Changelog
-1.6	 - New database structure. Added field "owneruid". You can specify a new parameter "owneruid" whenever 
-	   you integrate EZComments. EZComments will store this value as "content owner" and allow this user
-	   to moderate all comments for his content.
+1.6	 - New database structure. Added field "owneruid". You can 
+	   specify a new parameter "owneruid" whenever you integrate
+	   EZComments. EZComments will store this value as "content 
+	   owner" and allow this user to moderate all comments for 
+	   his content.
+	 - Added ContactList support. If a user is ignored by another 
+	   user he cannot comment the other user's content any more.
 	 - Added MyProfile plugin
 	 - Added icon for user account panel: manage my comments
 
