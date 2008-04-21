@@ -54,3 +54,9 @@ $modversion['securityschema'] = array('EZComments::'         => 'Module:Item ID:
                                       'EZComments:trackback' => 'Module:Item ID:',
                                       'EZComments:pingback'  => 'Module:Item ID:'
                                       );
+// recommended and required modules
+$modversion['dependencies'] = array(
+	array(	'modname'    => 'ContactList',
+			'minversion' => '1.0', 'maxversion' => '',
+            'status'     => PNMODULE_DEPENDENCY_RECOMMENDED)
+	);
