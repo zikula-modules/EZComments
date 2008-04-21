@@ -21,6 +21,9 @@
 
 // new for 2.0 (.8only)
 
+// ContactList integration
+define('_EZCOMMENTS_USER_IGNORES_YOU',		'The user set as content owner ignores you. You cannot post any comment here!');
+
 // admin interface
 define('_EZCOMMENTS_TOOWNERORADMIN',		'The notification email will be sent to the owner of the content. If there is no owner known, the notification mail will be sent to the site administrator.');
 define('_EZCOMMENTS_OWNERUSERNAME',			'Content owner');

@@ -213,6 +213,20 @@ function EZComments_userapi_create($args)
     }
     $owneruid = (int)$args['owneruid'];
 
+    // ContactList ignore check. If the user is ignored by the 
+	// content owner the user will not be able to post any comment...
+	if (	(pnUserGetVar('uid') > 1) 		&& 
+			($owneruid>0) 					&& 
+			pnModAvailable('ContatList') 	&& 
+			pnModAPIFunc('ContactList','user','isIgnored',array(
+					'iuid' => pnUserGetVar('uid'),
+					'uid' => $owneruid
+					))
+		) {
+		LogUtil::registerError('_EZCOMMENTS_USER_IGNORES_YOU');
+		return false;
+	}
+	
     // check unregistered user included name (if required)
 	$anonname = trim($anonname);
 	if (!pnUserLoggedIn()) {
