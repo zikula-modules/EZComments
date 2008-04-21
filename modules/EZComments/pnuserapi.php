@@ -397,8 +397,8 @@ function EZComments_userapi_create($args)
         $pnRender = pnRender::getInstance('EZComments', false);
         $pnRender->assign('comment', $comment);
         $pnRender->assign('url', $url);
-        $pnRender->assign('moderate', pnModURL('EZComments', 'admin', 'modify', array('id' => $id)));
-        $pnRender->assign('delete', pnModURL('EZComments', 'admin', 'delete', array('id' => $id)));
+        $pnRender->assign('moderate', pnModURL('EZComments', 'user', 'modify', array('id' => $id)));
+        $pnRender->assign('delete', pnModURL('EZComments', 'user', 'delete', array('id' => $id)));
         // by AM - 8 lines: added subject, date, username or nick:
 		$pnRender->assign('subject', $subject);
 		$pnRender->assign('date', $date);
@@ -420,8 +420,8 @@ function EZComments_userapi_create($args)
 		$pnRender->caching = false;
         $pnRender->assign('comment', $comment);
         $pnRender->assign('url', $url);
-        $pnRender->assign('moderate', pnModURL('EZComments', 'admin', 'modify', array('id' => $id)));
-        $pnRender->assign('delete', pnModURL('EZComments', 'admin', 'delete', array('id' => $id)));
+        $pnRender->assign('moderate', pnModURL('EZComments', 'user', 'modify', array('id' => $id)));
+        $pnRender->assign('delete', pnModURL('EZComments', 'user', 'delete', array('id' => $id)));
         // by AM - 8 lines: added subject, date, username or nick:
 		$pnRender->assign('subject', $subject);
 		$pnRender->assign('date', $date);

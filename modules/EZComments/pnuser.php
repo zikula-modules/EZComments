@@ -42,7 +42,79 @@
  */
 function EZComments_user_main($args)
 {
-    return pnRedirect(pnGetBaseUrl());
+  	if (!pnUserLoggedIn()) return pnRedirect(pnGetBaseUrl());
+  	// the following code is taken 1:1 from the EZComments_admin_main() function
+  	// from pnadmin.php. This is needed because taking the backend admin function
+  	// to provide the user the possibillity to administrate his own comments is 
+  	// not the best solution because the template for the admin backend might be
+  	// a different and confuse the user. Also there are some notices in the backend
+  	// like "postnuke 0.X admin backend" that are not intended to be shown to regular
+  	// users...
+  	// Changed was the $options array (url to the user not admin page)
+  	
+    // get the status filter
+    $status = FormUtil::getPassedValue('status', -1, 'GETPOST');
+    if (!isset($status) || !is_numeric($status) || $status < -1 || $status > 2) {
+        $status = -1;
+    }
+
+    // presentation values
+    $showall = (bool)FormUtil::getPassedValue('showall', true, 'GETPOST');
+    $itemsperpage = $showall == true ? -1 : pnModGetVar('EZComments', 'itemsperpage');
+    $startnum = FormUtil::getPassedValue('startnum', null, 'GETPOST');
+    if (!isset($showall)) {
+         $showall = false;
+    }
+
+    // Create output object
+    $pnRender = pnRender::getInstance('EZComments', false);
+
+    // assign the module vars
+    $pnRender->assign(pnModGetVar('EZComments'));
+
+    // call the api to get all current comments
+    $items = pnModAPIFunc('EZComments',
+                          'user',
+                          'getall',
+                          array('startnum' => $showall == true ? true : $startnum,
+                                'numitems' => $itemsperpage,
+                                'status'   => $status));
+    if ($items === false) {
+        return LogUtil::registerError(_EZCOMMENTS_FAILED);
+    } 
+
+    // loop through each item adding the relevant links
+    $comments = array();
+    foreach ($items as $item) {
+	    $securityCheck = pnModAPIFunc('EZComments','user','checkPermission',array(
+					'module'	=> $item['mod'],
+					'objectid'	=> $item['objectid'],
+					'commentid'	=> $item['id'],
+					'level'		=> ACCESS_EDIT			));
+        if ($securityCheck) {
+	        $options = array(array('url' => $item['url'] . '#comments',
+	                               'title' => _VIEW)); 
+            $options[] = array('url'   => pnModURL('EZComments', 'user', 'modify', array('id' => $item['id'])),
+                               'title' => _EDIT);
+            $item['options'] = $options;
+            $comments[] = $item;
+	    }
+    }
+
+    // assign the items to the template
+    $pnRender->assign('items', $comments);
+
+    // assign values for the filters
+    $pnRender->assign('status', $status);
+    $pnRender->assign('showall', $showall);
+
+    // assign the values for the smarty plugin to produce a pager
+    $pnRender->assign('pager', array('numitems'     => pnModAPIFunc('EZComments', 'user', 'countitems', array('status' => $status)),
+                                     'itemsperpage' => $itemsperpage));
+
+    // Return the output
+    return $pnRender->fetch('ezcomments_user_main.htm');
+ 	
 }
 
 
@@ -486,3 +558,36 @@ function EZComments_user_feed()
 
 }
 
+/**
+ * process multiple comments
+ *
+ * This function process the comments selected in the admin view page.
+ * Multiple comments may have thier state changed or be deleted
+ *
+ * @author       The PostNuke Development Team
+ * @param        Comments   the ids of the items to be deleted
+ * @param        confirmation  confirmation that this item can be deleted
+ * @param        redirect      the location to redirect to after the deletion attempt
+ * @return       bool          true on sucess, false on failure
+ */
+function EZComments_user_processselected($args)
+{
+    Loader::requireOnce('modules/EZComments/pnincludes/common.php');
+	return ezc_processSelected($args);
+}
+
+/**
+ * modify a comment
+ *
+ * This is a standard function that is called whenever an comment owner
+ * wishes to modify a comment
+ *
+ * @author       The PostNuke Development Team
+ * @param        tid          the id of the comment to be modified
+ * @return       string       the modification page
+ */
+function EZComments_user_modify($args)
+{
+    Loader::requireOnce('modules/EZComments/pnincludes/common.php');
+	return ezc_modify($args);
+}

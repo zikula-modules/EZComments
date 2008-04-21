@@ -1,0 +1,61 @@
+<!--[*  $Id: ezcomments_user_modify.htm 430 2007-08-13 16:23:15Z landseer $  *]-->
+<!--[modulestylesheet stylesheet=admin.css modname=admin xhtml=true]-->
+
+<h2><!--[pnml name="_EZCOMMENTS_EDIT"]--></h2>
+<!--[ pnform ]-->
+    <!--[ pnformvalidationsummary ]-->
+    <div>
+        <!--[if $anonname neq '']-->
+	    <div class="pn-adminformrow">
+	        <!--[ pnformlabel for="ezcomments_anonname" text='_EZCOMMENTS_ANONNAME' ]-->
+            <!--[ pnformtextinput id="ezcomments_anonname" text=$anonname size="32" maxLength="255" ]-->
+	    </div>
+        
+	    <div class="pn-adminformrow">
+	        <!--[ pnformlabel for="ezcomments_anonmail" text='_EZCOMMENTS_ANONMAIL' ]-->
+            <!--[ pnformtextinput id="ezcomments_anonmail" text=$anonmail size="32" maxLength="255" ]-->
+	    </div>
+        
+	    <div class="pn-adminformrow">
+	        <!--[ pnformlabel for="ezcomments_anonwebsite" text='_EZCOMMENTS_ANONWEBSITE' ]-->
+            <!--[ pnformtextinput id="ezcomments_anonwebsite" text=$anonwebsite size="32" maxLength="255" ]-->
+	    </div>
+
+        <!--[ else ]-->
+        
+    	<div class="pn-adminformrow">
+	        <!--[ pnformlabel for="ezcomments_name" text='_EZCOMMENTS_USERNAME' ]-->
+    		<span id="ezcomments_name"><!--[pnusergetvar name=uname uid=$uid]--></span>
+    	</div>
+        
+        <!--[ /if ]-->
+
+    	<div class="pn-adminformrow">
+	        <!--[ pnformlabel for="ezcomments_subject" text='_EZCOMMENTS_SUBJECT' ]-->
+            <!--[ pnformtextinput id="ezcomments_subject" text=$subject|pnvarprepfordisplay size="32" maxLength="255" ]-->
+    	</div>
+    	<div class="pn-adminformrow">
+	        <!--[ pnformlabel for="ezcomments_comment" text='_EZCOMMENTS_COMMENT' ]-->
+            <!--[ pnformtextinput id="ezcomments_comment" textMode="multiline" rows="5" cols="50" text=$comment|pnvarprepfordisplay size="32" maxLength="255" ]-->
+    	</div>
+    	<div class="pn-adminformrow">
+	        <!--[ pnformlabel for="ezcomments_status" text='_EZCOMMENTS_STATUS' ]-->
+            <!--[ pnformdropdownlist id="ezcomments_status" items=$statuslevels selectedValue=$status ]-->
+    	</div>
+    	<div class="pn-adminformrow">
+	        <!--[ pnformlabel for="ezcomments_delete" text='_EZCOMMENTS_DEL' ]-->
+            <!--[ pnformcheckbox id="ezcomments_delete" ]-->
+    	</div>
+    	<div class="pn-adminformrow">
+	        <!--[ pnformlabel for="ezcomments_sendmeback" text='_EZCOMMENTS_SENDMEBACK' ]-->
+            <!--[ pnformcheckbox id="ezcomments_sendmeback" checked=$redirect ]-->
+    	</div>
+
+        <p>
+            <!--[pnformbutton id="submit" commandName="submit" text="_UPDATE"]-->&nbsp;<!--[pnformbutton id="cancel" commandName="cancel" text="_CANCELEDIT"]-->
+        </p>
+
+    </div>
+<!--[ /pnform ]-->
+
+
