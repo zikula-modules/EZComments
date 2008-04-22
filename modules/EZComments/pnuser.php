@@ -148,13 +148,7 @@ function EZComments_user_view($args)
     } else {
         $sortorder = 'ASC';
     }
-    
-    // if there is no sortorder set yet we'l take the $args['sortorder'] parameter
-    if (!isset($sortorder) && isset($args['sortorder'])) {
-	  if (strtolower($args['sortorder']) == 'desc') $sortorder = 'DESC';
-	    else $sortorder = 'ASC';
-	}
-    
+        
     $status = 0;
 
 	// check if we're using the pager
