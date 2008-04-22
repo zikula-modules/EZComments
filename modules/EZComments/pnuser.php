@@ -143,12 +143,17 @@ function EZComments_user_view($args)
 
     // we may get some input in from the navigation bar
     list ($template, $order) = pnVarCleanFromInput('template', 'order');
-
     if ($order == 1) {
         $sortorder = 'DESC';
     } else {
         $sortorder = 'ASC';
     }
+    
+    // if there is no sortorder set yet we'l take the $args['sortorder'] parameter
+    if (!isset($sortorder) && isset($args['sortorder']))
+    if (strtolower($args['sortorder']) == 'desc') $sortorder = 'DESC';
+    else $sortorder = 'ASC';
+    
     $status = 0;
 
 	// check if we're using the pager
