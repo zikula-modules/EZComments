@@ -50,7 +50,7 @@ function EZComments_init()
         return LogUtil::registerError(_EZCOMMENTS_FAILED2);
         return false;
     } 
-    
+
     // register  delete Hook (Timo)
     // TODO: Check the Hook's name!
     if (!pnModRegisterHook('item', 'delete', 'API', 'EZComments', 'admin', 'deletebyitem')) {
@@ -302,9 +302,10 @@ function EZComments_upgrade($oldversion)
         pnModSetVar('EZComments', 'anonusersrequirename', false);
         pnModDelVar('EZComments', 'apikey');
         pnMoDSetVar('EZComments', 'akismetstatus', 1);
+		$oldversion = '1.5';
     }
 
-	if ($oldversion == "1.5") {
+	if ($oldversion == '1.5') {
 	  	DBUtil::changeTable('EZComments');
 	}
     return true;
