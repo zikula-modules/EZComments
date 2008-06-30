@@ -21,13 +21,13 @@
  *
  *
  * @author      Joerg Napp <jnapp@users.sourceforge.net>
- * @author      Mark West <markwest at postnuke dot com>
+ * @author      Mark West <markwest at zikula dot org>
  * @author      Jean-Michel Vedrine
  * @author		Florian Schieﬂl <florian.schiessl at ifs-net.de>
  * @version     1.5
- * @link        http://noc.postnuke.com/projects/ezcomments/ Support and documentation
+ * @link        http://code.zikula.org/ezcomments/ Support and documentation
  * @license     http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @package     Postnuke
+ * @package     Zikula
  * @subpackage  EZComments
  */
 
@@ -37,7 +37,7 @@
  * This function process the comments selected in the admin view page.
  * Multiple comments may have thier state changed or be deleted
  *
- * @author       The PostNuke Development Team
+ * @author       The Zikula Development Team
  * @param        Comments   the ids of the items to be deleted
  * @param        confirmation  confirmation that this item can be deleted
  * @param        redirect      the location to redirect to after the deletion attempt
@@ -109,7 +109,7 @@ function ezc_processSelected($args)
  * This is a standard function that is called whenever an administrator
  * wishes to modify a comment
  *
- * @author       The PostNuke Development Team
+ * @author       The Zikula Development Team
  * @param        tid          the id of the comment to be modified
  * @return       string       the modification page
  */

@@ -21,12 +21,12 @@
  *
  *
  * @author      Joerg Napp <jnapp@users.sourceforge.net>
- * @author      Mark West <markwest at postnuke dot com>
+ * @author      Mark West <markwest at zikula dot org>
  * @author      Jean-Michel Vedrine
  * @version     1.5
- * @link        http://noc.postnuke.com/projects/ezcomments/ Support and documentation
+ * @link        http://code.zikula.org/ezcomments/ Support and documentation
  * @license     http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @package     Postnuke
+ * @package     Zikula
  * @subpackage  EZComments
  */
 
@@ -46,7 +46,7 @@ $modversion['help']        = 'pndocs/install.txt';
 $modversion['license']     = 'pndocs/license.txt';
 $modversion['official']    = 0;
 $modversion['author']      = 'The EZComments development team';
-$modversion['contact']     = 'http://noc.postnuke.com/projects/ezcomments/';
+$modversion['contact']     = 'http://code.zikula.org/ezcomments/';
 
 // This one adds the info to the DB, so that users can click on the 
 // headings in the permission module

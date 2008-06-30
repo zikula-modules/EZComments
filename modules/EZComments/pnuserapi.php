@@ -21,12 +21,12 @@
  *
  *
  * @author      Joerg Napp <jnapp@users.sourceforge.net>
- * @author      Mark West <markwest at postnuke dot com>
+ * @author      Mark West <markwest at zikula dot org>
  * @author      Jean-Michel Vedrine
  * @version     1.5
- * @link        http://noc.postnuke.com/projects/ezcomments/ Support and documentation
+ * @link        http://code.zikula.org/ezcomments/ Support and documentation
  * @license     http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @package     Postnuke
+ * @package     Zikula
  * @subpackage  EZComments
  */
 
@@ -785,7 +785,7 @@ function EZComments_userapi_getallbymodule($args)
  * of the CMS does not provide all functionallity we need. For example, if
  * EZComments is hooked to the MyProfile module a profile owner must be able
  * to delete comments other users wrote into his profile page.
- * This function first does the regular postnuke checkPermission call and if
+ * This function first does the regular Zikula checkPermission call and if
  * this function call is "false", we'll do some more checks
  *
  * @author	Florian Schieﬂl

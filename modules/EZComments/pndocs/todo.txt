@@ -15,4 +15,4 @@ Things left to be done:
  - find bugs ;-)
 
  - Additional feature requests can be submitted to the project page
-   at http://noc.postnuke.com/projects/ezcomments/
+   at http://code.zikula.org/ezcomments/

@@ -14,7 +14,7 @@ Changelog
 
 1.5  - Migrated akismet support to seperate module
      - Added option to require anonymous commenters to provide a 'name'
-     - Added better support for PostNuke 0.8x
+     - Added better support for Zikula 1.0
 
 1.4  - Integrated akismet support
 

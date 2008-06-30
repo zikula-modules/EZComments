@@ -5,7 +5,7 @@
  * @author      Florian Schieﬂl
  * @version     0.1
  * @license     http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @package     Postnuke
+ * @package     Zikula
  * @subpackage  EZComments
  */
 

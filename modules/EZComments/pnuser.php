@@ -21,12 +21,12 @@
  *
  *
  * @author      Joerg Napp <jnapp@users.sourceforge.net>
- * @author      Mark West <markwest at postnuke dot com>
+ * @author      Mark West <markwest at zikula dot org>
  * @author      Jean-Michel Vedrine
  * @version     1.5
- * @link        http://noc.postnuke.com/projects/ezcomments/ Support and documentation
+ * @link        http://code.zikula.org/ezcomments/ Support and documentation
  * @license     http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @package     Postnuke
+ * @package     Zikula
  * @subpackage  EZComments
  */
 
@@ -48,7 +48,7 @@ function EZComments_user_main($args)
   	// to provide the user the possibillity to administrate his own comments is 
   	// not the best solution because the template for the admin backend might be
   	// a different and confuse the user. Also there are some notices in the backend
-  	// like "postnuke 0.X admin backend" that are not intended to be shown to regular
+  	// like "Zikula 0.X admin backend" that are not intended to be shown to regular
   	// users...
   	// Changed was the $options array (url to the user not admin page)
   	
@@ -567,7 +567,7 @@ function EZComments_user_feed()
  * This function process the comments selected in the admin view page.
  * Multiple comments may have thier state changed or be deleted
  *
- * @author       The PostNuke Development Team
+ * @author       The Zikula Development Team
  * @param        Comments   the ids of the items to be deleted
  * @param        confirmation  confirmation that this item can be deleted
  * @param        redirect      the location to redirect to after the deletion attempt
@@ -585,7 +585,7 @@ function EZComments_user_processselected($args)
  * This is a standard function that is called whenever an comment owner
  * wishes to modify a comment
  *
- * @author       The PostNuke Development Team
+ * @author       The Zikula Development Team
  * @param        tid          the id of the comment to be modified
  * @return       string       the modification page
  */

@@ -4,7 +4,7 @@
 // EZComments
 // Attach comments to any module calling hooks
 // ----------------------------------------------------------------------
-// Translation: Teb (Dutch Postnuke Community, http://postnuke.opencms.nl)
+// Translation: Teb (Dutch Zikula Community, http://postnuke.opencms.nl)
 // ----------------------------------------------------------------------
 // LICENSE
 // This program is free software; you can redistribute it and/or

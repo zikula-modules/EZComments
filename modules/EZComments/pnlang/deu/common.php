@@ -240,7 +240,7 @@ define('_EZCOMMENTS_SHOWALL',                 'Alle Kommentare anzeigen');
 
 // askismet
 define('_EZCOMMENTS_AKISMET',                 'Akismet Spamerkennungsdienst');
-define('_EZCOMMENTS_AKISMETNOTE',             '<a href="http://akismet.com/">Akismet</a> ist ein Spamerkennungsdienst, der in vielen Fällen Spam in Kommentaren, Trackback, etc. elimieren kann. Das Modul muss installiert und konfiguriert werden. <a href="http://noc.postnuke.com/projects/ezcomments">Download Akismet</a>');
+define('_EZCOMMENTS_AKISMETNOTE',             '<a href="http://akismet.com/">Akismet</a> ist ein Spamerkennungsdienst, der in vielen Fällen Spam in Kommentaren, Trackback, etc. elimieren kann. Das Modul muss installiert und konfiguriert werden. <a href="http://code.zikula.org/ezcomments/">Download Akismet</a>');
 define('_EZCOMMENTS_ENABLEAKISMET',           'Akismet aktivieren');
 define('_EZCOMMENTS_AKISMETSTATUS',           'Welchen Status sollen die von Akismet identifizierten Spams annehmen?');
 

@@ -242,7 +242,7 @@ define('_EZCOMMENTS_SHOWALL',                 'Show all comments');
 // askismet
 define('_EZCOMMENTS_AKISMET',                 'Akismet spam dectection service');
 define('_EZCOMMENTS_AKISMETNOTE',             '<a href="http://akismet.com/">Akismet</a> is a spam detection service that can, in many 
-cases, eliminate comment and trackback spam. To use akismet you need to install and configure the <a href="http://noc.postnuke.com/projects/ezcomments">Akismet module</a>.');
+cases, eliminate comment and trackback spam. To use akismet you need to install and configure the <a href="http://code.zikula.org/ezcomments/">Akismet module</a>.');
 define('_EZCOMMENTS_ENABLEAKISMET',           'Enable akismet');
 define('_EZCOMMENTS_AKISMETSTATUS',           'Status level to apply to comments flagged as spam by akismet');
 

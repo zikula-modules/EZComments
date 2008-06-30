@@ -27,9 +27,9 @@
  * 
  * @author      Max Power <MaxPower@flyingcars.net>
  * @version     1.5
- * @link        http://noc.postnuke.com/projects/ezcomments/ Support and documentation
+ * @link        http://code.zikula.org/ezcomments/ Support and documentation
  * @license     http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @package     Postnuke
+ * @package     Zikula
  * @subpackage  EZComments
  */
 

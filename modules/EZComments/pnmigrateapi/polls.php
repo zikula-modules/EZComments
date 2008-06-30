@@ -25,9 +25,9 @@
  *
  * @author      Joerg Napp <jnapp@users.sourceforge.net>
  * @version     0.2
- * @link        http://noc.postnuke.com/projects/ezcomments/ Support and documentation
+ * @link        http://code.zikula.org/ezcomments/ Support and documentation
  * @license     http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @package     Postnuke
+ * @package     Zikula
  * @subpackage  EZComments
  */
  

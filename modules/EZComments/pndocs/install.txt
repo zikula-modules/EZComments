@@ -1,15 +1,15 @@
 $Id$
 
-EZComments commenting system for PostNuke
+EZComments commenting system for Zikula
 
 Requirements
 ------------
-- PostNuke 0.8 or later
+- Zikula 1.0 or later
 
 
 Installation
 ------------
-Installation of the module follows the same procedure as other PostNuke modules. Copy the akismet directory
+Installation of the module follows the same procedure as other Zikula modules. Copy the akismet directory
 to your modules directory (modules/). From the modules admin panel regenerate the modules list then initialize
 and activate the akismet module.
 
@@ -48,4 +48,4 @@ Support
 -------
 English support can be found at http://www.markwest.me.uk/
 German support can be found at http://support.pn-cms.de/
-Project Homepage (for reporting bugs and feature requests only - no support) -http://noc.postnuke.com/projects/ezcomments/
+Project Homepage (for reporting bugs and feature requests only - no support) -http://code.zikula.org/ezcomments/

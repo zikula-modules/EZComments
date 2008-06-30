@@ -28,7 +28,7 @@
  * @link        http://lottasophie.sourceforge.net Support and documentation
  * @link        http://pnflashgames.com pnFlashGames Homepage
  * @license     http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @package     Postnuke
+ * @package     Zikula
  * @subpackage  EZComments
  *
  * This migration file written by Lee Eason <leason@pnflashgames.com>.
