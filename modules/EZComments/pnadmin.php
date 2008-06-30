@@ -167,7 +167,7 @@ function EZComments_admin_delete($args)
 function EZComments_admin_processselected($args)
 {
     // Get parameters from whatever input we need. 
-    list($comments, $action) = pnVarCleanFromInput('comments', 'action');
+    list($comments, $action) = FormUtil::getPassedValue('comments', 'action');
 
     // extract any input passed directly to the function
     extract($args);
@@ -310,7 +310,7 @@ function EZComments_admin_migrate_go()
         return LogUtil::registerAuthidError(pnModURL('EZComments', 'admin', 'main'));
     } 
     // Parameter
-    $migrate = pnVarCleanFromInput('migrate');
+    $migrate = FormUtil::getPassedValue('migrate');
     if (!isset($migrate)){ 
         return _EZCOMMENTS_MODSARGSERROR;
     }
@@ -391,7 +391,7 @@ function EZComments_admin_cleanup_go()
         return LogUtil::registerAuthidError(pnModURL('EZComments', 'admin', 'main'));
     } 
 
-    $module = pnVarCleanFromInput('EZComments_module');
+    $module = FormUtil::getPassedValue('EZComments_module');
     if (!isset($module)) {
         return _EZCOMMENTS_MODSARGSERROR;
     } 
@@ -416,7 +416,7 @@ function EZComments_admin_purge($args)
     // Get parameters from whatever input we need. 
     list($purgepending,
          $purgerejected,
-         $confirmation) = pnVarCleanFromInput('purgepending',
+         $confirmation) = FormUtil::getPassedValue('purgepending',
                                               'purgerejected',
                                               'confirmation');
 
@@ -515,7 +515,7 @@ function EZComments_admin_modulestats()
     }
 
 	// get our input
-	$mod = pnVarCleanFromInput('mod');
+	$mod = FormUtil::getPassedValue('mod');
 
     // Create output object
     $pnRender = pnRender::getInstance('EZComments', false);
@@ -559,7 +559,7 @@ function EZComments_admin_deletemodule($args)
 {
     // Get parameters from whatever input we need. 
     list($modid,
-         $confirmation) = pnVarCleanFromInput('modid',
+         $confirmation) = FormUtil::getPassedValue('modid',
                                               'confirmation');
 
     // extract any input passed directly to the function
@@ -623,7 +623,7 @@ function EZComments_admin_deleteitem($args)
     // Get parameters from whatever input we need. 
     list($mod,
 		 $objectid,
-         $confirmation) = pnVarCleanFromInput('mod',
+         $confirmation) = FormUtil::getPassedValue('mod',
 											  'objectid',
                                               'confirmation');
 
@@ -690,9 +690,9 @@ function EZComments_admin_deleteitem($args)
 function EZComments_admin_applyrules($args)
 {
     // Get parameters from whatever input we need. 
-    $confirmation = pnVarCleanFromInput('confirmation');
-    $allcomments = pnVarCleanFromInput('allcomments');
-    $status = pnVarCleanFromInput('status');
+    $confirmation = FormUtil::getPassedValue('confirmation');
+    $allcomments = FormUtil::getPassedValue('allcomments');
+    $status = FormUtil::getPassedValue('status');
 
     // extract any input passed directly to the function
     extract($args);

@@ -431,7 +431,7 @@ function EZComments_adminapi_getlinks()
 
     pnModLangLoad('EZComments', 'admin');
 
-    if (pnSecAuthAction(0, 'EZComments::', '::', ACCESS_ADMIN)) {
+    if (SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
         $links[] = array('url' => pnModURL('EZComments', 'admin'), 'text' => _EZCOMMENTS_ADMIN_MAIN);
         $links[] = array('url' => pnModURL('EZComments', 'admin', 'cleanup'), 'text' => _EZCOMMENTS_CLEANUP);
         $links[] = array('url' => pnModURL('EZComments', 'admin', 'migrate'), 'text' => _EZCOMMENTS_MIGRATE);

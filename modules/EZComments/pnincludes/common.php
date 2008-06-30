@@ -46,7 +46,7 @@
 function ezc_processSelected($args) 
 {
     // Get parameters from whatever input we need. 
-    list($comments, $action) = pnVarCleanFromInput('comments', 'action');
+    list($comments, $action) = FormUtil::getPassedValue('comments', 'action');
 
     // extract any input passed directly to the function
     extract($args);

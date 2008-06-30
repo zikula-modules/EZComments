@@ -70,8 +70,9 @@ function EZComments_EZCommentsblock_info()
  */
 function EZComments_EZCommentsblock_display($blockinfo)
 { 
+
     // Security check
-    if (!pnSecAuthAction(0, 'EZComments:EZCommentsblock:', "$blockinfo[title]::", ACCESS_READ)) {
+    if (!SecurityUtil::checkPermission('EZComments:EZCommentsblock:', "$blockinfo[title]::", ACCESS_READ)) {
         return false;
     } 
 
@@ -133,7 +134,7 @@ function EZComments_EZCommentsblock_display($blockinfo)
  */
 function EZComments_EZCommentsblock_modify($blockinfo)
 {
-    if (!pnSecAuthAction(0, 'EZComments:EZCommentsblock:', "$blockinfo[title]::", ACCESS_ADMIN)) {
+    if (!SecurityUtil::checkPermission('EZComments:EZCommentsblock:', "$blockinfo[title]::", ACCESS_ADMIN)) {
         return false;
     } 
     // Get current content

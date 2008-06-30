@@ -142,7 +142,7 @@ function EZComments_user_view($args)
     }
 
     // we may get some input in from the navigation bar
-    list ($template, $order) = pnVarCleanFromInput('template', 'order');
+    list ($template, $order) = FormUtil::getPassedValue('template', 'order');
     if ($order == 1) {
         $sortorder = 'DESC';
     } else {
@@ -158,7 +158,7 @@ function EZComments_user_view($args)
 	$enablepager = pnModGetVar('EZComments', 'enablepager');
 	if ($enablepager) {
 		$numitems = pnModGetVar('EZComments', 'commentsperpage');
-		$startnum = pnVarCleanFromInput('comments_startnum');
+		$startnum = FormUtil::getPassedValue('comments_startnum');
 		if (!isset($startnum) && !is_numeric($startnum)) {
 			$startnum = -1;
 		}
@@ -246,7 +246,7 @@ function EZComments_user_comment($args)
          $comment,
          $subject,
          $replyto,
-         $template) = pnVarCleanFromInput('mod',
+         $template) = FormUtil::getPassedValue('mod',
                                           'objectid',
                                           'redirect',
                                           'comment',
@@ -256,7 +256,7 @@ function EZComments_user_comment($args)
     extract($args);
 
     // we may get some input in from the navigation bar
-    list ($template, $order) = pnVarCleanFromInput('template', 'order');
+    list ($template, $order) = FormUtil::getPassedValue('template', 'order');
 
     if ($order == 1) {
         $sortorder = 'DESC';
@@ -274,7 +274,7 @@ function EZComments_user_comment($args)
 	$enablepager = pnModGetVar('EZComments', 'enablepager');
 	if ($enablepager) {
 		$numitems = pnModGetVar('EZComments', 'commentsperpage');
-		$startnum = pnVarCleanFromInput('comments_startnum');
+		$startnum = FormUtil::getPassedValue('comments_startnum');
 		if (!isset($startnum) && !is_numeric($startnum)) {
 			$startnum = -1;
 		}
@@ -366,7 +366,7 @@ function EZComments_user_create($args)
          $redirect,
          $comment,
          $subject,
-         $replyto) = pnVarCleanFromInput('mod',
+         $replyto) = FormUtil::getPassedValue('mod',
          								 'owneruid',
                                          'objectid',
                                          'redirect',
@@ -389,7 +389,7 @@ function EZComments_user_create($args)
     // check if the user logged in and if we're allowing anon users to 
     // set a name and e-mail address
     if (!pnUserLoggedIn()) {
-        list($anonname, $anonmail, $anonwebsite) = pnVarCleanFromInput('anonname', 'anonmail', 'anonwebsite');
+        list($anonname, $anonmail, $anonwebsite) = FormUtil::getPassedValue('anonname', 'anonmail', 'anonwebsite');
     } else {
         $anonname = '';
         $anonmail = '';
@@ -524,7 +524,7 @@ function EZComments_displayChildren($comments, $id, $level)
 */
 function EZComments_user_feed()
 {
-	list($feedcount, $feedtype, $mod, $objectid) = pnVarCleanFromInput('feedcount', 'feedtype', 'mod', 'objectid');
+	list($feedcount, $feedtype, $mod, $objectid) = FormUtil::getPassedValue('feedcount', 'feedtype', 'mod', 'objectid');
 
 	// check our input
 	if (!isset($feedcount) || !is_numeric($feedcount) || $feedcount < 1 || $feedcount > 999) {
