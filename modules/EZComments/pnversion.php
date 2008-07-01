@@ -60,7 +60,7 @@ $modversion['securityschema'] = array('EZComments::'         => 'Module:Item ID:
 $modversion['dependencies'] = array(
 	array(	'modname'    => 'ContactList',
 			'minversion' => '1.0', 'maxversion' => '',
-            'status'     => PNMODULE_DEPENDENCY_RECOMMENDED)
+            'status'     => PNMODULE_DEPENDENCY_RECOMMENDED),
 	array(	'modname'    => 'Akismet',
 			'minversion' => '1.0', 'maxversion' => '',
             'status'     => PNMODULE_DEPENDENCY_RECOMMENDED)
