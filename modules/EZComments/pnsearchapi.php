@@ -54,8 +54,8 @@ function ezcomments_searchapi_options()
         return;
     }
     pnModLangLoad('EZComments', 'user');
-    $pnRender = pnRender::getInstance('EZComments');
-    return $pnRender->fetch('ezcomments_search_form.htm');
+    $renderer = pnRender::getInstance('EZComments');
+    return $renderer->fetch('ezcomments_search_form.htm');
 }
 
 
@@ -88,7 +88,7 @@ function ezcomments_searchapi_search($args)
         return _EZCOMMENTS_NOCOMMENTSFOUND . '<br /><br /><br />';
     }
 
-    $pnRender = pnRender::getInstance('EZComments', false);
-    $pnRender->assign('comments', $comments);
-    return $pnRender->fetch('ezcomments_search_results.htm');
+    $renderer = pnRender::getInstance('EZComments', false);
+    $renderer->assign('comments', $comments);
+    return $renderer->fetch('ezcomments_search_results.htm');
 }

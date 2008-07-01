@@ -408,45 +408,45 @@ function EZComments_userapi_create($args)
 
     // Inform the content owner or the admin about a new comment
     if (pnModGetVar('EZComments', 'MailToAdmin') && $maxstatus == 0) {
-        $pnRender = pnRender::getInstance('EZComments', false);
-        $pnRender->assign('comment', $comment);
-        $pnRender->assign('url', $url);
-        $pnRender->assign('moderate', pnModURL('EZComments', 'user', 'modify', array('id' => $id)));
-        $pnRender->assign('delete', pnModURL('EZComments', 'user', 'delete', array('id' => $id)));
+        $renderer = pnRender::getInstance('EZComments', false);
+        $renderer->assign('comment', $comment);
+        $renderer->assign('url', $url);
+        $renderer->assign('moderate', pnModURL('EZComments', 'user', 'modify', array('id' => $id)));
+        $renderer->assign('delete', pnModURL('EZComments', 'user', 'delete', array('id' => $id)));
         // by AM - 8 lines: added subject, date, username or nick:
-		$pnRender->assign('subject', $subject);
-		$pnRender->assign('date', $date);
+		$renderer->assign('subject', $subject);
+		$renderer->assign('date', $date);
 		if ($uid > 0) {
 			$username = pnUserGetVars($uid);
-			$pnRender->assign('user', $username['uname']." ".$username['email']);
+			$renderer->assign('user', $username['uname']." ".$username['email']);
 		} else {
-			$pnRender->assign('user', $anonname." ".$anonmail);
+			$renderer->assign('user', $anonname." ".$anonmail);
 		}
-		$pnRender->assign('id', $id);        $mailsubject = _EZCOMMENTS_MAILSUBJECT;
-        $mailbody = $pnRender->fetch('ezcomments_mail_newcomment.htm');
+		$renderer->assign('id', $id);        $mailsubject = _EZCOMMENTS_MAILSUBJECT;
+        $mailbody = $renderer->fetch('ezcomments_mail_newcomment.htm');
         pnModAPIFunc('Mailer', 'user', 'sendmessage',
                      array('toaddress' => $toaddress, 'toname' => $toname,
                             'fromaddress' => pnConfigGetVar('adminmail'), 'fromname' => pnConfigGetVar('sitename'),
                            'subject' => $mailsubject, 'body' => $mailbody));
     }
     if (pnModGetVar('EZComments', 'moderationmail') && $maxstatus == 1) {
-        $pnRender = new pnRender('EZComments');
-		$pnRender->caching = false;
-        $pnRender->assign('comment', $comment);
-        $pnRender->assign('url', $url);
-        $pnRender->assign('moderate', pnModURL('EZComments', 'user', 'modify', array('id' => $id)));
-        $pnRender->assign('delete', pnModURL('EZComments', 'user', 'delete', array('id' => $id)));
+        $renderer = new pnRender('EZComments');
+		$renderer->caching = false;
+        $renderer->assign('comment', $comment);
+        $renderer->assign('url', $url);
+        $renderer->assign('moderate', pnModURL('EZComments', 'user', 'modify', array('id' => $id)));
+        $renderer->assign('delete', pnModURL('EZComments', 'user', 'delete', array('id' => $id)));
         // by AM - 8 lines: added subject, date, username or nick:
-		$pnRender->assign('subject', $subject);
-		$pnRender->assign('date', $date);
+		$renderer->assign('subject', $subject);
+		$renderer->assign('date', $date);
 		if ($uid > 0) {
 			$username = pnUserGetVars($uid);
-			$pnRender->assign('user', $username['uname']." ".$username['email']);
+			$renderer->assign('user', $username['uname']." ".$username['email']);
 		} else {
-			$pnRender->assign('user', $anonname." ".$anonmail);
+			$renderer->assign('user', $anonname." ".$anonmail);
 		}
         $mailsubject = _EZCOMMENTS_MODMAILSUBJECT;
-        $mailbody = $pnRender->fetch('ezcomments_mail_modcomment.htm');
+        $mailbody = $renderer->fetch('ezcomments_mail_modcomment.htm');
         pnModAPIFunc('Mailer', 'user', 'sendmessage',
                      array('toaddress' => $toaddress, 'toname' => $toname,
                             'fromaddress' => pnConfigGetVar('adminmail'), 'fromname' => pnConfigGetVar('sitename'),

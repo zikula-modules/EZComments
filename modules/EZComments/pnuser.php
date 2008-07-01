@@ -67,10 +67,10 @@ function EZComments_user_main($args)
     }
 
     // Create output object
-    $pnRender = pnRender::getInstance('EZComments', false);
+    $renderer = pnRender::getInstance('EZComments', false);
 
     // assign the module vars
-    $pnRender->assign(pnModGetVar('EZComments'));
+    $renderer->assign(pnModGetVar('EZComments'));
 
     // call the api to get all current comments
     $items = pnModAPIFunc('EZComments',
@@ -102,18 +102,18 @@ function EZComments_user_main($args)
     }
 
     // assign the items to the template
-    $pnRender->assign('items', $comments);
+    $renderer->assign('items', $comments);
 
     // assign values for the filters
-    $pnRender->assign('status', $status);
-    $pnRender->assign('showall', $showall);
+    $renderer->assign('status', $status);
+    $renderer->assign('showall', $showall);
 
     // assign the values for the smarty plugin to produce a pager
-    $pnRender->assign('pager', array('numitems'     => pnModAPIFunc('EZComments', 'user', 'countitems', array('status' => $status)),
+    $renderer->assign('pager', array('numitems'     => pnModAPIFunc('EZComments', 'user', 'countitems', array('status' => $status)),
                                      'itemsperpage' => $itemsperpage));
 
     // Return the output
-    return $pnRender->fetch('ezcomments_user_main.htm');
+    return $renderer->fetch('ezcomments_user_main.htm');
  	
 }
 
@@ -183,29 +183,29 @@ function EZComments_user_view($args)
 	}
     // create the pnRender object
     // don't use caching (for now...)
-    $pnRender = pnRender::getInstance('EZComments', false);
+    $renderer = pnRender::getInstance('EZComments', false);
 
-    $pnRender->assign('comments',   $comments);
-	$pnRender->assign('commentcount', $commentcount);
-	$pnRender->assign('modinfo',    pnModGetInfo(pnModGetIDFromName($mod)));
-    $pnRender->assign('order',      $sortorder);
-    $pnRender->assign('allowadd',   SecurityUtil::checkPermission('EZComments::', "$mod:$objectid:", ACCESS_COMMENT));
-    $pnRender->assign('loggedin',   pnUserLoggedIn());
+    $renderer->assign('comments',   $comments);
+	$renderer->assign('commentcount', $commentcount);
+	$renderer->assign('modinfo',    pnModGetInfo(pnModGetIDFromName($mod)));
+    $renderer->assign('order',      $sortorder);
+    $renderer->assign('allowadd',   SecurityUtil::checkPermission('EZComments::', "$mod:$objectid:", ACCESS_COMMENT));
+    $renderer->assign('loggedin',   pnUserLoggedIn());
     if (!is_array($args['extrainfo'])) $redirect = $args['extrainfo'];
     else $redirect = $args['extrainfo']['returnurl'];
     // encode the url - otherwise we can get some problems out there....
     $redirect = base64_encode($redirect);
-    $pnRender->assign('redirect',	$redirect);
-    $pnRender->assign('objectid',   $objectid);
+    $renderer->assign('redirect',	$redirect);
+    $renderer->assign('objectid',   $objectid);
     
     // assign the user is of the content owner
-    $pnRender->assign('owneruid',	(int)$args['extrainfo']['owneruid']);
+    $renderer->assign('owneruid',	(int)$args['extrainfo']['owneruid']);
 
     // assign all module vars (they may be useful...)
-    $pnRender->assign(pnModGetVar('EZComments'));
+    $renderer->assign(pnModGetVar('EZComments'));
 
 	// assign the values for the pager
-	$pnRender->assign('pager', array('numitems'     => $commentcount,
+	$renderer->assign('pager', array('numitems'     => $commentcount,
 	                                 'itemsperpage' => $numitems));
 
     // find out which template to use
@@ -215,11 +215,11 @@ function EZComments_user_view($args)
     } else if (isset($args['template'])) {
         $template = $args['template'];
     }
-    if (!$pnRender->template_exists(DataUtil::formatForOS($template . '/ezcomments_user_view.htm'))) {
+    if (!$renderer->template_exists(DataUtil::formatForOS($template . '/ezcomments_user_view.htm'))) {
         $template = pnModGetVar('EZComments', 'template');
     }
-    $pnRender->assign('template', $template);
-    return $pnRender->fetch(DataUtil::formatForOS($template) . '/ezcomments_user_view.htm');
+    $renderer->assign('template', $template);
+    return $renderer->fetch(DataUtil::formatForOS($template) . '/ezcomments_user_view.htm');
 } 
 
 /**
@@ -299,29 +299,29 @@ function EZComments_user_comment($args)
 	}
 
     // don't use caching (for now...)
-    $pnRender = pnRender::getInstance('EZComments', false);
+    $renderer = pnRender::getInstance('EZComments', false);
 
-    $pnRender->assign('comments',     $comments);
-	$pnRender->assign('commentcount', $commentcount);
-    $pnRender->assign('order',        $sortorder);
-    $pnRender->assign('allowadd',     SecurityUtil::checkPermission('EZComments::', "$mod:$objectid: ", ACCESS_COMMENT));
-    $pnRender->assign('addurl',       pnModURL('EZComments', 'user', 'create'));
-    $pnRender->assign('loggedin',     pnUserLoggedIn());
-    $pnRender->assign('redirect',     $redirect);
-    $pnRender->assign('mod',          DataUtil::formatForDisplay($mod));
-    $pnRender->assign('objectid',     DataUtil::formatForDisplay($objectid));
-    $pnRender->assign('subject',      DataUtil::formatForDisplay($subject));
-    $pnRender->assign('replyto',      DataUtil::formatForDisplay($replyto));
+    $renderer->assign('comments',     $comments);
+	$renderer->assign('commentcount', $commentcount);
+    $renderer->assign('order',        $sortorder);
+    $renderer->assign('allowadd',     SecurityUtil::checkPermission('EZComments::', "$mod:$objectid: ", ACCESS_COMMENT));
+    $renderer->assign('addurl',       pnModURL('EZComments', 'user', 'create'));
+    $renderer->assign('loggedin',     pnUserLoggedIn());
+    $renderer->assign('redirect',     $redirect);
+    $renderer->assign('mod',          DataUtil::formatForDisplay($mod));
+    $renderer->assign('objectid',     DataUtil::formatForDisplay($objectid));
+    $renderer->assign('subject',      DataUtil::formatForDisplay($subject));
+    $renderer->assign('replyto',      DataUtil::formatForDisplay($replyto));
 
     // assign all module vars (they may be useful...)
-    $pnRender->assign(pnModGetVar('EZComments'));
+    $renderer->assign(pnModGetVar('EZComments'));
 
 	// assign the values for the pager
-	$pnRender->assign('pager', array('numitems'     => $commentcount,
+	$renderer->assign('pager', array('numitems'     => $commentcount,
 	                                 'itemsperpage' => $numitems));
 
     // assign the user is of the content owner
-    $pnRender->assign('owneruid',	(int)FormUtil::getPassedValue('owneruid'));
+    $renderer->assign('owneruid',	(int)FormUtil::getPassedValue('owneruid'));
 
     // find out which template to use
     $template = pnModGetVar('EZComments', 'template');
@@ -331,17 +331,17 @@ function EZComments_user_comment($args)
         $template = $args['template'];
     }
 
-    if (!$pnRender->template_exists(DataUtil::formatForOS($template . '/ezcomments_user_comment.htm'))) {
+    if (!$renderer->template_exists(DataUtil::formatForOS($template . '/ezcomments_user_comment.htm'))) {
         $template = pnModGetVar('EZComments', 'template');
     }
-    $pnRender->assign('template', $template);
+    $renderer->assign('template', $template);
 
 
-    if (!$pnRender->template_exists(DataUtil::formatForOS($template . '/ezcomments_user_comment.htm'))) {
+    if (!$renderer->template_exists(DataUtil::formatForOS($template . '/ezcomments_user_comment.htm'))) {
         return LogUtil::registerError(_EZCOMMENTS_FAILED, null, 'index.php');;
     }
 
-    return $pnRender->fetch(DataUtil::formatForOS($template) . '/ezcomments_user_comment.htm');
+    return $renderer->fetch(DataUtil::formatForOS($template) . '/ezcomments_user_comment.htm');
 }
 
 /**
@@ -541,22 +541,22 @@ function EZComments_user_feed()
 	}
 
     // create the pnRender object
-    $pnRender = pnRender::getInstance('EZComments');
+    $renderer = pnRender::getInstance('EZComments');
 
 	// get the last x comments
-	$pnRender->assign('comments', $comments = pnModAPIFunc('EZComments', 'user', 'getall', 
+	$renderer->assign('comments', $comments = pnModAPIFunc('EZComments', 'user', 'getall', 
 		array('numitems' => $feedcount, 'sortorder' => 'DESC', 'mod' => $mod, 'objectid' => $objectid, 'status' => 0)));
 
     // grab the item url from one of the comments
     if (isset($comments[0]['url'])) {
-        $pnRender->assign('itemurl', $comments[0]['url']);
+        $renderer->assign('itemurl', $comments[0]['url']);
     } else {
         // attempt to guess the url (api compliant mods only....)
-        $pnRender->assign('itemurl', pnModURL($mod, 'user', 'display', array('objectid' => $objectid)));
+        $renderer->assign('itemurl', pnModURL($mod, 'user', 'display', array('objectid' => $objectid)));
     }
 
 	// display the feed and notify the core that we're done
-	$pnRender->display("ezcomments_user_$feedtype.htm");
+	$renderer->display("ezcomments_user_$feedtype.htm");
 	return true;
 
 }
