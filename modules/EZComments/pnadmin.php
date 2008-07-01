@@ -20,15 +20,16 @@
  * GNU General Public License for more details.
  *
  *
- * @author      Joerg Napp <jnapp@users.sourceforge.net>
- * @author      Mark West <markwest at zikula dot org>
- * @author      Jean-Michel Vedrine
- * @author		Florian Schieﬂl <florian.schiessl at ifs-net.de>
- * @version     1.5
- * @link        http://code.zikula.org/ezcomments/ Support and documentation
- * @license     http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @package     Zikula
- * @subpackage  EZComments
+ * @author Joerg Napp <jnapp@users.sourceforge.net>
+ * @author Mark West <markwest at zikula dot org>
+ * @author Jean-Michel Vedrine
+ * @author Florian Schieﬂl <florian.schiessl at ifs-net.de>
+ * @author Frank Schummertz
+ * @version 1.6
+ * @link http://code.zikula.org/ezcomments/ Support and documentation
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License
+ * @package Zikula_3rdParty_Modules
+ * @subpackage EZComments
  */
 
 /**
@@ -116,9 +117,9 @@ function EZComments_admin_main()
  * This is a standard function that is called whenever an administrator
  * wishes to modify a comment
  *
- * @author       The Zikula Development Team
- * @param        tid          the id of the comment to be modified
- * @return       string       the modification page
+ * @author The EZComments Development Team
+ * @param tid  the id of the comment to be modified
+ * @return string the modification page
  */
 function EZComments_admin_modify($args)
 {
@@ -132,10 +133,10 @@ function EZComments_admin_modify($args)
  * This is a standard function that is called whenever an administrator
  * wishes to delete a current module item.
  *
- * @author       The Zikula Development Team
- * @param        id            the id of the item to be deleted
- * @param        redirect      the location to redirect to after the deletion attempt
- * @return       bool            true on sucess, false on failure
+ * @author The EZComments Development Team
+ * @param id  the id of the item to be deleted
+ * @param redirect the location to redirect to after the deletion attempt
+ * @return bool true on sucess, false on failure
  */
 function EZComments_admin_delete($args)
 {
@@ -158,11 +159,11 @@ function EZComments_admin_delete($args)
  * This function process the comments selected in the admin view page.
  * Multiple comments may have thier state changed or be deleted
  *
- * @author       The Zikula Development Team
- * @param        Comments   the ids of the items to be deleted
- * @param        confirmation  confirmation that this item can be deleted
- * @param        redirect      the location to redirect to after the deletion attempt
- * @return       bool          true on sucess, false on failure
+ * @author The EZComments Development Team
+ * @param Comments   the ids of the items to be deleted
+ * @param confirmation  confirmation that this item can be deleted
+ * @param redirect the location to redirect to after the deletion attempt
+ * @return bool true on sucess, false on failure
  */
 function EZComments_admin_processselected($args)
 {
@@ -224,8 +225,8 @@ function EZComments_admin_processselected($args)
  * This is a standard function to modify the configuration parameters of the
  * module
  *
- * @author       The Zikula Development Team
- * @return       string       The configuration page
+ * @author The EZComments Development Team
+ * @return string The configuration page
  */
 function EZComments_admin_modifyconfig() 
 {
@@ -377,7 +378,7 @@ function EZComments_admin_cleanup()
  * This is the function that is called to do the actual
  * deletion of orphaned comments.
  * 
- * @param  $EZComments_module The Module to delete for
+ * @param  $module The Module to delete for
  */
 function EZComments_admin_cleanup_go()
 { 
@@ -406,10 +407,10 @@ function EZComments_admin_cleanup_go()
 /**
  * purge comments
  *
- * @author       The Zikula Development Team
- * @param        confirmation  confirmation that this item can be deleted
- * @param        redirect      the location to redirect to after the deletion attempt
- * @return       bool          true on sucess, false on failure
+ * @author The EZComments Development Team
+ * @param confirmation  confirmation that this item can be deleted
+ * @param redirect the location to redirect to after the deletion attempt
+ * @return bool true on sucess, false on failure
  */
 function EZComments_admin_purge($args)
 {
@@ -498,7 +499,6 @@ function EZComments_admin_stats($args)
 
     // Return the output
     return $renderer->fetch('ezcomments_admin_stats.htm');
-
 }
 
 /**
@@ -550,10 +550,10 @@ function EZComments_admin_modulestats()
 /**
  * delete all comments attached to a module
  *
- * @author       Mark West
- * @param        modname       the name of the module to delete all comments for
- * @param        confirmation  confirmation that this item can be deleted
- * @return       bool          true on sucess, false on failure
+ * @author  Mark West
+ * @param modname the name of the module to delete all comments for
+ * @param confirmation  confirmation that this item can be deleted
+ * @return bool true on sucess, false on failure
  */
 function EZComments_admin_deletemodule($args)
 {
@@ -613,10 +613,10 @@ function EZComments_admin_deletemodule($args)
 /**
  * delete all comments attached to a module
  *
- * @author       Mark West
- * @param        modname       the name of the module to delete all comments for
- * @param        confirmation  confirmation that this item can be deleted
- * @return       bool          true on sucess, false on failure
+ * @author  Mark West
+ * @param modname  the name of the module to delete all comments for
+ * @param confirmation  confirmation that this item can be deleted
+ * @return bool true on sucess, false on failure
  */
 function EZComments_admin_deleteitem($args)
 {
@@ -682,10 +682,10 @@ function EZComments_admin_deleteitem($args)
 /**
  * delete all comments attached to a module
  *
- * @author       Mark West
- * @param        modname       the name of the module to delete all comments for
- * @param        confirmation  confirmation that this item can be deleted
- * @return       bool          true on sucess, false on failure
+ * @author  Mark West
+ * @param modname the name of the module to delete all comments for
+ * @param confirmation  confirmation that this item can be deleted
+ * @return bool true on sucess, false on failure
  */
 function EZComments_admin_applyrules($args)
 {
@@ -797,4 +797,3 @@ function EZComments_admin_applyrules($args)
         return pnRedirect(pnModURL('EZComments', 'admin'));
     }
 }
-

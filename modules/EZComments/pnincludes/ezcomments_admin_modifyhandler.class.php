@@ -141,7 +141,4 @@ class EZComments_admin_modifyhandler
             return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
         }
     }
-
 }
-
-?>

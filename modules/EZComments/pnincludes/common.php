@@ -20,15 +20,15 @@
  * GNU General Public License for more details.
  *
  *
- * @author      Joerg Napp <jnapp@users.sourceforge.net>
- * @author      Mark West <markwest at zikula dot org>
- * @author      Jean-Michel Vedrine
- * @author		Florian Schieﬂl <florian.schiessl at ifs-net.de>
- * @version     1.5
- * @link        http://code.zikula.org/ezcomments/ Support and documentation
- * @license     http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @package     Zikula
- * @subpackage  EZComments
+ * @author Joerg Napp <jnapp@users.sourceforge.net>
+ * @author Mark West <markwest at zikula dot org>
+ * @author Jean-Michel Vedrine
+ * @author Florian Schieﬂl <florian.schiessl at ifs-net.de>
+ * @version 1.6
+ * @link http://code.zikula.org/ezcomments/ Support and documentation
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License
+ * @package Zikula_3rdParty_Modules
+ * @subpackage EZComments
  */
 
 /**
@@ -37,11 +37,11 @@
  * This function process the comments selected in the admin view page.
  * Multiple comments may have thier state changed or be deleted
  *
- * @author       The Zikula Development Team
- * @param        Comments   the ids of the items to be deleted
- * @param        confirmation  confirmation that this item can be deleted
- * @param        redirect      the location to redirect to after the deletion attempt
- * @return       bool          true on sucess, false on failure
+ * @author The EZComments Development Team
+ * @param Comments   the ids of the items to be deleted
+ * @param confirmation  confirmation that this item can be deleted
+ * @param redirect the location to redirect to after the deletion attempt
+ * @return bool true on sucess, false on failure
  */
 function ezc_processSelected($args) 
 {
@@ -100,7 +100,6 @@ function ezc_processSelected($args)
         if ($type == "user") return pnRedirect(pnModURL('EZComments', 'user', 'main'));
         else return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
     }
-
 }
 
 /**
@@ -109,9 +108,9 @@ function ezc_processSelected($args)
  * This is a standard function that is called whenever an administrator
  * wishes to modify a comment
  *
- * @author       The Zikula Development Team
- * @param        tid          the id of the comment to be modified
- * @return       string       the modification page
+ * @author The EZComments Development Team
+ * @param tid the id of the comment to be modified
+ * @return string the modification page
  */
 function ezc_modify($args) 
 {
@@ -145,4 +144,3 @@ function ezc_modify($args)
     if ($type == "user") return $pnf->pnFormExecute('ezcomments_user_modify.htm', new EZComments_user_modifyhandler());
     else return $pnf->pnFormExecute('ezcomments_admin_modify.htm', new EZComments_admin_modifyhandler());
 }
-?>

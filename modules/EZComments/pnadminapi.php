@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * $Id$
  * 
@@ -20,14 +20,16 @@
  * GNU General Public License for more details.
  *
  *
- * @author      Joerg Napp <jnapp@users.sourceforge.net>
- * @author      Mark West <markwest at zikula dot org>
- * @author      Jean-Michel Vedrine
- * @version     1.5
- * @link        http://code.zikula.org/ezcomments/ Support and documentation
- * @license     http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @package     Zikula
- * @subpackage  EZComments
+ * @author Joerg Napp <jnapp@users.sourceforge.net>
+ * @author Mark West <markwest at zikula dot org>
+ * @author Jean-Michel Vedrine
+ * @author Florian Schieﬂl <florian.schiessl at ifs-net.de>
+ * @author Frank Schummertz
+ * @version 1.6
+ * @link http://code.zikula.org/ezcomments/ Support and documentation
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License
+ * @package Zikula_3rdParty_Modules
+ * @subpackage EZComments
  */
 
 /**
@@ -159,8 +161,8 @@ function EZComments_adminapi_deletebyitem($args)
 /**
  * delete an item
  * 
- * @param    $args['id']    ID of the item
- * @return   bool           true on success, false on failure
+ * @param $args['id']  ID of the item
+ * @return bool true on success, false on failure
  */
 function EZComments_adminapi_delete($args)
 {
@@ -206,10 +208,10 @@ function EZComments_adminapi_delete($args)
 /**
  * update an item
  * 
- * @param    $args['id']         the ID of the item
- * @param    $args['subject']    the new subject of the item
- * @param    $args['comment']    the new text of the item
- * @return   bool             true on success, false on failure
+ * @param    $args['id'] the ID of the item
+ * @param    $args['subject']  the new subject of the item
+ * @param    $args['comment'] the new text of the item
+ * @return   bool true on success, false on failure
  */
 function EZComments_adminapi_update($args)
 {
@@ -261,8 +263,8 @@ function EZComments_adminapi_update($args)
 /**
  * clean up comments for a removed module
  * 
- * @param    $args['extrainfo']   array extrainfo array
- * @return   array extrainfo array
+ * @param $args['extrainfo']   array extrainfo array
+ * @return array extrainfo array
  */
 function EZComments_adminapi_deletemodule($args)
 {
@@ -299,9 +301,9 @@ function EZComments_adminapi_deletemodule($args)
 /**
  * delete an item
  * 
- * @param    $args['purgerejected']    Purge all rejected comments
- * @param    $args['purgepending']     Purge all pending comments
- * @return   bool           true on success, false on failure
+ * @param $args['purgerejected'] Purge all rejected comments
+ * @param $args['purgepending']  Purge all pending comments
+ * @return bool true on success, false on failure
  */
 function EZComments_adminapi_purge($args)
 {
@@ -349,9 +351,9 @@ function EZComments_adminapi_purge($args)
 /**
  * update an item status
  * 
- * @param    $args['id']         the ID of the item
- * @param    $args['status']     the new status of the item
- * @return   bool             true on success, false on failure
+ * @param $args['id'] the ID of the item
+ * @param $args['status']  the new status of the item
+ * @return bool true on success, false on failure
  */
 function EZComments_adminapi_updatestatus($args)
 {
@@ -443,4 +445,3 @@ function EZComments_adminapi_getlinks()
 
     return $links;
 }
-

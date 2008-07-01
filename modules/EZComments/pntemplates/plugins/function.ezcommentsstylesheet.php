@@ -19,14 +19,14 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
- * @author      Joerg Napp <jnapp@users.sourceforge.net>
- * @author      Mark West <markwest at zikula dot org>
- * @author      Jean-Michel Vedrine
+ * @author Joerg Napp <jnapp@users.sourceforge.net>
+ * @author Mark West <markwest at zikula dot org>
+ * @author Jean-Michel Vedrine
  * @version     1.3
- * @link        http://code.zikula.org/ezcomments/ Support and documentation
- * @license     http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @package     Zikula
- * @subpackage  EZComments
+ * @link http://code.zikula.org/ezcomments/ Support and documentation
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License
+ * @package Zikula_3rdParty_Modules
+ * @subpackage EZComments
  */ 
  
 /**
@@ -43,12 +43,12 @@
  * Output:  <link rel="stylesheet" href="modules/EZComments/pntemplates/plain/style.css" type="text/css" />
  * 
  *
- * @author       Mark West
- * @author       Jörg Napp
+ * @author  Mark West
+ * @author  Jörg Napp
  * @since        13. Feb. 2005
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @return       string      The tag
+ * @param array       $params      All attributes passed to this function from the template
+ * @param object      &$smarty     Reference to the Smarty object
+ * @return string      The tag
  */
 function smarty_function_ezcommentsstylesheet($params, &$smarty)
 {

@@ -148,5 +148,3 @@ class EZComments_user_modifyhandler
     }
 
 }
-
-?>

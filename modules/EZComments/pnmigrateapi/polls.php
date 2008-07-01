@@ -6,9 +6,6 @@
  * 
  * Attach comments to any module calling hooks
  * 
- *  * Purpose *
- * 
- * Migration of old comments to new ones
  * 
  * * License *
  *
@@ -23,14 +20,17 @@
  * GNU General Public License for more details.
  *
  *
- * @author      Joerg Napp <jnapp@users.sourceforge.net>
- * @version     0.2
- * @link        http://code.zikula.org/ezcomments/ Support and documentation
- * @license     http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @package     Zikula
- * @subpackage  EZComments
+ * @author Joerg Napp <jnapp@users.sourceforge.net>
+ * @author Mark West <markwest at zikula dot org>
+ * @author Jean-Michel Vedrine
+ * @author Florian Schieﬂl <florian.schiessl at ifs-net.de>
+ * @author Frank Schummertz
+ * @version 1.6
+ * @link http://code.zikula.org/ezcomments/ Support and documentation
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License
+ * @package Zikula_3rdParty_Modules
+ * @subpackage EZComments
  */
- 
 
 /**
  * Do the migration
@@ -123,4 +123,3 @@ function EZComments_migrateapi_polls()
 
     LogUtil::registerStatus('Polls migration successful');
 }
-

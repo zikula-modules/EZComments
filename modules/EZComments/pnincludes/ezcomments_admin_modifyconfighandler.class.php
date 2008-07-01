@@ -120,5 +120,3 @@ class EZComments_admin_modifyconfighandler
     }
 
 }
-
-?>

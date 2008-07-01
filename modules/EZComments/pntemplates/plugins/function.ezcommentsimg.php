@@ -19,14 +19,14 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
- * @author      Joerg Napp <jnapp@users.sourceforge.net>
- * @author      Mark West <markwest at zikula dot org>
- * @author      Jean-Michel Vedrine
- * @version     1.5
- * @link        http://code.zikula.org/ezcomments/ Support and documentation
- * @license     http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @package     Zikula
- * @subpackage  EZComments
+ * @author Joerg Napp <jnapp@users.sourceforge.net>
+ * @author Mark West <markwest at zikula dot org>
+ * @author Jean-Michel Vedrine
+ * @version 1.6
+ * @link http://code.zikula.org/ezcomments/ Support and documentation
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License
+ * @package Zikula_3rdParty_Modules
+ * @subpackage EZComments
  */ 
  
 /**
@@ -71,11 +71,11 @@
  * <img src="modules/Example/pnimages/eng/heading.gif" alt="" width="261" height="69"  />
  *   
  * 
- * @author       Joerg Napp
+ * @author  Joerg Napp
  * @since        05. Nov. 2003
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @return       string      The img tag
+ * @param array       $params      All attributes passed to this function from the template
+ * @param object      &$smarty     Reference to the Smarty object
+ * @return string      The img tag
  */
 function smarty_function_ezcommentsimg($params, &$smarty)
 {

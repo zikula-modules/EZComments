@@ -1,26 +1,36 @@
-<?php 
-// $Id: global.php 431 2007-08-13 19:31:11Z landseer $
-// ----------------------------------------------------------------------
-// EZComments
-// Attach comments to any module calling hooks
-// ----------------------------------------------------------------------
-// Author: Jörg Napp
-// Author: Florian Schießl
-// ----------------------------------------------------------------------
-// LICENSE
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License (GPL)
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// To read the license please visit http://www.gnu.org/copyleft/gpl.html
-// ----------------------------------------------------------------------
-
-
-
+<?php
+/**
+ * $Id: pnadmin.php 495 2008-07-01 08:52:22Z markwest $
+ * 
+ * * EZComments *
+ * 
+ * Attach comments to any module calling hooks
+ * 
+ * 
+ * * License *
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License (GPL)
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ *
+ * @author Joerg Napp <jnapp@users.sourceforge.net>
+ * @author Mark West <markwest at zikula dot org>
+ * @author Jean-Michel Vedrine
+ * @author Florian Schießl <florian.schiessl at ifs-net.de>
+ * @author Frank Schummertz
+ * @version 1.6
+ * @link http://code.zikula.org/ezcomments/ Support and documentation
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License
+ * @package Zikula_3rdParty_Modules
+ * @subpackage EZComments
+ */
 
 // new for 2.0 (.8only)
 
@@ -248,9 +258,3 @@ define('_EZCOMMENTS_AKISMETSTATUS',           'Welchen Status sollen die von Aki
 define('_EZCOMMENTS_ANON_NAME',               'Absendername für anonyme User notwendig');
 define('_EZCOMMENTS_ANON_NAME_FORM',          '(notwendig für unregistrierte Besucher)');
 define('_EZCOMMENTS_ANON_NAME_REJECT',        'Fehler! Das Namensfeld ist notwendig. Kommentar abgelehnt');
-
-
-
-
-
-

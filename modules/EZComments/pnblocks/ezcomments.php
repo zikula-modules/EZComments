@@ -19,21 +19,18 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
- * 
- * A block to pull the latest comments from EZComment sources. 
- * Based on the latest blog module for v4bjournal
- * and the LatestComments block
  *
- * 
- * @author      Max Power <MaxPower@flyingcars.net>
- * @version     1.5
- * @link        http://code.zikula.org/ezcomments/ Support and documentation
- * @license     http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @package     Zikula
- * @subpackage  EZComments
+ * @author Joerg Napp <jnapp@users.sourceforge.net>
+ * @author Mark West <markwest at zikula dot org>
+ * @author Jean-Michel Vedrine
+ * @author Florian Schieﬂl <florian.schiessl at ifs-net.de>
+ * @author Frank Schummertz
+ * @version 1.6
+ * @link http://code.zikula.org/ezcomments/ Support and documentation
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License
+ * @package Zikula_3rdParty_Modules
+ * @subpackage EZComments
  */
-
-
 
 /**
  * initialise block
@@ -48,7 +45,7 @@ function EZComments_EZCommentsblock_init()
 /**
  * get information on block
  * 
- * @return       array       The block information
+ * @return array       The block information
  */
 function EZComments_EZCommentsblock_info()
 { 
@@ -65,8 +62,8 @@ function EZComments_EZCommentsblock_info()
 /**
  * display block
  * 
- * @param        array       $blockinfo     a blockinfo structure
- * @return       output      the rendered bock
+ * @param array       $blockinfo     a blockinfo structure
+ * @return output      the rendered bock
  */
 function EZComments_EZCommentsblock_display($blockinfo)
 { 
@@ -162,8 +159,8 @@ function EZComments_EZCommentsblock_modify($blockinfo)
 /**
  * update block settings
  * 
- * @param        array       $blockinfo     a blockinfo structure
- * @return       $blockinfo  the modified blockinfo structure
+ * @param array       $blockinfo     a blockinfo structure
+ * @return $blockinfo  the modified blockinfo structure
  */
 function EZComments_EZCommentsblock_update($blockinfo)
 {

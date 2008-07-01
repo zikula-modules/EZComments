@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * $Id$
  * 
@@ -20,16 +20,17 @@
  * GNU General Public License for more details.
  *
  *
- * @author      Joerg Napp <jnapp@users.sourceforge.net>
- * @author      Mark West <markwest at zikula dot org>
- * @author      Jean-Michel Vedrine
- * @version     1.5
- * @link        http://code.zikula.org/ezcomments/ Support and documentation
- * @license     http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @package     Zikula
- * @subpackage  EZComments
+ * @author Joerg Napp <jnapp@users.sourceforge.net>
+ * @author Mark West <markwest at zikula dot org>
+ * @author Jean-Michel Vedrine
+ * @author Florian Schieﬂl <florian.schiessl at ifs-net.de>
+ * @author Frank Schummertz
+ * @version 1.6
+ * @link http://code.zikula.org/ezcomments/ Support and documentation
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License
+ * @package Zikula_3rdParty_Modules
+ * @subpackage EZComments
  */
-
 
 /**
  * Return to index page
@@ -38,7 +39,7 @@
  * as a module. As we do not intend to output anything, we just 
  * redirect to the start page.
  * 
- * @since    0.2
+ * @since 0.2
  */
 function EZComments_user_main($args)
 {
@@ -124,11 +125,11 @@ function EZComments_user_main($args)
  * This function provides the main user interface to the comments
  * module. 
  * 
- * @param    $args['objectid']     ID of the item to display comments for
- * @param    $args['extrainfo']    URL to return to if user chooses to comment
- * @param    $args['template']     Template file to use (with extension)
- * @return   output                the comments
- * @since    0.1
+ * @param $args['objectid']  ID of the item to display comments for
+ * @param $args['extrainfo']  URL to return to if user chooses to comment
+ * @param $args['template']  Template file to use (with extension)
+ * @return output the comments
+ * @since 0.1
  */
 function EZComments_user_view($args)
 {
@@ -228,15 +229,15 @@ function EZComments_user_view($args)
  * This function displays a comment form, if you do not want users to
  * comment on the same page as the item is.
  * 
- * @param    $comment     the comment (taken from HTTP put)
- * @param    $mod         the name of the module the comment is for (taken from HTTP put)
- * @param    $objectid    ID of the item the comment is for (taken from HTTP put)
- * @param    $redirect    URL to return to (taken from HTTP put)
- * @param    $subject     The subject of the comment (if any) (taken from HTTP put)
- * @param    $replyto     The ID of the comment for which this an anser to (taken from HTTP put)
- * @param    $template    The name of the template file to use (with extension)
- * @todo     Check out it this function can be merged with _view!
- * @since    0.2
+ * @param $comment the comment (taken from HTTP put)
+ * @param $mod the name of the module the comment is for (taken from HTTP put)
+ * @param $objectid ID of the item the comment is for (taken from HTTP put)
+ * @param $redirect URL to return to (taken from HTTP put)
+ * @param $subject The subject of the comment (if any) (taken from HTTP put)
+ * @param $replyto The ID of the comment for which this an anser to (taken from HTTP put)
+ * @param $template The name of the template file to use (with extension)
+ * @todo Check out it this function can be merged with _view!
+ * @since 0.2
  */
 function EZComments_user_comment($args)
 {
@@ -350,13 +351,13 @@ function EZComments_user_comment($args)
  * This is a standard function that is called with the results of the
  * form supplied by EZComments_user_view to create a new item
  * 
- * @param    $comment     the comment (taken from HTTP put)
- * @param    $mod         the name of the module the comment is for (taken from HTTP put)
- * @param    $objectid    ID of the item the comment is for (taken from HTTP put)
- * @param    $redirect    URL to return to (taken from HTTP put)
- * @param    $subject     The subject of the comment (if any) (taken from HTTP put)
- * @param    $replyto     The ID of the comment for which this an anser to (taken from HTTP put)
- * @since    0.1
+ * @param $comment the comment (taken from HTTP put)
+ * @param $mod the name of the module the comment is for (taken from HTTP put)
+ * @param $objectid ID of the item the comment is for (taken from HTTP put)
+ * @param $redirect URL to return to (taken from HTTP put)
+ * @param $subject The subject of the comment (if any) (taken from HTTP put)
+ * @param $replyto The ID of the comment for which this an anser to (taken from HTTP put)
+ * @since 0.1
  */
 function EZComments_user_create($args)
 {
@@ -373,7 +374,7 @@ function EZComments_user_create($args)
                                          'comment',
                                          'subject',
                                          'replyto');
-		if (!isset($owneruid) || (!($owneruid > 1))) $owner_uid = 0;
+    if (!isset($owneruid) || (!($owneruid > 1))) $owner_uid = 0;
     $redirect = base64_decode($redirect);
 
     // Confirm authorisation code.
@@ -426,9 +427,9 @@ function EZComments_user_create($args)
  * We check for necessary rights, and derive additional information (e.g. user
  * data) drom other modules.
  * 
- * @param    $items    An array of comment items as returned from the API
- * @return   array     An array to display (augmented information / perm. check)
- * @since    0.2
+ * @param $items An array of comment items as returned from the API
+ * @return array An array to display (augmented information / perm. check)
+ * @since 0.2
  */
 function EZComments_prepareCommentsForDisplay($items)
 {
@@ -480,10 +481,9 @@ function EZComments_prepareCommentsForDisplay($items)
 /**
  * Sort comments by thread
  * 
- * 
- * @param    $comments    An array of comments
- * @return   array        The sorted array
- * @since    0.2
+ * @param $comments An array of comments
+ * @return array The sorted array
+ * @since 0.2
  */
 function EZComments_threadComments($comments)
 {
@@ -496,12 +496,12 @@ function EZComments_threadComments($comments)
  * This function returns all child comments to a given comment.
  * It is called recursively
  * 
- * @param    $comments    An array of comments
- * @param    $id          The id of the parent comment
- * @param    $level       The indentation level 
- * @return   array        The sorted array
- * @access   private
- * @since    0.2
+ * @param $comments An array of comments
+ * @param $id The id of the parent comment
+ * @param $level The indentation level 
+ * @return array The sorted array
+ * @access private
+ * @since 0.2
  */
 function EZComments_displayChildren($comments, $id, $level)
 {
@@ -558,7 +558,6 @@ function EZComments_user_feed()
 	// display the feed and notify the core that we're done
 	$renderer->display("ezcomments_user_$feedtype.htm");
 	return true;
-
 }
 
 /**
@@ -567,11 +566,11 @@ function EZComments_user_feed()
  * This function process the comments selected in the admin view page.
  * Multiple comments may have thier state changed or be deleted
  *
- * @author       The Zikula Development Team
- * @param        Comments   the ids of the items to be deleted
- * @param        confirmation  confirmation that this item can be deleted
- * @param        redirect      the location to redirect to after the deletion attempt
- * @return       bool          true on sucess, false on failure
+ * @author The EZComments Development Team
+ * @param Comments the ids of the items to be deleted
+ * @param confirmation confirmation that this item can be deleted
+ * @param redirect the location to redirect to after the deletion attempt
+ * @return bool true on sucess, false on failure
  */
 function EZComments_user_processselected($args)
 {
@@ -585,9 +584,9 @@ function EZComments_user_processselected($args)
  * This is a standard function that is called whenever an comment owner
  * wishes to modify a comment
  *
- * @author       The Zikula Development Team
- * @param        tid          the id of the comment to be modified
- * @return       string       the modification page
+ * @author The EZComments Development Team
+ * @param tid the id of the comment to be modified
+ * @return string the modification page
  */
 function EZComments_user_modify($args)
 {

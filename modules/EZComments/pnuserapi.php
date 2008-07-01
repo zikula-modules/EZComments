@@ -1,12 +1,12 @@
 <?php
 /**
  * $Id$
- *
+ * 
  * * EZComments *
- *
+ * 
  * Attach comments to any module calling hooks
- *
- *
+ * 
+ * 
  * * License *
  *
  * This program is free software; you can redistribute it and/or
@@ -20,16 +20,17 @@
  * GNU General Public License for more details.
  *
  *
- * @author      Joerg Napp <jnapp@users.sourceforge.net>
- * @author      Mark West <markwest at zikula dot org>
- * @author      Jean-Michel Vedrine
- * @version     1.5
- * @link        http://code.zikula.org/ezcomments/ Support and documentation
- * @license     http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @package     Zikula
- * @subpackage  EZComments
+ * @author Joerg Napp <jnapp@users.sourceforge.net>
+ * @author Mark West <markwest at zikula dot org>
+ * @author Jean-Michel Vedrine
+ * @author Florian Schieﬂl <florian.schiessl at ifs-net.de>
+ * @author Frank Schummertz
+ * @version 1.6
+ * @link http://code.zikula.org/ezcomments/ Support and documentation
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License
+ * @package Zikula_3rdParty_Modules
+ * @subpackage EZComments
  */
-
 
 /**
  * get comments for a specific item inside a module
@@ -37,15 +38,15 @@
  * This function provides the main user interface to the comments
  * module.
  *
- * @param     $args['mod']   Name of the module to get comments for
- * @param     $args['objectid']  ID of the item to get comments for
- * @param     $args['search']    an array with words to search for and a boolean
- * @param     $args['startnum']  First comment
- * @param     $args['numitems']  number of comments
- * @param     $args['sortorder'] order to sort the comments
- * @param     $args['sortby']    field to sort the comments by
- * @param     $args['status']    get all comments of this status
- * @return    array              array of items, or false on failure
+ * @param $args['mod'] Name of the module to get comments for
+ * @param $args['objectid']  ID of the item to get comments for
+ * @param $args['search']  an array with words to search for and a boolean
+ * @param $args['startnum']  First comment
+ * @param $args['numitems']  number of comments
+ * @param $args['sortorder'] order to sort the comments
+ * @param $args['sortby'] field to sort the comments by
+ * @param $args['status']  get all comments of this status
+ * @return array array of items, or false on failure
  */
 function EZComments_userapi_getall($args)
 {
@@ -193,14 +194,14 @@ function EZComments_userapi_getall($args)
  * This function creates a new comment and returns its ID.
  * Access checking is done.
  *
- * @param    $args['mod']    Name of the module to create comments for
- * @param    $args['objectid']   ID of the item to create comments for
- * @param    $args['comment']    The comment itself
- * @param    $args['subject']    The subject of the comment
- * @param    $args['replyto']    The reference ID
- * @param    $args['uid']        The user ID (optional)
- * @param    $args['type']       The type of comment (optional) currently trackback, pingback are only allowed values
- * @return   integer             ID of new comment on success, false on failure
+ * @param $args['mod'] Name of the module to create comments for
+ * @param $args['objectid'] ID of the item to create comments for
+ * @param $args['comment'] The comment itself
+ * @param $args['subject']  The subject of the comment
+ * @param $args['replyto']  The reference ID
+ * @param $args['uid']  The user ID (optional)
+ * @param $args['type']  The type of comment (optional) currently trackback, pingback are only allowed values
+ * @return integer ID of new comment on success, false on failure
  */
 function EZComments_userapi_create($args)
 {
@@ -503,10 +504,10 @@ function EZComments_userapi_get($args)
  * to allow a module to find the number of comments that have been added
  * to the module as a whole or to an individual item.
  *
- * @param     $args['mod']  name of the module to get the number of comments for
- * @param     $args['objectid'] the objectid to get the number of comments for
- * @param     $args['status']    Status of the comments to get (default: all)
- * @return    integer   number of items held by this module
+ * @param $args['mod']  name of the module to get the number of comments for
+ * @param $args['objectid'] the objectid to get the number of comments for
+ * @param $args['status']  Status of the comments to get (default: all)
+ * @return integer number of items held by this module
  */
 function EZComments_userapi_countitems($args)
 {
@@ -562,7 +563,7 @@ function EZComments_userapi_countitems($args)
  * utility function to return a list of template sets for
  * displaying the comments input/output
  *
- * @return   array   array of template set names (directories)
+ * @return array array of template set names (directories)
  */
 function EZComments_userapi_gettemplates()
 {
@@ -788,13 +789,13 @@ function EZComments_userapi_getallbymodule($args)
  * This function first does the regular Zikula checkPermission call and if
  * this function call is "false", we'll do some more checks
  *
- * @author	Florian Schieﬂl
- * @param	$args['module']		string		module's name
- * @param	$args['objectid']	int			object's id
- * @param	$args['commentid']	int			id of comment
- * @param	$args['level']		string		security level for SecurityUtil
+ * @author Florian Schieﬂl
+ * @param $args['module'] string module's name
+ * @param $args['objectid'] int object's id
+ * @param $args['commentid'] int id of comment
+ * @param $args['level'] string security level for SecurityUtil
  *
- * @return	boolean
+ * @return boolean
  */
 function EZComments_userapi_checkPermission($args) {
   	
@@ -817,4 +818,3 @@ function EZComments_userapi_checkPermission($args) {
 	// otherwise return false because no security check had a positive result
   	return false;
 }
-?>
