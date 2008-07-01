@@ -88,8 +88,10 @@ function EZComments_admin_main()
 					'level'		=> ACCESS_EDIT			));
         if ($securityCheck) {
 	        $options = array(array('url' => $item['url'] . '#comments',
+                                   'image' => 'demo.gif',
 	                               'title' => _VIEW)); 
             $options[] = array('url'   => pnModURL('EZComments', 'admin', 'modify', array('id' => $item['id'])),
+                               'image' => 'xedit.gif',
                                'title' => _EDIT);
             $item['options'] = $options;
             $comments[] = $item;
