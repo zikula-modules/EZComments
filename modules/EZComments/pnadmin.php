@@ -168,10 +168,9 @@ function EZComments_admin_delete($args)
 function EZComments_admin_processselected($args)
 {
     // Get parameters from whatever input we need. 
-    list($comments, $action) = FormUtil::getPassedValue('comments', 'action');
-
-    // extract any input passed directly to the function
-    extract($args);
+    $comments = FormUtil::getPassedValue('comments', isset($args['comments']) ? $args['comments'] : null, 'POST');
+    $action = FormUtil::getPassedValue('action', isset($args['action']) ? $args['action'] : null, 'POST');
+    $redirect = FormUtil::getPassedValue('redirect', isset($args['redirect']) ? $args['redirect'] : null, 'POST');
 
     // If we get here it means that the user has confirmed the action
     // Confirm authorisation code.
@@ -414,15 +413,10 @@ function EZComments_admin_cleanup_go()
  */
 function EZComments_admin_purge($args)
 {
-    // Get parameters from whatever input we need. 
-    list($purgepending,
-         $purgerejected,
-         $confirmation) = FormUtil::getPassedValue('purgepending',
-                                              'purgerejected',
-                                              'confirmation');
-
-    // extract any input passed directly to the function
-    extract($args);
+    // Get parameters from whatever input we need.
+    $purgepending = FormUtil::getPassedValue('purgepending', isset($args['purgepending']) ? $args['purgepending'] : null, 'POST');
+    $purgerejected = FormUtil::getPassedValue('purgerejected', isset($args['purgerejected']) ? $args['purgerejected'] : null, 'POST');
+    $confirmation = FormUtil::getPassedValue('confirmation', isset($args['confirmation']) ? $args['confirmation'] : null, 'POST');
 
     // Security check
     if(!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_DELETE)) {
@@ -558,12 +552,8 @@ function EZComments_admin_modulestats()
 function EZComments_admin_deletemodule($args)
 {
     // Get parameters from whatever input we need. 
-    list($modid,
-         $confirmation) = FormUtil::getPassedValue('modid',
-                                              'confirmation');
-
-    // extract any input passed directly to the function
-    extract($args);
+    $modid = FormUtil::getPassedValue('modid', isset($args['modid']) ? $args['modid'] : null, 'GETPOST');
+    $confirmation = FormUtil::getPassedValue('confirmation', isset($args['confirmation']) ? $args['confirmation'] : null, 'GETPOST');
 
     // Security check
     if(!SecurityUtil::checkPermission('EZComments::', $mod . '::', ACCESS_DELETE)) {
@@ -621,14 +611,9 @@ function EZComments_admin_deletemodule($args)
 function EZComments_admin_deleteitem($args)
 {
     // Get parameters from whatever input we need. 
-    list($mod,
-		 $objectid,
-         $confirmation) = FormUtil::getPassedValue('mod',
-											  'objectid',
-                                              'confirmation');
-
-    // extract any input passed directly to the function
-    extract($args);
+    $mod = FormUtil::getPassedValue('mod', isset($args['mod']) ? $args['mod'] : null, 'GETPOST');
+    $objectid = FormUtil::getPassedValue('objectid', isset($args['objectid']) ? $args['objectid'] : null, 'GETPOST');
+    $confirmation = FormUtil::getPassedValue('confirmation', isset($args['confirmation']) ? $args['confirmation'] : null, 'GETPOST');
 
 	// input check
 	if (!isset($mod) || !is_string($mod) || !isset($objectid) || !is_numeric($objectid)) {
@@ -683,19 +668,19 @@ function EZComments_admin_deleteitem($args)
  * delete all comments attached to a module
  *
  * @author  Mark West
- * @param modname the name of the module to delete all comments for
- * @param confirmation  confirmation that this item can be deleted
+ * @param mod the name of the module to delete all comments for
+ * @param confirmation confirmation that this item can be deleted
+ * @param allcomments delete all comments fir this module
+ * @param status only delete comments of this status
  * @return bool true on sucess, false on failure
  */
 function EZComments_admin_applyrules($args)
 {
     // Get parameters from whatever input we need. 
-    $confirmation = FormUtil::getPassedValue('confirmation');
-    $allcomments = FormUtil::getPassedValue('allcomments');
-    $status = FormUtil::getPassedValue('status');
-
-    // extract any input passed directly to the function
-    extract($args);
+    $mod = FormUtil::getPassedValue('mod', isset($args['mod']) ? $args['mod'] : null, 'GETPOST');
+    $confirmation = FormUtil::getPassedValue('confirmation', isset($args['confirmation']) ? $args['confirmation'] : null, 'GETPOST');
+    $allcomments = FormUtil::getPassedValue('allcomments', isset($args['allcomments']) ? $args['allcomments'] : null, 'GETPOST');
+    $status = FormUtil::getPassedValue('status', isset($args['status']) ? $args['status'] : null, 'GETPOST');
 
     // Security check
     if(!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_DELETE)) {

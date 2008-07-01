@@ -241,23 +241,14 @@ function EZComments_user_view($args)
  */
 function EZComments_user_comment($args)
 {
-    list($mod,
-         $objectid,
-         $redirect,
-         $comment,
-         $subject,
-         $replyto,
-         $template) = FormUtil::getPassedValue('mod',
-                                          'objectid',
-                                          'redirect',
-                                          'comment',
-                                          'subject',
-                                          'replyto',
-                                          'template');
-    extract($args);
-
-    // we may get some input in from the navigation bar
-    list ($template, $order) = FormUtil::getPassedValue('template', 'order');
+    $mod = FormUtil::getPassedValue('mod', isset($args['mod']) ? $args['mod'] : null, 'POST');
+    $objectid = FormUtil::getPassedValue('objectid', isset($args['objectid']) ? $args['objectid'] : null, 'POST');
+    $redirect = FormUtil::getPassedValue('redirect', isset($args['redirect']) ? $args['redirect'] : null, 'POST');
+    $comment = FormUtil::getPassedValue('comment', isset($args['comment']) ? $args['comment'] : null, 'POST');
+    $subject = FormUtil::getPassedValue('subject', isset($args['subject']) ? $args['subject'] : null, 'POST');
+    $replyto = FormUtil::getPassedValue('replyto', isset($args['replyto']) ? $args['replyto'] : null, 'POST');
+    $template = FormUtil::getPassedValue('template', isset($args['template']) ? $args['template'] : null, 'POST');
+    $order = FormUtil::getPassedValue('order', isset($args['order']) ? $args['order'] : null, 'POST');
 
     if ($order == 1) {
         $sortorder = 'DESC';
@@ -268,7 +259,7 @@ function EZComments_user_comment($args)
 
     // check if commenting is setup for the input module
     if (!pnModAvailable($mod) || !pnModIsHooked('EZComments', $mod)) {
-        return LogUtil::registerPermissionError('index.php');
+        return LogUtil::registerPermissionError(pnGetBaseURL());
     }
 
 	// check if we're using the pager
@@ -361,19 +352,14 @@ function EZComments_user_comment($args)
  */
 function EZComments_user_create($args)
 {
-    list($mod,
-    	 $owneruid,
-         $objectid,
-         $redirect,
-         $comment,
-         $subject,
-         $replyto) = FormUtil::getPassedValue('mod',
-         								 'owneruid',
-                                         'objectid',
-                                         'redirect',
-                                         'comment',
-                                         'subject',
-                                         'replyto');
+    $mod = FormUtil::getPassedValue('mod', isset($args['mod']) ? $args['mod'] : null, 'POST');
+    $owneruid = FormUtil::getPassedValue('owneruid', isset($args['owneruid']) ? $args['owneruid'] : null, 'POST');
+    $objectid = FormUtil::getPassedValue('objectid', isset($args['objectid']) ? $args['objectid'] : null, 'POST');
+    $redirect = FormUtil::getPassedValue('redirect', isset($args['redirect']) ? $args['redirect'] : null, 'POST');
+    $comment = FormUtil::getPassedValue('comment', isset($args['comment']) ? $args['comment'] : null, 'POST');
+    $subject = FormUtil::getPassedValue('subject', isset($args['subject']) ? $args['subject'] : null, 'POST');
+    $replyto = FormUtil::getPassedValue('replyto', isset($args['replyto']) ? $args['replyto'] : null, 'POST');
+
     if (!isset($owneruid) || (!($owneruid > 1))) $owner_uid = 0;
     $redirect = base64_decode($redirect);
 
@@ -390,7 +376,9 @@ function EZComments_user_create($args)
     // check if the user logged in and if we're allowing anon users to 
     // set a name and e-mail address
     if (!pnUserLoggedIn()) {
-        list($anonname, $anonmail, $anonwebsite) = FormUtil::getPassedValue('anonname', 'anonmail', 'anonwebsite');
+        $anonname = FormUtil::getPassedValue('anonname', isset($args['anonname']) ? $args['anonname'] : null, 'POST');
+        $anonmail = FormUtil::getPassedValue('anonmail', isset($args['anonmail']) ? $args['anonmail'] : null, 'POST');
+        $anonwebsite = FormUtil::getPassedValue('anonwebsite', isset($args['anonwebsite']) ? $args['anonwebsite'] : null, 'POST');
     } else {
         $anonname = '';
         $anonmail = '';
@@ -524,7 +512,10 @@ function EZComments_displayChildren($comments, $id, $level)
 */
 function EZComments_user_feed()
 {
-	list($feedcount, $feedtype, $mod, $objectid) = FormUtil::getPassedValue('feedcount', 'feedtype', 'mod', 'objectid');
+    $feedcount = FormUtil::getPassedValue('feedcount', isset($args['feedcount']) ? $args['feedcount'] : null, 'POST');
+    $feedtype = FormUtil::getPassedValue('feedtype', isset($args['feedtype']) ? $args['feedtype'] : null, 'POST');
+    $mod = FormUtil::getPassedValue('replyto', isset($args['mod']) ? $args['mod'] : null, 'POST');
+    $objectid = FormUtil::getPassedValue('objectid', isset($args['objectid']) ? $args['objectid'] : null, 'POST');
 
 	// check our input
 	if (!isset($feedcount) || !is_numeric($feedcount) || $feedcount < 1 || $feedcount > 999) {
