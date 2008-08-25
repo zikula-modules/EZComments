@@ -105,6 +105,7 @@
 				<form class="ezcomments_deleteform" action="<!--[pnmodurl modname=EZComments type=admin func=modify id=$comments[comments].id]-->" method="post">
 					<div>
 			            <input type="hidden" name="owneruid" id="EZComments_owneruid" value="<!--[$owneruid|pnvarprepfordisplay]-->" />
+						<input type="hidden" name="useurl" id="EZComments_useurl" value="<!--[$useurl|pnvarprepfordisplay]-->" />
 						<input type="hidden" name="redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" />
 						<input type="submit" value="<!--[pnml name=_EDIT]-->" />
 					</div>

@@ -2,7 +2,15 @@ $Id$
 
 
 Changelog
-1.6	 - New database structure. Added field "owneruid". You can 
+1.6	 - New parameter "useurl" can be passed as parameter whenever
+       the hook is called. This parameter might be important for
+       some modules who have a different redirect url where the user
+       should be redirected after adding a comment and another url that 
+	   should be used in the email notification (Important for the
+	   UserPictures module for example. The "redirect" url can pass
+	   a different picture for loggen in and anonymous users depending
+	   on the privacy settings of a picture).
+	 - New database structure. Added field "owneruid". You can 
 	   specify a new parameter "owneruid" whenever you integrate
 	   EZComments. EZComments will store this value as "content 
 	   owner" and allow this user to moderate all comments for 

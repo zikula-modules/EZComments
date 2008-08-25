@@ -53,6 +53,7 @@
           <form action="<!--[pnmodurl modname=EZComments type=admin func=delete id=$comments[comments].id]-->" method="post">
           <div>
             <input type="hidden" name="owneruid" id="EZComments_owneruid" value="<!--[$owneruid|pnvarprepfordisplay]-->" />
+			<input type="hidden" name="useurl" id="EZComments_useurl" value="<!--[$useurl|pnvarprepfordisplay]-->" />
             <input type="hidden" name="redirect" id="EZComments_redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" /> 
             <input type="submit" value="<!--[pnml name=_EZCOMMENTS_DEL]-->" />
           </div>
@@ -77,6 +78,7 @@
     <input type="hidden" name="redirect" id="EZComments_redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" /> 
     <input type="hidden" name="mod" id="EZComments_modname" value="<!--[pnmodgetname]-->" /> 
     <input type="hidden" name="owneruid" id="EZComments_owneruid" value="<!--[$owneruid|pnvarprepfordisplay]-->" />
+    <input type="hidden" name="useurl" id="EZComments_useurl" value="<!--[$useurl|pnvarprepfordisplay]-->" />
     <input type="hidden" name="objectid" id="EZComments_objectid" value="<!--[$objectid|pnvarprepfordisplay]-->" /> 
     <div>
       <label for="subject"><!--[pnml name=_EZCOMMENTS_SUBJECT]--></label>
@@ -109,4 +111,3 @@
     <a href="user.php"><!--[pnml name=_EZCOMMENTS_GOTOREG]--></a>
   </div>
 <!--[/if]-->
-

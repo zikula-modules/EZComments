@@ -73,6 +73,6 @@ function EZComments_myprofileapi_tab($args)
  	$render->assign('viewer_uid',pnUserGetVar('uid'));
  	$render->assign('uname',pnUserGetVar('uname',(int)$args['uid']));
  	$render->assign('settings',pnModAPIFunc('MyProfile','user','getSettings',array('uid'=>$args['uid'])));
-	$render->display('ezcomments_myprofile_tab.htm');
-	return;
+	$output = $render->fetch('ezcomments_myprofile_tab.htm');
+	return $output;
 }

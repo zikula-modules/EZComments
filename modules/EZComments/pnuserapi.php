@@ -200,6 +200,8 @@ function EZComments_userapi_getall($args)
  * @param $args['subject']  The subject of the comment
  * @param $args['replyto']  The reference ID
  * @param $args['uid']  The user ID (optional)
+ * @param $args['owneruid']  The user ID whoose content was commented(optional)
+ * @param $args['useurl']  The url that should be used for storing in db and email to admin
  * @param $args['type']  The type of comment (optional) currently trackback, pingback are only allowed values
  * @return integer ID of new comment on success, false on failure
  */
@@ -212,7 +214,16 @@ function EZComments_userapi_create($args)
         !isset($comment)) {
         return LogUtil::registerError(_MODARGSERROR);
     }
-    $owneruid = (int)$args['owneruid'];
+    $owneruid 	= (int)$args['owneruid'];
+    $useurl 	= $args['useurl'];
+    if (isset($useurl) && (strlen($useurl) > 0)) {
+	    $useurl 		= str_replace('&amp;', '&', $useurl);
+		$url 			= $useurl;
+	}
+    
+    // Sometimes the displayurl for the redirect is another url then the url, 
+	// that should be sent via email.
+	if (isset($args['useurl']) && (strlen($args['useurl'] > 0))) $args['url'] = $args['useurl'];
 
     // ContactList ignore check. If the user is ignored by the 
 	// content owner the user will not be able to post any comment...

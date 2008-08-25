@@ -127,6 +127,8 @@ function EZComments_user_main($args)
  * 
  * @param $args['objectid']  ID of the item to display comments for
  * @param $args['extrainfo']  URL to return to if user chooses to comment
+ * @param $args['owneruid']  User ID of the content owner
+ * @param $args['useurl']  Url used for storing in db and in email instead of redirect url
  * @param $args['template']  Template file to use (with extension)
  * @return output the comments
  * @since 0.1
@@ -134,8 +136,10 @@ function EZComments_user_main($args)
 function EZComments_user_view($args)
 {
     // work out the input from the hook
-    $mod = pnModGetName();
-    $objectid = $args['objectid'];
+    $mod 		= pnModGetName();
+    $objectid 	= $args['objectid'];
+    $owneruid 	= (int)$args['extrainfo']['owneruid'];
+    $useurl 	= $args['extrainfo']['useurl'];
 
     // security check
     if (!SecurityUtil::checkPermission('EZComments::', "$mod:$objectid:", ACCESS_OVERVIEW)) {
@@ -200,7 +204,11 @@ function EZComments_user_view($args)
     $renderer->assign('objectid',   $objectid);
     
     // assign the user is of the content owner
-    $renderer->assign('owneruid',	(int)$args['extrainfo']['owneruid']);
+    $renderer->assign('owneruid',	$owneruid);
+    
+    // assign url that should be stored in db and sent in email if it
+    // differs from the redirect url
+    $renderer->assign('useurl',		$useurl);
 
     // assign all module vars (they may be useful...)
     $renderer->assign(pnModGetVar('EZComments'));
@@ -244,6 +252,7 @@ function EZComments_user_comment($args)
     $mod = FormUtil::getPassedValue('mod', isset($args['mod']) ? $args['mod'] : null, 'POST');
     $objectid = FormUtil::getPassedValue('objectid', isset($args['objectid']) ? $args['objectid'] : null, 'POST');
     $redirect = FormUtil::getPassedValue('redirect', isset($args['redirect']) ? $args['redirect'] : null, 'POST');
+    $useurl = FormUtil::getPassedValue('useurl', isset($args['useurl']) ? $args['useurl'] : null, 'POST');
     $comment = FormUtil::getPassedValue('comment', isset($args['comment']) ? $args['comment'] : null, 'POST');
     $subject = FormUtil::getPassedValue('subject', isset($args['subject']) ? $args['subject'] : null, 'POST');
     $replyto = FormUtil::getPassedValue('replyto', isset($args['replyto']) ? $args['replyto'] : null, 'POST');
@@ -314,6 +323,9 @@ function EZComments_user_comment($args)
 
     // assign the user is of the content owner
     $renderer->assign('owneruid',	(int)FormUtil::getPassedValue('owneruid'));
+    
+    // assign useurl if there was another url for email and storing submitted
+    $render->assign('useurl',		$useurl);
 
     // find out which template to use
     $template = pnModGetVar('EZComments', 'template');
@@ -352,16 +364,18 @@ function EZComments_user_comment($args)
  */
 function EZComments_user_create($args)
 {
-    $mod = FormUtil::getPassedValue('mod', isset($args['mod']) ? $args['mod'] : null, 'POST');
-    $owneruid = FormUtil::getPassedValue('owneruid', isset($args['owneruid']) ? $args['owneruid'] : null, 'POST');
-    $objectid = FormUtil::getPassedValue('objectid', isset($args['objectid']) ? $args['objectid'] : null, 'POST');
-    $redirect = FormUtil::getPassedValue('redirect', isset($args['redirect']) ? $args['redirect'] : null, 'POST');
-    $comment = FormUtil::getPassedValue('comment', isset($args['comment']) ? $args['comment'] : null, 'POST');
-    $subject = FormUtil::getPassedValue('subject', isset($args['subject']) ? $args['subject'] : null, 'POST');
-    $replyto = FormUtil::getPassedValue('replyto', isset($args['replyto']) ? $args['replyto'] : null, 'POST');
+    $mod 		= FormUtil::getPassedValue('mod', 		isset($args['mod']) ? $args['mod'] : null, 'POST');
+    $owneruid 	= FormUtil::getPassedValue('owneruid',	isset($args['owneruid']) ? $args['owneruid'] : null, 'POST');
+    $objectid 	= FormUtil::getPassedValue('objectid',	isset($args['objectid']) ? $args['objectid'] : null, 'POST');
+    $redirect 	= FormUtil::getPassedValue('redirect',	isset($args['redirect']) ? $args['redirect'] : null, 'POST');
+    $useurl 	= FormUtil::getPassedValue('useurl', 	isset($args['useurl']) ? $args['useurl'] : null, 'POST');
+    $comment 	= FormUtil::getPassedValue('comment', 	isset($args['comment']) ? $args['comment'] : null, 'POST');
+    $subject 	= FormUtil::getPassedValue('subject', 	isset($args['subject']) ? $args['subject'] : null, 'POST');
+    $replyto 	= FormUtil::getPassedValue('replyto', 	isset($args['replyto']) ? $args['replyto'] : null, 'POST');
 
     if (!isset($owneruid) || (!($owneruid > 1))) $owner_uid = 0;
-    $redirect = base64_decode($redirect);
+    $redirect 	= base64_decode($redirect);
+    $useurl 	= base64_decode($useurl);
 
     // Confirm authorisation code.
     if (!SecurityUtil::confirmAuthKey()) {
@@ -387,7 +401,7 @@ function EZComments_user_create($args)
 	
     $redirect = str_replace('&amp;', '&', $redirect);
     // now parse out the hostname from the url for storing in the DB
-    $url = str_replace(pnGetBaseURL(), '', $redirect);
+    $url = str_replace(pnGetBaseURL(), '', $url);
 
     $id = pnModAPIFunc('EZComments',
                        'user',
@@ -400,6 +414,7 @@ function EZComments_user_create($args)
                              'replyto'     => $replyto,
                              'uid'         => pnUserGetVar('uid'),
                              'owneruid'	   => $owneruid,
+                             'useurl'	   => $useurl,
                              'anonname'    => $anonname,
                              'anonmail'    => $anonmail,
 							 'anonwebsite' => $anonwebsite));
