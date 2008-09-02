@@ -31,7 +31,7 @@
       <!--[assign  var="subject"  value=$comments[comments].subject]-->
     <!--[/if]-->
   <!--[/section]-->
-  <form action="<!--[pnmodurl modname=EZComments func=create]-->" method="post">
+  <form action="<!--[pngetbaseurl]--><!--[pnmodurl modname=EZComments func=create]-->" method="post">
   <div>
     <input type="hidden" name="authid" id="authid" value="<!--[pnsecgenauthkey module=EZComments]-->" /> 
     <input type="hidden" name="replyto" id="EZComments_replyto" value="<!--[$replyto|pnvarprepfordisplay]-->" />

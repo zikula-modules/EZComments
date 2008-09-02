@@ -54,7 +54,7 @@
         <!--[$comments[comments].comment|formatezcomment|pnvarprephtmldisplay]-->
             <!--[if $comments[comments].del]-->
           <br />
-          <form action="<!--[pnmodurl modname=EZComments type=admin func=delete id=$comments[comments].id]-->" method="post">
+          <form action="<!--[pngetbaseurl]--><!--[pnmodurl modname=EZComments type=admin func=delete id=$comments[comments].id]-->" method="post">
           <div>
             <input type="hidden" name="redirect" id="EZComments_redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" /> 
             <input type="hidden" name="owneruid" id="EZComments_owneruid" value="<!--[$owneruid|pnvarprepfordisplay]-->" />
@@ -76,7 +76,7 @@
   <a id="commentform"></a>
   <!--[* This is the form to comment. It is shown only, when the user is allowed to. *]-->
   <div><!--[pnml name=_EZCOMMENTS_COMMENT_ADD]--></div>
-  <form id="post" action="<!--[pnmodurl modname=EZComments func=create]-->" method="post">
+  <form id="post" action="<!--[pngetbaseurl]--><!--[pnmodurl modname=EZComments func=create]-->" method="post">
   <div>
     <input type="hidden" name="authid" id="authid" value="<!--[pnsecgenauthkey module=EZComments]-->" /> 
     <input type="hidden" name="redirect" id="EZComments_redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" /> 

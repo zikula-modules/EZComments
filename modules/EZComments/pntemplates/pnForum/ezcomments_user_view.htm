@@ -102,7 +102,7 @@
 					<a title="<!--[pnml name='_EZCOMMENTS_SEND_PM']-->" href="<!--[pnmodurl modname=Messages func=compose uname=$comments[comments].uname]-->"><!--[pnimg src="sendpm.gif" alt='_EZCOMMENTS_SEND_PM' altml=true]--></a>
 				<!--[/if]-->
 				<!--[if $comments[comments].del]-->
-				<form class="ezcomments_deleteform" action="<!--[pnmodurl modname=EZComments type=admin func=modify id=$comments[comments].id]-->" method="post">
+				<form class="ezcomments_deleteform" action="<!--[pngetbaseurl]--><!--[pnmodurl modname=EZComments type=admin func=modify id=$comments[comments].id]-->" method="post">
 					<div>
 			            <input type="hidden" name="owneruid" id="EZComments_owneruid" value="<!--[$owneruid|pnvarprepfordisplay]-->" />
 						<input type="hidden" name="useurl" id="EZComments_useurl" value="<!--[$useurl|pnvarprepfordisplay]-->" />
@@ -125,7 +125,7 @@
 	<!--[* This is the form to comment. It is shown only, when the user is allowed to. *]-->
 	<a id="commentform"></a>
 	<h3><!--[pnml name=_EZCOMMENTS_COMMENT_ADD]--></h3>
-	<form id="ezcomments_commentform" action="<!--[pnmodurl modname=EZComments func=create]-->" method="post">
+	<form id="ezcomments_commentform" action="<!--[pngetbaseurl]--><!--[pnmodurl modname=EZComments func=create]-->" method="post">
 		<div>
 			<input type="hidden" name="authid" id="authid" value="<!--[pnsecgenauthkey module=EZComments]-->" />
 			<input type="hidden" name="redirect" id="EZComments_redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" />

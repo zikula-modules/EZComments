@@ -25,7 +25,7 @@
 <h3><!--[pnml name=_EZCOMMENTS]--></h3>
 <p><!--[pnml name=_EZCOMMENTS_RULES]--></p>
 <!--[if $allowadd]-->
-  <form action="<!--[pnmodurl modname=EZComments func=create]-->" method="post">
+  <form action="<!--[pngetbaseurl]--><!--[pnmodurl modname=EZComments func=create]-->" method="post">
   <div>
     <input type="hidden" name="authid" id="authid" value="<!--[pnsecgenauthkey module="EZComments"]-->" /> 
 	<input type="hidden" name="owneruid" id="EZComments_owneruid" value="<!--[$owneruid|pnvarprepfordisplay]-->" />

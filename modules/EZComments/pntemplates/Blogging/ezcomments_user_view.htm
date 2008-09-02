@@ -47,7 +47,7 @@
 <!--[if $allowadd]-->
 <div id="commentform">
 	<a id="postcomment"></a><h3>Leave a Comment</h3>
-	<form id="post" action="<!--[pnmodurl modname=EZComments func=create]-->" method="post">
+	<form id="post" action="<!--[pngetbaseurl]--><!--[pnmodurl modname=EZComments func=create]-->" method="post">
 	<div>
           <input type="hidden" name="authid" id="authid" value="<!--[pnsecgenauthkey module=EZComments]-->" />
           <input type="hidden" name="owneruid" id="EZComments_owneruid" value="<!--[$owneruid|pnvarprepfordisplay]-->" />
