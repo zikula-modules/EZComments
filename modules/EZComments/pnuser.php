@@ -147,7 +147,8 @@ function EZComments_user_view($args)
     }
 
     // we may get some input in from the navigation bar
-    list ($template, $order) = FormUtil::getPassedValue('template', 'order');
+    $order 		= FormUtil::getpassedValue('order');
+    $template	= FormUtil::getPassedValue('template');
     if ($order == 1) {
         $sortorder = 'DESC';
     } else {
