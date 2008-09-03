@@ -326,7 +326,7 @@ function EZComments_user_comment($args)
     $renderer->assign('owneruid',	(int)FormUtil::getPassedValue('owneruid'));
     
     // assign useurl if there was another url for email and storing submitted
-    $render->assign('useurl',		$useurl);
+    $renderer->assign('useurl',		$useurl);
 
     // find out which template to use
     $template = pnModGetVar('EZComments', 'template');
