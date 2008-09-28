@@ -430,7 +430,7 @@ function EZComments_userapi_create($args)
 		$renderer->assign('date', $date);
 		if ($uid > 0) {
 			$username = pnUserGetVars($uid);
-			$renderer->assign('user', $username['uname']." ".$username['email']);
+			$renderer->assign('user', $username['uname']);
 		} else {
 			$renderer->assign('user', $anonname." ".$anonmail);
 		}
@@ -453,7 +453,7 @@ function EZComments_userapi_create($args)
 		$renderer->assign('date', $date);
 		if ($uid > 0) {
 			$username = pnUserGetVars($uid);
-			$renderer->assign('user', $username['uname']." ".$username['email']);
+			$renderer->assign('user', $username['uname']);
 		} else {
 			$renderer->assign('user', $anonname." ".$anonmail);
 		}
