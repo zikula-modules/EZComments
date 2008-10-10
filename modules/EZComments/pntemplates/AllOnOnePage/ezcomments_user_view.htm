@@ -48,7 +48,7 @@
         </td>
         <td style="background-color:<!--[pnthemegetvar name="bgcolor3"]-->; width:85%;" valign="top">
         <!--[if $comments[comments].subject neq '']-->
-          <strong><!--[$comments[comments].subject|pnvarprepfordisplay]--></strong>
+          <strong><!--[$comments[comments].subject|pnvarprepfordisplay|pnmodcallhooks]--></strong>
           <br />
         <!--[/if]-->
         <!--[$comments[comments].comment|formatezcomment|pnvarprephtmldisplay]-->

@@ -47,7 +47,7 @@
           <strong><!--[$comments[comments].subject|pnvarprepfordisplay]--></strong>
           <br />
         <!--[/if]-->
-        <!--[$comments[comments].comment|formatezcomment|pnvarprephtmldisplay]-->
+        <!--[$comments[comments].comment|formatezcomment|pnvarprephtmldisplay|pnmodcallhooks]-->
             <!--[if $comments[comments].del]-->
           <br />
           <form action="<!--[pngetbaseurl]--><!--[pnmodurl modname=EZComments type=admin func=delete id=$comments[comments].id]-->" method="post">
