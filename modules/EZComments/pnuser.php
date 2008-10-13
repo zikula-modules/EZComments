@@ -416,6 +416,7 @@ function EZComments_user_create($args)
                              'uid'         => pnUserGetVar('uid'),
                              'owneruid'	   => $owneruid,
                              'useurl'	   => $useurl,
+                             'redirect'	   => $redirect,
                              'anonname'    => $anonname,
                              'anonmail'    => $anonmail,
 							 'anonwebsite' => $anonwebsite));

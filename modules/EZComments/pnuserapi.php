@@ -215,16 +215,20 @@ function EZComments_userapi_create($args)
         return LogUtil::registerError(_MODARGSERROR);
     }
     $owneruid 	= (int)$args['owneruid'];
+    // Sometimes the displayurl for the redirect is another url then the url, 
+	// that should be sent via email.
     $useurl 	= $args['useurl'];
+    $redirect 	= $args['redirect'];
     if (isset($useurl) && (strlen($useurl) > 0)) {
 	    $useurl 		= str_replace('&amp;', '&', $useurl);
 		$url 			= $useurl;
 	}
+	else {
+	  	$baseURL = pnGetBaseURL();
+		$args['url'] = $baseURL.str_replace($baseURL,'',$redirect);
+		$url = $args['url'];
+	}
     
-    // Sometimes the displayurl for the redirect is another url then the url, 
-	// that should be sent via email.
-	if (isset($args['useurl']) && (strlen($args['useurl'] > 0))) $args['url'] = $args['useurl'];
-
     // ContactList ignore check. If the user is ignored by the 
 	// content owner the user will not be able to post any comment...
 	if (	(pnUserGetVar('uid') > 1) 		&& 
