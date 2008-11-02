@@ -54,8 +54,9 @@ function EZComments_admin_main()
     }
 
     // presentation values
-    $showall = (bool)FormUtil::getPassedValue('showall', true, 'GETPOST');
-    $itemsperpage = $showall == true ? -1 : pnModGetVar('EZComments', 'itemsperpage');
+	$showall = (int)FormUtil::getPassedValue('showall');
+    if ((int)$showall == 1 ) $itemsperpage = -1;
+	else $itemsperpage = pnModGetVar('EZComments', 'itemsperpage');
     $startnum = FormUtil::getPassedValue('startnum', null, 'GETPOST');
     if (!isset($showall)) {
          $showall = false;
