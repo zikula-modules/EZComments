@@ -50,23 +50,24 @@
  */
 function EZComments_userapi_getall($args)
 {
-    extract($args);
+    //extract($args);
 
-    if (!isset($startnum) || !is_numeric($startnum)) {
-        $startnum = 1;
+    if (!isset($args['startnum']) || !is_numeric($args['startnum'])) {
+        $args['startnum'] = 1;
     }
-    if (!isset($numitems) || !is_numeric($numitems)) {
-        $numitems = -1;
+    if (!isset($args['numitems']) || !is_numeric($args['numitems'])) {
+        $args['numitems'] = -1;
     }
-    if (!isset($status) || !is_numeric($status)) {
-        $status = -1;
+    if (!isset($args['status']) || !is_numeric($args['status'])) {
+        $args['status'] = -1;
     }
 
+    // create empty array
     $items = array();
 
     // Security check
-    if (isset($mod) && isset($objectid)) {
-        if (!SecurityUtil::checkPermission('EZComments::', "$mod:$objectid:", ACCESS_READ)) {
+    if (isset($args['mod']) && isset($args['objectid'])) {
+        if (!SecurityUtil::checkPermission('EZComments::', $args['mod'].':'.$args['objectid'].':', ACCESS_READ)) {
             return $items;
         }
     } else {
@@ -75,34 +76,30 @@ function EZComments_userapi_getall($args)
         }
     }
 
-    // Get datbase setup
-    $dbconn = pnDBGetConn(true);
+    // Get database setup
     $pntable = pnDBGetTables();
 
-    $EZCommentstable = $pntable['EZComments'];
     $EZCommentscolumn = &$pntable['EZComments_column'];
 
     // form where clause
     $whereclause = array();
-    if (isset($mod)) {
-        $querymodname = DataUtil::formatForStore($mod);
-        $whereclause[] = "$EZCommentscolumn[modname] = '$querymodname'";
-        if (isset($objectid)) {
-            $queryobjectid = DataUtil::formatForStore($objectid);
-            $whereclause[] = "$EZCommentscolumn[objectid] = '$queryobjectid'";
+    if (isset($args['mod'])) {
+        $whereclause[] = "$EZCommentscolumn[modname] = '" . DataUtil::formatForStore($args['mod']) . "'";
+        if (isset($args['objectid'])) {
+            $whereclause[] = "$EZCommentscolumn[objectid] = '" . DataUtil::formatForStore($args['objectid']) . "'";
         }
     }
-    if ($status != -1) {
-        $whereclause[] = "$EZCommentscolumn[status] = '$status'";
+    if ($args['status'] != -1) {
+        $whereclause[] = "$EZCommentscolumn[status] = '" . DataUtil::formatForStore($args['status']) . "'";
     }
-    if (isset($search)) {
+    if (isset($args['search'])) {
         $where_array = array();
-        foreach($search['words'] as $word) {
+        foreach($args['search']['words'] as $word) {
             $word = DataUtil::formatForStore($word);
             $where_array[] = "( $EZCommentscolumn[subject] LIKE '%$word%'
                              OR $EZCommentscolumn[comment] LIKE '%$word%' )";
         }
-        if ($search['bool'] == 'AND') {
+        if ($args['search']['bool'] == 'AND') {
             $andor = ' AND ';
         } else {
             $andor = ' OR ';
@@ -110,79 +107,38 @@ function EZComments_userapi_getall($args)
         $whereclause[] = implode($andor, $where_array);
     }
 
-    $wherestring = '';
+    $where = '';
     if (!empty($whereclause)) {
-        $wherestring = 'WHERE ' . implode(' AND ', $whereclause);
+        $where = 'WHERE ' . implode(' AND ', $whereclause);
     }
 
-    // form the order clause
-    $orderstring = '';
-    if (isset($sortby) && isset($EZCommentscolumn[$sortby])) {
-        $orderstring = "ORDER BY $EZCommentscolumn[$sortby]";
+    // form the orderby clause
+    $orderby = '';
+    if (isset($args['sortby']) && isset($EZCommentscolumn[$args['sortby']])) {
+        $orderby = 'ORDER BY '. $EZCommentscolumn[$args['sortby']];
     } else {
-        $orderstring = "ORDER BY $EZCommentscolumn[date]";
+        $orderby = "ORDER BY $EZCommentscolumn[date]";
     }
 
-    $orderby = 'DESC';
-    if (isset($sortorder) && (strtoupper($sortorder) == 'DESC' || strtoupper($sortorder) == 'ASC')) {
-        $orderby = $sortorder;
+    if (isset($args['sortorder']) && (strtoupper($args['sortorder']) == 'DESC' || strtoupper($args['sortorder']) == 'ASC')) {
+        $orderby .= ' ' . DataUtil::formatForStore($args['sortorder']);
     }
 
-    // Get items
-    $sql = "SELECT $EZCommentscolumn[id],
-                   $EZCommentscolumn[modname],
-                   $EZCommentscolumn[objectid],
-                   $EZCommentscolumn[url],
-                   $EZCommentscolumn[date],
-                   $EZCommentscolumn[uid],
-                   $EZCommentscolumn[owneruid],
-                   $EZCommentscolumn[comment],
-                   $EZCommentscolumn[subject],
-                   $EZCommentscolumn[replyto],
-                   $EZCommentscolumn[anonname],
-                   $EZCommentscolumn[anonmail],
-                   $EZCommentscolumn[status],
-                   $EZCommentscolumn[ipaddr],
-                   $EZCommentscolumn[type],
-                   $EZCommentscolumn[anonwebsite]
-            FROM $EZCommentstable
-            $wherestring $orderstring $orderby";
-    $result = $dbconn->SelectLimit($sql, $numitems, $startnum-1);
-
-    // Check for an error with the database code, and if so set an appropriate
-    // error message and return
-    if ($dbconn->ErrorNo() != 0) {
-        return LogUtil::registerError(_GETFAILED, 'index.php');
+    $permFilter[]  = array ('realm'            =>  0,
+                            'component_left'   =>  'EZComments',
+                            'component_middle' =>  '',
+                            'component_right'  =>  '',
+                            'instance_left'    =>  'modname',
+                            'instance_middle'  =>  'objectid',
+                            'instance_right'   =>  'id',
+                            'level'            =>  ACCESS_READ);
+    $items = DBUtil::selectObjectArray('EZComments', $where, $orderby, $args['startnum']-1, $args['numitems'], '', $permFilter);
+    
+    // backwards compatibilty: modname -> mod
+    foreach ($items as $key => $dummy) {
+        $items[$key]['mod'] = $items[$key]['modname'];
     }
 
-    // Put items into result array.  Note that each item is checked
-    // individually to ensure that the user is allowed access to it before it
-    // is added to the results array
-    for (; !$result->EOF; $result->MoveNext()) {
-        list($id, $mod, $objectid, $url, $date, $uid, $owneruid, $comment, $subject, $replyto, $anonname, $anonmail, $status, $ipaddr, $type, $anonwebsite) = $result->fields;
-        if (SecurityUtil::checkPermission('EZComments::', "$mod:$objectid:$id", ACCESS_READ)) {
-            if ($uid == 1 && empty($anonname)) {
-                $anonname = pnConfigGetVar('anonymous');
-            }
-            $items[] = compact('id',
-                               'mod',
-                               'objectid',
-                               'url',
-                               'date',
-                               'uid',
-                               'owneruid',
-                               'comment',
-                               'subject',
-                               'replyto',
-                               'anonname',
-                               'anonmail',
-                               'status',
-							   'ipaddr',
-							   'type',
-							   'anonwebsite');
-        }
-    }
-    $result->Close();
     // Return the items
     return $items;
 }
@@ -219,7 +175,7 @@ function EZComments_userapi_create($args)
 	// that should be sent via email.
     $useurl 	= $args['useurl'];
     $redirect 	= $args['redirect'];
-    if (isset($useurl) && (strlen($useurl) > 0)) {
+    if (isset($useurl) && !empty($useurl)) {
 	    $useurl 		= str_replace('&amp;', '&', $useurl);
 		$url 			= $useurl;
 	}
@@ -233,14 +189,13 @@ function EZComments_userapi_create($args)
 	// content owner the user will not be able to post any comment...
 	if (	(pnUserGetVar('uid') > 1) 		&& 
 			($owneruid>0) 					&& 
-			pnModAvailable('ContatList') 	&& 
+			pnModAvailable('ContactList') 	&& 
 			pnModAPIFunc('ContactList','user','isIgnored',array(
 					'iuid' => pnUserGetVar('uid'),
 					'uid' => $owneruid
 					))
 		) {
-		LogUtil::registerError('_EZCOMMENTS_USER_IGNORES_YOU');
-		return false;
+		return LogUtil::registerError('_EZCOMMENTS_USER_IGNORES_YOU');
 	}
 	
     // check unregistered user included name (if required)
@@ -282,7 +237,7 @@ function EZComments_userapi_create($args)
         return LogUtil::registerPermissionError('index.php');
     }
 
-    // Get datbase setup
+    // Get database setup
     $dbconn = pnDBGetConn(true);
     $pntable = pnDBGetTables();
 
@@ -446,8 +401,7 @@ function EZComments_userapi_create($args)
                            'subject' => $mailsubject, 'body' => $mailbody));
     }
     if (pnModGetVar('EZComments', 'moderationmail') && $maxstatus == 1) {
-        $renderer = new pnRender('EZComments');
-		$renderer->caching = false;
+        $renderer = pnRender::getInstance('EZComments', false);
         $renderer->assign('comment', $comment);
         $renderer->assign('url', $url);
         $renderer->assign('moderate', pnModURL('EZComments', 'user', 'modify', array('id' => $id)));
@@ -506,7 +460,7 @@ function EZComments_userapi_get($args)
     $comment = DBUtil::selectObjectByID('EZComments', $args['id']); 
     
     if($comment <> false && is_array($comment)) {
-        // BC compatibility
+        // backwards compatibility
         $comment['mod'] = $comment['modname'];
     }
     return $comment;
@@ -530,7 +484,7 @@ function EZComments_userapi_countitems($args)
         return false;
     }
 
-    // Get datbase setup
+    // Get database setup
     $dbconn = pnDBGetConn(true);
     $pntable = pnDBGetTables();
 
@@ -721,7 +675,7 @@ function EZComments_userapi_getcommentingusers($args)
 		return $items;
 	}
 
-    // Get datbase setup
+    // Get database setup
     $dbconn = pnDBGetConn(true);
     $pntable = pnDBGetTables();
 
@@ -758,7 +712,7 @@ function EZComments_userapi_getallbymodule($args)
 	}
 	$mod = DataUtil::formatForOS($mod);
 
-    // Get datbase setup
+    // Get database setup
     $dbconn = pnDBGetConn(true);
     $pntable = pnDBGetTables();
 
