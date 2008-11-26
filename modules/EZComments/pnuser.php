@@ -155,10 +155,7 @@ function EZComments_user_view($args)
     } else {
         $sortorder = 'ASC';
     }
-        
-	// override sortorder if sortorder is sent via hook call parameter
-	if (isset($args['extrainfo']['sortorder']) && strtolower($args['extrainfo']['sortorder']) == 'desc') $sortorder = 'DESC';
-   
+  
 	$status = 0;
 
 	// check if we're using the pager

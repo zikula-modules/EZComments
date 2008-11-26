@@ -119,9 +119,11 @@ function EZComments_userapi_getall($args)
     } else {
         $orderby = "ORDER BY $EZCommentscolumn[date]";
     }
-
+   
     if (isset($args['sortorder']) && (strtoupper($args['sortorder']) == 'DESC' || strtoupper($args['sortorder']) == 'ASC')) {
-        $orderby .= ' ' . DataUtil::formatForStore($args['sortorder']);
+        $orderby .= ' ' . $args['sortorder'];
+    } else {
+        $orderby .= ' DESC';
     }
 
     $permFilter[]  = array ('realm'            =>  0,
