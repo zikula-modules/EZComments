@@ -92,6 +92,7 @@ function EZComments_user_main($args)
 					'module'	=> $item['mod'],
 					'objectid'	=> $item['objectid'],
 					'commentid'	=> $item['id'],
+					'uid'		=> $item['uid'],
 					'level'		=> ACCESS_EDIT			));
         if ($securityCheck) {
 	        $options = array(array('url' => $item['url'] . '#comments',
@@ -174,7 +175,7 @@ function EZComments_user_view($args)
                           'user',
                           'getall',
                            compact('mod', 'objectid','sortorder','status','numitems','startnum'));
-
+//die(prayer($items));
     if ($items === false) {
         return LogUtil::registerError(_EZCOMMENTS_FAILED, null, 'index.php');
     }     
@@ -475,6 +476,7 @@ function EZComments_prepareCommentsForDisplay($items)
 					'module'	=> $comment['mod'],
 					'objectid'	=> $comment['objectid'],
 					'commentid'	=> $comment['id'],
+					'uid'		=> $comment['uid'],
 					'level'		=> ACCESS_DELETE			));
         $comments[] = $comment;
     }

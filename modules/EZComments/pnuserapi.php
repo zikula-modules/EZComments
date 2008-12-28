@@ -764,6 +764,7 @@ function EZComments_userapi_getallbymodule($args)
  * @param $args['module'] string module's name
  * @param $args['objectid'] int object's id
  * @param $args['commentid'] int id of comment
+ * @param $args['uid'] int commenting user's uid (opt)
  * @param $args['level'] string security level for SecurityUtil
  *
  * @return boolean
@@ -777,6 +778,9 @@ function EZComments_userapi_checkPermission($args) {
 	$inst 		= $module.":".$objectid.":".$commentid;	   	
 	$uid		= pnUserGetVar('uid');
 
+	// own comments = ok
+	if ($uid == (int)$args['uid']) return true;
+
 	// parameter check
   	if ((!isset($module)) || (!isset($level)) || (!isset($objectid)) || (!isset($commentid))) return false;
 
@@ -785,7 +789,7 @@ function EZComments_userapi_checkPermission($args) {
 
 	// otherwise: get the comment, check the owneruid and return the result
 	$comment = DBUtil::selectObjectByID('EZComments',$commentid);
-	if ($comment['owneruid'] == $uid) return true;	
+	if (($comment['owneruid'] == $uid) || ($comment['uid'] == $uid)) return true;	
 	// otherwise return false because no security check had a positive result
   	return false;
 }
