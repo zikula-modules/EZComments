@@ -83,33 +83,20 @@ function EZComments_adminapi_getUsedModules()
  **/
 function EZComments_adminapi_deleteall($args)
 {
+  	// Security and argument check
     if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
         return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));
     } 
-
     if (!isset($args['module'])) { 
         return false;
     }
-    
-    
-    $dbconn = pnDBGetConn(true);
+
+	// get tables    
     $pntable = pnDBGetTables();
-
-    $table = $pntable['EZComments'];
     $column = &$pntable['EZComments_column']; 
-
-    $sql = "DELETE FROM $table
-            WHERE $column[modname] = '$args[module]'";
-            
-    $result = $dbconn->Execute($sql);
-
-    if ($dbconn->ErrorNo() != 0) {
-    echo $dbconn->ErrorMsg;
-        return false;
-    }
-    $result->Close(); 
-
-    return true;
+	// construct where clause and delete...
+	$where ="WHERE $column[modname] = '$args[module]'";
+	return DBUtil::deleteWhere('EZComments',$where);
 }
 
 /**
@@ -120,7 +107,8 @@ function EZComments_adminapi_deleteall($args)
  *
  * @author Timo (Numerobis)
  * @since 0.3
- * @param $args[mod] the module for which to delete for
+ * @param $args['mod'] 			string	the module for which to delete for
+ * @param $args['objectid'] 	int		the module for which to delete for
  * @return boolean sucess status
  **/
 function EZComments_adminapi_deletebyitem($args)
@@ -133,29 +121,21 @@ function EZComments_adminapi_deletebyitem($args)
 	} else {
 		$mod = $args['mod'];
 	}
-    $objectid = $args['objectid'];
+    $objectid = (int)$args['objectid'];
+    if (!($objectid > 0)) {
+		return false;
+	}
     
     if (!SecurityUtil::checkPermission('EZComments::', "$mod:$objectid:", ACCESS_ADMIN)) {
         return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));
     } 
 
-    $dbconn = pnDBGetConn(true);
+	// get db table and column for where statement
     $pntable = pnDBGetTables();
-
-    $table = $pntable['EZComments'];
     $column = &$pntable['EZComments_column'];
 
-    $sql = "DELETE FROM $table
-            WHERE $column[modname] = '$mod' AND $column[objectid] = '$objectid'";
-    $result = $dbconn->Execute($sql);
-
-    if ($dbconn->ErrorNo() != 0) {
-        echo $dbconn->ErrorMsg;
-        return false;
-    } 
-    $result->Close();
-
-    return true;
+	$where = $column['modname']." = '".$mod."' AND ".$column['objectid']." = '".$objectid."'";
+	return DBUtil::deleteWhere('EZComments',$where);
 } 
 
 /**
@@ -191,10 +171,8 @@ function EZComments_adminapi_delete($args)
         return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));
     }
 
-    $res = DBUtil::deleteObjectByID('EZComments', (int)pnVarPrepForStore($id));
-
     // Check for an error with the database code
-    if ($res == false) {
+    if (!DBUtil::deleteObjectByID('EZComments', (int)pnVarPrepForStore($id))) {
         return LogUtil::registerError(_DELETEFAILED);
     }
 
@@ -245,11 +223,9 @@ function EZComments_adminapi_update($args)
         return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));
     }
 
-    $res = DBUtil::updateObject($args, 'EZComments');
-
     // Check for an error with the database code, and if so set an
     // appropriate error message and return
-    if ($res == false) {
+    if (!DBUtil::updateObject($args, 'EZComments')) {
         return LogUtil::registerError(_UPDATEFAILED);
     }
 
@@ -285,17 +261,14 @@ function EZComments_adminapi_deletemodule($args)
     }
 
     // Database information
-    $dbconn = pnDBGetConn(true);
     $pntable = pnDBGetTables();
     $EZCommentstable = $pntable['EZComments'];
     $EZCommentscolumn = &$pntable['EZComments_column']; 
 
     // Get items
-    $sql = "DELETE FROM $EZCommentstable
-            WHERE $EZCommentscolumn[modname] = '" . pnVarPrepForStore($mod) . "'";
-    $result = $dbconn->Execute($sql);
+    $where = "WHERE ".$EZCommentscolumn['modname']." = '" . pnVarPrepForStore($mod) . "'";
 
-    return $extrainfo;
+    return DBUtil::deleteWhere('EZComments',$where);
 }
 
 /**
@@ -321,25 +294,19 @@ function EZComments_adminapi_purge($args)
     }
 
     // Get datbase setup
-    $dbconn = pnDBGetConn(true);
     $pntable = pnDBGetTables();
-    $table = $pntable['EZComments'];
     $column = &$pntable['EZComments_column'];
 
     if ((bool)$purgerejected) {
-        $sql = "DELETE FROM $table
-                WHERE $column[status] = '2'";
-        $dbconn->Execute($sql);
-        if ($dbconn->ErrorNo() != 0) {
+		$where ="WHERE ".$column['status']." = '2'";
+        if (!DBUtil::deleteWhere('EZComments',$where)) {
             return LogUtil::registerError(_DELETEFAILED);
         }
     }
 
     if ((bool)$purgepending) {
-        $sql = "DELETE FROM $table
-                WHERE $column[status] = '1'";
-        $dbconn->Execute($sql);
-        if ($dbconn->ErrorNo() != 0) {
+		$where = "WHERE ".$column['status']." = '1'";
+        if (!DBUtil::deleteWhere('EZComments',$where)) {
             return LogUtil::registerError(_DELETEFAILED);
         }
     }
@@ -357,9 +324,9 @@ function EZComments_adminapi_purge($args)
  */
 function EZComments_adminapi_updatestatus($args)
 {
-    // Get arguments from argument array
-    extract($args);
-
+	// get arguments
+	$id      = $args['id'];
+	$status  = $args['status'];
     // Argument check
     if (isset($id) && !is_numeric($id) && isset($status) && !is_numeric($status)) {
         return LogUtil::registerError(_MODARGSERROR);
@@ -382,31 +349,14 @@ function EZComments_adminapi_updatestatus($args)
         return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));
     }
 
-    // Get datbase setup
-    $dbconn = pnDBGetConn(true);
-    $pntable = pnDBGetTables();
-    $EZCommentstable = $pntable['EZComments'];
-    $EZCommentscolumn = &$pntable['EZComments_column']; 
-
-    // 
-    list($id, $status) = pnVarPrepForStore($id, $status);
-
-    // Update the item
-    $sql = "UPDATE $EZCommentstable
-            SET $EZCommentscolumn[status] = '".(int)$status."'
-            WHERE $EZCommentscolumn[id] = '".(int)$id."'";
-    $dbconn->Execute($sql);
-
-    // Check for an error with the database code
-    if ($dbconn->ErrorNo() != 0) {
-        return LogUtil::registerError(_UPDATEFAILED);
-    }
-
-    // Let any hooks know that we have updated an item.
-    pnModCallHooks('item', 'update', $id, array('module' => 'EZComments'));
-
-    // Let the calling process know that we have finished successfully
-    return true;
+	// Update item and store item
+	$item['status'] = $args['status'];
+	if (DBUtil::updateObject($item,'EZComments')) {
+	    // Let any hooks know that we have updated an item.
+	    pnModCallHooks('item', 'update', $id, array('module' => 'EZComments'));	  	
+	    return true;
+	}
+	else return false;
 }
 
 /**

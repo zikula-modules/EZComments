@@ -105,7 +105,6 @@ function EZComments_user_main($args)
  	
 }
 
-
 /**
  * Display comments for a specific item
  * 
