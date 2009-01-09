@@ -234,15 +234,15 @@ function EZComments_user_view($args)
  */
 function EZComments_user_comment($args)
 {
-    $mod = FormUtil::getPassedValue('mod', isset($args['mod']) ? $args['mod'] : null, 'POST');
-    $objectid = FormUtil::getPassedValue('objectid', isset($args['objectid']) ? $args['objectid'] : null, 'POST');
-    $redirect = FormUtil::getPassedValue('redirect', isset($args['redirect']) ? $args['redirect'] : null, 'POST');
-    $useurl = FormUtil::getPassedValue('useurl', isset($args['useurl']) ? $args['useurl'] : null, 'POST');
-    $comment = FormUtil::getPassedValue('comment', isset($args['comment']) ? $args['comment'] : null, 'POST');
-    $subject = FormUtil::getPassedValue('subject', isset($args['subject']) ? $args['subject'] : null, 'POST');
-    $replyto = FormUtil::getPassedValue('replyto', isset($args['replyto']) ? $args['replyto'] : null, 'POST');
-    $template = FormUtil::getPassedValue('template', isset($args['template']) ? $args['template'] : null, 'POST');
-    $order = FormUtil::getPassedValue('order', isset($args['order']) ? $args['order'] : null, 'POST');
+    $mod         = FormUtil::getPassedValue('mod', isset($args['mod']) ? $args['mod'] : null, 'POST');
+    $objectid    = FormUtil::getPassedValue('objectid', isset($args['objectid']) ? $args['objectid'] : null, 'POST');
+    $redirect    = FormUtil::getPassedValue('redirect', isset($args['redirect']) ? $args['redirect'] : null, 'POST');
+    $useurl      = FormUtil::getPassedValue('useurl', isset($args['useurl']) ? $args['useurl'] : null, 'POST');
+    $comment     = FormUtil::getPassedValue('comment', isset($args['comment']) ? $args['comment'] : null, 'POST');
+    $subject     = FormUtil::getPassedValue('subject', isset($args['subject']) ? $args['subject'] : null, 'POST');
+    $replyto     = FormUtil::getPassedValue('replyto', isset($args['replyto']) ? $args['replyto'] : null, 'POST');
+    $template    = FormUtil::getPassedValue('template', isset($args['template']) ? $args['template'] : null, 'POST');
+    $order       = FormUtil::getPassedValue('order', isset($args['order']) ? $args['order'] : null, 'POST');
 
     if ($order == 1) {
         $sortorder = 'DESC';
