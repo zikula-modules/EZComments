@@ -34,6 +34,10 @@
       <tr>
         <td style="background-color:<!--[pnthemegetvar name="bgcolor2"]-->; width:15%;" valign="top">
 		<a id="comment<!--[$comments[comments].id]-->"></a>
+		<!--[pnusergetvar name="_YOURAVATAR" uid=$comments[comments].uid assign="avatar"]-->
+		<!--[if $avatar ne "" and $avatar ne "blank.gif"]-->
+			<img src="<!--[pngetbaseurl]-->/images/avatar/<!--[$avatar]-->" /><br />
+		<!--[/if]-->
         <!--[if $comments[comments].anonname neq '']-->
           <!--[$comments[comments].anonname|pnvarprepfordisplay]-->
         <!--[else]-->
