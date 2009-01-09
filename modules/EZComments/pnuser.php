@@ -80,11 +80,13 @@ function EZComments_user_main($args)
     // loop through each item adding the relevant links
     $comments = array();
     foreach ($items as $item) {
-		$options = array(array('url' => $item['url'] . '#comments',
-		                       'title' => _VIEW)); 
-		$options[] = array('url'   => pnModURL('EZComments', 'user', 'modify', array('id' => $item['id'])),
-		                   'title' => _EDIT);
-		$item['options'] = $options;
+        $options = array(array('url' => $item['url'] . '#comments',
+                               'image' => 'demo.gif',
+                               'title' => _VIEW)); 
+        $options[] = array('url'   => pnModURL('EZComments', 'admin', 'modify', array('id' => $item['id'])),
+                           'image' => 'xedit.gif',
+                           'title' => _EDIT);
+        $item['options'] = $options;
 		$comments[] = $item;
     }
 

@@ -58,13 +58,10 @@
 			<td><a href="<!--[$item.url|pnvarprepfordisplay]-->"><!--[$item.mod|pnvarprepfordisplay]--></a></td>
 			<td><!--[$item.comment|strip_tags|truncate:80]--></td>
 			<td>
-				<!--[assign var="options" value=$item.options]-->
-				<!--[strip]-->
-				[<!--[section name=options loop=$options]-->
-					<a href="<!--[$options[options].url|pnvarprepfordisplay]-->"><!--[pnml name=$options[options].title]--></a> 
-					<!--[if !$smarty.section.options.last]--> | <!--[/if]-->
-				<!--[/section]-->]
-				<!--[/strip]-->
+	            <!--[assign var="options" value=$item.options]-->
+	            <!--[section name=options loop=$options]-->
+	                <a href="<!--[$options[options].url|pnvarprepfordisplay]-->"><!--[pnimg modname=core set=icons/extrasmall src=$options[options].image alt=$options[options].title]--></a>
+	            <!--[/section]-->
 			</td>
 		</tr>
 	<!--[/foreach]-->
