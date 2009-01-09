@@ -251,7 +251,7 @@ function EZComments_userapi_create($args)
     }
 
     if (!isset($date)) {
-        $date = 'NOW()';
+        $date = date("Y-m-d H:i:s",time());
     } else {
         $date= "'" . DataUtil::formatForStore($date) . "'";
     }
@@ -324,7 +324,8 @@ function EZComments_userapi_create($args)
 	if (in_array(1, $status)) {
 		$maxstatus = 1 ;
 	}
-
+	
+	// clean variables
     $mod            = DataUtil::formatForStore($mod);
     $objectid       = DataUtil::formatForStore($objectid);
     $url            = DataUtil::formatForStore($url);
@@ -340,47 +341,29 @@ function EZComments_userapi_create($args)
 	$type           = DataUtil::formatForStore($type);
 	$anonwebsite    = DataUtil::formatForStore($anonwebsite);
 
-    // Add item
-    $sql = "INSERT INTO $EZCommentstable (
-              $EZCommentscolumn[id],
-              $EZCommentscolumn[modname],
-              $EZCommentscolumn[objectid],
-              $EZCommentscolumn[url],
-              $EZCommentscolumn[date],
-              $EZCommentscolumn[uid],
-              $EZCommentscolumn[owneruid],
-              $EZCommentscolumn[comment],
-              $EZCommentscolumn[subject],
-              $EZCommentscolumn[replyto],
-              $EZCommentscolumn[anonname],
-              $EZCommentscolumn[anonmail],
-              $EZCommentscolumn[status],
-			  $EZCommentscolumn[ipaddr],
-			  $EZCommentscolumn[type],
-			  $EZCommentscolumn[anonwebsite])
-            VALUES (
-              '$nextId',
-              '$mod',
-              '$objectid',
-              '$url',
-              $date,
-              '$uid',
-              '$owneruid',
-              '$comment',
-              '$subject',
-              '$replyto',
-              '$anonname',
-              '$anonmail',
-              '$maxstatus',
-			  '$ipaddr',
-			  '$type',
-			  '$anonwebsite')";
-    $dbconn->Execute($sql);
-    // Check for an error with the database code
-    if ($dbconn->ErrorNo() != 0) {
+	// build new object
+	$newcomment = array (
+			'modname'		=> $mod,
+			'objectid'		=> $objectid,
+			'url'			=> $url,
+			'date'			=> $date,
+			'uid'			=> $uid,
+			'owneruid'		=> $owneruid,
+			'comment'		=> $comment,
+			'subject'		=> $subject,
+			'replyto'		=> $replyto,
+			'anonname'		=> $anonname,
+			'anonmail'		=> $anonmail,
+			'status'		=> $maxstatus,
+			'ipaddr'		=> $ipaddr,
+			'type'			=> $type,
+			'anonwebsite'	=> $anonwebsite
+		);
+
+    if (!DBUtil::insertObject($newcomment,'EZComments')) {
         return LogUtil::registerError(_CREATEFAILED);
     }
-
+	
     // set an approriate status/errormsg
     switch ($maxstatus) {
         case '0' :
@@ -392,7 +375,7 @@ function EZComments_userapi_create($args)
     }
 
     // Get the ID of the item that we inserted.
-    $id = $dbconn->PO_Insert_ID($EZCommentstable, $EZCommentscolumn['id']);
+	$id = $newcomment['id'];
 
 	if (isset($owneruid) && ($owneruid > 0)) {
 	  	$owner['email'] = pnUserGetVar('email',$owneruid);
@@ -410,7 +393,6 @@ function EZComments_userapi_create($args)
 	  	$toaddress	= pnConfigGetVar('adminmail');
 	  	$toname		= pnConfigGetVar('sitename');
 	}
-
     // Inform the content owner or the admin about a new comment
     if (pnModGetVar('EZComments', 'MailToAdmin') && $maxstatus == 0) {
         $renderer = pnRender::getInstance('EZComments', false);
