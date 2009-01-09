@@ -46,12 +46,13 @@
  * @param $args['sortorder'] order to sort the comments
  * @param $args['sortby'] field to sort the comments by
  * @param $args['status']  get all comments of this status
+ * @param $args['uid'] (optional) get all comments of this user
+ * @param $args['owneruid'] (optional) get all comments of this content owner
  * @return array array of items, or false on failure
  */
 function EZComments_userapi_getall($args)
 {
-    //extract($args);
-
+  	
     if (!isset($args['startnum']) || !is_numeric($args['startnum'])) {
         $args['startnum'] = 1;
     }
@@ -106,7 +107,17 @@ function EZComments_userapi_getall($args)
         }
         $whereclause[] = implode($andor, $where_array);
     }
-
+    $owneruid = (int)$args['owneruid'];
+    $uid = (int)$args['uid'];
+	if (($owneruid > 1) && ($uid > 1)) {
+	  	$whereclause[] = $EZCommentscolumn['owneruid']." = '".$args['owneruid']."' OR ".$EZCommentscolumn['uid']." = '".$args['uid']."'";;
+	}
+	else if ($uid > 1) {
+	  	$whereclause[] = $EZCommentscolumn['uid']." = '".$args['uid']."'";
+	}
+	else if ($owneruid > 1) {
+	  	$whereclause[] = $EZCommentscolumn['owneruid']." = '".$args['owneruid']."'";
+	}
     $where = '';
     if (!empty($whereclause)) {
         $where = 'WHERE ' . implode(' AND ', $whereclause);
@@ -478,6 +489,8 @@ function EZComments_userapi_get($args)
  * @param $args['mod']  name of the module to get the number of comments for
  * @param $args['objectid'] the objectid to get the number of comments for
  * @param $args['status']  Status of the comments to get (default: all)
+ * @param $args['owneruid']  (optional) UID of owner 
+ * @param $args['uid']  (optional) UID of poster
  * @return integer number of items held by this module
  */
 function EZComments_userapi_countitems($args)
@@ -485,6 +498,9 @@ function EZComments_userapi_countitems($args)
     if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_OVERVIEW)) {
         return false;
     }
+    // get parameters
+    $owneruid = (int)$args['owneruid'];
+    $uid = (int)$args['uid'];
 
     // Get database setup
     $dbconn = pnDBGetConn(true);
@@ -495,8 +511,18 @@ function EZComments_userapi_countitems($args)
 
     $sql = "SELECT COUNT(1)
             FROM $EZCommentstable";
-
+        
 	$queryargs = array();
+
+	if (($owneruid > 1) && ($uid > 1)) {
+	  	$queryargs[] = $EZCommentscolumn['owneruid']." = '".$args['owneruid']."' OR ".$EZCommentscolumn['uid']." = '".$args['uid']."'";;
+	}
+	else if ($uid > 1) {
+	  	$queryargs[] = $EZCommentscolumn['uid']." = '".$args['uid']."'";
+	}
+	else if ($owneruid > 1) {
+	  	$queryargs[] = $EZCommentscolumn['owneruid']." = '".$args['owneruid']."'";
+	}
 
     if (isset($args['mod'])) {
         // Count comments for a specific module

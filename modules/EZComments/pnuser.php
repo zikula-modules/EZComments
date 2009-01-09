@@ -44,14 +44,8 @@
 function EZComments_user_main($args)
 {
   	if (!pnUserLoggedIn()) return pnRedirect(pnGetBaseUrl());
-  	// the following code is taken 1:1 from the EZComments_admin_main() function
-  	// from pnadmin.php. This is needed because taking the backend admin function
-  	// to provide the user the possibillity to administrate his own comments is 
-  	// not the best solution because the template for the admin backend might be
-  	// a different and confuse the user. Also there are some notices in the backend
-  	// like "Zikula 0.X admin backend" that are not intended to be shown to regular
-  	// users...
-  	// Changed was the $options array (url to the user not admin page)
+  	// the following code was taken from the admin interface first and modified
+  	// that only own comments are shown on the overview page.
   	
     // get the status filter
     $status = FormUtil::getPassedValue('status', -1, 'GETPOST');
@@ -60,27 +54,25 @@ function EZComments_user_main($args)
     }
 
     // presentation values
-	$showall = (int)FormUtil::getPassedValue('showall');
-    if ((int)$showall == 1 ) $itemsperpage = -1;
-	else $itemsperpage = pnModGetVar('EZComments', 'itemsperpage');
+	$itemsperpage = pnModGetVar('EZComments', 'itemsperpage');
     $startnum = FormUtil::getPassedValue('startnum', null, 'GETPOST');
-    if (!isset($showall)) {
-         $showall = false;
-    }
-
+    
     // Create output object
     $renderer = pnRender::getInstance('EZComments', false);
 
     // assign the module vars
     $renderer->assign(pnModGetVar('EZComments'));
 
-    // call the api to get all current comments
+    // call the api to get all current comments that are from the user or the user's content
     $items = pnModAPIFunc('EZComments',
                           'user',
                           'getall',
                           array('startnum' => $showall == true ? true : $startnum,
                                 'numitems' => $itemsperpage,
-                                'status'   => $status));
+                                'status'   => $status,
+								'owneruid' => pnUserGetVar('uid'),
+								'uid'      => pnUserGetVar('uid')
+								));
     if ($items === false) {
         return LogUtil::registerError(_EZCOMMENTS_FAILED);
     } 
@@ -88,31 +80,22 @@ function EZComments_user_main($args)
     // loop through each item adding the relevant links
     $comments = array();
     foreach ($items as $item) {
-	    $securityCheck = pnModAPIFunc('EZComments','user','checkPermission',array(
-					'module'	=> $item['mod'],
-					'objectid'	=> $item['objectid'],
-					'commentid'	=> $item['id'],
-					'uid'		=> $item['uid'],
-					'level'		=> ACCESS_EDIT			));
-        if ($securityCheck) {
-	        $options = array(array('url' => $item['url'] . '#comments',
-	                               'title' => _VIEW)); 
-            $options[] = array('url'   => pnModURL('EZComments', 'user', 'modify', array('id' => $item['id'])),
-                               'title' => _EDIT);
-            $item['options'] = $options;
-            $comments[] = $item;
-	    }
+		$options = array(array('url' => $item['url'] . '#comments',
+		                       'title' => _VIEW)); 
+		$options[] = array('url'   => pnModURL('EZComments', 'user', 'modify', array('id' => $item['id'])),
+		                   'title' => _EDIT);
+		$item['options'] = $options;
+		$comments[] = $item;
     }
 
-    // assign the items to the template
+    // assign the items to the template, values for the filters, values for the smarty plugin to produce a pager
     $renderer->assign('items', $comments);
-
-    // assign values for the filters
     $renderer->assign('status', $status);
-    $renderer->assign('showall', $showall);
-
-    // assign the values for the smarty plugin to produce a pager
-    $renderer->assign('pager', array('numitems'     => pnModAPIFunc('EZComments', 'user', 'countitems', array('status' => $status)),
+    $renderer->assign('pager', array('numitems'     => pnModAPIFunc('EZComments', 'user', 'countitems', array(
+										'status' => $status,
+										'owneruid' => pnUserGetVar('uid'),
+										'uid' => pnUserGetVar('uid')
+											)),
                                      'itemsperpage' => $itemsperpage));
 
     // Return the output
