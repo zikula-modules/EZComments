@@ -1,11 +1,7 @@
 <!--[*  $Id: ezcomments_user_main.htm 459 2008-03-15 12:19:55Z quan $  *]-->
 <!--[ pnpageaddvar name="stylesheet" value="system/Admin/pnstyle/admin.css" ]-->
 <!--[ pnpageaddvar name="javascript" value="modules/EZComments/pnjavascript/toggle.js" ]-->
-<!--[if $showall neq 1]-->
 <h2><!--[pnml name=_EZCOMMENTS_LASTCOMMENTS c=$itemsperpage]--></h2>
-<!--[else]-->
-<h2><!--[pnml name=_EZCOMMENTS_ALLCOMMENTS s=$status|commentstatus]--></h2>
-<!--[/if]-->
 <form action="<!--[pnmodurl modname=EZComments]-->" method="post">
 <div>
 <label for="ezcomments_filter"><!--[pnml name=_EZCOMMENTS_FILTERBYSTATUS]--></label>
@@ -15,8 +11,6 @@
 <option value="1"<!--[if $status eq 1]--> selected="selected"<!--[/if]-->><!--[pnml name=_EZCOMMENTS_PENDING]--></option>
 <option value="2"<!--[if $status eq 2]--> selected="selected"<!--[/if]-->><!--[pnml name=_EZCOMMENTS_REJECTED]--></option>
 </select>
-<label for="ezcomments_showall"><!--[pnml name=_EZCOMMENTS_SHOWALL]--></label>
-<input id="ezcomments_showall" type="checkbox" name="showall" value="1"<!--[if $showall eq 1]--> checked="checked"<!--[/if]--> />
 <input type="submit" value="<!--[pnml name=_SUBMIT]-->" />
 </div>
 </form>
@@ -46,7 +40,8 @@
 			</td>
 			<td>
 				<!--[if $item.uid neq 0]-->
-					<!--[pnusergetvar name=uname uid=$item.uid]-->
+					<!--[pnusergetvar name=uname uid=$item.uid assign="uname"]-->
+					<!--[$uname|userprofilelink]-->
 				<!--[else]-->
 					<!--[$item.anonname|pnvarprepfordisplay]-->
 				<!--[/if]-->
@@ -55,7 +50,7 @@
 			<td>
 				<!--[pnusergetvar name=uname uid=$item.owneruid assign="owneruname"]-->
 				<!--[if $owneruname ne ""]-->
-					<!--[$owneruname]-->
+					<!--[$owneruname|userprofilelink]-->
 				<!--[else]-->
 					<!--[pnml name="_EZCOMMENTS_UNKNOWNOWNER"]-->
 				<!--[/if]-->
@@ -87,4 +82,3 @@
 </div>
 </form>
 <!--[pager show="page" rowcount=$pager.numitems limit=$pager.itemsperpage posvar=startnum shift=1]-->
-
