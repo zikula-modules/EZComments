@@ -53,7 +53,6 @@
  */
 function EZComments_userapi_getall($args)
 {
-  	
     if (!isset($args['startnum']) || !is_numeric($args['startnum'])) {
         $args['startnum'] = 1;
     }
@@ -93,7 +92,7 @@ function EZComments_userapi_getall($args)
         }
     }
     // comment's status
-    if ($args['status'] != -1) {
+    if ($args['status'] >= 0) {
         $whereclause[] = "$EZCommentscolumn[status] = '" . DataUtil::formatForStore($args['status']) . "'";
     }
     // do a search?
@@ -115,7 +114,7 @@ function EZComments_userapi_getall($args)
     $owneruid = (int)$args['owneruid'];
     $uid = (int)$args['uid'];
 	if (($owneruid > 1) && ($uid > 1)) {
-	  	$whereclause[] = $EZCommentscolumn['owneruid']." = '".$args['owneruid']."' OR ".$EZCommentscolumn['uid']." = '".$args['uid']."'";;
+	  	$whereclause[] = "(".$EZCommentscolumn['owneruid']." = '".$args['owneruid']."' OR ".$EZCommentscolumn['uid']." = '".$args['uid']."' )";;
 	}
 	else if ($uid > 1) {
 	  	$whereclause[] = $EZCommentscolumn['uid']." = '".$args['uid']."'";
@@ -123,7 +122,7 @@ function EZComments_userapi_getall($args)
 	else if ($owneruid > 1) {
 	  	$whereclause[] = $EZCommentscolumn['owneruid']." = '".$args['owneruid']."'";
 	}
-   // admin mode: only show comments for modules considering permission checks
+	// admin mode: only show comments for modules considering permission checks
 	$admin = (int)$args['admin'];
 	if ($admin == 1) {
 		// get list of modules
@@ -144,7 +143,7 @@ function EZComments_userapi_getall($args)
     if (!empty($whereclause)) {
         $where = 'WHERE ' . implode(' AND ', $whereclause);
     }
- 
+
     // form the orderby clause
     $orderby = '';
     if (isset($args['sortby']) && isset($EZCommentscolumn[$args['sortby']])) {
