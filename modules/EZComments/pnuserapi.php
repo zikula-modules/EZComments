@@ -135,7 +135,7 @@ function EZComments_userapi_getall($args)
 				$permclause[] = $EZCommentscolumn['modname']." = '".$module['name']."'";
 			}
 		}
-		$whereclause[] = implode(' OR ', $permclause);
+		$whereclause[] = "(".implode(' OR ', $permclause).")";
 	}
 	
  	// create where clause
@@ -143,7 +143,6 @@ function EZComments_userapi_getall($args)
     if (!empty($whereclause)) {
         $where = 'WHERE ' . implode(' AND ', $whereclause);
     }
-
     // form the orderby clause
     $orderby = '';
     if (isset($args['sortby']) && isset($EZCommentscolumn[$args['sortby']])) {
