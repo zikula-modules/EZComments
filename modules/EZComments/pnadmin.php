@@ -72,9 +72,12 @@ function EZComments_admin_main()
     $items = pnModAPIFunc('EZComments',
                           'user',
                           'getall',
-                          array('startnum' => $showall == true ? true : $startnum,
+                          array(
+						        'startnum' => $showall == true ? true : $startnum,
                                 'numitems' => $itemsperpage,
-                                'status'   => $status));
+                                'status'   => $status,
+								'admin'    => 1
+								));
     if ($items === false) {
         return LogUtil::registerError(_EZCOMMENTS_FAILED);
     } 
@@ -82,21 +85,14 @@ function EZComments_admin_main()
     // loop through each item adding the relevant links
     $comments = array();
     foreach ($items as $item) {
-	    $securityCheck = pnModAPIFunc('EZComments','user','checkPermission',array(
-					'module'	=> $item['mod'],
-					'objectid'	=> $item['objectid'],
-					'commentid'	=> $item['id'],
-					'level'		=> ACCESS_EDIT			));
-        if ($securityCheck) {
-	        $options = array(array('url' => $item['url'] . '#comments',
-                                   'image' => 'demo.gif',
-	                               'title' => _VIEW)); 
-            $options[] = array('url'   => pnModURL('EZComments', 'admin', 'modify', array('id' => $item['id'])),
-                               'image' => 'xedit.gif',
-                               'title' => _EDIT);
-            $item['options'] = $options;
-            $comments[] = $item;
-	    }
+        $options = array(array('url' => $item['url'] . '#comments',
+                               'image' => 'demo.gif',
+                               'title' => _VIEW)); 
+        $options[] = array('url'   => pnModURL('EZComments', 'admin', 'modify', array('id' => $item['id'])),
+                           'image' => 'xedit.gif',
+                           'title' => _EDIT);
+        $item['options'] = $options;
+        $comments[] = $item;
     }
 
     // assign the items to the template
@@ -107,7 +103,7 @@ function EZComments_admin_main()
     $renderer->assign('showall', $showall);
 
     // assign the values for the smarty plugin to produce a pager
-    $renderer->assign('pager', array('numitems'     => pnModAPIFunc('EZComments', 'user', 'countitems', array('status' => $status)),
+    $renderer->assign('pager', array('numitems'     => pnModAPIFunc('EZComments', 'user', 'countitems', array('status' => $status, 'admin' => 1)),
                                      'itemsperpage' => $itemsperpage));
 
     // Return the output

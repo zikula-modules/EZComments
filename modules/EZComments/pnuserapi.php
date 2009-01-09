@@ -38,16 +38,17 @@
  * This function provides the main user interface to the comments
  * module.
  *
- * @param $args['mod'] Name of the module to get comments for
- * @param $args['objectid']  ID of the item to get comments for
- * @param $args['search']  an array with words to search for and a boolean
- * @param $args['startnum']  First comment
- * @param $args['numitems']  number of comments
- * @param $args['sortorder'] order to sort the comments
- * @param $args['sortby'] field to sort the comments by
- * @param $args['status']  get all comments of this status
- * @param $args['uid'] (optional) get all comments of this user
- * @param $args['owneruid'] (optional) get all comments of this content owner
+ * @param $args['mod']         Name of the module to get comments for
+ * @param $args['objectid']    ID of the item to get comments for
+ * @param $args['search']      an array with words to search for and a boolean
+ * @param $args['startnum']    First comment
+ * @param $args['numitems']    number of comments
+ * @param $args['sortorder']   order to sort the comments
+ * @param $args['sortby']      field to sort the comments by
+ * @param $args['status']      get all comments of this status
+ * @param $args['uid']         (optional) get all comments of this user
+ * @param $args['owneruid']    (optional) get all comments of this content owner
+ * @param $args['admin']       (optional) is set to 1 for admin mode (permission check)
  * @return array array of items, or false on failure
  */
 function EZComments_userapi_getall($args)
@@ -84,15 +85,18 @@ function EZComments_userapi_getall($args)
 
     // form where clause
     $whereclause = array();
+    // object id
     if (isset($args['mod'])) {
         $whereclause[] = "$EZCommentscolumn[modname] = '" . DataUtil::formatForStore($args['mod']) . "'";
         if (isset($args['objectid'])) {
             $whereclause[] = "$EZCommentscolumn[objectid] = '" . DataUtil::formatForStore($args['objectid']) . "'";
         }
     }
+    // comment's status
     if ($args['status'] != -1) {
         $whereclause[] = "$EZCommentscolumn[status] = '" . DataUtil::formatForStore($args['status']) . "'";
     }
+    // do a search?
     if (isset($args['search'])) {
         $where_array = array();
         foreach($args['search']['words'] as $word) {
@@ -107,6 +111,7 @@ function EZComments_userapi_getall($args)
         }
         $whereclause[] = implode($andor, $where_array);
     }
+    // include own content or own comments
     $owneruid = (int)$args['owneruid'];
     $uid = (int)$args['uid'];
 	if (($owneruid > 1) && ($uid > 1)) {
@@ -118,11 +123,28 @@ function EZComments_userapi_getall($args)
 	else if ($owneruid > 1) {
 	  	$whereclause[] = $EZCommentscolumn['owneruid']." = '".$args['owneruid']."'";
 	}
+   // admin mode: only show comments for modules considering permission checks
+	$admin = (int)$args['admin'];
+	if ($admin == 1) {
+		// get list of modules
+		$modlist = pnModGetAllMods();
+		$permclause = array();
+		foreach ($modlist as $module) {
+		  	// simple permission check
+			$inst = $module['name'].":".$item['objectid'].":".$item['id'];
+			if (SecurityUtil::checkPermission('EZComments::', $inst, ACCESS_EDIT)) {
+				$permclause[] = $EZCommentscolumn['modname']." = '".$module['name']."'";
+			}
+		}
+		$whereclause[] = implode(' OR ', $permclause);
+	}
+	
+ 	// create where clause
     $where = '';
     if (!empty($whereclause)) {
         $where = 'WHERE ' . implode(' AND ', $whereclause);
     }
-
+ 
     // form the orderby clause
     $orderby = '';
     if (isset($args['sortby']) && isset($EZCommentscolumn[$args['sortby']])) {
@@ -155,7 +177,6 @@ function EZComments_userapi_getall($args)
     // Return the items
     return $items;
 }
-
 
 /**
  * create a new comment
@@ -491,6 +512,7 @@ function EZComments_userapi_get($args)
  * @param $args['status']  Status of the comments to get (default: all)
  * @param $args['owneruid']  (optional) UID of owner 
  * @param $args['uid']  (optional) UID of poster
+ * @param $args['admin']  (optional) set to 1 if called from admin mode
  * @return integer number of items held by this module
  */
 function EZComments_userapi_countitems($args)
@@ -539,6 +561,22 @@ function EZComments_userapi_countitems($args)
 	if (isset($args['status']) && is_numeric($args['status']) && $args['status'] >= 0 && $args['status'] <= 2) {
 		$args['status'] = DataUtil::formatForStore($args['status']);
 		$queryargs[] = "$EZCommentscolumn[status] = '$args[status]'";
+	}
+
+   // admin mode: only count comments for modules considering permission checks
+	$admin = (int)$args['admin'];
+	if ($admin == 1) {
+		// get list of modules
+		$modlist = pnModGetAllMods();
+		$permclause = array();
+		foreach ($modlist as $module) {
+		  	// simple permission check
+			$inst = $module['name'].":".$item['objectid'].":".$item['id'];
+			if (SecurityUtil::checkPermission('EZComments::', $inst, ACCESS_EDIT)) {
+				$permclause[] = $EZCommentscolumn['modname']." = '".$module['name']."'";
+			}
+		}
+		$queryargs[] = implode(' OR ', $permclause);
 	}
 
 	$wheresql = '';
