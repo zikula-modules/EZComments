@@ -160,7 +160,7 @@ function EZComments_user_view($args)
                           'user',
                           'getall',
                            compact('mod', 'objectid','sortorder','status','numitems','startnum'));
-//die(prayer($items));
+
     if ($items === false) {
         return LogUtil::registerError(_EZCOMMENTS_FAILED, null, 'index.php');
     }     
