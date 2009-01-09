@@ -370,7 +370,6 @@ function ezcomments_adminapi_countitems($args)
     return pnModAPIFunc('EZComments', 'user', 'countitems', $args);
 }
 
-
 /**
  * get available admin panel links
  *
