@@ -48,7 +48,8 @@
 			</td>
 			<td>
 				<!--[if $item.uid neq 0]-->
-					<!--[pnusergetvar name=uname uid=$item.uid]-->
+					<!--[pnusergetvar name=uname uid=$item.uid assign="uname"]-->
+					<!--[$uname|userprofilelink]-->
 				<!--[else]-->
 					<!--[$item.anonname|pnvarprepfordisplay]-->
 				<!--[/if]-->
@@ -57,7 +58,7 @@
 			<td>
 				<!--[pnusergetvar name=uname uid=$item.owneruid assign="owneruname"]-->
 				<!--[if $owneruname ne ""]-->
-					<!--[$owneruname]-->
+					<!--[$owneruname|userprofilelink]-->
 				<!--[else]-->
 					<!--[pnml name="_EZCOMMENTS_UNKNOWNOWNER"]-->
 				<!--[/if]-->
