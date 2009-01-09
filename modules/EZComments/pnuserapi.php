@@ -184,15 +184,15 @@ function EZComments_userapi_getall($args)
  * This function creates a new comment and returns its ID.
  * Access checking is done.
  *
- * @param $args['mod'] Name of the module to create comments for
- * @param $args['objectid'] ID of the item to create comments for
- * @param $args['comment'] The comment itself
- * @param $args['subject']  The subject of the comment
- * @param $args['replyto']  The reference ID
- * @param $args['uid']  The user ID (optional)
- * @param $args['owneruid']  The user ID whoose content was commented(optional)
- * @param $args['useurl']  The url that should be used for storing in db and email to admin
- * @param $args['type']  The type of comment (optional) currently trackback, pingback are only allowed values
+ * @param $args['mod']        Name of the module to create comments for
+ * @param $args['objectid']   ID of the item to create comments for
+ * @param $args['comment']    The comment itself
+ * @param $args['subject']    The subject of the comment
+ * @param $args['replyto']    The reference ID
+ * @param $args['uid']        The user ID (optional)
+ * @param $args['owneruid']   The user ID whoose content was commented(optional)
+ * @param $args['useurl']     The url that should be used for storing in db and email to admin
+ * @param $args['type']       The type of comment (optional) currently trackback, pingback are only allowed values
  * @return integer ID of new comment on success, false on failure
  */
 function EZComments_userapi_create($args)
