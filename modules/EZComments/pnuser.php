@@ -111,11 +111,11 @@ function EZComments_user_main($args)
  * This function provides the main user interface to the comments
  * module. 
  * 
- * @param $args['objectid']  ID of the item to display comments for
- * @param $args['extrainfo']  URL to return to if user chooses to comment
- * @param $args['owneruid']  User ID of the content owner
- * @param $args['useurl']  Url used for storing in db and in email instead of redirect url
- * @param $args['template']  Template file to use (with extension)
+ * @param $args['objectid']      ID of the item to display comments for
+ * @param $args['extrainfo']     URL to return to if user chooses to comment
+ * @param $args['owneruid']      User ID of the content owner
+ * @param $args['useurl']        Url used for storing in db and in email instead of redirect url
+ * @param $args['template']      Template file to use (with extension)
  * @return output the comments
  * @since 0.1
  */
