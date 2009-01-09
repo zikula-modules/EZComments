@@ -83,7 +83,7 @@ function EZComments_user_main($args)
         $options = array(array('url' => $item['url'] . '#comments',
                                'image' => 'demo.gif',
                                'title' => _VIEW)); 
-        $options[] = array('url'   => pnModURL('EZComments', 'admin', 'modify', array('id' => $item['id'])),
+        $options[] = array('url'   => pnModURL('EZComments', 'user', 'modify', array('id' => $item['id'])),
                            'image' => 'xedit.gif',
                            'title' => _EDIT);
         $item['options'] = $options;
