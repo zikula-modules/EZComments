@@ -39,7 +39,7 @@ $modversion['description'] = 'Attach comments to pages using hooks';
 
 // I suspect these are not respected as the should
 $modversion['admin']       = 1;
-$modversion['user']        = 0;
+$modversion['user']        = 1;
 
 // Information for the credits module
 $modversion['changelog']   = 'pndocs/changelog.txt';
