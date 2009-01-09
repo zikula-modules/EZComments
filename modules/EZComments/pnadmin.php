@@ -232,9 +232,6 @@ function EZComments_admin_modifyconfig()
     if(!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
         return LogUtil::registerPermissionError('index.php');
     }
-//    if(!pnModAPIFunc('EZComments','user','checkPermission',array('module'))) {
-//        return LogUtil::registerPermissionError('index.php');
-//    }
 
     // load edithandler class from file
     Loader::requireOnce('modules/EZComments/pnincludes/ezcomments_admin_modifyconfighandler.class.php');
