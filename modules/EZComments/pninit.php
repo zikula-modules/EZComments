@@ -42,7 +42,7 @@
  */
 function EZComments_init()
 { 
-    // create table
+    // create main table
     if (!DBUtil::createTable('EZComments')) {
         return false;
     }
@@ -324,7 +324,7 @@ function EZComments_upgrade($oldversion)
  */
 function EZComments_delete()
 {
-    // drop table
+    // drop main table
     if (!DBUtil::dropTable('EZComments')) {
         return false;
     }
