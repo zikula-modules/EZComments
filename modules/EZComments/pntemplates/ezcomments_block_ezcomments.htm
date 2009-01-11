@@ -9,7 +9,7 @@
 		<!--[if $showusername and $comment.uname neq '']-->
 			<!--[pnml name=_BY]-->
 			<!--[if $linkusername]-->
-				<a href="user.php?op=userinfo&amp;uname=<!--[$comment.uname|pnvarprepfordisplay]-->"><!--[$comment.uname|pnvarprepfordisplay]--></a>
+				<!--[$comment.uname|userprofilelink]-->
 			<!--[else]-->
 				<!--[$comment.uname|pnvarprepfordisplay]-->
 			<!--[/if]-->
