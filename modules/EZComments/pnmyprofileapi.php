@@ -76,3 +76,14 @@ function EZComments_myprofileapi_tab($args)
 	$output = $render->fetch('ezcomments_myprofile_tab.htm');
 	return $output;
 }
+
+/**
+ * This function returns 1 if Ajax should not be used loading the plugin
+ *
+ * @return string
+ */
+
+function EZComments_myprofileapi_noAjax($args)
+{
+  	return true;
+}
