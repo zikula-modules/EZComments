@@ -56,7 +56,7 @@
     <!--[assign var="url_userinfo" value="user.php?op=userinfo&module=User&uname=`$comments[comments].uname`"]-->
     <!--[pnmodurl modname=Messages func=compose uname=$comments[comments].uname assign=url_message]-->
     <!--[pnmodurl modname=EZComments func=comment redirect=$redirect|rawurlencode modname=$mod objectid=$objectid replyto=$comments[comments].id template=$template assign=url_comment]-->
-    <!--[pnmodurl modname=EZComments type=admin func=delete redirect=$redirect id=$comments[comments].id assign=url_del]-->
+    <!--[pnmodurl modname=EZComments type=user func=modify redirect=$redirect id=$comments[comments].id assign=url_del]-->
 	<a id="comment<!--[$comments[comments].id]-->"></a>
     <div style="margin-left: <!--[math equation="x * 2" x=$comments[comments].level]-->em">  
       <div style="width:99%; background-color:<!--[pnthemegetvar name=bgcolor1]-->; padding:4px;">

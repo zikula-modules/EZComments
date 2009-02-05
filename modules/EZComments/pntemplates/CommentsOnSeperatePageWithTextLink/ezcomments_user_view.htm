@@ -58,7 +58,7 @@
         <!--[$comments[comments].comment|formatezcomment|pnvarprephtmldisplay]-->
             <!--[if $comments[comments].del]-->
           <br />
-          <form action="<!--[pngetbaseurl]--><!--[pnmodurl modname=EZComments type=admin func=delete id=$comments[comments].id]-->" method="post">
+          <form action="<!--[pngetbaseurl]--><!--[pnmodurl modname=EZComments type=user func=modify id=$comments[comments].id]-->" method="post">
           <div>
             <input type="hidden" name="owneruid" id="EZComments_owneruid" value="<!--[$owneruid|pnvarprepfordisplay]-->" />
 			<input type="hidden" name="useurl" id="EZComments_useurl" value="<!--[$useurl|pnvarprepfordisplay]-->" />
