@@ -397,7 +397,7 @@ function EZComments_userapi_create($args)
         $renderer->assign('comment', $comment);
         $renderer->assign('url', $url);
         $renderer->assign('moderate', pnModURL('EZComments', 'user', 'modify', array('id' => $id)));
-        $renderer->assign('delete', pnModURL('EZComments', 'user', 'delete', array('id' => $id)));
+        $renderer->assign('delete', pnModURL('EZComments', 'user', 'modify', array('id' => $id)));
         // by AM - 8 lines: added subject, date, username or nick:
 		$renderer->assign('subject', $subject);
 		$renderer->assign('date', $date);
@@ -419,7 +419,7 @@ function EZComments_userapi_create($args)
         $renderer->assign('comment', $comment);
         $renderer->assign('url', $url);
         $renderer->assign('moderate', pnModURL('EZComments', 'user', 'modify', array('id' => $id)));
-        $renderer->assign('delete', pnModURL('EZComments', 'user', 'delete', array('id' => $id)));
+        $renderer->assign('delete', pnModURL('EZComments', 'user', 'modify', array('id' => $id)));
         // by AM - 8 lines: added subject, date, username or nick:
 		$renderer->assign('subject', $subject);
 		$renderer->assign('date', $date);
