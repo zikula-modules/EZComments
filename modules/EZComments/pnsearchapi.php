@@ -37,7 +37,9 @@
  **/
 function ezcomments_searchapi_info()
 {
-   return array(	
+  	$disallowsearch = pnModGetVar('EZComments','disallowsearch');
+	if ($disallowsearch == 1) return array();
+	else return array(	
    		'title' 	=> 'EZComments', 
         'functions' => array(
 								'EZComments' => 'search'
@@ -53,6 +55,8 @@ function ezcomments_searchapi_info()
  **/
 function ezcomments_searchapi_options()
 {
+  	$disallowsearch = pnModGetVar('EZComments','disallowsearch');
+	if ($disallowsearch == 1) return '';
     if (SecurityUtil::checkPermission( 'EZComments::', '::', ACCESS_READ)) {
         // Create output object - this object will store all of our output so that
         // we can return it easily when required

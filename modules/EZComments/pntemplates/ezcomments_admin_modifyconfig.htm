@@ -1,4 +1,4 @@
-<!--[*  $Id$  *]-->
+	<!--[*  $Id$  *]-->
 <!--[include file="ezcomments_admin_menu.htm"]-->
 <div class="pn-admincontainer">
 <h2><!--[pnml name="_MODIFYCONFIG"]--></h2>
@@ -7,6 +7,10 @@
     <!--[ pnformvalidationsummary ]-->
     <fieldset>
         <legend><!--[pnml name=_EZCOMMENTS_MISCSETTINGS]--></legend>
+        <div class="pn-adminformrow">
+            <!--[ pnformlabel for="ezcomments_disallowsearch" text='_EZCOMMENTS_DISALLOW_SEARCH' ]-->
+            <!--[ pnformcheckbox id="ezcomments_disallowsearch" checked=$pncore.EZComments.disallowsearch ]-->
+        </div>
         <div class="pn-adminformrow">
             <!--[ pnformlabel for="ezcomments_template" text='_EZCOMMENTS_TEMPLATE' ]-->
             <!--[ pnformdropdownlist id="ezcomments_template" items=$templates selectedValue=$pncore.EZComments.template ]-->
@@ -119,3 +123,5 @@
 </div>
 <!--[ /pnform ]-->
 </div>
+
+<!--[pndebug output="html"]-->
