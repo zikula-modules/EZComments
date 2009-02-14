@@ -35,7 +35,7 @@
 /**
  * Search plugin info
  **/
-function ezcomments_searchapi_info()
+function EZComments_searchapi_info()
 {
 	return array(	
    		'title' 	=> 'EZComments', 
@@ -51,7 +51,7 @@ function ezcomments_searchapi_info()
  *
  * @return output the search field
  **/
-function ezcomments_searchapi_options($args)
+function EZComments_searchapi_options($args)
 {
     if (SecurityUtil::checkPermission( 'EZComments::', '::', ACCESS_READ)) {
         // Create output object - this object will store all of our output so that
@@ -70,7 +70,7 @@ function ezcomments_searchapi_options($args)
  *
  * @return output the search results
  **/
-function ezcomments_searchapi_search($args)
+function EZComments_searchapi_search($args)
 {
     if (!SecurityUtil::checkPermission( 'EZComments::', '::', ACCESS_READ)) {
         return true;
@@ -131,14 +131,11 @@ function ezcomments_searchapi_search($args)
  * Access checking is ignored since access check has
  * already been done. But we do add a URL to the found comment
  */
-function ezcomments_searchapi_search_check(&$args)
+function EZComments_searchapi_search_check(&$args)
 {
     $datarow = &$args['datarow'];
     $url = $datarow['extra'];
-    
     $datarow['url'] = $url;
-    prayer($comment);
-
     return true;
 }
 
