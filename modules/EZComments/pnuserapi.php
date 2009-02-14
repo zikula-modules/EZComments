@@ -323,22 +323,6 @@ function EZComments_userapi_create($args)
 		$maxstatus = 1 ;
 	}
 	
-	// clean variables
-    $mod            = DataUtil::formatForStore($mod);
-    $objectid       = DataUtil::formatForStore($objectid);
-    $url            = DataUtil::formatForStore($url);
-    $uid            = DataUtil::formatForStore($uid);
-    $owneruid       = DataUtil::formatForStore($owneruid);
-    $comment        = DataUtil::formatForStore($comment);
-    $subject        = DataUtil::formatForStore($subject);
-    $replyto        = DataUtil::formatForStore($replyto);
-    $anonname       = DataUtil::formatForStore($anonname);
-    $anonmail       = DataUtil::formatForStore($anonmail);
-    $maxstatus      = DataUtil::formatForStore($maxstatus);
-	$ipaddr         = DataUtil::formatForStore($ipaddr);
-	$type           = DataUtil::formatForStore($type);
-	$anonwebsite    = DataUtil::formatForStore($anonwebsite);
-
 	// build new object
 	$newcomment = array (
 			'modname'		=> $mod,
