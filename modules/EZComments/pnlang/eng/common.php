@@ -36,7 +36,6 @@
 
 // Search plugin
 define('_EZCOMMENTS_SEARCHLENGTHHINT', 		'The comments can only be searched for words that are longer than %minlen% and less than maxlen% characters!');
-define('_EZCOMMENTS_DISALLOW_SEARCH',		'Do not include comments in zikula search engine');
 
 // ContactList integration
 define('_EZCOMMENTS_USER_IGNORES_YOU',		'The user set as content owner ignores you. You cannot post any comment here!');

@@ -37,9 +37,7 @@
  **/
 function ezcomments_searchapi_info()
 {
-  	$disallowsearch = pnModGetVar('EZComments','disallowsearch');
-	if ($disallowsearch == 1) return array();
-	else return array(	
+	return array(	
    		'title' 	=> 'EZComments', 
         'functions' => array(
 								'EZComments' => 'search'
@@ -53,10 +51,8 @@ function ezcomments_searchapi_info()
  *
  * @return output the search field
  **/
-function ezcomments_searchapi_options()
+function ezcomments_searchapi_options($args)
 {
-  	$disallowsearch = pnModGetVar('EZComments','disallowsearch');
-	if ($disallowsearch == 1) return '';
     if (SecurityUtil::checkPermission( 'EZComments::', '::', ACCESS_READ)) {
         // Create output object - this object will store all of our output so that
         // we can return it easily when required
@@ -76,7 +72,7 @@ function ezcomments_searchapi_options()
  **/
 function ezcomments_searchapi_search($args)
 {
-    if (!SecurityUtil::checkPermission( 'Stories::Story', '::', ACCESS_READ)) {
+    if (!SecurityUtil::checkPermission( 'EZComments::', '::', ACCESS_READ)) {
         return true;
     }
 
@@ -100,17 +96,15 @@ function ezcomments_searchapi_search($args)
     $sessionId = session_id();
 
     $insertSql = 
-"INSERT INTO $searchTable
-  ($searchColumn[title],
-   $searchColumn[text],
-   $searchColumn[extra],
-   $searchColumn[module],
-   $searchColumn[created],
-   $searchColumn[session])
-VALUES 
-";
-
-//    pnModAPILoad('EZComments', 'user');
+		"INSERT INTO $searchTable
+		  ($searchColumn[title],
+		   $searchColumn[text],
+		   $searchColumn[extra],
+		   $searchColumn[module],
+		   $searchColumn[created],
+		   $searchColumn[session])
+		VALUES 
+		";
 
     $comments = DBUtil::selectObjectArray('EZComments', $where);
 
@@ -128,7 +122,6 @@ VALUES
               return LogUtil::registerError (_GETFAILED);
           }
     }
-
     return true;
 }
 

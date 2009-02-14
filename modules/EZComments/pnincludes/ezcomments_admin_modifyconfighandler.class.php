@@ -93,7 +93,6 @@ class EZComments_admin_modifyconfighandler
             pnModSetVar('EZComments', 'MailToAdmin',             $data['ezcomments_MailToAdmin']);
             pnModSetVar('EZComments', 'moderationmail',          $data['ezcomments_moderationmail']);
             pnModSetVar('EZComments', 'template',                $data['ezcomments_template']);
-            pnModSetVar('EZComments', 'disallowsearch',          $data['ezcomments_disallowsearch']);
             pnModSetVar('EZComments', 'itemsperpage',            $data['ezcomments_itemsperpage']);
             pnModSetVar('EZComments', 'anonusersinfo',           $data['ezcomments_anonusersinfo']);
             pnModSetVar('EZComments', 'moderation',              $data['ezcomments_moderation']);

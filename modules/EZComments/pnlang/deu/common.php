@@ -36,7 +36,6 @@
 
 // Search plugin
 define('_EZCOMMENTS_SEARCHLENGTHHINT', 		'Das Kommentarsystem akzeptiert nur Suchstrings mit einer Länge zwischen %minlen% und %maxlen% Zeichen!');
-define('_EZCOMMENTS_DISALLOW_SEARCH',		'Kommentare nicht in Zikula-Suche einbeziehen');
 
 // ContactList integration
 define('_EZCOMMENTS_USER_IGNORES_YOU',		'Der Besitzer des zu kommentierenden Inhaltes hat Dich auf seiner Ignorierliste. Du kannst hier keinen Kommentar hinterlassen!');
