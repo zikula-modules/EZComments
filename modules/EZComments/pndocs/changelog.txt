@@ -19,6 +19,9 @@ Changelog
 	   user he cannot comment the other user's content any more.
 	 - Added MyProfile plugin
 	 - Added icon for user account panel: manage my comments
+	 - deleted all comment templates and added one new called "Standard"
+	 - added stylesheet and language file support for own comment templates
+	 - added time in hours how long users are able to edit their own comments
 
 1.5  - Migrated akismet support to seperate module
      - Added option to require anonymous commenters to provide a 'name'
