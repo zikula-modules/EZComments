@@ -40,7 +40,7 @@
 				<!--[if $comment._YOURAVATAR ne "" and $comment._YOURAVATAR ne "blank.gif"]-->
 					<img src="<!--[pngetbaseurl]-->/images/avatar/<!--[$comment._YOURAVATAR]-->" />
 				<!--[else]-->
-					<img src="images/icons/large/personal.gif" />
+					<img src="<!--[pngetbaseurl]-->images/icons/large/personal.gif" />
 				<!--[/if]-->
 				</div>
 				<div class="ezc_userinfo">
@@ -68,7 +68,7 @@
 						<!--[/if]-->
 	
 						<!--[if $comment.del]-->
-							<a href="<!--[pnmodurl fqurl="true" modname=EZComments type=user func=modify id=$comment.id redirect=$redirect]-->"><img src="images/icons/extrasmall/14_layer_deletelayer.gif"></a>
+							<a href="<!--[pnmodurl fqurl="true" modname=EZComments type=user func=modify id=$comment.id redirect=$redirect]-->"><img src="<!--[pngetbaseurl]-->images/icons/extrasmall/14_layer_deletelayer.gif"></a>
 						<!--[/if]-->
 	
 					<!--[/if]-->
