@@ -216,6 +216,12 @@ function EZComments_user_view($args)
         $template = pnModGetVar('EZComments', 'template');
     }
     $renderer->assign('template', $template);
+    
+    // include stylesheet if there is a style sheet
+    $css = 'modules/EZComments/pntemplates/' . $template . '/style.css';
+    if (file_exists($css)) {
+	  	PageUtil::addVar('stylesheet',$css);
+	}
     return $renderer->fetch(DataUtil::formatForOS($template) . '/ezcomments_user_view.htm');
 } 
 
