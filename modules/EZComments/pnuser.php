@@ -219,6 +219,7 @@ function EZComments_user_view($args)
     
     // include stylesheet if there is a style sheet
     $css = 'modules/EZComments/pntemplates/' . $template . '/style.css';
+    pnModLangLoad('EZComments','template_'.$template);
     if (file_exists($css)) {
 	  	PageUtil::addVar('stylesheet',$css);
 	}
