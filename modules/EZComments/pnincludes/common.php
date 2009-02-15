@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id: common.php 459 2008-03-15 12:19:55Z quan $
+ * $Id$
  * 
  * * EZComments *
  * 

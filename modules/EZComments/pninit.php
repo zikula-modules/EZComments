@@ -67,7 +67,7 @@ function EZComments_init()
 
     pnModSetVar('EZComments', 'MailToAdmin',    false);
     pnModSetVar('EZComments', 'migrated',       serialize(array('dummy')));
-    pnModSetVar('EZComments', 'template',       'Plain');
+    pnModSetVar('EZComments', 'template',       'Standard');
     pnModSetVar('EZComments', 'itemsperpage',   25);
     pnModSetVar('EZComments', 'anonusersinfo',  false);
     pnModSetVar('EZComments', 'moderation',     0);
@@ -309,6 +309,7 @@ function EZComments_upgrade($oldversion)
 
 	if ($oldversion == '1.5') {
 	  	DBUtil::changeTable('EZComments');
+		pnModSetVar('EZComments', 'template','Standard');
 	}
     return true;
 } 

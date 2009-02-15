@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id: pnadmin.php 495 2008-07-01 08:52:22Z markwest $
+ * $Id$
  * 
  * * EZComments *
  * 
