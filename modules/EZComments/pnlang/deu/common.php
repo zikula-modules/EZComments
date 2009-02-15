@@ -34,6 +34,8 @@
 
 // new for 2.0 (.8only)
 
+define('_EZCOMMENTS_MODIFYOWNTIME',			'Anzahl an Stunden in welchen Benutzer Inhalte eigener Kommentare ändern dürfen. Der Wert -1 deaktiviert diese Funktion.');
+
 // Search plugin
 define('_EZCOMMENTS_SEARCHLENGTHHINT', 		'Das Kommentarsystem akzeptiert nur Suchstrings mit einer Länge zwischen %minlen% und %maxlen% Zeichen!');
 

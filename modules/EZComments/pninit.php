@@ -87,6 +87,7 @@ function EZComments_init()
     pnModSetVar('EZComments', 'akismet', false);
     pnModSetVar('EZComments', 'apikey', '');
     pnModSetVar('EZComments', 'anonusersrequirename', false);
+    pnModSetVar('EZComments', 'modifyowntime', '6');
 
     // Initialisation successful
     return true;
@@ -309,7 +310,8 @@ function EZComments_upgrade($oldversion)
 
 	if ($oldversion == '1.5') {
 	  	DBUtil::changeTable('EZComments');
-		pnModSetVar('EZComments', 'template','Standard');
+		pnModSetVar('EZComments', 'template',		'Standard');
+	    pnModSetVar('EZComments', 'modifyowntime', 	'6');
 	}
     return true;
 } 

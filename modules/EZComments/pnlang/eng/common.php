@@ -34,6 +34,8 @@
 
 // new for 2.0 (.8only)
 
+define('_EZCOMMENTS_MODIFYOWNTIME',			'Number of hours where users are allowed to modify the text of own comments. The value -1 deactivates this function.');
+
 // Search plugin
 define('_EZCOMMENTS_SEARCHLENGTHHINT', 		'The comments can only be searched for words that are longer than %minlen% and less than maxlen% characters!');
 

@@ -32,12 +32,20 @@
   <!--[ /if ]-->
 
   <div class="pn-adminformrow">
-    <!--[ pnformlabel for="ezcomments_subject" text='_EZCOMMENTS_SUBJECT' ]-->
-    <!--[ pnformtextinput id="ezcomments_subject" text=$subject|pnvarprepfordisplay size="32" maxLength="255" ]-->
+  	<!--[if $nomodify == 1]-->
+  		<strong><!--[$subject|pnvarprepfordisplay]--></strong>
+  	<!--[else]-->
+	    <!--[ pnformlabel for="ezcomments_subject" text='_EZCOMMENTS_SUBJECT' ]-->
+	    <!--[ pnformtextinput id="ezcomments_subject" text=$subject|pnvarprepfordisplay size="32" maxLength="255" ]-->
+  	<!--[/if]-->
   </div>
   <div class="pn-adminformrow">
-    <!--[ pnformlabel for="ezcomments_comment" text='_EZCOMMENTS_COMMENT' ]-->
-    <!--[ pnformtextinput id="ezcomments_comment" textMode="multiline" rows="5" cols="50" text=$comment size="32" ]-->
+  	<!--[if $nomodify == 1]-->
+  		<!--[$comment|pnvarprepfordisplay|nl2br|pnmodcallhooks]-->
+  	<!--[else]-->
+	    <!--[ pnformlabel for="ezcomments_comment" text='_EZCOMMENTS_COMMENT' ]-->
+	    <!--[ pnformtextinput id="ezcomments_comment" textMode="multiline" rows="5" cols="50" text=$comment size="32" ]-->
+  	<!--[/if]-->
   </div>
   <div class="pn-adminformrow">
     <!--[ pnformlabel for="ezcomments_status" text='_EZCOMMENTS_STATUS' ]-->

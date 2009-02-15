@@ -112,6 +112,7 @@ class EZComments_admin_modifyconfighandler
             pnModSetVar('EZComments', 'akismet',                 $data['ezcomments_akismet']);
             pnModSetVar('EZComments', 'akismetstatus',           $data['ezcomments_akismetstatus']);
             pnModSetVar('EZComments', 'anonusersrequirename',    $data['ezcomments_anonusersrequirename']);
+            pnModSetVar('EZComments', 'modifyowntime',           $data['ezcomments_modifyowntime']);
 
             LogUtil::registerStatus(_CONFIGUPDATED);
         }
