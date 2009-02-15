@@ -61,6 +61,12 @@ $modversion['dependencies'] = array(
 	array(	'modname'    => 'ContactList',
 			'minversion' => '1.0', 'maxversion' => '',
             'status'     => PNMODULE_DEPENDENCY_RECOMMENDED),
+	array(	'modname'    => 'MyProfile',
+			'minversion' => '1.2', 'maxversion' => '',
+            'status'     => PNMODULE_DEPENDENCY_RECOMMENDED),
+	array(	'modname'    => 'intercom',
+			'minversion' => '2.1', 'maxversion' => '',
+            'status'     => PNMODULE_DEPENDENCY_RECOMMENDED),
 	array(	'modname'    => 'Akismet',
 			'minversion' => '1.0', 'maxversion' => '',
             'status'     => PNMODULE_DEPENDENCY_RECOMMENDED)
