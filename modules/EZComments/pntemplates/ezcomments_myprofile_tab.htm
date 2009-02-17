@@ -1,17 +1,17 @@
 <h3><!--[pnml name="_EZCOMMENTS_PINBOARDFOR"]--> <!--[$uname]--></h3>
-<!--[pngetstatusmsg style="color:red"|pnvarprephtmldisplay]-->
+<!--[insert name="getstatusmsg"]-->
 
 <!--[if $viewer_uid gt 1]-->
-	
-	<!--[if $settings.nocomments eq "1"]-->
-		<!--[pnml name="_EZCOMMENTS_PINBOARDDEACT"]-->
-	<!--[else]-->
-		<!--[pnml name="_EZCOMMENTS_PINBOARDENTRYS"]-->: <!--[pnmodapifunc modname="EZComments" type="user" func="countitems" mod="MyProfile" objectid=$uid status="0"]--><br /><br />
-		<!--[pnmodurl modname="MyProfile" func="display" uid=$uid pluginname="EZComments" order="1" assign="viewUrl"]-->
-		<!--[pnmodcallhooks hookobject=item hookaction=display hookid=$uid module="MyProfile" returnurl=$viewUrl owneruid=$uid implode=false]-->
-		<!--[$hooks.EZComments]-->
-	<!--[/if]-->
-	
+
+<!--[if $settings.nocomments eq "1"]-->
+<!--[pnml name="_EZCOMMENTS_PINBOARDDEACT"]-->
 <!--[else]-->
-		<!--[pnml name="_EZCOMMENTS_REGISTERTOVIEW"]-->
+<!--[pnml name="_EZCOMMENTS_PINBOARDENTRYS"]-->: <!--[pnmodapifunc modname="EZComments" type="user" func="countitems" mod="MyProfile" objectid=$uid status="0"]--><br /><br />
+<!--[pnmodurl modname="MyProfile" func="display" uid=$uid pluginname="EZComments" order="1" assign="viewUrl"]-->
+<!--[pnmodcallhooks hookobject=item hookaction=display hookid=$uid module="MyProfile" returnurl=$viewUrl owneruid=$uid implode=false]-->
+<!--[$hooks.EZComments]-->
+<!--[/if]-->
+
+<!--[else]-->
+<!--[pnml name="_EZCOMMENTS_REGISTERTOVIEW"]-->
 <!--[/if]-->

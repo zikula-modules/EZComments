@@ -1,81 +1,83 @@
 <!--[*  $Id$  *]-->
 <!--[ pnpageaddvar name="stylesheet" value="system/Admin/pnstyle/admin.css" ]-->
 <!--[ pnpageaddvar name="javascript" value="modules/EZComments/pnjavascript/toggle.js" ]-->
+
 <h2><!--[pnml name=_EZCOMMENTS_LASTCOMMENTS c=$itemsperpage]--></h2>
 <form action="<!--[pnmodurl modname=EZComments]-->" method="post">
-<div>
-<label for="ezcomments_filter"><!--[pnml name=_EZCOMMENTS_FILTERBYSTATUS]--></label>
-<select id="ezcomments_filter" name="status">
-<option value="-1"<!--[if $status eq -1]--> selected="selected"<!--[/if]-->><!--[pnml name=_ALL]--></option>
-<option value="0"<!--[if $status eq 0]--> selected="selected"<!--[/if]-->><!--[pnml name=_EZCOMMENTS_APPROVED]--></option>
-<option value="1"<!--[if $status eq 1]--> selected="selected"<!--[/if]-->><!--[pnml name=_EZCOMMENTS_PENDING]--></option>
-<option value="2"<!--[if $status eq 2]--> selected="selected"<!--[/if]-->><!--[pnml name=_EZCOMMENTS_REJECTED]--></option>
-</select>
-<input type="submit" value="<!--[pnml name=_SUBMIT]-->" />
-</div>
+  <div>
+    <label for="ezcomments_filter"><!--[pnml name=_EZCOMMENTS_FILTERBYSTATUS]--></label>
+    <select id="ezcomments_filter" name="status">
+      <option value="-1"<!--[if $status eq -1]--> selected="selected"<!--[/if]-->><!--[pnml name=_ALL]--></option>
+      <option value="0"<!--[if $status eq 0]--> selected="selected"<!--[/if]-->><!--[pnml name=_EZCOMMENTS_APPROVED]--></option>
+      <option value="1"<!--[if $status eq 1]--> selected="selected"<!--[/if]-->><!--[pnml name=_EZCOMMENTS_PENDING]--></option>
+      <option value="2"<!--[if $status eq 2]--> selected="selected"<!--[/if]-->><!--[pnml name=_EZCOMMENTS_REJECTED]--></option>
+    </select>
+    <input type="submit" value="<!--[pnml name=_SUBMIT]-->" />
+  </div>
 </form>
-<form id="ezcomments_view" action="<!--[pnmodurl modname=EZComments func=processselected]-->" method="post">
-<div>
-<input type="hidden" name="authid" value="<!--[pnsecgenauthkey module=EZComments]-->" />
-<table id="ezcomments_comments" class="pn-admintable">
-	<thead>
-	<tr>
-		<th><input type="checkbox" onclick="checkAllFields(1);" id="checkAll" /></th>
-		<th><!--[pnml name=_EZCOMMENTS_STATUS]--></th>
-		<th><!--[pnml name=_EZCOMMENTS_USERNAME]--></th>
-		<th><!--[pnml name=_EZCOMMENTS_OWNERUSERNAME]--></th>
-		<th><!--[pnml name=_EZCOMMENTS_MODULE]--></th>
-		<th><!--[pnml name=_EZCOMMENTS_COMMENT]--></th>
-		<th><!--[pnml name=_OPTIONS]--></th>
-	</tr>
-	</thead>
-	<tbody>
-	<!--[foreach from=$items item=item]-->
-		<tr class="<!--[cycle values=pn-odd,pn-even]-->">
-			<td><input type="checkbox" name="comments[]" value="<!--[$item.id]-->" onclick="checkAllFields(2);" /></td>
-			<td>
-				<!--[if $item.status eq 0]--><!--[pnimg modname="EZComments" src=green.gif altml=true titleml=true alt=_EZCOMMENTS_APPROVED title=_EZCOMMENTS_APPROVED]--><!--[/if]-->
-				<!--[if $item.status eq 1]--><!--[pnimg modname="EZComments" src=yellow.gif altml=true titleml=true alt=_EZCOMMENTS_PENDING title=_EZCOMMENTS_PENDING]--><!--[/if]-->
-				<!--[if $item.status eq 2]--><!--[pnimg modname="EZComments" src=red.gif altml=true titleml=true alt=_EZCOMMENTS_REJECTED title=_EZCOMMENTS_REJECTED]--><!--[/if]-->
-			</td>
-			<td>
-				<!--[if $item.uid neq 0]-->
-					<!--[pnusergetvar name=uname uid=$item.uid assign="uname"]-->
-					<!--[$uname|userprofilelink]-->
-				<!--[else]-->
-					<!--[$item.anonname|pnvarprepfordisplay]-->
-				<!--[/if]-->
-				<br /><!--[$item.date|pndate_format]-->
-			</td>
-			<td>
-				<!--[pnusergetvar name=uname uid=$item.owneruid assign="owneruname"]-->
-				<!--[if $owneruname ne ""]-->
-					<!--[$owneruname|userprofilelink]-->
-				<!--[else]-->
-					<!--[pnml name="_EZCOMMENTS_UNKNOWNOWNER"]-->
-				<!--[/if]-->
-			</td>
-			<td><a href="<!--[$item.url|pnvarprepfordisplay]-->"><!--[$item.mod|pnvarprepfordisplay]--></a></td>
-			<td><!--[$item.comment|strip_tags|truncate:80]--></td>
-			<td>
-	            <!--[assign var="options" value=$item.options]-->
-	            <!--[section name=options loop=$options]-->
-	                <a href="<!--[$options[options].url|pnvarprepfordisplay]-->"><!--[pnimg modname=core set=icons/extrasmall src=$options[options].image alt=$options[options].title]--></a>
-	            <!--[/section]-->
-			</td>
-		</tr>
-	<!--[/foreach]-->
-	</tbody>
-</table>
-<!--[pnml name=_EZCOMMENTSWITHSELECTED]-->
-<select name="action">
-<option value="">&nbsp;</option>
-<option value="delete"><!--[pnml name=_DELETE]--></option>
-<option value="approve"><!--[pnml name=_EZCOMMENTS_APPROVE]--></option>
-<option value="hold"><!--[pnml name=_EZCOMMENTS_HOLD]--></option>
-<option value="reject"><!--[pnml name=_EZCOMMENTS_REJECT]--></option>
-</select>
-<input type="submit" value="<!--[pnml name=_SUBMIT]-->" />
-</div>
+
+<form class="pn-adminform" id="ezcomments_view" action="<!--[pnmodurl modname=EZComments func=processselected]-->" method="post">
+  <input type="hidden" name="authid" value="<!--[pnsecgenauthkey module=EZComments]-->" />
+  <table id="ezcomments_comments" class="pn-admintable">
+    <thead>
+      <tr>
+        <th><input type="checkbox" onclick="checkAllFields(1);" id="checkAll" /></th>
+        <th><!--[pnml name=_EZCOMMENTS_STATUS]--></th>
+        <th><!--[pnml name=_EZCOMMENTS_USERNAME]--></th>
+        <th><!--[pnml name=_EZCOMMENTS_OWNERUSERNAME]--></th>
+        <th><!--[pnml name=_EZCOMMENTS_MODULE]--></th>
+        <th><!--[pnml name=_EZCOMMENTS_COMMENT]--></th>
+        <th><!--[pnml name=_OPTIONS]--></th>
+      </tr>
+    </thead>
+    <tbody>
+      <!--[foreach from=$items item=item]-->
+      <tr class="<!--[cycle values=pn-odd,pn-even]-->">
+        <td><input type="checkbox" name="comments[]" value="<!--[$item.id]-->" onclick="checkAllFields(2);" /></td>
+        <td>
+          <!--[if $item.status eq 0]--><!--[pnimg modname="EZComments" src=green.gif altml=true titleml=true alt=_EZCOMMENTS_APPROVED title=_EZCOMMENTS_APPROVED]--><!--[/if]-->
+          <!--[if $item.status eq 1]--><!--[pnimg modname="EZComments" src=yellow.gif altml=true titleml=true alt=_EZCOMMENTS_PENDING title=_EZCOMMENTS_PENDING]--><!--[/if]-->
+          <!--[if $item.status eq 2]--><!--[pnimg modname="EZComments" src=red.gif altml=true titleml=true alt=_EZCOMMENTS_REJECTED title=_EZCOMMENTS_REJECTED]--><!--[/if]-->
+        </td>
+        <td>
+          <!--[if $item.uid neq 0]-->
+          <!--[pnusergetvar name=uname uid=$item.uid assign="uname"]-->
+          <!--[$uname|userprofilelink]-->
+          <!--[else]-->
+          <!--[$item.anonname|pnvarprepfordisplay]-->
+          <!--[/if]-->
+          <br /><!--[$item.date|pndate_format]-->
+        </td>
+        <td>
+          <!--[if $item.owneruid ne "0"]-->
+          <!--[pnusergetvar name=uname uid=$item.owneruid assign="owneruname"]-->
+          <!--[$owneruname|userprofilelink]-->
+          <!--[else]-->
+          <!--[pnml name="_EZCOMMENTS_UNKNOWNOWNER"]-->
+          <!--[/if]-->
+        </td>
+        <td><a href="<!--[$item.url|pnvarprepfordisplay]-->"><!--[$item.mod|pnvarprepfordisplay]--></a></td>
+        <td><!--[$item.comment|strip_tags|truncate:80]--></td>
+        <td>
+          <!--[assign var="options" value=$item.options]-->
+          <!--[section name=options loop=$options]-->
+          <a href="<!--[$options[options].url|pnvarprepfordisplay]-->"><!--[pnimg modname=core set=icons/extrasmall src=$options[options].image alt=$options[options].title]--></a>
+          <!--[/section]-->
+        </td>
+      </tr>
+      <!--[/foreach]-->
+    </tbody>
+  </table>
+  <fieldset>
+    <legend><!--[pnml name=_EZCOMMENTSWITHSELECTED]--></legend>
+    <select name="action">
+      <option value="">&nbsp;</option>
+      <option value="delete"><!--[pnml name=_DELETE]--></option>
+      <option value="approve"><!--[pnml name=_EZCOMMENTS_APPROVE]--></option>
+      <option value="hold"><!--[pnml name=_EZCOMMENTS_HOLD]--></option>
+      <option value="reject"><!--[pnml name=_EZCOMMENTS_REJECT]--></option>
+    </select>
+    <input type="submit" value="<!--[pnml name=_SUBMIT]-->" />
+  </fieldset>
 </form>
 <!--[pager show="page" rowcount=$pager.numitems limit=$pager.itemsperpage posvar=startnum shift=1]-->

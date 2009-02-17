@@ -1,17 +1,18 @@
 <!--[*  $Id$  *]-->
 <!--[include file="ezcomments_admin_menu.htm"]-->
 <div class="pn-admincontainer">
-<h2><!--[pnml name="_EZCOMMENTS_CLEANUP_EXPLAIN"]--></h2>
-<form class="pn-adminform" action="<!--[pnmodurl modname="EZComments" type="admin" func="cleanup_go"]-->" method="post" enctype="application/x-www-form-urlencoded">
-<div>
-	<input type="hidden" name="authid" value="<!--[pnsecgenauthkey module="EZComments"]-->" />
-	<div class="pn-adminformrow">
-		<label for="ezcomments_module"><!--[pnml name="_EZCOMMENTS_CLEANUP_LABEL"]--></label>
-		<select id="ezcomments_module" name="module"><!--[html_options options=$selectitems]--></select>
-	</div>
-	<div class="pn-adminformrow">
-		<input name="submit" type="submit" value="<!--[pnml name="_EZCOMMENTS_CLEANUP_GO"]-->" />
-	</div>
-</div>
-</form>
+  <h2><!--[pnml name="_EZCOMMENTS_CLEANUP_EXPLAIN"]--></h2>
+  <form class="pn-adminform" action="<!--[pnmodurl modname="EZComments" type="admin" func="cleanup_go"]-->" method="post" enctype="application/x-www-form-urlencoded">
+    <fieldset>
+      <legend><!--[pnml name="_EZCOMMENTS_CLEANUP_EXPLAIN"]--></legend>
+      <input type="hidden" name="authid" value="<!--[pnsecgenauthkey module="EZComments"]-->" />
+      <div class="pn-adminformrow">
+        <label for="ezcomments_module"><!--[pnml name="_EZCOMMENTS_CLEANUP_LABEL"]--></label>
+        <select id="ezcomments_module" name="module"><!--[html_options options=$selectitems]--></select>
+      </div>
+    </fieldset>
+    <div class="pn-adminformrow pn-adminformbuttons">
+      <input name="submit" type="submit" value="<!--[pnml name="_EZCOMMENTS_CLEANUP_GO"]-->" />
+    </div>
+  </form>
 </div>

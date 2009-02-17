@@ -1,18 +1,19 @@
 <!--[*  $Id$  *]-->
 <!--[include file="ezcomments_admin_menu.htm"]-->
 <div class="pn-admincontainer">
-<h2><!--[pnml name="_EZCOMMENTS_DELETE"]--></h2>
-<form class="pn-adminform" action="<!--[pnmodurl modname="EZComments" type="admin" func="deleteitem"]-->" method="post" enctype="application/x-www-form-urlencoded">
-<div>
-    <input type="hidden" name="authid" value="<!--[pnsecgenauthkey module="EZComments"]-->" />
-    <input type="hidden" name="confirmation" value="1" />
-    <input type="hidden" name="mod" value="<!--[$name|pnvarprepfordisplay]-->" />
-    <input type="hidden" name="objectid" value="<!--[$objectid|pnvarprepfordisplay]-->" />
-	<div class="pn-adminformrow">
-		<label for="ezcomments_submit"><!--[pnml name="_EZCOMMENTS_CONFIRMDELETEITEM" o=$objectid m=$name]--></label>
-		<input id="ezcomments_submit" name="submit" type="submit" value="<!--[pnml name="_DELETE"]-->" />
-	</div>
-</div>
-</form>
-<a href="<!--[pnmodurl modname="EZComments" type="admin" func="main"]-->"><!--[pnml name="_EZCOMMENTS_CANCELDELETEITEM" o=$objectid m=$name]--></a>
+  <h2><!--[pnml name="_EZCOMMENTS_DELETE"]--></h2>
+  <form class="pn-adminform" action="<!--[pnmodurl modname="EZComments" type="admin" func="deleteitem"]-->" method="post" enctype="application/x-www-form-urlencoded">
+    <fieldset>
+      <legend><!--[pnml name="_EZCOMMENTS_DELETE"]--></legend>
+      <input type="hidden" name="authid" value="<!--[pnsecgenauthkey module="EZComments"]-->" />
+      <input type="hidden" name="confirmation" value="1" />
+      <input type="hidden" name="mod" value="<!--[$name|pnvarprepfordisplay]-->" />
+      <input type="hidden" name="objectid" value="<!--[$objectid|pnvarprepfordisplay]-->" />
+      <div class="pn-adminformrow pn-adminformbuttons">
+        <label for="ezcomments_submit"><!--[pnml name="_EZCOMMENTS_CONFIRMDELETEITEM" o=$objectid m=$name]--></label>
+        <input id="ezcomments_submit" name="submit" type="submit" value="<!--[pnml name="_DELETE"]-->" />
+      </div>
+    </fieldset>
+  </form>
+  <a href="<!--[pnmodurl modname="EZComments" type="admin" func="main"]-->"><!--[pnml name="_EZCOMMENTS_CANCELDELETEITEM" o=$objectid m=$name]--></a>
 </div>

@@ -1,104 +1,102 @@
 <!--[*  $Id$  *]-->
 <!--[include file="ezcomments_admin_menu.htm"]-->
 <div class="pn-admincontainer">
-<h2><!--[pnml name="_EZCOMMENTS_APPLYMODRULES"]--></h2>
-<form id="ezcomments_view" action="<!--[pnmodurl modname=EZComments type=admin func=applyrules]-->" method="post">
-<div>
-<input type="hidden" name="confirmation" value="2" />
-<input type="hidden" name="authid" value="<!--[pnsecgenauthkey modname=EZComments]-->" />
-<input type="hidden" name="allcomments" value="<!--[$allcomments|pnvarprepfordisplay]-->" />
-<input type="hidden" name="status" value="<!--[$status|pnvarprepfordisplay]-->" />
-<h3><!--[pnml name=_EZCOMMENTS_TOBEREJECTED]--></h3>
-<table class="pn-admintable">
-	<thead>
-	<tr>
-		<th><!--[pnml name=_EZCOMMENTS_STATUS]--></th>
-		<th><!--[pnml name=_EZCOMMENTS_USERNAME]--></th>
-		<th><!--[pnml name=_EZCOMMENTS_MODULE]--></th>
-		<th><!--[pnml name=_EZCOMMENTS_TYPE]--></th>
-		<th><!--[pnml name=_EZCOMMENTS_COMMENT]--></th>
-		<th><!--[pnml name=_OPTIONS]--></th>
-	</tr>
-	</thead>
-	<tbody>
-	<!--[foreach from=$blacklistedcomments item=item]-->
-		<tr class="<!--[cycle values=pn-odd,pn-even]-->">
-			<td>
-				<!--[if $item.status eq 0]--><!--[pnimg src=green.gif]--><!--[/if]-->
-				<!--[if $item.status eq 1]--><!--[pnimg src=yellow.gif]--><!--[/if]-->
-				<!--[if $item.status eq 2]--><!--[pnimg src=red.gif]--><!--[/if]-->
-			</td>
-			<td>
-				<!--[if $item.uid neq 0]-->
-					<!--[pnusergetvar name=uname uid=$item.uid]-->
-				<!--[else]-->
-					<!--[$item.anonname|pnvarprepfordisplay]-->
-				<!--[/if]-->
-				<br /><!--[$item.date|pndate_format]-->
-			</td>
-			<td><a href="<!--[$item.url]-->"><!--[$item.mod]--></a></td>
-			<td><!--[$item.type|pnvarprepfordisplay|default:'&nbsp;']--></td>
-			<td><!--[$item.comment|strip_tags|truncate:20]--></td>
-			<td>
-				<!--[assign var="options" value=$item.options]-->
-				<!--[strip]-->
-				[<!--[section name=options loop=$options]-->
-					<a href="<!--[$options[options].url|pnvarprepfordisplay]-->"><!--[pnml name=$options[options].title]--></a> 
-					<!--[if !$smarty.section.options.last]--> | <!--[/if]-->
-				<!--[/section]-->]
-				<!--[/strip]-->
-			</td>
-		</tr>
-	<!--[/foreach]-->
-	</tbody>
-</table>
-<h3><!--[pnml name=_EZCOMMENTS_TOBEMODERATED]--></h3>
-<table class="pn-admintable">
-	<thead>
-	<tr>
-		<th><!--[pnml name=_EZCOMMENTS_STATUS]--></th>
-		<th><!--[pnml name=_EZCOMMENTS_USERNAME]--></th>
-		<th><!--[pnml name=_EZCOMMENTS_MODULE]--></th>
-		<th><!--[pnml name=_EZCOMMENTS_TYPE]--></th>
-		<th><!--[pnml name=_EZCOMMENTS_COMMENT]--></th>
-		<th><!--[pnml name=_OPTIONS]--></th>
-	</tr>
-	</thead>
-	<tbody>
-	<!--[foreach from=$moderatedcomments item=item]-->
-		<tr class="<!--[cycle values=pn-odd,pn-even]-->">
-			<td>
-				<!--[if $item.status eq 0]--><!--[pnimg src=green.gif]--><!--[/if]-->
-				<!--[if $item.status eq 1]--><!--[pnimg src=yellow.gif]--><!--[/if]-->
-				<!--[if $item.status eq 2]--><!--[pnimg src=red.gif]--><!--[/if]-->
-			</td>
-			<td>
-				<!--[if $item.uid neq 0]-->
-					<!--[pnusergetvar name=uname uid=$item.uid]-->
-				<!--[else]-->
-					<!--[$item.anonname|pnvarprepfordisplay]-->
-				<!--[/if]-->
-				<br /><!--[$item.date|pndate_format]-->
-			</td>
-			<td><a href="<!--[$item.url]-->"><!--[$item.mod]--></a></td>
-			<td><!--[$item.type|pnvarprepfordisplay|default:'&nbsp;']--></td>
-			<td><!--[$item.comment|strip_tags|truncate:20]--></td>
-			<td>
-				<!--[assign var="options" value=$item.options]-->
-				<!--[strip]-->
-				[<!--[section name=options loop=$options]-->
-					<a href="<!--[$options[options].url|pnvarprepfordisplay]-->"><!--[pnml name=$options[options].title]--></a> 
-					<!--[if !$smarty.section.options.last]--> | <!--[/if]-->
-				<!--[/section]-->]
-				<!--[/strip]-->
-			</td>
-		</tr>
-	<!--[/foreach]-->
-	</tbody>
-</table>
-<div class="pn-adminformrow">
-	<input name="submit" type="submit" value="<!--[pnml name="_EZCOMMENTS_APPLYNEWRULES"]-->" />
-</div>
-</div>
-</form>
+  <h2><!--[pnml name="_EZCOMMENTS_APPLYMODRULES"]--></h2>
+  <form id="ezcomments_view" action="<!--[pnmodurl modname=EZComments type=admin func=applyrules]-->" method="post">
+    <input type="hidden" name="confirmation" value="2" />
+    <input type="hidden" name="authid" value="<!--[pnsecgenauthkey modname=EZComments]-->" />
+    <input type="hidden" name="allcomments" value="<!--[$allcomments|pnvarprepfordisplay]-->" />
+    <input type="hidden" name="status" value="<!--[$status|pnvarprepfordisplay]-->" />
+    <h3><!--[pnml name=_EZCOMMENTS_TOBEREJECTED]--></h3>
+    <table class="pn-admintable">
+      <thead>
+        <tr>
+          <th><!--[pnml name=_EZCOMMENTS_STATUS]--></th>
+          <th><!--[pnml name=_EZCOMMENTS_USERNAME]--></th>
+          <th><!--[pnml name=_EZCOMMENTS_MODULE]--></th>
+          <th><!--[pnml name=_EZCOMMENTS_TYPE]--></th>
+          <th><!--[pnml name=_EZCOMMENTS_COMMENT]--></th>
+          <th><!--[pnml name=_OPTIONS]--></th>
+        </tr>
+      </thead>
+      <tbody>
+        <!--[foreach from=$blacklistedcomments item=item]-->
+        <tr class="<!--[cycle values=pn-odd,pn-even]-->">
+          <td>
+            <!--[if $item.status eq 0]--><!--[pnimg src=green.gif]--><!--[/if]-->
+            <!--[if $item.status eq 1]--><!--[pnimg src=yellow.gif]--><!--[/if]-->
+            <!--[if $item.status eq 2]--><!--[pnimg src=red.gif]--><!--[/if]-->
+          </td>
+          <td>
+            <!--[if $item.uid neq 0]-->
+            <!--[pnusergetvar name=uname uid=$item.uid]-->
+            <!--[else]-->
+            <!--[$item.anonname|pnvarprepfordisplay]-->
+            <!--[/if]-->
+            <br /><!--[$item.date|pndate_format]-->
+          </td>
+          <td><a href="<!--[$item.url]-->"><!--[$item.mod]--></a></td>
+          <td><!--[$item.type|pnvarprepfordisplay|default:'&nbsp;']--></td>
+          <td><!--[$item.comment|strip_tags|truncate:20]--></td>
+          <td>
+            <!--[assign var="options" value=$item.options]-->
+            <!--[strip]-->
+            [<!--[section name=options loop=$options]-->
+            <a href="<!--[$options[options].url|pnvarprepfordisplay]-->"><!--[pnml name=$options[options].title]--></a>
+            <!--[if !$smarty.section.options.last]--> | <!--[/if]-->
+            <!--[/section]-->]
+            <!--[/strip]-->
+          </td>
+        </tr>
+        <!--[/foreach]-->
+      </tbody>
+    </table>
+    <h3><!--[pnml name=_EZCOMMENTS_TOBEMODERATED]--></h3>
+    <table class="pn-admintable">
+      <thead>
+        <tr>
+          <th><!--[pnml name=_EZCOMMENTS_STATUS]--></th>
+          <th><!--[pnml name=_EZCOMMENTS_USERNAME]--></th>
+          <th><!--[pnml name=_EZCOMMENTS_MODULE]--></th>
+          <th><!--[pnml name=_EZCOMMENTS_TYPE]--></th>
+          <th><!--[pnml name=_EZCOMMENTS_COMMENT]--></th>
+          <th><!--[pnml name=_OPTIONS]--></th>
+        </tr>
+      </thead>
+      <tbody>
+        <!--[foreach from=$moderatedcomments item=item]-->
+        <tr class="<!--[cycle values=pn-odd,pn-even]-->">
+          <td>
+            <!--[if $item.status eq 0]--><!--[pnimg src=green.gif]--><!--[/if]-->
+            <!--[if $item.status eq 1]--><!--[pnimg src=yellow.gif]--><!--[/if]-->
+            <!--[if $item.status eq 2]--><!--[pnimg src=red.gif]--><!--[/if]-->
+          </td>
+          <td>
+            <!--[if $item.uid neq 0]-->
+            <!--[pnusergetvar name=uname uid=$item.uid]-->
+            <!--[else]-->
+            <!--[$item.anonname|pnvarprepfordisplay]-->
+            <!--[/if]-->
+            <br /><!--[$item.date|pndate_format]-->
+          </td>
+          <td><a href="<!--[$item.url]-->"><!--[$item.mod]--></a></td>
+          <td><!--[$item.type|pnvarprepfordisplay|default:'&nbsp;']--></td>
+          <td><!--[$item.comment|strip_tags|truncate:20]--></td>
+          <td>
+            <!--[assign var="options" value=$item.options]-->
+            <!--[strip]-->
+            [<!--[section name=options loop=$options]-->
+            <a href="<!--[$options[options].url|pnvarprepfordisplay]-->"><!--[pnml name=$options[options].title]--></a>
+            <!--[if !$smarty.section.options.last]--> | <!--[/if]-->
+            <!--[/section]-->]
+            <!--[/strip]-->
+          </td>
+        </tr>
+        <!--[/foreach]-->
+      </tbody>
+    </table>
+    <div class="pn-adminformrow pn-adminformbuttons">
+      <input name="submit" type="submit" value="<!--[pnml name="_EZCOMMENTS_APPLYNEWRULES"]-->" />
+    </div>
+  </form>
 </div>

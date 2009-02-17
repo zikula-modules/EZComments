@@ -83,7 +83,7 @@ define('_EZCOMMENTS_ADMIN',                 'EZComments Administration');
 define('_EZCOMMENTS_ADMIN_MAIN',            'Hauptmenü');
 define('_EZCOMMENTS_SENDINFOMAIL',          'Mail bei neuen Kommentaren verschicken');
 define('_EZCOMMENTS_OK',                    'Bestätigen');
-define('_EZCOMMENTS_LASTCOMMENTS',          'Die letzten Kommentare');
+define('_EZCOMMENTS_LASTCOMMENTS',          'Die letzten %c% Kommentare');
 define('_EZCOMMENTS_USERNAME',              'Benutzer');
 define('_EZCOMMENTS_MODULE',                'Modul');
 define('_EZCOMMENTS_TEMPLATE',              'Layout');
