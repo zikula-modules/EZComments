@@ -37,8 +37,7 @@
 define('_EZCOMMENTS_MODIFYOWNTIME',			'Number of hours where users are allowed to modify the text of own comments. The value -1 deactivates this function.');
 
 // Search plugin
-define('_EZCOMMENTS_SEARCHLENGTHHINT', 		'The comments can only be searched for words that are longer than %minlen% and less than maxlen% characters!');
-
+define('_EZCOMMENTS_SEARCHLENGTHHINT', 		'The comments can only be searched for words that are longer than %minlen% and less than %maxlen% characters!');
 // ContactList integration
 define('_EZCOMMENTS_USER_IGNORES_YOU',		'The user set as content owner ignores you. You cannot post any comment here!');
 
