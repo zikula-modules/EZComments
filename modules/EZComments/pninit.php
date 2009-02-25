@@ -313,6 +313,8 @@ function EZComments_upgrade($oldversion)
 		pnModSetVar('EZComments', 'template',		'Standard');
 	    pnModSetVar('EZComments', 'modifyowntime', 	'6');
 	}
+	if ($oldversion == '1.6') {
+	}
     return true;
 } 
 

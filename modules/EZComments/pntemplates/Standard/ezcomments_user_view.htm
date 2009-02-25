@@ -1,92 +1,115 @@
 <!--[*  $Id$ *]-->
 
+<!--[* ---------------------------------------------------------------------- *]-->
+<!--[* EZComments                                                             *]-->
+<!--[* Attach comments to any module calling hooks                            *]-->
+<!--[* ---------------------------------------------------------------------- *]-->
+<!--[* http://code.zikula.org/ezcomments/                           *]-->
+<!--[* ---------------------------------------------------------------------- *]-->
+<!--[* LICENSE                                                                *]-->
+<!--[* This program is free software; you can redistribute it and/or          *]-->
+<!--[* modify it under the terms of the GNU General Public License (GPL)      *]-->
+<!--[* as published by the Free Software Foundation; either version 2         *]-->
+<!--[* of the License, or (at your option) any later version.                 *]-->
+<!--[* This program is distributed in the hope that it will be useful,        *]-->
+<!--[* but WITHOUT ANY WARRANTY; without even the implied warranty of         *]-->
+<!--[* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *]-->
+<!--[* GNU General Public License for more details.                           *]-->
+<!--[* To read the license please visit http://www.gnu.org/copyleft/gpl.html  *]-->
+<!--[* ---------------------------------------------------------------------- *]-->
+<!--[* Purpose of this template:                                              *]-->
+<!--[* Show the comments in the standard look, everything on just one         *]-->
+<!--[* page (the comments as well as the comment form)                        *]-->
+<!--[* ---------------------------------------------------------------------- *]-->
+
 <a id="comments"></a>
 
 <!--[if $comments eq true]-->
-<!--[* Here we show the given comments *]-->
+  <!--[* Here we show the given comments *]-->  
 
-<h3><!--[pnml name="_EZCOMMENTS_COMMENTS"]--></h3>
-<!--[if $allowadd]-->
-<a href="#commentform"><!--[pnml name="_EZCOMMENTS_COMMENT_ADD"]--></a>
+	<h3><!--[pnml name="_EZCOMMENTS_COMMENTS"]--></h3>
+	<!--[if $allowadd]-->
+		<a href="#commentform"><!--[pnml name="_EZCOMMENTS_COMMENT_ADD"]--></a>
+	<!--[/if]-->
+	<!--[pnmodavailable modname="intercom" assign="intercom"]-->
+	
+	<!--[foreach from=$comments item="comment"]-->
+		<div class="ezc_box">
+			<div class="ezc_info">
+				<div class="ezc_avatar">
+				<!--[if $comment._YOURAVATAR ne "" and $comment._YOURAVATAR ne "blank.gif"]-->
+					<img src="<!--[pngetbaseurl]-->/images/avatar/<!--[$comment._YOURAVATAR]-->" />
+				<!--[else]-->
+					<img src="<!--[pngetbaseurl]-->images/icons/large/personal.gif" />
+				<!--[/if]-->
+				</div>
+				<div class="ezc_userinfo">
+					<!--[pnml name="_EZCOMMENTS_AUTHOR"]-->: 
+						<!--[if $comment.anonname ne '']-->
+							<!--[if $comment.anonwebsite != '']-->
+								<a href="<!--[$comment.anonwebsite]-->">
+							<!--[/if]-->
+							<!--[$comment.anonname]-->
+							<!--[if $comment.anonwebsite ne '']-->
+								</a>
+							<!--[/if]-->
+						<!--[else]-->
+							<!--[$comment.pn_uname|userprofilelink]-->
+						<!--[/if]-->
+					<br />
+					<!--[$comment.date|pndate_format]-->
+				</div>
+				<div class="ezc_icons">
+					<!--[if $intercom]-->
+						<!--[if $comment.anonmail ne '']-->
+							<a href="mailto:<!--[$comment.anonmail]-->"><img src="<!--[pngetbaseurl]-->images/icons/extrasmall/mail_generic.gif" alt="<!--[pnml name="_EZCOMMENTS_SENDPM"]-->" title="<!--[pnml name="_EZCOMMENTS_SENDPM"]-->" /></a>
+						<!--[else]-->
+							<a href="<!--[pnmodurl modname="intercom" func="newpm" uid=$comment.uid]-->"><img src="<!--[pngetbaseurl]-->images/icons/extrasmall/mail_generic.gif" alt="<!--[pnml name="_EZCOMMENTS_SENDPM"]-->" title="<!--[pnml name="_EZCOMMENTS_SENDPM"]-->" /></a>
+						<!--[/if]-->
+	
+						<!--[if $comment.del]-->
+							<a href="<!--[pnmodurl fqurl="true" modname=EZComments type=user func=modify id=$comment.id redirect=$redirect]-->"><img src="<!--[pngetbaseurl]-->images/icons/extrasmall/14_layer_deletelayer.gif"></a>
+						<!--[/if]-->
+	
+					<!--[/if]-->
+				</div>
+			</div>
+			<div class="ezc_comment">
+				<span class="ezc_title"><!--[$comment.subject|pnvarprepfordisplay]--></span>
+				<div class="ezc_commentscroll">
+					<!--[$comment.comment|pnvarprepfordisplay|nl2br|pnmodcallhooks]-->
+				</div>
+			</div>
+			<div class="ezc_line">
+				<hr />
+			</div>
+		</div>
+	<!--[foreachelse]-->
+		<div class="pn-informationmsg">
+			<!--[pnml name="_EZCOMMENTS_NOCOMMENTSYET"]-->
+		</div>
+	<!--[/foreach]-->
+	
+	<!--[if $enablepager]-->
+		<div class="ezc_pager">
+			<!--[pager show="page" rowcount=$pager.numitems limit=$pager.itemsperpage posvar=comments_startnum shift=1]-->
+		</div>
+	<!--[/if]-->
+
 <!--[/if]-->
 
-<!--[pnmodavailable modname="intercom" assign="intercom"]-->
-
-<!--[foreach from=$comments item="comment"]-->
-<div class="ezc_box">
-  <div class="ezc_info">
-    <div class="ezc_avatar">
-      <!--[if $comment._YOURAVATAR ne "" and $comment._YOURAVATAR ne "blank.gif"]-->
-      <img src="<!--[pngetbaseurl]-->/images/avatar/<!--[$comment._YOURAVATAR]-->" />
-      <!--[else]-->
-      <img src="<!--[pngetbaseurl]-->images/icons/large/personal.gif" />
-      <!--[/if]-->
-    </div>
-    <div class="ezc_userinfo">
-      <!--[pnml name="_EZCOMMENTS_AUTHOR"]-->:
-      <!--[if $comment.anonname ne '']-->
-      <!--[if $comment.anonwebsite != '']-->
-      <a href="<!--[$comment.anonwebsite]-->">
-        <!--[/if]-->
-        <!--[$comment.anonname]-->
-        <!--[if $comment.anonwebsite ne '']-->
-      </a>
-      <!--[/if]-->
-      <!--[else]-->
-      <!--[$comment.pn_uname|userprofilelink]-->
-      <!--[/if]-->
-      <br />
-      <!--[$comment.date|pndate_format]-->
-    </div>
-    <div class="ezc_icons">
-      <!--[if $intercom]-->
-      <!--[if $comment.anonmail ne '']-->
-      <a href="mailto:<!--[$comment.anonmail]-->"><img src="<!--[pngetbaseurl]-->images/icons/extrasmall/mail_generic.gif" alt="<!--[pnml name="_EZCOMMENTS_SENDPM"]-->" title="<!--[pnml name="_EZCOMMENTS_SENDPM"]-->" /></a>
-      <!--[else]-->
-      <a href="<!--[pnmodurl modname="intercom" func="newpm" uid=$comment.uid]-->"><img src="<!--[pngetbaseurl]-->images/icons/extrasmall/mail_generic.gif" alt="<!--[pnml name="_EZCOMMENTS_SENDPM"]-->" title="<!--[pnml name="_EZCOMMENTS_SENDPM"]-->" /></a>
-      <!--[/if]-->
-
-      <!--[if $comment.del]-->
-      <a href="<!--[pnmodurl fqurl="true" modname=EZComments type=user func=modify id=$comment.id redirect=$redirect]-->"><img src="<!--[pngetbaseurl]-->images/icons/extrasmall/14_layer_deletelayer.gif"></a>
-      <!--[/if]-->
-
-      <!--[/if]-->
-    </div>
-  </div>
-  <div class="ezc_comment">
-    <span class="ezc_title"><!--[$comment.subject|pnvarprepfordisplay]--></span>
-    <div class="ezc_commentscroll">
-      <!--[$comment.comment|pnvarprepfordisplay|nl2br|pnmodcallhooks]-->
-    </div>
-  </div>
-  <div class="ezc_line">
-    <hr />
-  </div>
-</div>
-<!--[foreachelse]-->
-<div class="pn-informationmsg">
-  <!--[pnml name="_EZCOMMENTS_NOCOMMENTSYET"]-->
-</div>
-<!--[/foreach]-->
-
-<!--[if $enablepager]-->
-<div class="ezc_pager">
-  <!--[pager show="page" rowcount=$pager.numitems limit=$pager.itemsperpage posvar=comments_startnum shift=1]-->
-</div>
-<!--[/if]-->
-
 <!--[if $allowadd]-->
-<a id="commentform"></a>
-<!--[* This is the form to comment. It is shown only, when the user is allowed to. *]-->
-<h3><!--[pnml name=_EZCOMMENTS_COMMENT_ADD]--></h3>
-<form id="post" action="<!--[pngetbaseurl]--><!--[pnmodurl modname=EZComments func=create]-->" method="post">
-  <fieldset>
-    <input type="hidden" name="authid" id="authid" value="<!--[pnsecgenauthkey module=EZComments]-->" />
-    <input type="hidden" name="redirect" id="EZComments_redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" />
-    <input type="hidden" name="mod" id="EZComments_modname" value="<!--[pnmodgetname]-->" />
+  <a id="commentform"></a>
+  <!--[* This is the form to comment. It is shown only, when the user is allowed to. *]-->
+  <h3><!--[pnml name=_EZCOMMENTS_COMMENT_ADD]--></h3>
+  <form id="post" action="<!--[pngetbaseurl]--><!--[pnmodurl modname=EZComments func=create]-->" method="post">
+  <div>
+    <input type="hidden" name="authid" id="authid" value="<!--[pnsecgenauthkey module=EZComments]-->" /> 
+    <input type="hidden" name="redirect" id="EZComments_redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" /> 
+    <input type="hidden" name="mod" id="EZComments_modname" value="<!--[pnmodgetname]-->" /> 
     <input type="hidden" name="owneruid" id="EZComments_owneruid" value="<!--[$owneruid|pnvarprepfordisplay]-->" />
     <input type="hidden" name="useurl" id="EZComments_useurl" value="<!--[$useurl|pnvarprepfordisplay]-->" />
-    <input type="hidden" name="objectid" id="EZComments_objectid" value="<!--[$objectid|pnvarprepfordisplay]-->" />
+    <input type="hidden" name="objectid" id="EZComments_objectid" value="<!--[$objectid|pnvarprepfordisplay]-->" /> 
     <div>
       <label for="subject"><!--[pnml name=_EZCOMMENTS_SUBJECT]--></label>
       <br />
@@ -110,9 +133,11 @@
       <textarea name="comment" id="message" cols="60" rows="10"></textarea>
     </div>
     <input type="submit" value="<!--[pnml name=_EZCOMMENTS_ADD]-->" />
-  </fieldset>
-</form>
+  </div>
+  </form>
 <!--[else]-->
-  <p><!--[pnml name=_EZCOMMENTS_ONLYREG]--> <a href="<!--[pnmodurl modname="Users" func="register"]-->"><!--[pnml name=_EZCOMMENTS_GOTOREG]--></a></p>
-<!--[/if]-->
+  <div>
+    <!--[pnml name=_EZCOMMENTS_ONLYREG]-->
+    <a href="<!--[pnmodurl modname="Users" func="register"]-->"><!--[pnml name=_EZCOMMENTS_GOTOREG]--></a>
+  </div>
 <!--[/if]-->
