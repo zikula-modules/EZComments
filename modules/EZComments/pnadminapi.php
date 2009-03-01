@@ -126,7 +126,13 @@ function EZComments_adminapi_deletebyitem($args)
 		return false;
 	}
     
-    if (!SecurityUtil::checkPermission('EZComments::', "$mod:$objectid:", ACCESS_ADMIN)) {
+	// Security check
+    $res = pnModAPIFunc('EZComments','user','checkPermission',array(
+        'module' => $mod,
+        'objectid' => $objectid
+    ));
+
+    if (!$res) {
         return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));
     } 
 
