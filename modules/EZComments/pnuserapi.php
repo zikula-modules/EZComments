@@ -802,12 +802,19 @@ function EZComments_userapi_checkPermission($args) {
 	$module 	= $args['module'];
   	$objectid 	= $args['objectid'];
   	$commentid	= $args['commentid'];
-  	$level 		= $args['level']; 
+  	$level 		= $args['level'];
 	$inst 		= $module.":".$objectid.":".$commentid;	   	
 	$uid		= pnUserGetVar('uid');
 
+	// A guest will have no permission
+	if (!pnUserLoggedIn()) {
+		return false;
+	}
+
 	// own comments = ok
-	if ($uid == (int)$args['uid']) return true;
+	if ($uid == (int)$args['uid']) {
+		return true;
+	}
 
 	// parameter check
   	if ((!isset($module)) || (!isset($level)) || (!isset($objectid)) || (!isset($commentid))) return false;
