@@ -8,7 +8,5 @@
  * @license See license.txt
  */
 
-function EZComments_migrateapi_migrate()
-{
-    return true;
-}
+define('_EZCOMMENTS_DISPLAYNAME', 'Kommentare');
+define('_EZCOMMENTS_DESCRIPTION', 'Kommentare über Hooks an beliebige Module anhängen');

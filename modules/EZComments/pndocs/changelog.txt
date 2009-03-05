@@ -2,26 +2,26 @@ $Id$
 
 
 Changelog
-1.6	 - New parameter "useurl" can be passed as parameter whenever
+1.6  - New parameter "useurl" can be passed as parameter whenever
        the hook is called. This parameter might be important for
        some modules who have a different redirect url where the user
-       should be redirected after adding a comment and another url that 
-	   should be used in the email notification (Important for the
-	   UserPictures module for example. The "redirect" url can pass
-	   a different picture for loggen in and anonymous users depending
-	   on the privacy settings of a picture).
-	 - New database structure. Added field "owneruid". You can 
-	   specify a new parameter "owneruid" whenever you integrate
-	   EZComments. EZComments will store this value as "content 
-	   owner" and allow this user to moderate all comments for 
-	   his content.
-	 - Added ContactList support. If a user is ignored by another 
-	   user he cannot comment the other user's content any more.
-	 - Added MyProfile plugin
-	 - Added icon for user account panel: manage my comments
-	 - deleted all comment templates and added one new called "Standard"
-	 - added stylesheet and language file support for own comment templates
-	 - added time in hours how long users are able to edit their own comments
+       should be redirected after adding a comment and another url that
+       should be used in the email notification (Important for the
+       UserPictures module for example. The "redirect" url can pass
+       a different picture for loggen in and anonymous users depending
+       on the privacy settings of a picture).
+     - New database structure. Added field "owneruid". You can
+       specify a new parameter "owneruid" whenever you integrate
+       EZComments. EZComments will store this value as "content
+       owner" and allow this user to moderate all comments for
+       his content.
+     - Added ContactList support. If a user is ignored by another
+       user he cannot comment the other user's content any more.
+     - Added MyProfile plugin
+     - Added icon for user account panel: manage my comments
+     - deleted all comment templates and added one new called "Standard"
+     - added stylesheet and language file support for own comment templates
+     - added time in hours how long users are able to edit their own comments
 
 1.5  - Migrated akismet support to seperate module
      - Added option to require anonymous commenters to provide a 'name'
@@ -65,14 +65,14 @@ Changelog
 0.3  - Local smarty installation removed module now uses pnRender
      - Added item delete hook so that comments are deleted when an item is deleted (credit to Timo)
 
-0.2  - The administrator can check that new mail is sent 
+0.2  - The administrator can check that new mail is sent
        when a new comment is made.
 
        Migration plugin functionality
        Available now is a plugin to migrate from the original NS-Comments
        Module to EZComments
 
-       Cleanup functionality to erase 
+       Cleanup functionality to erase
        This is needed after the deletion of a module. EZComments does not
        recognize this deletion. With the Cleanup you can wipe out all comments
        for the module in question.
@@ -85,7 +85,7 @@ Changelog
        Templates uses <!--[ and ]--> as smarty delimiters
        Added a lot of Templates in the MoreTemplates directory
 
-       Added a pager to the admin panel so you do not see all comments on 
+       Added a pager to the admin panel so you do not see all comments on
        one page (important for sites with lot of comments)
 
        Transform hooks
@@ -93,7 +93,7 @@ Changelog
        the "parent" module (say, you want EZComments for News, so you must
        activete the transform hooks for News, not for EZComments)
 
-       A lot of new translation variables. 
+       A lot of new translation variables.
 
 
 0.1b - another bugfix release
@@ -103,7 +103,7 @@ Changelog
 
 0.1a - bugfix release
        Bugfixes provided by markwest
-       Checks if Smarty class is already defined in eczsmarty.php	
-	
+       Checks if Smarty class is already defined in eczsmarty.php
+
 
 0.1 -- initial Release

@@ -1,6 +1,6 @@
 $Id$
 
-EZComments Project Team
+EZComments Development Team
 
 Jörg Napp (Founder)
 Mark West
@@ -8,6 +8,7 @@ Frank Schummertz
 Jean-Michel Vedrine
 Steffen Voss
 Florian Schießl
+Carsten Volmer
 
 Credits to:
 

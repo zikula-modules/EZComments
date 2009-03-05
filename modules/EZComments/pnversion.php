@@ -1,41 +1,18 @@
 <?php
 /**
- * $Id$
- * 
- * * EZComments *
- * 
- * Attach comments to any module calling hooks
- * 
- * 
- * * License *
+ * EZComments
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License (GPL)
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- *
- * @author Joerg Napp <jnapp@users.sourceforge.net>
- * @author Mark West <markwest at zikula dot org>
- * @author Jean-Michel Vedrine
- * @author Florian Schieﬂl <florian.schiessl at ifs-net.de>
- * @author Frank Schummertz
- * @version 1.6
- * @link http://code.zikula.org/ezcomments/ Support and documentation
- * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @package Zikula_3rdParty_Modules
- * @subpackage EZComments
+ * @copyright (C) EZComments Development Team
+ * @link http://code.zikula.org/ezcomments
+ * @version $Id$
+ * @license See license.txt
  */
 
 // Information for the modules admin
 $modversion['name']        = 'EZComments';
+$modversion['displayname'] = _EZCOMMENTS_DISPLAYNAME;
 $modversion['version']     = '1.61';
-$modversion['description'] = 'Attach comments to every kind of content using hooks';
+$modversion['description'] = _EZCOMMENTS_DESCRIPTION;
 
 // I suspect these are not respected as the should
 $modversion['admin']       = 1;
@@ -47,7 +24,7 @@ $modversion['credits']     = 'pndocs/credits.txt';
 $modversion['help']        = 'pndocs/install.txt';
 $modversion['license']     = 'pndocs/license.txt';
 $modversion['official']    = 0;
-$modversion['author']      = 'The EZComments development team';
+$modversion['author']      = 'The EZComments Development Team';
 $modversion['contact']     = 'http://code.zikula.org/ezcomments/';
 
 // This one adds the info to the DB, so that users can click on the 
@@ -64,10 +41,10 @@ $modversion['dependencies'] = array(
 	array(	'modname'    => 'MyProfile',
 			'minversion' => '1.2', 'maxversion' => '',
             'status'     => PNMODULE_DEPENDENCY_RECOMMENDED),
-	array(	'modname'    => 'intercom',
+	array(	'modname'    => 'InterCom',
 			'minversion' => '2.1', 'maxversion' => '',
             'status'     => PNMODULE_DEPENDENCY_RECOMMENDED),
-	array(	'modname'    => 'Akismet',
+	array(	'modname'    => 'akismet',
 			'minversion' => '1.0', 'maxversion' => '',
             'status'     => PNMODULE_DEPENDENCY_RECOMMENDED)
 	);
