@@ -10,34 +10,34 @@
 
 // new for 2.0 (Zikula-only)
 
-define('_EZCOMMENTS_MODIFYOWNTIME',			'Number of hours where users are allowed to modify the text of own comments. The value -1 deactivates this function.');
+define('_EZCOMMENTS_MODIFYOWNTIME',            'Number of hours where users are allowed to modify the text of own comments. The value -1 deactivates this function.');
 
 // Search plugin
-define('_EZCOMMENTS_SEARCHLENGTHHINT', 		'The comments can only be searched for words that are longer than %minlen% and less than %maxlen% characters!');
+define('_EZCOMMENTS_SEARCHLENGTHHINT',         'The comments can only be searched for words that are longer than %minlen% and less than %maxlen% characters!');
 // ContactList integration
-define('_EZCOMMENTS_USER_IGNORES_YOU',		'The user set as content owner ignores you. You cannot post any comment here!');
+define('_EZCOMMENTS_USER_IGNORES_YOU',        'The user set as content owner ignores you. You cannot post any comment here!');
 
 // admin interface
-define('_EZCOMMENTS_TOOWNERORADMIN',		'The notification email will be sent to the owner of the content. If there is no owner known, the notification mail will be sent to the site administrator.');
-define('_EZCOMMENTS_OWNERUSERNAME',			'Content owner');
-define('_EZCOMMENTS_UNKNOWNOWNER',			'unknown');
+define('_EZCOMMENTS_TOOWNERORADMIN',        'The notification email will be sent to the owner of the content. If there is no owner known, the notification mail will be sent to the site administrator.');
+define('_EZCOMMENTS_OWNERUSERNAME',            'Content owner');
+define('_EZCOMMENTS_UNKNOWNOWNER',            'unknown');
 
 // myprofile plugin
-define('_EZCOMMENTS_TABTITLE', 				'User\'s pinboard');
-define('_EZCOMMENTS_PINBOARDFOR',			'Pinboard for member');
-define('_EZCOMMENTS_HOOKREGFAILED',			'Registering EZComments hook for MyProfile module failed');
-define('_EZCOMMENTS_PINBOARDDEACT',			'The user has deactivated the pinboard for his account');
-define('_EZCOMMENTS_PINBOARDENTRYS',		'Pinboard entries');
-define('_EZCOMMENTS_REGISTERTOVIEW',		'Pinboard entries are only visible for registered or logged in users.');
+define('_EZCOMMENTS_TABTITLE',                 'User\'s pinboard');
+define('_EZCOMMENTS_PINBOARDFOR',            'Pinboard for member');
+define('_EZCOMMENTS_HOOKREGFAILED',            'Registering EZComments hook for MyProfile module failed');
+define('_EZCOMMENTS_PINBOARDDEACT',            'The user has deactivated the pinboard for his account');
+define('_EZCOMMENTS_PINBOARDENTRYS',        'Pinboard entries');
+define('_EZCOMMENTS_REGISTERTOVIEW',        'Pinboard entries are only visible for registered or logged in users.');
 // my account panel
-define('_EZCOMMENTS_MANAGEMYCOMMENTS', 		'Manage my comments');
+define('_EZCOMMENTS_MANAGEMYCOMMENTS',         'Manage my comments');
 
-define('_EZCOMMENTS_ILLEGALSTATUS', 		'wrong status');
-define('_EZCOMMENTS_ANONNAMEMISSING', 		'Name for anonymous user is missing');
-define('_EZCOMMENTS_ANONMAILMISSING', 		'email address of anonymous user is missing or invalid');
-define('_EZCOMMENTS_ANONWEBSITEINVALID', 	'website of anonymous user is invalid');
-define('_EZCOMMENTS_SENDMEBACK', 			'Send me back to the commented content after finishing');
-define('_EZCOMMENTS_MISSINGVALUE', 			'missing value');
+define('_EZCOMMENTS_ILLEGALSTATUS',         'wrong status');
+define('_EZCOMMENTS_ANONNAMEMISSING',         'Name for anonymous user is missing');
+define('_EZCOMMENTS_ANONMAILMISSING',         'email address of anonymous user is missing or invalid');
+define('_EZCOMMENTS_ANONWEBSITEINVALID',     'website of anonymous user is invalid');
+define('_EZCOMMENTS_SENDMEBACK',             'Send me back to the commented content after finishing');
+define('_EZCOMMENTS_MISSINGVALUE',             'missing value');
 // end of new defines
 
 
@@ -109,11 +109,11 @@ define('_EZCOMMENTS_POSTED',                'posted');
 define('_EZCOMMENTS_REG_SINCE',             'registered'); 
 define('_EZCOMMENTS_NOTREG',                'not registered'); 
 define('_EZCOMMENTS_STATUS',                'Status'); 
-define('_EZCOMMENTS_OFFLINE',  			    'Offline'); 
-define('_EZCOMMENTS_ONLINE',  			    'Online'); 
-define('_EZCOMMENTS_PROFILE',  			    'Profile'); 
-define('_EZCOMMENTS_SEND_PM',  			    'send PM'); 
-define('_EZCOMMENTS_FROM',  			    'Location'); 
+define('_EZCOMMENTS_OFFLINE',                  'Offline'); 
+define('_EZCOMMENTS_ONLINE',                  'Online'); 
+define('_EZCOMMENTS_PROFILE',                  'Profile'); 
+define('_EZCOMMENTS_SEND_PM',                  'send PM'); 
+define('_EZCOMMENTS_FROM',                  'Location'); 
 define('_EZCOMMENTS_SUBJECT',               'Subject');
 define('_EZCOMMENTS_TOP',                   'Top');
 define('_EZCOMMENTS_BOTTOM',                'Bottom');
@@ -217,7 +217,7 @@ define('_EZCOMMENTS_CANCELDELETEITEM',       'Cancel deletion of all comments fo
 define('_EZCOMMENTS_TYPE',                    'Comment type');
 
 // comment feeds
-define('_EZCOMMENTS_FEEDS',	                  'Feeds');
+define('_EZCOMMENTS_FEEDS',                      'Feeds');
 define('_EZCOMMENTS_FEEDTYPE',                'Type of feed');
 define('_EZCOMMENTS_FEEDCOUNT',               'Number of items to display in feed');
 define('_EZCOMMENTS_ATOM',                    'Atom 0.3');

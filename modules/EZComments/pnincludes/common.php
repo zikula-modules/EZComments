@@ -28,9 +28,9 @@ function ezc_processSelected($args)
     // extract any input passed directly to the function
     extract($args);
 
-  	// get the type of function call: admin or user
-  	$type = FormUtil::getPassedValue('type','user');
-  	if (($type != "admin") && ($type != "user")) $type = "user";
+      // get the type of function call: admin or user
+      $type = FormUtil::getPassedValue('type','user');
+      if (($type != "admin") && ($type != "user")) $type = "user";
 
     // If we get here it means that the user has confirmed the action
     // Confirm authorisation code.
@@ -40,33 +40,33 @@ function ezc_processSelected($args)
 
     // loop round each comment deleted them in turn 
     foreach ($comments as $comment) {
-		switch(strtolower($action)) {
-			case 'delete':
-				// The API function is called. 
-				if (pnModAPIFunc('EZComments', 'admin', 'delete', array('id' => $comment))) {
-					// Success
-					LogUtil::registerStatus(_DELETESUCCEDED);
-				}
-				break;
-			case 'approve':
-				if (pnModAPIFunc('EZComments', 'admin', 'updatestatus', array('id' => $comment, 'status' => 0))) {
-					// Success
-					LogUtil::registerStatus(_UPDATESUCCEDED);
-				}
-				break;
-			case 'hold':
-				if (pnModAPIFunc('EZComments', 'admin', 'updatestatus', array('id' => $comment, 'status' => 1))) {
-					// Success
-					LogUtil::registerStatus(_UPDATESUCCEDED);
-				}
-				break;
-			case 'reject':
-				if (pnModAPIFunc('EZComments', 'admin', 'updatestatus', array('id' => $comment, 'status' => 2))) {
-					// Success
-					LogUtil::registerStatus(_UPDATESUCCEDED);
-				}
-				break;
-		}
+        switch(strtolower($action)) {
+            case 'delete':
+                // The API function is called. 
+                if (pnModAPIFunc('EZComments', 'admin', 'delete', array('id' => $comment))) {
+                    // Success
+                    LogUtil::registerStatus(_DELETESUCCEDED);
+                }
+                break;
+            case 'approve':
+                if (pnModAPIFunc('EZComments', 'admin', 'updatestatus', array('id' => $comment, 'status' => 0))) {
+                    // Success
+                    LogUtil::registerStatus(_UPDATESUCCEDED);
+                }
+                break;
+            case 'hold':
+                if (pnModAPIFunc('EZComments', 'admin', 'updatestatus', array('id' => $comment, 'status' => 1))) {
+                    // Success
+                    LogUtil::registerStatus(_UPDATESUCCEDED);
+                }
+                break;
+            case 'reject':
+                if (pnModAPIFunc('EZComments', 'admin', 'updatestatus', array('id' => $comment, 'status' => 2))) {
+                    // Success
+                    LogUtil::registerStatus(_UPDATESUCCEDED);
+                }
+                break;
+        }
     }
 
     // This function generated no output, and so now it is complete we redirect
@@ -91,22 +91,22 @@ function ezc_processSelected($args)
  */
 function ezc_modify($args) 
 {
-  	// get the type of function call: admin or user
-  	$type = FormUtil::getPassedValue('type','user');
-  	if (($type != "admin") && ($type != "user")) $type = "user";
+      // get the type of function call: admin or user
+      $type = FormUtil::getPassedValue('type','user');
+      if (($type != "admin") && ($type != "user")) $type = "user";
 
     // get our input
     $id = FormUtil::getPassedValue('id', isset($args['id']) ? $args['id'] : null,             'GETPOST');
 
     // Security check 
     $securityCheck = pnModAPIFunc('EZComments','user','checkPermission',array(
-					'module'	=> '',
-					'objectid'	=> '',
-					'commentid'	=> $id,
-					'level'		=> ACCESS_EDIT			));
+                    'module'    => '',
+                    'objectid'    => '',
+                    'commentid'    => $id,
+                    'level'        => ACCESS_EDIT            ));
     if(!$securityCheck) {
-      	$redirect = base64_decode(FormUtil::getPassedValue('redirect'));
-      	if (!isset($redirect)) $redirect = 'index.php';
+          $redirect = base64_decode(FormUtil::getPassedValue('redirect'));
+          if (!isset($redirect)) $redirect = 'index.php';
         return LogUtil::registerPermissionError($redirect);
     }
     

@@ -44,11 +44,11 @@ class EZComments_admin_modifyhandler
     function handleCommand(&$renderer, &$args)
     {
         // Security check
-	    $securityCheck = pnModAPIFunc('EZComments','user','checkPermission',array(
-						'module'	=> '',
-						'objectid'	=> '',
-						'commentid'	=> $this->id,
-						'level'		=> ACCESS_EDIT			));
+        $securityCheck = pnModAPIFunc('EZComments','user','checkPermission',array(
+                        'module'    => '',
+                        'objectid'    => '',
+                        'commentid'    => $this->id,
+                        'level'        => ACCESS_EDIT            ));
         if (!$securityCheck) {
             return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));
         }
@@ -65,9 +65,9 @@ class EZComments_admin_modifyhandler
             if($data['ezcomments_delete'] == true) {
                 // delete the comment
                 // The API function is called. 
-            	// note: the api call is a little different here since we'll really calling a hook function that will 
-            	// normally be executed when a module is deleted. The extra nesting of the modname inside an extrainfo
-            	// array reflects this
+                // note: the api call is a little different here since we'll really calling a hook function that will 
+                // normally be executed when a module is deleted. The extra nesting of the modname inside an extrainfo
+                // array reflects this
                 if (pnModAPIFunc('EZComments', 'admin', 'delete', array('id' => $this->id))) {
                     // Success
                     LogUtil::registerStatus(_DELETESUCCEDED);

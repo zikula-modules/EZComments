@@ -29,22 +29,23 @@ $modversion['contact']     = 'http://code.zikula.org/ezcomments/';
 
 // This one adds the info to the DB, so that users can click on the 
 // headings in the permission module
-$modversion['securityschema'] = array('EZComments::'         => 'Module:Item ID:Comment ID',
+$modversion['securityschema'] = array(
+                                      'EZComments::'         => 'Module:Item ID:Comment ID',
                                       'EZComments:trackback' => 'Module:Item ID:',
                                       'EZComments:pingback'  => 'Module:Item ID:'
                                       );
 // recommended and required modules
 $modversion['dependencies'] = array(
-	array(	'modname'    => 'ContactList',
-			'minversion' => '1.0', 'maxversion' => '',
-            'status'     => PNMODULE_DEPENDENCY_RECOMMENDED),
-	array(	'modname'    => 'MyProfile',
-			'minversion' => '1.2', 'maxversion' => '',
-            'status'     => PNMODULE_DEPENDENCY_RECOMMENDED),
-	array(	'modname'    => 'InterCom',
-			'minversion' => '2.1', 'maxversion' => '',
-            'status'     => PNMODULE_DEPENDENCY_RECOMMENDED),
-	array(	'modname'    => 'akismet',
-			'minversion' => '1.0', 'maxversion' => '',
-            'status'     => PNMODULE_DEPENDENCY_RECOMMENDED)
-	);
+                                    array('modname'    => 'ContactList',
+                                          'minversion' => '1.0', 'maxversion' => '',
+                                          'status'     => PNMODULE_DEPENDENCY_RECOMMENDED),
+                                    array('modname'    => 'MyProfile',
+                                          'minversion' => '1.2', 'maxversion' => '',
+                                          'status'     => PNMODULE_DEPENDENCY_RECOMMENDED),
+                                    array('modname'    => 'InterCom',
+                                          'minversion' => '2.1', 'maxversion' => '',
+                                          'status'     => PNMODULE_DEPENDENCY_RECOMMENDED),
+                                    array('modname'    => 'akismet',
+                                          'minversion' => '1.0', 'maxversion' => '',
+                                          'status'     => PNMODULE_DEPENDENCY_RECOMMENDED)
+                                   );

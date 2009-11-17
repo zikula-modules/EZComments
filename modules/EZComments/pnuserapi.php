@@ -89,32 +89,32 @@ function EZComments_userapi_getall($args)
     // include own content or own comments
     $owneruid = (int)$args['owneruid'];
     $uid = (int)$args['uid'];
-	if (($owneruid > 1) && ($uid > 1)) {
-	  	$whereclause[] = "(".$EZCommentscolumn['owneruid']." = '".$args['owneruid']."' OR ".$EZCommentscolumn['uid']." = '".$args['uid']."' )";;
-	}
-	else if ($uid > 1) {
-	  	$whereclause[] = $EZCommentscolumn['uid']." = '".$args['uid']."'";
-	}
-	else if ($owneruid > 1) {
-	  	$whereclause[] = $EZCommentscolumn['owneruid']." = '".$args['owneruid']."'";
-	}
-	// admin mode: only show comments for modules considering permission checks
-	$admin = (int)$args['admin'];
-	if ($admin == 1) {
-		// get list of modules
-		$modlist = pnModGetAllMods();
-		$permclause = array();
-		foreach ($modlist as $module) {
-		  	// simple permission check
-			$inst = $module['name'].":".$item['objectid'].":".$item['id'];
-			if (SecurityUtil::checkPermission('EZComments::', $inst, ACCESS_EDIT)) {
-				$permclause[] = $EZCommentscolumn['modname']." = '".$module['name']."'";
-			}
-		}
-		$whereclause[] = "(".implode(' OR ', $permclause).")";
-	}
-	
- 	// create where clause
+    if (($owneruid > 1) && ($uid > 1)) {
+          $whereclause[] = "(".$EZCommentscolumn['owneruid']." = '".$args['owneruid']."' OR ".$EZCommentscolumn['uid']." = '".$args['uid']."' )";;
+    }
+    else if ($uid > 1) {
+          $whereclause[] = $EZCommentscolumn['uid']." = '".$args['uid']."'";
+    }
+    else if ($owneruid > 1) {
+          $whereclause[] = $EZCommentscolumn['owneruid']." = '".$args['owneruid']."'";
+    }
+    // admin mode: only show comments for modules considering permission checks
+    $admin = (int)$args['admin'];
+    if ($admin == 1) {
+        // get list of modules
+        $modlist = pnModGetAllMods();
+        $permclause = array();
+        foreach ($modlist as $module) {
+              // simple permission check
+            $inst = $module['name'].":".$item['objectid'].":".$item['id'];
+            if (SecurityUtil::checkPermission('EZComments::', $inst, ACCESS_EDIT)) {
+                $permclause[] = $EZCommentscolumn['modname']." = '".$module['name']."'";
+            }
+        }
+        $whereclause[] = "(".implode(' OR ', $permclause).")";
+    }
+    
+     // create where clause
     $where = '';
     if (!empty($whereclause)) {
         $where = 'WHERE ' . implode(' AND ', $whereclause);
@@ -178,46 +178,46 @@ function EZComments_userapi_create($args)
         !isset($comment)) {
         return LogUtil::registerError(_MODARGSERROR);
     }
-    $owneruid 	= (int)$args['owneruid'];
+    $owneruid     = (int)$args['owneruid'];
     // Sometimes the displayurl for the redirect is another url then the url, 
-	// that should be sent via email.
-    $useurl 	= $args['useurl'];
-    $redirect 	= $args['redirect'];
+    // that should be sent via email.
+    $useurl     = $args['useurl'];
+    $redirect     = $args['redirect'];
     if (isset($useurl) && !empty($useurl)) {
-	    $useurl 		= str_replace('&amp;', '&', $useurl);
-		$url 			= $useurl;
-	}
-	else {
-	  	$baseURL = pnGetBaseURL();
-		$args['url'] = $baseURL.str_replace($baseURL,'',$redirect);
-		$url = $args['url'];
-	}
+        $useurl         = str_replace('&amp;', '&', $useurl);
+        $url             = $useurl;
+    }
+    else {
+          $baseURL = pnGetBaseURL();
+        $args['url'] = $baseURL.str_replace($baseURL,'',$redirect);
+        $url = $args['url'];
+    }
     
     // ContactList ignore check. If the user is ignored by the 
-	// content owner the user will not be able to post any comment...
-	if (	(pnUserGetVar('uid') > 1) 		&& 
-			($owneruid>0) 					&& 
-			pnModAvailable('ContactList') 	&& 
-			pnModAPIFunc('ContactList','user','isIgnored',array(
-					'iuid' => pnUserGetVar('uid'),
-					'uid' => $owneruid
-					))
-		) {
-		return LogUtil::registerError('_EZCOMMENTS_USER_IGNORES_YOU');
-	}
-	
+    // content owner the user will not be able to post any comment...
+    if (    (pnUserGetVar('uid') > 1)         && 
+            ($owneruid>0)                     && 
+            pnModAvailable('ContactList')     && 
+            pnModAPIFunc('ContactList','user','isIgnored',array(
+                    'iuid' => pnUserGetVar('uid'),
+                    'uid' => $owneruid
+                    ))
+        ) {
+        return LogUtil::registerError('_EZCOMMENTS_USER_IGNORES_YOU');
+    }
+    
     // check unregistered user included name (if required)
-	$anonname = trim($anonname);
-	if (!pnUserLoggedIn()) {
-    	if (pnModGetVar('EZComments', 'anonusersrequirename') && empty($anonname)) {
-        	return LogUtil::registerError(_EZCOMMENTS_ANON_NAME_REJECT);
-    	}
-	}
+    $anonname = trim($anonname);
+    if (!pnUserLoggedIn()) {
+        if (pnModGetVar('EZComments', 'anonusersrequirename') && empty($anonname)) {
+            return LogUtil::registerError(_EZCOMMENTS_ANON_NAME_REJECT);
+        }
+    }
     if (!isset($replyto) || empty($replyto)) {
         $replyto = -1;
     }
     $loggedin = pnUserLoggedIn();
-	if (!$loggedin) {
+    if (!$loggedin) {
         $uid = 0;
     }
     if (!isset($uid) || !is_numeric($uid)) {
@@ -230,15 +230,15 @@ function EZComments_userapi_create($args)
         $date= "'" . DataUtil::formatForStore($date) . "'";
     }
 
-	if (!isset($type) || !is_string($type) || ($type != 'trackback' && $type != 'pingback')) {
-		$type = '';
-	}
+    if (!isset($type) || !is_string($type) || ($type != 'trackback' && $type != 'pingback')) {
+        $type = '';
+    }
 
-	// get the users ip
-	$ipaddr = '';
-	if (pnModGetVar('EZComments', 'logip')) {
-		$ipaddr = pnServerGetVar('REMOTE_ADDR');
-	}
+    // get the users ip
+    $ipaddr = '';
+    if (pnModGetVar('EZComments', 'logip')) {
+        $ipaddr = pnServerGetVar('REMOTE_ADDR');
+    }
 
     // Security check
     if (!SecurityUtil::checkPermission("EZComments::$type", "$mod:$objectid:", ACCESS_COMMENT)) {
@@ -256,21 +256,21 @@ function EZComments_userapi_create($args)
     $nextId = $dbconn->GenId($EZCommentstable);
 
     // check we should moderate the comments
-	$status[] = 0;
+    $status[] = 0;
     if (!pnModGetVar('EZComments', 'moderation')) {
         $status[] = 0;
     } else {
-		// check if we should moderate all comments
-		if (pnModGetVar('EZComments', 'alwaysmoderate')) {
-			$status[] = 1;
-		} else {
-			$checkvars = array($subject, $comment, $anonname, $anonmail, $anonwebsite);
-			foreach($checkvars as $checkvar) {
-				$status[] = _EZComments_userapi_checkcomment($checkvar);
-			}
-		}
-		$status[] = _EZComments_userapi_checksubmitter();
-	}
+        // check if we should moderate all comments
+        if (pnModGetVar('EZComments', 'alwaysmoderate')) {
+            $status[] = 1;
+        } else {
+            $checkvars = array($subject, $comment, $anonname, $anonmail, $anonwebsite);
+            foreach($checkvars as $checkvar) {
+                $status[] = _EZComments_userapi_checkcomment($checkvar);
+            }
+        }
+        $status[] = _EZComments_userapi_checksubmitter();
+    }
     // akismet
     $loggedin = pnUserLoggedIn();
     if (pnModAvailable('akismet') && pnModGetVar('EZComments', 'akismet')) {
@@ -284,44 +284,44 @@ function EZComments_userapi_create($args)
         }
     }
 
-	// always moderate trackback or pingback comments
+    // always moderate trackback or pingback comments
     if ($type == 'trackback' || $type == 'pingback' ) {
         $status[] = 1;
     }
 
-	// check for a blacklisted return
-	if (in_array(2, $status)) {
-		return LogUtil::registerError(_EZCOMMENTS_COMMENTBLACKLISTED);
-	}
-	// check for a moderated return
-	$maxstatus = 0;
-	if (in_array(1, $status)) {
-		$maxstatus = 1 ;
-	}
-	
-	// build new object
-	$newcomment = array (
-			'modname'		=> $mod,
-			'objectid'		=> $objectid,
-			'url'			=> $url,
-			'date'			=> $date,
-			'uid'			=> $uid,
-			'owneruid'		=> $owneruid,
-			'comment'		=> $comment,
-			'subject'		=> $subject,
-			'replyto'		=> $replyto,
-			'anonname'		=> $anonname,
-			'anonmail'		=> $anonmail,
-			'status'		=> $maxstatus,
-			'ipaddr'		=> $ipaddr,
-			'type'			=> $type,
-			'anonwebsite'	=> $anonwebsite
-		);
+    // check for a blacklisted return
+    if (in_array(2, $status)) {
+        return LogUtil::registerError(_EZCOMMENTS_COMMENTBLACKLISTED);
+    }
+    // check for a moderated return
+    $maxstatus = 0;
+    if (in_array(1, $status)) {
+        $maxstatus = 1 ;
+    }
+    
+    // build new object
+    $newcomment = array (
+            'modname'        => $mod,
+            'objectid'        => $objectid,
+            'url'            => $url,
+            'date'            => $date,
+            'uid'            => $uid,
+            'owneruid'        => $owneruid,
+            'comment'        => $comment,
+            'subject'        => $subject,
+            'replyto'        => $replyto,
+            'anonname'        => $anonname,
+            'anonmail'        => $anonmail,
+            'status'        => $maxstatus,
+            'ipaddr'        => $ipaddr,
+            'type'            => $type,
+            'anonwebsite'    => $anonwebsite
+        );
 
     if (!DBUtil::insertObject($newcomment,'EZComments')) {
         return LogUtil::registerError(_CREATEFAILED);
     }
-	
+    
     // set an approriate status/errormsg
     switch ($maxstatus) {
         case '0' :
@@ -333,41 +333,41 @@ function EZComments_userapi_create($args)
     }
 
     // Get the ID of the item that we inserted.
-	$id = $newcomment['id'];
+    $id = $newcomment['id'];
 
-	if (isset($owneruid) && ($owneruid > 0)) {
-	  	$owner['email'] = pnUserGetVar('email',$owneruid);
-	  	$owner['uname'] = pnUserGetVar('uname',$owneruid);
-	  	if ((strlen($owner['email']) > 0) && (strlen($owner['uname']) > 0)) {
-		    $toaddress 	= $owner['email'];
-		    $toname		= $owner['uname'];
-		}
-		else {
-		  	$toaddress	= pnConfigGetVar('adminmail');
-		  	$toname		= pnConfigGetVar('sitename');
-		}
-	}
-	else {
-	  	$toaddress	= pnConfigGetVar('adminmail');
-	  	$toname		= pnConfigGetVar('sitename');
-	}
+    if (isset($owneruid) && ($owneruid > 0)) {
+          $owner['email'] = pnUserGetVar('email',$owneruid);
+          $owner['uname'] = pnUserGetVar('uname',$owneruid);
+          if ((strlen($owner['email']) > 0) && (strlen($owner['uname']) > 0)) {
+            $toaddress     = $owner['email'];
+            $toname        = $owner['uname'];
+        }
+        else {
+              $toaddress    = pnConfigGetVar('adminmail');
+              $toname        = pnConfigGetVar('sitename');
+        }
+    }
+    else {
+          $toaddress    = pnConfigGetVar('adminmail');
+          $toname        = pnConfigGetVar('sitename');
+    }
     // Inform the content owner or the admin about a new comment
     if (pnModGetVar('EZComments', 'MailToAdmin') && $maxstatus == 0) {
-        $renderer = pnRender::getInstance('EZComments', false);
+        $renderer = & pnRender::getInstance('EZComments', false);
         $renderer->assign('comment', $comment);
         $renderer->assign('url', $url);
         $renderer->assign('moderate', pnModURL('EZComments', 'user', 'modify', array('id' => $id)));
         $renderer->assign('delete', pnModURL('EZComments', 'user', 'modify', array('id' => $id)));
         // by AM - 8 lines: added subject, date, username or nick:
-		$renderer->assign('subject', $subject);
-		$renderer->assign('date', $date);
-		if ($uid > 0) {
-			$username = pnUserGetVars($uid);
-			$renderer->assign('user', $username['uname']);
-		} else {
-			$renderer->assign('user', $anonname." ".$anonmail);
-		}
-		$renderer->assign('id', $id);        $mailsubject = _EZCOMMENTS_MAILSUBJECT;
+        $renderer->assign('subject', $subject);
+        $renderer->assign('date', $date);
+        if ($uid > 0) {
+            $username = pnUserGetVars($uid);
+            $renderer->assign('user', $username['uname']);
+        } else {
+            $renderer->assign('user', $anonname." ".$anonmail);
+        }
+        $renderer->assign('id', $id);        $mailsubject = _EZCOMMENTS_MAILSUBJECT;
         $mailbody = $renderer->fetch('ezcomments_mail_newcomment.htm');
         pnModAPIFunc('Mailer', 'user', 'sendmessage',
                      array('toaddress' => $toaddress, 'toname' => $toname,
@@ -375,20 +375,20 @@ function EZComments_userapi_create($args)
                            'subject' => $mailsubject, 'body' => $mailbody));
     }
     if (pnModGetVar('EZComments', 'moderationmail') && $maxstatus == 1) {
-        $renderer = pnRender::getInstance('EZComments', false);
+        $renderer = & pnRender::getInstance('EZComments', false);
         $renderer->assign('comment', $comment);
         $renderer->assign('url', $url);
         $renderer->assign('moderate', pnModURL('EZComments', 'user', 'modify', array('id' => $id)));
         $renderer->assign('delete', pnModURL('EZComments', 'user', 'modify', array('id' => $id)));
         // by AM - 8 lines: added subject, date, username or nick:
-		$renderer->assign('subject', $subject);
-		$renderer->assign('date', $date);
-		if ($uid > 0) {
-			$username = pnUserGetVars($uid);
-			$renderer->assign('user', $username['uname']);
-		} else {
-			$renderer->assign('user', $anonname." ".$anonmail);
-		}
+        $renderer->assign('subject', $subject);
+        $renderer->assign('date', $date);
+        if ($uid > 0) {
+            $username = pnUserGetVars($uid);
+            $renderer->assign('user', $username['uname']);
+        } else {
+            $renderer->assign('user', $anonname." ".$anonmail);
+        }
         $mailsubject = _EZCOMMENTS_MODMAILSUBJECT;
         $mailbody = $renderer->fetch('ezcomments_mail_modcomment.htm');
         pnModAPIFunc('Mailer', 'user', 'sendmessage',
@@ -474,17 +474,17 @@ function EZComments_userapi_countitems($args)
     $sql = "SELECT COUNT(1)
             FROM $EZCommentstable";
         
-	$queryargs = array();
+    $queryargs = array();
 
-	if (($owneruid > 1) && ($uid > 1)) {
-	  	$queryargs[] = $EZCommentscolumn['owneruid']." = '".$args['owneruid']."' OR ".$EZCommentscolumn['uid']." = '".$args['uid']."'";;
-	}
-	else if ($uid > 1) {
-	  	$queryargs[] = $EZCommentscolumn['uid']." = '".$args['uid']."'";
-	}
-	else if ($owneruid > 1) {
-	  	$queryargs[] = $EZCommentscolumn['owneruid']." = '".$args['owneruid']."'";
-	}
+    if (($owneruid > 1) && ($uid > 1)) {
+          $queryargs[] = $EZCommentscolumn['owneruid']." = '".$args['owneruid']."' OR ".$EZCommentscolumn['uid']." = '".$args['uid']."'";;
+    }
+    else if ($uid > 1) {
+          $queryargs[] = $EZCommentscolumn['uid']." = '".$args['uid']."'";
+    }
+    else if ($owneruid > 1) {
+          $queryargs[] = $EZCommentscolumn['owneruid']." = '".$args['owneruid']."'";
+    }
 
     if (isset($args['mod'])) {
         // Count comments for a specific module
@@ -497,33 +497,33 @@ function EZComments_userapi_countitems($args)
         }
     }
 
-	$statussql = '';
-	if (isset($args['status']) && is_numeric($args['status']) && $args['status'] >= 0 && $args['status'] <= 2) {
-		$args['status'] = DataUtil::formatForStore($args['status']);
-		$queryargs[] = "$EZCommentscolumn[status] = '$args[status]'";
-	}
+    $statussql = '';
+    if (isset($args['status']) && is_numeric($args['status']) && $args['status'] >= 0 && $args['status'] <= 2) {
+        $args['status'] = DataUtil::formatForStore($args['status']);
+        $queryargs[] = "$EZCommentscolumn[status] = '$args[status]'";
+    }
 
    // admin mode: only count comments for modules considering permission checks
-	$admin = (int)$args['admin'];
-	if ($admin == 1) {
-		// get list of modules
-		$modlist = pnModGetAllMods();
-		$permclause = array();
-		foreach ($modlist as $module) {
-		  	// simple permission check
-			$inst = $module['name'].":".$item['objectid'].":".$item['id'];
-			if (SecurityUtil::checkPermission('EZComments::', $inst, ACCESS_EDIT)) {
-				$permclause[] = $EZCommentscolumn['modname']." = '".$module['name']."'";
-			}
-		}
-		$queryargs[] = implode(' OR ', $permclause);
-	}
+    $admin = (int)$args['admin'];
+    if ($admin == 1) {
+        // get list of modules
+        $modlist = pnModGetAllMods();
+        $permclause = array();
+        foreach ($modlist as $module) {
+              // simple permission check
+            $inst = $module['name'].":".$item['objectid'].":".$item['id'];
+            if (SecurityUtil::checkPermission('EZComments::', $inst, ACCESS_EDIT)) {
+                $permclause[] = $EZCommentscolumn['modname']." = '".$module['name']."'";
+            }
+        }
+        $queryargs[] = implode(' OR ', $permclause);
+    }
 
-	$wheresql = '';
-	if (!empty($queryargs)) {
-		$wheresql .= ' WHERE '.implode(' AND ', $queryargs);
-	}
-	$sql .= $wheresql;
+    $wheresql = '';
+    if (!empty($queryargs)) {
+        $wheresql .= ' WHERE '.implode(' AND ', $queryargs);
+    }
+    $sql .= $wheresql;
     $result = $dbconn->Execute($sql);
 
     if ($dbconn->ErrorNo() != 0) {
@@ -588,7 +588,7 @@ function EZComments_userapi_gettemplates()
  */
 function _EZComments_userapi_checkcomment($var)
 {
-	if (!isset($var)) return 0;
+    if (!isset($var)) return 0;
 
     // check blacklisted words - exit silently if found
     $blacklistedwords = explode("\n", pnModGetVar('EZComments', 'blacklist'));
@@ -615,7 +615,7 @@ function _EZComments_userapi_checkcomment($var)
     // check link count for moderation
     if ($linkcount - 1 >= pnModGetVar('EZComments', 'modlinkcount')) return 1;
 
-	// comment passed
+    // comment passed
     return 0;
 }
 
@@ -650,16 +650,16 @@ function _EZComments_userapi_checksubmitter($type = '', $uid = null)
         }
     }
 
-	// check if the comment comes from user that we trust
-	// i.e. one who has an approved comment already
-	if (pnUserLoggedIn() && pnModGetVar('EZComments', 'dontmoderateifcommented')) {
-		$commentedlist = pnModAPIFunc('EZcomments', 'user', 'getcommentingusers');
-		if (is_array($commentedlist) && in_array($uid, $commentedlist)) {
-			return 0;
-		} else {
-			return 1;
-		}
-	}
+    // check if the comment comes from user that we trust
+    // i.e. one who has an approved comment already
+    if (pnUserLoggedIn() && pnModGetVar('EZComments', 'dontmoderateifcommented')) {
+        $commentedlist = pnModAPIFunc('EZcomments', 'user', 'getcommentingusers');
+        if (is_array($commentedlist) && in_array($uid, $commentedlist)) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
 
     return 0;
 }
@@ -677,9 +677,9 @@ function EZComments_userapi_getcommentingusers($args)
     $items = array();
 
     // Security check
-	if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_OVERVIEW)) {
-		return $items;
-	}
+    if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_OVERVIEW)) {
+        return $items;
+    }
 
     // Get database setup
     $dbconn = pnDBGetConn(true);
@@ -688,9 +688,9 @@ function EZComments_userapi_getcommentingusers($args)
     $EZCommentstable = $pntable['EZComments'];
     $EZCommentscolumn = &$pntable['EZComments_column'];
 
-	// setup the query
-	$sql = "SELECT DISTINCT $EZCommentscolumn[uid] FROM $EZCommentstable WHERE $EZCommentscolumn[status] = 0";
-	$items = $dbconn->GetCol($sql);
+    // setup the query
+    $sql = "SELECT DISTINCT $EZCommentscolumn[uid] FROM $EZCommentstable WHERE $EZCommentscolumn[status] = 0";
+    $items = $dbconn->GetCol($sql);
     return $items;
 }
 
@@ -708,15 +708,15 @@ function EZComments_userapi_getallbymodule($args)
 
 
     // Security check
-	if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_OVERVIEW)) {
-		return false;
-	}
+    if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_OVERVIEW)) {
+        return false;
+    }
 
-	// check for a valid module
-	if (!isset($mod) || !is_string($mod)) {
-		return false;
-	}
-	$mod = DataUtil::formatForOS($mod);
+    // check for a valid module
+    if (!isset($mod) || !is_string($mod)) {
+        return false;
+    }
+    $mod = DataUtil::formatForOS($mod);
 
     // Get database setup
     $dbconn = pnDBGetConn(true);
@@ -725,13 +725,13 @@ function EZComments_userapi_getallbymodule($args)
     $EZCommentstable = $pntable['EZComments'];
     $EZCommentscolumn = &$pntable['EZComments_column'];
 
-	$sql = "SELECT $EZCommentscolumn[objectid],
-				   $EZCommentscolumn[url],
-				   count(*)
-	        FROM $EZCommentstable
-			WHERE $EZCommentscolumn[modname] = '$mod'
-			GROUP BY $EZCommentscolumn[objectid]
-			ORDER BY $EZCommentscolumn[objectid]";
+    $sql = "SELECT $EZCommentscolumn[objectid],
+                   $EZCommentscolumn[url],
+                   count(*)
+            FROM $EZCommentstable
+            WHERE $EZCommentscolumn[modname] = '$mod'
+            GROUP BY $EZCommentscolumn[objectid]
+            ORDER BY $EZCommentscolumn[objectid]";
     $result = $dbconn->Execute($sql);
 
     // Check for an error with the database code, and if so set an appropriate
@@ -746,7 +746,7 @@ function EZComments_userapi_getallbymodule($args)
     // is added to the results array
     for (; !$result->EOF; $result->MoveNext()) {
         list($objectid, $url, $count) = $result->fields;
-		$items[] = compact('objectid', 'url', 'count');
+        $items[] = compact('objectid', 'url', 'count');
     }
     $result->Close();
     // Return the items
@@ -774,33 +774,33 @@ function EZComments_userapi_getallbymodule($args)
  * @return boolean
  */
 function EZComments_userapi_checkPermission($args) {
-  	
-	$module 	= $args['module'];
-  	$objectid 	= $args['objectid'];
-  	$commentid	= $args['commentid'];
-  	$level 		= $args['level'];
-	$inst 		= $module.":".$objectid.":".$commentid;	   	
-	$uid		= pnUserGetVar('uid');
+      
+    $module     = $args['module'];
+      $objectid     = $args['objectid'];
+      $commentid    = $args['commentid'];
+      $level         = $args['level'];
+    $inst         = $module.":".$objectid.":".$commentid;           
+    $uid        = pnUserGetVar('uid');
 
-	// A guest will have no permission
-	if (!pnUserLoggedIn()) {
-		return false;
-	}
+    // A guest will have no permission
+    if (!pnUserLoggedIn()) {
+        return false;
+    }
 
-	// own comments = ok
-	if ($uid == (int)$args['uid']) {
-		return true;
-	}
+    // own comments = ok
+    if ($uid == (int)$args['uid']) {
+        return true;
+    }
 
-	// parameter check
-  	if ((!isset($module)) || (!isset($level)) || (!isset($objectid)) || (!isset($commentid))) return false;
+    // parameter check
+      if ((!isset($module)) || (!isset($level)) || (!isset($objectid)) || (!isset($commentid))) return false;
 
-  	// regular securityUtil::checkPermission check. Return true on success
-	if (SecurityUtil::checkPermission('EZComments::', $inst, $level)) return true;
+      // regular securityUtil::checkPermission check. Return true on success
+    if (SecurityUtil::checkPermission('EZComments::', $inst, $level)) return true;
 
-	// otherwise: get the comment, check the owneruid and return the result
-	$comment = DBUtil::selectObjectByID('EZComments',$commentid);
-	if (($comment['owneruid'] == $uid) || ($comment['uid'] == $uid)) return true;	
-	// otherwise return false because no security check had a positive result
-  	return false;
+    // otherwise: get the comment, check the owneruid and return the result
+    $comment = DBUtil::selectObjectByID('EZComments',$commentid);
+    if (($comment['owneruid'] == $uid) || ($comment['uid'] == $uid)) return true;    
+    // otherwise return false because no security check had a positive result
+      return false;
 }

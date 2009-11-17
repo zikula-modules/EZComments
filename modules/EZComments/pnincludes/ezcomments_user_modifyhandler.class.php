@@ -11,7 +11,7 @@
 class EZComments_user_modifyhandler
 {
     var $id;
-	var $nomodify;
+    var $nomodify;
     function initialize(&$renderer)
     {
         $this->id = (int)FormUtil::getPassedValue('id', -1, 'GETPOST');
@@ -26,16 +26,16 @@ class EZComments_user_modifyhandler
             return LogUtil::registerError(_NOSUCHITEM, pnModURL('EZComments', 'user', 'main'));
         }
 
-		// check if user is allowed to modify this content
+        // check if user is allowed to modify this content
         $modifyowntime = pnModGetVar('EZComments','modifyowntime');
-		$ts = strtotime($comment['date']);
+        $ts = strtotime($comment['date']);
         if ((pnUserGetVar('uid') == $comment['uid']) && ((int)$modifyowntime > 0) && ($ts+($modifyowntime*60*60) < time())) {
-          	// Admins of course should be allowed to modify every comment
-		    if(!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
-				$renderer->assign('nomodify', 1);
-				$this->nomodify = 1;
-		    }
-		}
+              // Admins of course should be allowed to modify every comment
+            if(!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
+                $renderer->assign('nomodify', 1);
+                $this->nomodify = 1;
+            }
+        }
 
         // assign the status flags
         $statuslevels = array( array('text' => _EZCOMMENTS_APPROVED, 'value' => 0),
@@ -55,11 +55,11 @@ class EZComments_user_modifyhandler
     function handleCommand(&$renderer, &$args)
     {
         // Security check
-	    $securityCheck = pnModAPIFunc('EZComments','user','checkPermission',array(
-						'module'	=> '',
-						'objectid'	=> '',
-						'commentid'	=> $this->id,
-						'level'		=> ACCESS_EDIT			));
+        $securityCheck = pnModAPIFunc('EZComments','user','checkPermission',array(
+                        'module'    => '',
+                        'objectid'    => '',
+                        'commentid'    => $this->id,
+                        'level'        => ACCESS_EDIT            ));
         if (!$securityCheck) {
             return LogUtil::registerPermissionError(pnModURL('EZComments', 'user', 'main'));
         }
@@ -76,20 +76,20 @@ class EZComments_user_modifyhandler
             if($data['ezcomments_delete'] == true) {
                 // delete the comment
                 // The API function is called. 
-            	// note: the api call is a little different here since we'll really calling a hook function that will 
-            	// normally be executed when a module is deleted. The extra nesting of the modname inside an extrainfo
-            	// array reflects this
+                // note: the api call is a little different here since we'll really calling a hook function that will 
+                // normally be executed when a module is deleted. The extra nesting of the modname inside an extrainfo
+                // array reflects this
                 if (pnModAPIFunc('EZComments', 'admin', 'delete', array('id' => $this->id))) {
                     // Success
                     LogUtil::registerStatus(_DELETESUCCEDED);
                 }
             } else {
-              	// make a check if the comment's body and title was allowed to be changed.
-              	if ($this->nomodify == 1) {
-					$comment_old = pnModAPIFunc('EZComments', 'user', 'get', array('id' => $this->id));
-					$data['ezcomments_comment'] = $comment_old['comment'];
-					$data['ezcomments_subject'] = $comment_old['subject'];
-				}
+                  // make a check if the comment's body and title was allowed to be changed.
+                  if ($this->nomodify == 1) {
+                    $comment_old = pnModAPIFunc('EZComments', 'user', 'get', array('id' => $this->id));
+                    $data['ezcomments_comment'] = $comment_old['comment'];
+                    $data['ezcomments_subject'] = $comment_old['subject'];
+                }
                 if(!empty($comment['anonname'])) {
                     // poster is anonymous
                     // check anon fields

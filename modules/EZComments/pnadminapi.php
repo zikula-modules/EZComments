@@ -59,7 +59,7 @@ function EZComments_adminapi_getUsedModules()
  **/
 function EZComments_adminapi_deleteall($args)
 {
-  	// Security and argument check
+      // Security and argument check
     if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
         return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));
     } 
@@ -67,12 +67,12 @@ function EZComments_adminapi_deleteall($args)
         return false;
     }
 
-	// get tables    
+    // get tables    
     $pntable = pnDBGetTables();
     $column = &$pntable['EZComments_column']; 
-	// construct where clause and delete...
-	$where ="WHERE $column[modname] = '$args[module]'";
-	return DBUtil::deleteWhere('EZComments',$where);
+    // construct where clause and delete...
+    $where ="WHERE $column[modname] = '$args[module]'";
+    return DBUtil::deleteWhere('EZComments',$where);
 }
 
 /**
@@ -83,8 +83,8 @@ function EZComments_adminapi_deleteall($args)
  *
  * @author Timo (Numerobis)
  * @since 0.3
- * @param $args['mod'] 			string	the module for which to delete for
- * @param $args['objectid'] 	int		the module for which to delete for
+ * @param $args['mod']             string    the module for which to delete for
+ * @param $args['objectid']     int        the module for which to delete for
  * @return boolean sucess status
  **/
 function EZComments_adminapi_deletebyitem($args)
@@ -92,17 +92,17 @@ function EZComments_adminapi_deletebyitem($args)
     if (!isset($args['objectid'])) {
         return false;
     } 
-	if (!isset($args['mod'])) {
-	    $mod = pnModGetName();
-	} else {
-		$mod = $args['mod'];
-	}
+    if (!isset($args['mod'])) {
+        $mod = pnModGetName();
+    } else {
+        $mod = $args['mod'];
+    }
     $objectid = (int)$args['objectid'];
     if (!($objectid > 0)) {
-		return false;
-	}
+        return false;
+    }
     
-	// Security check
+    // Security check
     $res = pnModAPIFunc('EZComments','user','checkPermission',array(
         'module' => $mod,
         'objectid' => $objectid
@@ -112,12 +112,12 @@ function EZComments_adminapi_deletebyitem($args)
         return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));
     } 
 
-	// get db table and column for where statement
+    // get db table and column for where statement
     $pntable = pnDBGetTables();
     $column = &$pntable['EZComments_column'];
 
-	$where = $column['modname']." = '".$mod."' AND ".$column['objectid']." = '".$objectid."'";
-	return DBUtil::deleteWhere('EZComments',$where);
+    $where = $column['modname']." = '".$mod."' AND ".$column['objectid']." = '".$objectid."'";
+    return DBUtil::deleteWhere('EZComments',$where);
 } 
 
 /**
@@ -145,10 +145,10 @@ function EZComments_adminapi_delete($args)
 
     // Security check 
     $securityCheck = pnModAPIFunc('EZComments','user','checkPermission',array(
-					'module'	=> '',
-					'objectid'	=> '',
-					'commentid'	=> (int)$args['id'],
-					'level'		=> ACCESS_DELETE			));
+                    'module'    => '',
+                    'objectid'    => '',
+                    'commentid'    => (int)$args['id'],
+                    'level'        => ACCESS_DELETE            ));
     if (!$securityCheck) {
         return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));
     }
@@ -197,10 +197,10 @@ function EZComments_adminapi_update($args)
 
     // Security check.
     $securityCheck = pnModAPIFunc('EZComments','user','checkPermission',array(
-					'module'	=> '',
-					'objectid'	=> '',
-					'commentid'	=> (int)$args['id'],
-					'level'		=> ACCESS_EDIT			));
+                    'module'    => '',
+                    'objectid'    => '',
+                    'commentid'    => (int)$args['id'],
+                    'level'        => ACCESS_EDIT            ));
     if (!$securityCheck) {
         return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));
     }
@@ -280,14 +280,14 @@ function EZComments_adminapi_purge($args)
     $column = &$pntable['EZComments_column'];
 
     if ((bool)$purgerejected) {
-		$where ="WHERE ".$column['status']." = '2'";
+        $where ="WHERE ".$column['status']." = '2'";
         if (!DBUtil::deleteWhere('EZComments',$where)) {
             return LogUtil::registerError(_DELETEFAILED);
         }
     }
 
     if ((bool)$purgepending) {
-		$where = "WHERE ".$column['status']." = '1'";
+        $where = "WHERE ".$column['status']." = '1'";
         if (!DBUtil::deleteWhere('EZComments',$where)) {
             return LogUtil::registerError(_DELETEFAILED);
         }
@@ -306,9 +306,9 @@ function EZComments_adminapi_purge($args)
  */
 function EZComments_adminapi_updatestatus($args)
 {
-	// get arguments
-	$id      = $args['id'];
-	$status  = $args['status'];
+    // get arguments
+    $id      = $args['id'];
+    $status  = $args['status'];
     // Argument check
     if (isset($id) && !is_numeric($id) && isset($status) && !is_numeric($status)) {
         return LogUtil::registerError(_MODARGSERROR);
@@ -323,22 +323,22 @@ function EZComments_adminapi_updatestatus($args)
 
     // Security check.
     $securityCheck = pnModAPIFunc('EZComments','user','checkPermission',array(
-					'module'	=> '',
-					'objectid'	=> '',
-					'commentid'	=> $id,
-					'level'		=> ACCESS_EDIT			));
+                    'module'    => '',
+                    'objectid'    => '',
+                    'commentid'    => $id,
+                    'level'        => ACCESS_EDIT            ));
     if (!$securityCheck) {
         return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));
     }
 
-	// Update item and store item
-	$item['status'] = $args['status'];
-	if (DBUtil::updateObject($item,'EZComments')) {
-	    // Let any hooks know that we have updated an item.
-	    pnModCallHooks('item', 'update', $id, array('module' => 'EZComments'));	  	
-	    return true;
-	}
-	else return false;
+    // Update item and store item
+    $item['status'] = $args['status'];
+    if (DBUtil::updateObject($item,'EZComments')) {
+        // Let any hooks know that we have updated an item.
+        pnModCallHooks('item', 'update', $id, array('module' => 'EZComments'));          
+        return true;
+    }
+    else return false;
 }
 
 /**

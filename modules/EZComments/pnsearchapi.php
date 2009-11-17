@@ -13,11 +13,11 @@
  **/
 function EZComments_searchapi_info()
 {
-	return array(	
-   		'title' 	=> 'EZComments', 
+    return array(    
+           'title'     => 'EZComments', 
         'functions' => array(
-								'EZComments' => 'search'
-						 	));
+                                'EZComments' => 'search'
+                             ));
 }
 
 /**
@@ -32,7 +32,7 @@ function EZComments_searchapi_options($args)
     if (SecurityUtil::checkPermission( 'EZComments::', '::', ACCESS_READ)) {
         // Create output object - this object will store all of our output so that
         // we can return it easily when required
-        $pnRender = pnRender::getInstance('EZComments');
+        $pnRender = & pnRender::getInstance('EZComments');
         $pnRender->assign('active',(isset($args['active'])&&isset($args['active']['EZComments']))||(!isset($args['active'])));
         return $pnRender->fetch('ezcomments_search_form.htm');
     }
@@ -57,30 +57,30 @@ function EZComments_searchapi_search($args)
     }
 
     pnModDBInfoLoad('Search');
-    $pntable 		= pnDBGetTables();
+    $pntable         = pnDBGetTables();
     // ezcomments tables
-    $ezcommentstable 	= $pntable['EZComments'];
+    $ezcommentstable     = $pntable['EZComments'];
     $ezcommentscolumn = $pntable['EZComments_column'];
     // our own tables
-    $searchTable 	= $pntable['search_result'];
-    $searchColumn 	= $pntable['search_result_column'];
-	// where
+    $searchTable     = $pntable['search_result'];
+    $searchColumn     = $pntable['search_result_column'];
+    // where
     $where = search_construct_where($args, 
                                     array($ezcommentscolumn['subject'], 
                                           $ezcommentscolumn['comment']));
-	$where.=" AND ".$ezcommentscolumn['url']." != ''";
+    $where.=" AND ".$ezcommentscolumn['url']." != ''";
     $sessionId = session_id();
 
     $insertSql = 
-		"INSERT INTO $searchTable
-		  ($searchColumn[title],
-		   $searchColumn[text],
-		   $searchColumn[extra],
-		   $searchColumn[module],
-		   $searchColumn[created],
-		   $searchColumn[session])
-		VALUES 
-		";
+        "INSERT INTO $searchTable
+          ($searchColumn[title],
+           $searchColumn[text],
+           $searchColumn[extra],
+           $searchColumn[module],
+           $searchColumn[created],
+           $searchColumn[session])
+        VALUES 
+        ";
 
     $comments = DBUtil::selectObjectArray('EZComments', $where);
 
@@ -114,4 +114,3 @@ function EZComments_searchapi_search_check(&$args)
     $datarow['url'] = $url;
     return true;
 }
-

@@ -54,12 +54,12 @@ function EZComments_init()
     pnModSetVar('EZComments', 'moderationmail', false);
     pnModSetVar('EZComments', 'alwaysmoderate', false);
     pnModSetVar('EZComments', 'proxyblacklist', false);
-	pnModSetVar('EZComments', 'logip',          false);
-	pnModSetVar('EZComments', 'dontmoderateifcommented', false);
-	pnModSetVar('EZComments', 'feedtype', 'rss');
-	pnModSetVar('EZComments', 'feedcount', '10');
-	pnModSetVar('EZComments', 'enablepager', false);
-	pnModSetVar('EZComments', 'commentsperpage', '25');
+    pnModSetVar('EZComments', 'logip',          false);
+    pnModSetVar('EZComments', 'dontmoderateifcommented', false);
+    pnModSetVar('EZComments', 'feedtype', 'rss');
+    pnModSetVar('EZComments', 'feedcount', '10');
+    pnModSetVar('EZComments', 'enablepager', false);
+    pnModSetVar('EZComments', 'commentsperpage', '25');
     pnModSetVar('EZComments', 'akismet', false);
     pnModSetVar('EZComments', 'apikey', '');
     pnModSetVar('EZComments', 'anonusersrequirename', false);
@@ -68,7 +68,6 @@ function EZComments_init()
     // Initialisation successful
     return true;
 } 
-
 
 /**
  * upgrade the EZComments module from an old version
@@ -217,11 +216,11 @@ function EZComments_upgrade($oldversion)
         pnModSetVar('EZComments', 'moderationmail', false);
         pnModSetVar('EZComments', 'alwaysmoderate', false);
         pnModSetVar('EZComments', 'proxyblacklist', false);
-		$oldversion = '0.8';
+        $oldversion = '0.8';
     }
 
     if ($oldversion == '0.8') {
-		pnModSetVar('EZComments', 'dontmoderateifcommented', false);
+        pnModSetVar('EZComments', 'dontmoderateifcommented', false);
         pnModSetVar('EZComments', 'logip', false);
         // Add additional for unregistered users info
         $sql = "ALTER TABLE $EZCommentstable 
@@ -231,7 +230,7 @@ function EZComments_upgrade($oldversion)
             return LogUtil::registerError(_EZCOMMENTS_FAILED5 . ': ' . $dbconn->ErrorMsg());
             return false;
         }
-		$oldversion = '0.9';
+        $oldversion = '0.9';
     }
 
     if ($oldversion == '0.9') {
@@ -243,14 +242,14 @@ function EZComments_upgrade($oldversion)
             return LogUtil::registerError(_EZCOMMENTS_FAILED5 . ': ' . $dbconn->ErrorMsg());
             return false;
         }
-		$oldversion = '1.0';
+        $oldversion = '1.0';
     }
 
-	if ($oldversion == '1.0') {
-		pnModSetVar('EZComments', 'feedtype', 'rss');
-		pnModSetVar('EZComments', 'feedcount', '10');
-		$oldversion = '1.1';
-	}
+    if ($oldversion == '1.0') {
+        pnModSetVar('EZComments', 'feedtype', 'rss');
+        pnModSetVar('EZComments', 'feedcount', '10');
+        $oldversion = '1.1';
+    }
 
     if ($oldversion == '1.1') {
         // Add additional for unregistered users info
@@ -261,39 +260,38 @@ function EZComments_upgrade($oldversion)
             return LogUtil::registerError(_EZCOMMENTS_FAILED5 . ': ' . $dbconn->ErrorMsg());
             return false;
         }
-		$oldversion = '1.2';
+        $oldversion = '1.2';
     }
 
-	if ($oldversion == '1.2') {
-		pnModSetVar('EZComments', 'enablepager', false);
-		pnModSetVar('EZComments', 'commentsperpage', '25');
-		$oldversion = '1.3';
-	}
+    if ($oldversion == '1.2') {
+        pnModSetVar('EZComments', 'enablepager', false);
+        pnModSetVar('EZComments', 'commentsperpage', '25');
+        $oldversion = '1.3';
+    }
 
-	if ($oldversion == '1.3') {
+    if ($oldversion == '1.3') {
         pnModSetVar('EZComments', 'blacklinkcount', 5);
         pnModSetVar('EZComments', 'akismet', false);
         pnModSetVar('EZComments', 'apikey', '');
-		$oldversion = '1.4';
-	}
+        $oldversion = '1.4';
+    }
 
-	if ($oldversion == '1.4') {
+    if ($oldversion == '1.4') {
         pnModSetVar('EZComments', 'anonusersrequirename', false);
         pnModDelVar('EZComments', 'apikey');
         pnMoDSetVar('EZComments', 'akismetstatus', 1);
-		$oldversion = '1.5';
+        $oldversion = '1.5';
     }
 
-	if ($oldversion == '1.5') {
-	  	DBUtil::changeTable('EZComments');
-		pnModSetVar('EZComments', 'template',		'Standard');
-	    pnModSetVar('EZComments', 'modifyowntime', 	'6');
-	}
-	if ($oldversion == '1.6') {
-	}
+    if ($oldversion == '1.5') {
+          DBUtil::changeTable('EZComments');
+        pnModSetVar('EZComments', 'template',        'Standard');
+        pnModSetVar('EZComments', 'modifyowntime',     '6');
+    }
+    if ($oldversion == '1.6') {
+    }
     return true;
 } 
-
 
 /**
  * delete the EZComments module from an old version
@@ -325,10 +323,9 @@ function EZComments_delete()
         return false;
     }
 
-	// delete all module vars for the ezcomments module
+    // delete all module vars for the ezcomments module
     pnModDelVar('EZComments');
 
     // Deletion successful
     return true;
 } 
-

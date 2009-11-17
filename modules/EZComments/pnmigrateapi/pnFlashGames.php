@@ -93,4 +93,3 @@ function EZComments_migrateapi_pnFlashGames()
 
     LogUtil::registerStatus('pnFlashGames migration successful');
 }
-

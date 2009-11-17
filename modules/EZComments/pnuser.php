@@ -19,10 +19,12 @@
  */
 function EZComments_user_main($args)
 {
-  	if (!pnUserLoggedIn()) return pnRedirect(pnGetBaseUrl());
-  	// the following code was taken from the admin interface first and modified
-  	// that only own comments are shown on the overview page.
-  	
+    if (!pnUserLoggedIn()) {
+        return pnRedirect(pnGetBaseUrl());
+    }
+    // the following code was taken from the admin interface first and modified
+    // that only own comments are shown on the overview page.
+
     // get the status filter
     $status = FormUtil::getPassedValue('status', -1, 'GETPOST');
     if (!isset($status) || !is_numeric($status) || $status < -1 || $status > 2) {
@@ -30,11 +32,11 @@ function EZComments_user_main($args)
     }
 
     // presentation values
-	$itemsperpage = pnModGetVar('EZComments', 'itemsperpage');
+    $itemsperpage = pnModGetVar('EZComments', 'itemsperpage');
     $startnum = FormUtil::getPassedValue('startnum', null, 'GETPOST');
-    
+
     // Create output object
-    $renderer = pnRender::getInstance('EZComments', false);
+    $renderer = & pnRender::getInstance('EZComments', false);
 
     // assign the module vars
     $renderer->assign(pnModGetVar('EZComments'));
@@ -46,9 +48,9 @@ function EZComments_user_main($args)
                           array('startnum' => $showall == true ? true : $startnum,
                                 'numitems' => $itemsperpage,
                                 'status'   => $status,
-								'owneruid' => pnUserGetVar('uid'),
-								'uid'      => pnUserGetVar('uid')
-								));
+                                'owneruid' => pnUserGetVar('uid'),
+                                'uid'      => pnUserGetVar('uid')
+                                ));
     if ($items === false) {
         return LogUtil::registerError(_EZCOMMENTS_FAILED);
     } 
@@ -57,31 +59,31 @@ function EZComments_user_main($args)
     $comments = array();
     foreach ($items as $item) {
         $options = array();
-		$options[] = array(
-						'url' 	=> $item['url'] . '#comments',
-						'image' => 'demo.gif',
-						'title' => _VIEW); 
         $options[] = array(
-						'url'   => pnModURL('EZComments', 'user', 'modify', array('id' => $item['id'])),
-						'image' => 'xedit.gif',
-						'title' => _EDIT);
+                        'url'     => $item['url'] . '#comments',
+                        'image' => 'demo.gif',
+                        'title' => _VIEW); 
+        $options[] = array(
+                        'url'   => pnModURL('EZComments', 'user', 'modify', array('id' => $item['id'])),
+                        'image' => 'xedit.gif',
+                        'title' => _EDIT);
         $item['options'] = $options;
-		$comments[] = $item;
+        $comments[] = $item;
     }
 
     // assign the items to the template, values for the filters, values for the smarty plugin to produce a pager
     $renderer->assign('items', $comments);
     $renderer->assign('status', $status);
     $renderer->assign('pager', array('numitems'     => pnModAPIFunc('EZComments', 'user', 'countitems', array(
-										'status' => $status,
-										'owneruid' => pnUserGetVar('uid'),
-										'uid' => pnUserGetVar('uid')
-											)),
+                                        'status' => $status,
+                                        'owneruid' => pnUserGetVar('uid'),
+                                        'uid' => pnUserGetVar('uid')
+                                            )),
                                      'itemsperpage' => $itemsperpage));
 
     // Return the output
     return $renderer->fetch('ezcomments_user_main.htm');
- 	
+     
 }
 
 /**
@@ -101,10 +103,10 @@ function EZComments_user_main($args)
 function EZComments_user_view($args)
 {
     // work out the input from the hook
-    $mod 		= pnModGetName();
-    $objectid 	= $args['objectid'];
-    $owneruid 	= (int)$args['extrainfo']['owneruid'];
-    $useurl 	= $args['extrainfo']['useurl'];
+    $mod         = pnModGetName();
+    $objectid     = $args['objectid'];
+    $owneruid     = (int)$args['extrainfo']['owneruid'];
+    $useurl     = $args['extrainfo']['useurl'];
 
     // security check
     if (!SecurityUtil::checkPermission('EZComments::', "$mod:$objectid:", ACCESS_OVERVIEW)) {
@@ -112,27 +114,27 @@ function EZComments_user_view($args)
     }
 
     // we may get some input in from the navigation bar
-    $order 		= FormUtil::getpassedValue('order');
+    $order         = FormUtil::getpassedValue('order');
     if ($order == 1) {
         $sortorder = 'DESC';
     } else {
         $sortorder = 'ASC';
     }
   
-	$status = 0;
+    $status = 0;
 
-	// check if we're using the pager
-	$enablepager = pnModGetVar('EZComments', 'enablepager');
-	if ($enablepager) {
-		$numitems = pnModGetVar('EZComments', 'commentsperpage');
-		$startnum = FormUtil::getPassedValue('comments_startnum');
-		if (!isset($startnum) && !is_numeric($startnum)) {
-			$startnum = -1;
-		}
-	} else {
-		$startnum = -1;
-		$numitems = -1;
-	}
+    // check if we're using the pager
+    $enablepager = pnModGetVar('EZComments', 'enablepager');
+    if ($enablepager) {
+        $numitems = pnModGetVar('EZComments', 'commentsperpage');
+        $startnum = FormUtil::getPassedValue('comments_startnum');
+        if (!isset($startnum) && !is_numeric($startnum)) {
+            $startnum = -1;
+        }
+    } else {
+        $startnum = -1;
+        $numitems = -1;
+    }
 
     $items = pnModAPIFunc('EZComments', 'user', 'getall',
                            compact('mod', 'objectid', 'sortorder', 'status', 'numitems', 'startnum'));
@@ -142,18 +144,18 @@ function EZComments_user_view($args)
     }     
 
     $comments = EZComments_prepareCommentsForDisplay($items);
-	if ($enablepager) {
-		$commentcount = pnModAPIFunc('EZComments', 'user', 'countitems', array('mod' => $mod, 'objectid' => $objectid));
-	} else {
-		$commentcount = count($comments);
-	}
+    if ($enablepager) {
+        $commentcount = pnModAPIFunc('EZComments', 'user', 'countitems', array('mod' => $mod, 'objectid' => $objectid));
+    } else {
+        $commentcount = count($comments);
+    }
     // create the pnRender object
     // don't use caching (for now...)
-    $renderer = pnRender::getInstance('EZComments', false);
+    $renderer = & pnRender::getInstance('EZComments', false);
 
     $renderer->assign('comments',   $comments);
-	$renderer->assign('commentcount', $commentcount);
-	$renderer->assign('modinfo',    pnModGetInfo(pnModGetIDFromName($mod)));
+    $renderer->assign('commentcount', $commentcount);
+    $renderer->assign('modinfo',    pnModGetInfo(pnModGetIDFromName($mod)));
     $renderer->assign('order',      $sortorder);
     $renderer->assign('allowadd',   SecurityUtil::checkPermission('EZComments::', "$mod:$objectid:", ACCESS_COMMENT));
     $renderer->assign('loggedin',   pnUserLoggedIn());
@@ -161,22 +163,22 @@ function EZComments_user_view($args)
     else $redirect = $args['extrainfo']['returnurl'];
     // encode the url - otherwise we can get some problems out there....
     $redirect = base64_encode($redirect);
-    $renderer->assign('redirect',	$redirect);
+    $renderer->assign('redirect',    $redirect);
     $renderer->assign('objectid',   $objectid);
     
     // assign the user is of the content owner
-    $renderer->assign('owneruid',	$owneruid);
+    $renderer->assign('owneruid',    $owneruid);
     
     // assign url that should be stored in db and sent in email if it
     // differs from the redirect url
-    $renderer->assign('useurl',		$useurl);
+    $renderer->assign('useurl',        $useurl);
 
     // assign all module vars (they may be useful...)
     $renderer->assign(pnModGetVar('EZComments'));
 
-	// assign the values for the pager
-	$renderer->assign('pager', array('numitems'     => $commentcount,
-	                                 'itemsperpage' => $numitems));
+    // assign the values for the pager
+    $renderer->assign('pager', array('numitems'     => $commentcount,
+                                     'itemsperpage' => $numitems));
 
     // find out which template to use
     $template = isset($args['template']) ? $args['template'] : FormUtil::getPassedValue('template');
@@ -189,8 +191,8 @@ function EZComments_user_view($args)
     $css = 'modules/EZComments/pntemplates/' . $template . '/style.css';
     pnModLangLoad('EZComments','template_'.$template);
     if (file_exists($css)) {
-	  	PageUtil::addVar('stylesheet',$css);
-	}
+        PageUtil::addVar('stylesheet',$css);
+    }
 
     return $renderer->fetch(DataUtil::formatForOS($template) . '/ezcomments_user_view.htm');
 } 
@@ -213,15 +215,15 @@ function EZComments_user_view($args)
  */
 function EZComments_user_comment($args)
 {
-    $mod         = FormUtil::getPassedValue('mod', 		isset($args['mod']) 		? $args['mod'] 		: null, 'POST');
-    $objectid    = FormUtil::getPassedValue('objectid', isset($args['objectid']) 	? $args['objectid'] : null, 'POST');
-    $redirect    = FormUtil::getPassedValue('redirect', isset($args['redirect']) 	? $args['redirect'] : null, 'POST');
-    $useurl      = FormUtil::getPassedValue('useurl', 	isset($args['useurl']) 		? $args['useurl'] 	: null, 'POST');
-    $comment     = FormUtil::getPassedValue('comment', 	isset($args['comment']) 	? $args['comment'] 	: null, 'POST');
-    $subject     = FormUtil::getPassedValue('subject', 	isset($args['subject']) 	? $args['subject'] 	: null, 'POST');
-    $replyto     = FormUtil::getPassedValue('replyto', 	isset($args['replyto']) 	? $args['replyto'] 	: null, 'POST');
-    $template    = FormUtil::getPassedValue('template', isset($args['template']) 	? $args['template'] : null, 'POST');
-    $order       = FormUtil::getPassedValue('order', 	isset($args['order']) 		? $args['order'] 	: null, 'POST');
+    $mod         = FormUtil::getPassedValue('mod',         isset($args['mod'])         ? $args['mod']         : null, 'POST');
+    $objectid    = FormUtil::getPassedValue('objectid', isset($args['objectid'])     ? $args['objectid'] : null, 'POST');
+    $redirect    = FormUtil::getPassedValue('redirect', isset($args['redirect'])     ? $args['redirect'] : null, 'POST');
+    $useurl      = FormUtil::getPassedValue('useurl',     isset($args['useurl'])         ? $args['useurl']     : null, 'POST');
+    $comment     = FormUtil::getPassedValue('comment',     isset($args['comment'])     ? $args['comment']     : null, 'POST');
+    $subject     = FormUtil::getPassedValue('subject',     isset($args['subject'])     ? $args['subject']     : null, 'POST');
+    $replyto     = FormUtil::getPassedValue('replyto',     isset($args['replyto'])     ? $args['replyto']     : null, 'POST');
+    $template    = FormUtil::getPassedValue('template', isset($args['template'])     ? $args['template'] : null, 'POST');
+    $order       = FormUtil::getPassedValue('order',     isset($args['order'])         ? $args['order']     : null, 'POST');
 
     if ($order == 1) {
         $sortorder = 'DESC';
@@ -235,22 +237,19 @@ function EZComments_user_comment($args)
         return LogUtil::registerPermissionError(pnGetBaseURL());
     }
 
-	// check if we're using the pager
-	$enablepager = pnModGetVar('EZComments', 'enablepager');
-	if ($enablepager) {
-		$numitems = pnModGetVar('EZComments', 'commentsperpage');
-		$startnum = FormUtil::getPassedValue('comments_startnum');
-		if (!isset($startnum) && !is_numeric($startnum)) {
-			$startnum = -1;
-		}
-	} 
-	else {
-		$startnum = -1;
-		$numitems = -1;
-	}
-    $items = pnModAPIFunc('EZComments',
-                          'user',
-                          'getall',
+    // check if we're using the pager
+    $enablepager = pnModGetVar('EZComments', 'enablepager');
+    if ($enablepager) {
+        $numitems = pnModGetVar('EZComments', 'commentsperpage');
+        $startnum = FormUtil::getPassedValue('comments_startnum');
+        if (!isset($startnum) && !is_numeric($startnum)) {
+            $startnum = -1;
+        }
+    } else {
+        $startnum = -1;
+        $numitems = -1;
+    }
+    $items = pnModAPIFunc('EZComments', 'user', 'getall',
                            compact('mod', 'objectid','sortorder','status','numitems','startnum'));
 
     if ($items === false) {
@@ -258,18 +257,18 @@ function EZComments_user_comment($args)
     }     
 
     $comments = EZComments_prepareCommentsForDisplay($items);
-	if ($enablepager) {
-		$commentcount = pnModAPIFunc('EZComments', 'user', 'countitems', array('mod' => $mod, 'objectid' => $objectid));
-	} 
-	else {
-		$commentcount = count($comments);
-	}
+    if ($enablepager) {
+        $commentcount = pnModAPIFunc('EZComments', 'user', 'countitems', array('mod' => $mod, 'objectid' => $objectid));
+    } 
+    else {
+        $commentcount = count($comments);
+    }
 
     // don't use caching (for now...)
-    $renderer = pnRender::getInstance('EZComments', false);
+    $renderer = & pnRender::getInstance('EZComments', false);
 
     $renderer->assign('comments',     $comments);
-	$renderer->assign('commentcount', $commentcount);
+    $renderer->assign('commentcount', $commentcount);
     $renderer->assign('order',        $sortorder);
     $renderer->assign('allowadd',     SecurityUtil::checkPermission('EZComments::', "$mod:$objectid: ", ACCESS_COMMENT));
     $renderer->assign('addurl',       pnModURL('EZComments', 'user', 'create'));
@@ -283,22 +282,22 @@ function EZComments_user_comment($args)
     // assign all module vars (they may be useful...)
     $renderer->assign(pnModGetVar('EZComments'));
 
-	// assign the values for the pager
-	$renderer->assign('pager', array('numitems'     => $commentcount,
-	                                 'itemsperpage' => $numitems));
+    // assign the values for the pager
+    $renderer->assign('pager', array('numitems'     => $commentcount,
+                                     'itemsperpage' => $numitems));
 
     // assign the user is of the content owner
-    $renderer->assign('owneruid',	(int)FormUtil::getPassedValue('owneruid'));
+    $renderer->assign('owneruid',    (int)FormUtil::getPassedValue('owneruid'));
     
     // assign useurl if there was another url for email and storing submitted
-    $renderer->assign('useurl',		$useurl);
+    $renderer->assign('useurl',        $useurl);
 
     // find out which template to use
     $template = pnModGetVar('EZComments', 'template');
     if (!empty($template)) {
         $template = $template;
     } 
-	else if (isset($args['template'])) {
+    else if (isset($args['template'])) {
         $template = $args['template'];
     }
 
@@ -331,18 +330,18 @@ function EZComments_user_comment($args)
  */
 function EZComments_user_create($args)
 {
-    $mod 		= FormUtil::getPassedValue('mod', 		isset($args['mod']) 		? $args['mod'] 		: null, 'POST');
-    $owneruid 	= FormUtil::getPassedValue('owneruid',	isset($args['owneruid']) 	? $args['owneruid'] : null, 'POST');
-    $objectid 	= FormUtil::getPassedValue('objectid',	isset($args['objectid']) 	? $args['objectid'] : null, 'POST');
-    $redirect 	= FormUtil::getPassedValue('redirect',	isset($args['redirect']) 	? $args['redirect'] : null, 'POST');
-    $useurl 	= FormUtil::getPassedValue('useurl', 	isset($args['useurl']) 		? $args['useurl'] 	: null, 'POST');
-    $comment 	= FormUtil::getPassedValue('comment', 	isset($args['comment']) 	? $args['comment'] 	: null, 'POST');
-    $subject 	= FormUtil::getPassedValue('subject', 	isset($args['subject']) 	? $args['subject'] 	: null, 'POST');
-    $replyto 	= FormUtil::getPassedValue('replyto', 	isset($args['replyto']) 	? $args['replyto'] 	: null, 'POST');
+    $mod         = FormUtil::getPassedValue('mod',         isset($args['mod'])         ? $args['mod']         : null, 'POST');
+    $owneruid     = FormUtil::getPassedValue('owneruid',    isset($args['owneruid'])     ? $args['owneruid'] : null, 'POST');
+    $objectid     = FormUtil::getPassedValue('objectid',    isset($args['objectid'])     ? $args['objectid'] : null, 'POST');
+    $redirect     = FormUtil::getPassedValue('redirect',    isset($args['redirect'])     ? $args['redirect'] : null, 'POST');
+    $useurl     = FormUtil::getPassedValue('useurl',     isset($args['useurl'])         ? $args['useurl']     : null, 'POST');
+    $comment     = FormUtil::getPassedValue('comment',     isset($args['comment'])     ? $args['comment']     : null, 'POST');
+    $subject     = FormUtil::getPassedValue('subject',     isset($args['subject'])     ? $args['subject']     : null, 'POST');
+    $replyto     = FormUtil::getPassedValue('replyto',     isset($args['replyto'])     ? $args['replyto']     : null, 'POST');
 
     if (!isset($owneruid) || (!($owneruid > 1))) $owner_uid = 0;
-    $redirect 	= base64_decode($redirect);
-    $useurl 	= base64_decode($useurl);
+    $redirect     = base64_decode($redirect);
+    $useurl     = base64_decode($useurl);
 
     // Confirm authorisation code.
     if (!SecurityUtil::confirmAuthKey()) {
@@ -357,16 +356,16 @@ function EZComments_user_create($args)
     // check if the user logged in and if we're allowing anon users to 
     // set a name and e-mail address
     if (!pnUserLoggedIn()) {
-        $anonname 		= FormUtil::getPassedValue('anonname', 		isset($args['anonname']) 	? $args['anonname'] 	: null, 'POST');
-        $anonmail 		= FormUtil::getPassedValue('anonmail', 		isset($args['anonmail']) 	? $args['anonmail'] 	: null, 'POST');
-        $anonwebsite 	= FormUtil::getPassedValue('anonwebsite', 	isset($args['anonwebsite']) ? $args['anonwebsite'] 	: null, 'POST');
+        $anonname         = FormUtil::getPassedValue('anonname',         isset($args['anonname'])     ? $args['anonname']     : null, 'POST');
+        $anonmail         = FormUtil::getPassedValue('anonmail',         isset($args['anonmail'])     ? $args['anonmail']     : null, 'POST');
+        $anonwebsite     = FormUtil::getPassedValue('anonwebsite',     isset($args['anonwebsite']) ? $args['anonwebsite']     : null, 'POST');
     } 
-	else {
+    else {
         $anonname = '';
         $anonmail = '';
-		$anonwebsite = '';
+        $anonwebsite = '';
     }
-	
+    
     $redirect = str_replace('&amp;', '&', $redirect);
     // now parse out the hostname from the url for storing in the DB
     $url = str_replace(pnGetBaseURL(), '', $url);
@@ -381,12 +380,12 @@ function EZComments_user_create($args)
                              'subject'     => $subject,
                              'replyto'     => $replyto,
                              'uid'         => pnUserGetVar('uid'),
-                             'owneruid'	   => $owneruid,
-                             'useurl'	   => $useurl,
-                             'redirect'	   => $redirect,
+                             'owneruid'       => $owneruid,
+                             'useurl'       => $useurl,
+                             'redirect'       => $redirect,
                              'anonname'    => $anonname,
                              'anonmail'    => $anonmail,
-							 'anonwebsite' => $anonwebsite));
+                             'anonwebsite' => $anonwebsite));
 
     return pnRedirect($redirect.'#comments');
 } 
@@ -413,12 +412,12 @@ function EZComments_prepareCommentsForDisplay($items)
             $userinfo = pnUserGetVars($item['uid']);
             // at least for now .8x doesn't include DUD in this api call so lets add some useful ones!
             if (!isset($userinfo['url'])) {
-                $userinfo['url'] 			= pnUserGetVar('_YOURHOMEPAGE', $item['uid']);
-                $userinfo['user_avatar'] 	= pnUserGetVar('_YOURAVATAR', 	$item['uid']);
-                $userinfo['pn_user_from']	= pnUserGetVar('_YLOCATION', 	$item['uid']);
-                $userinfo['pn_user_sig'] 	= pnUserGetVar('_SIGNATURE', 	$item['uid']);
+                $userinfo['url']             = pnUserGetVar('_YOURHOMEPAGE', $item['uid']);
+                $userinfo['user_avatar']     = pnUserGetVar('_YOURAVATAR',     $item['uid']);
+                $userinfo['pn_user_from']    = pnUserGetVar('_YLOCATION',     $item['uid']);
+                $userinfo['pn_user_sig']     = pnUserGetVar('_SIGNATURE',     $item['uid']);
             }
-			// the users url will clash with the comment url so lets move it out of the way
+            // the users url will clash with the comment url so lets move it out of the way
             $userinfo['website'] = $userinfo['url'];
             $comment['anonname'] = '';
             $comment  = array_merge ($userinfo, $comment);
@@ -427,27 +426,27 @@ function EZComments_prepareCommentsForDisplay($items)
             $comment['online'] = false;
             if (pnModAvailable('Members_List')) {
                 if (pnModAPIFunc('Members_List', 'user', 'isonline', array('userid' => $userinfo['pn_uid']))) {
-                    $comment['onlinestatus'] 	= true;
-                    $comment['online'] 			= true;
+                    $comment['onlinestatus']     = true;
+                    $comment['online']             = true;
                 }
             } 
-			else {
+            else {
                 $comment['onlinestatus'] = false;
             }
         } 
-		else {
-			// if anonymous, uname is empty
-			$comment['uname'] = '';
-			if ($comment['anonname'] == '') {
-				$comment['anonname'] = pnConfigGetVar('anonymous');
-	        }
-		}
-	    $comment['del'] = pnModAPIFunc('EZComments','user','checkPermission',array(
-					'module'	=> $comment['mod'],
-					'objectid'	=> $comment['objectid'],
-					'commentid'	=> $comment['id'],
-					'uid'		=> $comment['uid'],
-					'level'		=> ACCESS_DELETE			));
+        else {
+            // if anonymous, uname is empty
+            $comment['uname'] = '';
+            if ($comment['anonname'] == '') {
+                $comment['anonname'] = pnConfigGetVar('anonymous');
+            }
+        }
+        $comment['del'] = pnModAPIFunc('EZComments','user','checkPermission',array(
+                    'module'    => $comment['mod'],
+                    'objectid'    => $comment['objectid'],
+                    'commentid'    => $comment['id'],
+                    'uid'        => $comment['uid'],
+                    'level'        => ACCESS_DELETE            ));
         $comments[] = $comment;
     }
     return $comments;
@@ -499,50 +498,50 @@ function EZComments_displayChildren($comments, $id, $level)
 */
 function EZComments_user_feed()
 {
-    $feedcount 	= FormUtil::getPassedValue('feedcount', isset($args['feedcount']) 	? $args['feedcount'] 	: null, 'POST');
-    $feedtype 	= FormUtil::getPassedValue('feedtype', 	isset($args['feedtype']) 	? $args['feedtype'] 	: null, 'POST');
-    $mod 		= FormUtil::getPassedValue('replyto', 	isset($args['mod']) 		? $args['mod'] 			: null, 'POST');
-    $objectid 	= FormUtil::getPassedValue('objectid', 	isset($args['objectid']) 	? $args['objectid'] 	: null, 'POST');
+    $feedcount     = FormUtil::getPassedValue('feedcount', isset($args['feedcount'])     ? $args['feedcount']     : null, 'POST');
+    $feedtype     = FormUtil::getPassedValue('feedtype',     isset($args['feedtype'])     ? $args['feedtype']     : null, 'POST');
+    $mod         = FormUtil::getPassedValue('replyto',     isset($args['mod'])         ? $args['mod']             : null, 'POST');
+    $objectid     = FormUtil::getPassedValue('objectid',     isset($args['objectid'])     ? $args['objectid']     : null, 'POST');
 
-	// check our input
-	if (!isset($feedcount) || !is_numeric($feedcount) || $feedcount < 1 || $feedcount > 999) {
-		$feedcount = pnModGetVar('EZcomments', 'feedcount');
-	}
-	if (!isset($feedtype) || !is_string($feedtype) || ($feedtype !== 'rss' && $feedtype !== 'atom')) {
-		$feedtype = pnModGetVar('EZComments', 'feedtype');
-	}
-	if (!isset($mod) || !is_string($mod) || !pnModAvailable($mod)) {
-		$mod = null;
-	}
-	if (!isset($objectid) || !is_string($objectid)) {
-		$objectid = null;
-	}
+    // check our input
+    if (!isset($feedcount) || !is_numeric($feedcount) || $feedcount < 1 || $feedcount > 999) {
+        $feedcount = pnModGetVar('EZcomments', 'feedcount');
+    }
+    if (!isset($feedtype) || !is_string($feedtype) || ($feedtype !== 'rss' && $feedtype !== 'atom')) {
+        $feedtype = pnModGetVar('EZComments', 'feedtype');
+    }
+    if (!isset($mod) || !is_string($mod) || !pnModAvailable($mod)) {
+        $mod = null;
+    }
+    if (!isset($objectid) || !is_string($objectid)) {
+        $objectid = null;
+    }
 
     // create the pnRender object
-    $renderer = pnRender::getInstance('EZComments');
+    $renderer = & pnRender::getInstance('EZComments');
 
-	// get the last x comments
-	$renderer->assign('comments', $comments = pnModAPIFunc('EZComments', 'user', 'getall', 
-		array(
-			'numitems' 	=> $feedcount, 
-			'sortorder' => 'DESC', 
-			'mod' 		=> $mod, 
-			'objectid' 	=> $objectid, 
-			'status' 	=> 0)
-			));
+    // get the last x comments
+    $renderer->assign('comments', $comments = pnModAPIFunc('EZComments', 'user', 'getall', 
+        array(
+            'numitems'     => $feedcount, 
+            'sortorder' => 'DESC', 
+            'mod'         => $mod, 
+            'objectid'     => $objectid, 
+            'status'     => 0)
+            ));
 
     // grab the item url from one of the comments
     if (isset($comments[0]['url'])) {
         $renderer->assign('itemurl', $comments[0]['url']);
     } 
-	else {
+    else {
         // attempt to guess the url (api compliant mods only....)
         $renderer->assign('itemurl', pnModURL($mod, 'user', 'display', array('objectid' => $objectid)));
     }
 
-	// display the feed and notify the core that we're done
-	$renderer->display("ezcomments_user_$feedtype.htm");
-	return true;
+    // display the feed and notify the core that we're done
+    $renderer->display("ezcomments_user_$feedtype.htm");
+    return true;
 }
 
 /**
@@ -560,7 +559,7 @@ function EZComments_user_feed()
 function EZComments_user_processselected($args)
 {
     Loader::requireOnce('modules/EZComments/pnincludes/common.php');
-	return ezc_processSelected($args);
+    return ezc_processSelected($args);
 }
 
 /**
@@ -576,5 +575,5 @@ function EZComments_user_processselected($args)
 function EZComments_user_modify($args)
 {
     Loader::requireOnce('modules/EZComments/pnincludes/common.php');
-	return ezc_modify($args);
+    return ezc_modify($args);
 }

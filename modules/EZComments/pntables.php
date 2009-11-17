@@ -29,23 +29,24 @@ function EZComments_pntables()
                                           'url'         => 'url',
                                           'date'        => 'date',
                                           'uid'         => 'uid',
-                                          'owneruid'	=> 'owneruid',
+                                          'owneruid'    => 'owneruid',
                                           'comment'     => 'comment',
                                           'subject'     => 'subject',
                                           'replyto'     => 'replyto',
                                           'anonname'    => 'anonname',
                                           'anonmail'    => 'anonmail',
                                           'status'      => 'status',
-										  'ipaddr'      => 'ipaddr',
-										  'type'        => 'type',
-										  'anonwebsite' => 'anonwebsite');
+                                          'ipaddr'      => 'ipaddr',
+                                          'type'        => 'type',
+                                          'anonwebsite' => 'anonwebsite');
+
     $pntable['EZComments_column_def'] = array('id'          => 'I AUTOINCREMENT PRIMARY',
                                               'modname'     => "C(64) NOTNULL DEFAULT ''",
                                               'objectid'    => "X NOTNULL DEFAULT ''",
                                               'url'         => "X NOTNULL DEFAULT ''",
-                                              'date'		=> "T NOTNULL DEFAULT '1970-01-01 00:00:00'",
-                                              'uid'			=> "I NOTNULL DEFAULT '0'",
-                                              'owneruid'	=> "I NOTNULL DEFAULT '0'",
+                                              'date'        => "T NOTNULL DEFAULT '1970-01-01 00:00:00'",
+                                              'uid'            => "I NOTNULL DEFAULT '0'",
+                                              'owneruid'    => "I NOTNULL DEFAULT '0'",
                                               'comment'     => "X NOTNULL DEFAULT ''",
                                               'subject'     => "X NOTNULL DEFAULT ''",
                                               'replyto'     => "I NOTNULL DEFAULT '0'",
@@ -58,4 +59,3 @@ function EZComments_pntables()
 
     return $pntable;
 }
-

@@ -17,7 +17,7 @@
  * 
  * 
  * @author  Mark West
- * @author		 Franz Skaaning
+ * @author         Franz Skaaning
  * @since        02 March 2004
  * @param array    $string     the contents to transform
  * @return string   the modified output

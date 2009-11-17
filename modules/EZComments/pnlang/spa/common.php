@@ -10,10 +10,10 @@
 
 // new for 2.0 (Zikula-only)
 
-define('_EZCOMMENTS_MODIFYOWNTIME',			'Número de horas en las que los usuarios están autorizados para modificar el texto de los comentarios propios. El valor -1 desactiva esta funcionalidad.');
+define('_EZCOMMENTS_MODIFYOWNTIME',            'Número de horas en las que los usuarios están autorizados para modificar el texto de los comentarios propios. El valor -1 desactiva esta funcionalidad.');
 
 // Search plugin
-define('_EZCOMMENTS_SEARCHLENGTHHINT', 		'Los comentarios sólo pueden ser buscados con frases no menores a %minlen% y no mayores a %maxlen% caracteres!');
+define('_EZCOMMENTS_SEARCHLENGTHHINT',         'Los comentarios sólo pueden ser buscados con frases no menores a %minlen% y no mayores a %maxlen% caracteres!');
 // ContactList integration
 define('_EZCOMMENTS_USER_IGNORES_YOU',      'El usuario propietario del contenido te ha deshabilitado. No puedes publicar ningún comentario aquí!');
 

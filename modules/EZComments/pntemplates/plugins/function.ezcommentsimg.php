@@ -60,13 +60,13 @@ function smarty_function_ezcommentsimg($params, &$smarty)
 {
     // get the parameters
     extract($params); 
-	unset($params['src']);
-	unset($params['template']);
-	unset($params['assign']);
-	unset($params['altml']);
-	unset($params['titleml']);
-	unset($params['optional']);
-	unset($params['default']);
+    unset($params['src']);
+    unset($params['template']);
+    unset($params['assign']);
+    unset($params['altml']);
+    unset($params['titleml']);
+    unset($params['optional']);
+    unset($params['default']);
 
     if (!isset($src)) {
         $smarty->trigger_error('ezcommentsimg: attribute src required');
@@ -79,7 +79,7 @@ function smarty_function_ezcommentsimg($params, &$smarty)
 
     // default for the optional flag
     if (!isset($optional)) {
-		$optional = true;
+        $optional = true;
     }
 
     // always provide an alt attribute.
@@ -93,12 +93,12 @@ function smarty_function_ezcommentsimg($params, &$smarty)
     
     // check if the alt string is an ml constant
     if (isset($altml) && is_bool($altml) && $altml) {
-		$params['alt'] = constant($params['alt']);
+        $params['alt'] = constant($params['alt']);
     }
 
     // check if the alt string is an ml constant
     if (isset($titleml) && is_bool($titleml) && $titleml) {
-		$params['title'] = constant($params['title']);
+        $params['title'] = constant($params['title']);
     }
 
     // language 
@@ -109,37 +109,37 @@ function smarty_function_ezcommentsimg($params, &$smarty)
     $ostemplate     = pnVarPrepForOS($template);
     $cWhereIsPerso = WHERE_IS_PERSO;
     if (!(empty($cWhereIsPerso))) {
-    	$themelangpath = $cWhereIsPerso . "themes/$theme/templates/modules/EZComments/$ostemplate/$lang";
-    	$themepath     = $cWhereIsPerso . "themes/$theme/templates/modules/EZComments/$ostemplate";
+        $themelangpath = $cWhereIsPerso . "themes/$theme/templates/modules/EZComments/$ostemplate/$lang";
+        $themepath     = $cWhereIsPerso . "themes/$theme/templates/modules/EZComments/$ostemplate";
     } else {
         $themelangpath = "themes/$theme/templates/modules/EZComments/$ostemplate/$lang";
-    	$themepath     = "themes/$theme/templates/modules/EZComments/$ostemplate";
+        $themepath     = "themes/$theme/templates/modules/EZComments/$ostemplate";
     }
     // module directory
-	$modlangpath   = "modules/EZComments/pntemplates/$ostemplate/$lang";
-	$modpath       = "modules/EZComments/pntemplates/$ostemplate";
+    $modlangpath   = "modules/EZComments/pntemplates/$ostemplate/$lang";
+    $modpath       = "modules/EZComments/pntemplates/$ostemplate";
     $ossrc = pnVarPrepForOS($src);
 
     // search for the image
     $imgsrc = '';
     foreach (array($themelangpath,
-				   $themepath,
-				   $modlangpath,
-				   $modpath) as $path) {
-     	if (file_exists("$path/$ossrc") && is_readable("$path/$ossrc")) {
-    		$imgsrc = "$path/$ossrc";
-		break;
-    	}
+                   $themepath,
+                   $modlangpath,
+                   $modpath) as $path) {
+         if (file_exists("$path/$ossrc") && is_readable("$path/$ossrc")) {
+            $imgsrc = "$path/$ossrc";
+        break;
+        }
     }
 
     if ($imgsrc == '' && isset($default)) {
-	$imgsrc = $default;
+    $imgsrc = $default;
     }
 
     if ($imgsrc == '') {
-	if ($optional) {
-		$smarty->trigger_error("ezcommentsimg: image $src not found");
-	}
+    if ($optional) {
+        $smarty->trigger_error("ezcommentsimg: image $src not found");
+    }
         return;
     }
 
@@ -156,11 +156,11 @@ function smarty_function_ezcommentsimg($params, &$smarty)
     }
 
     $imgtag = '<img src="'.pnGetBaseURI().'/'.$imgsrc.'" ';
-	foreach ($params as $key => $value) {
+    foreach ($params as $key => $value) {
         $imgtag .= $key . '="' .$value  . '" ';
     }
-	$imgtag .= ' />';
-	
+    $imgtag .= ' />';
+    
     if (isset($assign)) {
         $params['src'] = $imgsrc;
         $params['imgtag'] = $imgtag;

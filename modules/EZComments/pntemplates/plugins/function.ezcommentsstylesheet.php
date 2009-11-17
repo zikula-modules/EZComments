@@ -33,9 +33,9 @@ function smarty_function_ezcommentsstylesheet($params, &$smarty)
 {
     // get the parameters
     extract($params); 
-	unset($params['xhtml']);
+    unset($params['xhtml']);
 
-	// check for a template name
+    // check for a template name
     if (!isset($template)) {
         $smarty->trigger_error('ezcommentsstylesheet: attribute template required');
         return false;
@@ -45,33 +45,33 @@ function smarty_function_ezcommentsstylesheet($params, &$smarty)
 
     // config directory
     $configpath    = "config/templates/EZComments/$ostemplate/style.css";
-	// theme directory
+    // theme directory
     $theme         = pnVarPrepForOS(pnUserGetTheme());
     $themepath     = "themes/$theme/templates/modules/EZComments/$ostemplate/style.css";
-	// module directory
+    // module directory
     $modpath       = "modules/EZComments/pntemplates/$ostemplate/style.css";
 
-	// search for the style sheet
+    // search for the style sheet
     $csssrc = '';
-	foreach (array($configpath,
+    foreach (array($configpath,
                    $themepath,
-	               $modpath) as $path) {
+                   $modpath) as $path) {
         if (file_exists("$path") && is_readable("$path")) {
-		    $csssrc = "$path";
-			break;
-		}
+            $csssrc = "$path";
+            break;
+        }
     }
 
-	// if no module stylesheet is present then return no content
-	if ($csssrc == '') {
+    // if no module stylesheet is present then return no content
+    if ($csssrc == '') {
         $tag='';
-	} else {
-    	// create xhtml specifier
-	    if (isset($xhtml)) {
-    		$xhtml = ' /';
-	    } else {
-    		$xhtml = '';
-	    }
+    } else {
+        // create xhtml specifier
+        if (isset($xhtml)) {
+            $xhtml = ' /';
+        } else {
+            $xhtml = '';
+        }
 
         $tag = '<link rel="stylesheet" href="' . $csssrc . '" type="text/css"' . $xhtml . '>';
     }

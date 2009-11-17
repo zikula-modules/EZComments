@@ -10,28 +10,28 @@
 
 // new for 2.0 (Zikula-only)
 
-define('_EZCOMMENTS_MODIFYOWNTIME',			'Anzahl an Stunden in welchen Benutzer Inhalte eigener Kommentare ändern dürfen. Der Wert -1 deaktiviert diese Funktion.');
+define('_EZCOMMENTS_MODIFYOWNTIME',            'Anzahl an Stunden in welchen Benutzer Inhalte eigener Kommentare ändern dürfen. Der Wert -1 deaktiviert diese Funktion.');
 
 // Search plugin
-define('_EZCOMMENTS_SEARCHLENGTHHINT', 		'Das Kommentarsystem akzeptiert nur Suchstrings mit einer Länge zwischen %minlen% und %maxlen% Zeichen!');
+define('_EZCOMMENTS_SEARCHLENGTHHINT',         'Das Kommentarsystem akzeptiert nur Suchstrings mit einer Länge zwischen %minlen% und %maxlen% Zeichen!');
 
 // ContactList integration
-define('_EZCOMMENTS_USER_IGNORES_YOU',		'Der Besitzer des zu kommentierenden Inhaltes hat Dich auf seiner Ignorierliste. Du kannst hier keinen Kommentar hinterlassen!');
+define('_EZCOMMENTS_USER_IGNORES_YOU',        'Der Besitzer des zu kommentierenden Inhaltes hat Dich auf seiner Ignorierliste. Du kannst hier keinen Kommentar hinterlassen!');
 
 // admin interface
-define('_EZCOMMENTS_TOOWNERORADMIN',		'Die Benachrichtigung wird, wenn ein Inhaltsbesitzer ermittelt werden kann (z.B. der Benutzer, dessen Profil kommentiert wurde), an diesen geschickt. Ansonsten wird die Email an den Seitenadministrator verschickt.');
-define('_EZCOMMENTS_OWNERUSERNAME',			'Inhaltsbesitzer');
-define('_EZCOMMENTS_UNKNOWNOWNER',			'unbekannt');
+define('_EZCOMMENTS_TOOWNERORADMIN',        'Die Benachrichtigung wird, wenn ein Inhaltsbesitzer ermittelt werden kann (z.B. der Benutzer, dessen Profil kommentiert wurde), an diesen geschickt. Ansonsten wird die Email an den Seitenadministrator verschickt.');
+define('_EZCOMMENTS_OWNERUSERNAME',            'Inhaltsbesitzer');
+define('_EZCOMMENTS_UNKNOWNOWNER',            'unbekannt');
 
 // myprofile plugin
-define('_EZCOMMENTS_TABTITLE', 				'Pinnwand');
-define('_EZCOMMENTS_PINBOARDFOR',			'Pinnwand für das Communitymitglied');
-define('_EZCOMMENTS_HOOKREGFAILED',			'Der EZComments-Hook für MyProfile konnte nicht registriert werden');
-define('_EZCOMMENTS_PINBOARDDEACT',			'Der Benutzer hat seine Pinnwand deaktiviert');
-define('_EZCOMMENTS_PINBOARDENTRYS',		'Anzahl Pinnwandeinträge');
-define('_EZCOMMENTS_REGISTERTOVIEW',		'Pinnwandwinträge sind nur für registrierte Mitglieder sichtbar. Bitte dazu anmelden oder einloggen!');
+define('_EZCOMMENTS_TABTITLE',                 'Pinnwand');
+define('_EZCOMMENTS_PINBOARDFOR',            'Pinnwand für das Communitymitglied');
+define('_EZCOMMENTS_HOOKREGFAILED',            'Der EZComments-Hook für MyProfile konnte nicht registriert werden');
+define('_EZCOMMENTS_PINBOARDDEACT',            'Der Benutzer hat seine Pinnwand deaktiviert');
+define('_EZCOMMENTS_PINBOARDENTRYS',        'Anzahl Pinnwandeinträge');
+define('_EZCOMMENTS_REGISTERTOVIEW',        'Pinnwandwinträge sind nur für registrierte Mitglieder sichtbar. Bitte dazu anmelden oder einloggen!');
 // my account panel
-define('_EZCOMMENTS_MANAGEMYCOMMENTS', 		'Kommentare verwalten');
+define('_EZCOMMENTS_MANAGEMYCOMMENTS',         'Kommentare verwalten');
 
 define('_EZCOMMENTS_ILLEGALSTATUS', 'falscher Status');
 define('_EZCOMMENTS_ANONNAMEMISSING', 'Name für den anonymen Benutzer fehlt');
@@ -214,7 +214,7 @@ define('_EZCOMMENTS_CANCELDELETEITEM',       'Die Löschung aller zum Modul %m%, 
 define('_EZCOMMENTS_TYPE',                    'Kommentartyp');
 
 // comment feeds
-define('_EZCOMMENTS_FEEDS',	                  'Feeds');
+define('_EZCOMMENTS_FEEDS',                      'Feeds');
 define('_EZCOMMENTS_FEEDTYPE',                'Art des Feeds');
 define('_EZCOMMENTS_FEEDCOUNT',               'Anzahl der Kommentare im Feed');
 define('_EZCOMMENTS_ATOM',                    'Atom 0.3');

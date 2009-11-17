@@ -155,9 +155,8 @@ function EZComments_EZCommentsblock_update($blockinfo)
     $blockinfo['content'] = pnBlockVarsToContent($vars); 
 
     // clear the block cache
-    $renderer = pnRender::getInstance('EZComments');
+    $renderer = & pnRender::getInstance('EZComments');
     $renderer->clear_cache('ezcomments_block_ezcomments.htm');
 
     return $blockinfo;
 } 
-

@@ -15,15 +15,15 @@
  */
 function EZComments_myprofileapi_getTitle($args)
 {
-  	$uid = (int)FormUtil::getPassedValue('uid');
- 	$settings = pnModAPIFunc('MyProfile','user','getSettings',array('uid'=>$uid));
- 	if ($settings['nocomments'] == 1) {
- 	  	// Show no tab header
-		return false;
-	} else {
-		pnModLangLoad('EZComments');
-  		return _EZCOMMENTS_TABTITLE;
-	}
+      $uid = (int)FormUtil::getPassedValue('uid');
+     $settings = pnModAPIFunc('MyProfile','user','getSettings',array('uid'=>$uid));
+     if ($settings['nocomments'] == 1) {
+           // Show no tab header
+        return false;
+    } else {
+        pnModLangLoad('EZComments');
+          return _EZCOMMENTS_TABTITLE;
+    }
 }
 
 /**
@@ -33,7 +33,7 @@ function EZComments_myprofileapi_getTitle($args)
  */
 function EZComments_myprofileapi_getURLAddOn($args)
 {
-  	return array('order'=>1);
+      return array('order'=>1);
 }
 
 /**
@@ -43,21 +43,21 @@ function EZComments_myprofileapi_getURLAddOn($args)
  */
 function EZComments_myprofileapi_tab($args)
 {
-  	// is ezcomment hook activated for myprofile module?
-  	
-  	$result = pnModIsHooked('EZComments','MyProfile');
-  	if(!$result) {
-	  	if (!pnModAPIFunc('Modules', 'admin', 'enablehooks', array('callermodname' => 'MyProfile','hookmodname' => 'EZComments'))) return LogUtil::registerError(_EZCOMMENTS_HOOKREGFAILED);
+      // is ezcomment hook activated for myprofile module?
+      
+      $result = pnModIsHooked('EZComments','MyProfile');
+      if(!$result) {
+          if (!pnModAPIFunc('Modules', 'admin', 'enablehooks', array('callermodname' => 'MyProfile','hookmodname' => 'EZComments'))) return LogUtil::registerError(_EZCOMMENTS_HOOKREGFAILED);
     }
-	
-  	// generate output
- 	$render = pnRender::getInstance('EZComments');
- 	$render->assign('uid',			(int)$args['uid']);
- 	$render->assign('viewer_uid',	pnUserGetVar('uid'));
- 	$render->assign('uname',		pnUserGetVar('uname',(int)$args['uid']));
- 	$render->assign('settings',		pnModAPIFunc('MyProfile','user','getSettings',array('uid'=>$args['uid'])));
-	$output = $render->fetch('ezcomments_myprofile_tab.htm');
-	return $output;
+    
+      // generate output
+     $render = & pnRender::getInstance('EZComments');
+     $render->assign('uid',            (int)$args['uid']);
+     $render->assign('viewer_uid',    pnUserGetVar('uid'));
+     $render->assign('uname',        pnUserGetVar('uname',(int)$args['uid']));
+     $render->assign('settings',        pnModAPIFunc('MyProfile','user','getSettings',array('uid'=>$args['uid'])));
+    $output = $render->fetch('ezcomments_myprofile_tab.htm');
+    return $output;
 }
 
 /**
@@ -65,8 +65,7 @@ function EZComments_myprofileapi_tab($args)
  *
  * @return string
  */
-
 function EZComments_myprofileapi_noAjax($args)
 {
-  	return true;
+    return true;
 }
