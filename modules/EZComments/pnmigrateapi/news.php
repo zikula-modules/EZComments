@@ -19,7 +19,7 @@
 function EZComments_migrateapi_news()
 {
     // Security check
-    if (!pnSecAuthAction(0, 'EZComments::', "::", ACCESS_ADMIN)) {
+    if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
         return LogUtil::registerError('News migration: Not Admin');
     } 
 
@@ -53,7 +53,7 @@ function EZComments_migrateapi_news()
 
     // array to rebuild the patents
     $comments = array(0 => array('newid' => -1));
-    
+
     // loop through the old comments and insert them one by one into the DB
     for (; !$result->EOF; $result->MoveNext()) {
         list($tid, $sid, $date, $uid, $comment, $subject, $replyto) = $result->fields;
@@ -67,16 +67,17 @@ function EZComments_migrateapi_news()
                            'user',
                            'create',
                            array('mod'  => 'News',
-                                   'objectid' => pnVarPrepForStore($sid),
-                                   'url'        => 'index.php?name=News&file=article&sid=' . $sid,
-                                   'comment'  => $comment,
+                                 'objectid' => pnVarPrepForStore($sid),
+                                 'url'      => 'index.php?module=News&func=display&sid=' . $sid,
+                                 'comment'  => $comment,
                                  'subject'  => $subject,
                                  'uid'      => $uid,
                                  'date'     => $date));
 
         if (!$id) {
             return LogUtil::registerError('News migration: Error creating comment');
-        } 
+        }
+
         $comments[$tid] = array('newid' => $id, 
                                 'pid'   => $replyto);
         
@@ -84,18 +85,22 @@ function EZComments_migrateapi_news()
     $result->Close(); 
 
     // rebuild the links to the parents
-    foreach ($comments as $k=>$v) {
-        if ($k!=0) {
+    $tids = array_keys($comments);
+    foreach ($tids as $tid) {
+        if ($tid != 0) {
+            $v = $comments[$tid];
             $sql = "UPDATE $EZCommentstable 
-                       SET $EZCommentscolumn[replyto]=" . $comments[$v['pid']]['newid'] . "
-                     WHERE $EZCommentscolumn[id]=$v[newid]";
-        
+                       SET $EZCommentscolumn[replyto] = " . $comments[$v['pid']]['newid'] . "
+                     WHERE $EZCommentscolumn[id] = $v[newid]";
+
             $result = $dbconn->Execute($sql); 
         }
     }
-    
+
     // activate the ezcomments hook for the news module
-    pnModAPIFunc('Modules', 'admin', 'enablehooks', array('callermodname' => 'News', 'hookmodname' => 'EZComments'));
+    pnModAPIFunc('Modules', 'admin', 'enablehooks',
+                 array('callermodname' => 'News',
+                       'hookmodname' => 'EZComments'));
 
     LogUtil::registerStatus('News migration successful');
 }

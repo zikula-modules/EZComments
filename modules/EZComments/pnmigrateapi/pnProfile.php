@@ -17,22 +17,27 @@
  */
 function EZComments_migrateapi_pnProfile()
 {
-    if(!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
-        return LogUtil::registerPermissionError('index.php');
+    if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
+        return LogUtil::registerError('pnProfile comments migration: Not Admin');
     }
-	if (!pnModAvailable('pnComments')) {
-	  	return LogUtil::RegisterError('pnComments not available');
-	}
-	pnModDBInfoLoad('pnComments');
-	$comments = DBUtil::SelectObjectArray('EZComments');
-	$counter=0;
-	foreach ($comments as $comment) {
-	  	if ($comment['modname'] == 'pnProfile') {
-		  	$comment['modname']	= 'MyProfile';
-		  	$comment['url']		= 'index.php?module=MyProfile&func=display&uid='.$comment['objectid'];
-		  	$comment['owneruid'] = $comment['objectid'];
-		  	if (DBUtil::updateObject($comment,'EZComments')) $counter++;
-		}	
-	}
-	return LogUtil::registerStatus('updated / migrated: '.$counter.' comments from pnProfile to MyProfile, the successor of pnProfile');
+
+    if (!pnModAvailable('pnComments')) {
+          return LogUtil::RegisterError('pnComments not available');
+    }
+    pnModDBInfoLoad('pnComments');
+
+    $comments = DBUtil::SelectObjectArray('EZComments');
+    $counter  = 0;
+    foreach ($comments as $comment) {
+          if ($comment['modname'] == 'pnProfile') {
+              $comment['modname']  = 'MyProfile';
+              $comment['url']      = 'index.php?module=MyProfile&func=display&uid='.$comment['objectid'];
+              $comment['owneruid'] = $comment['objectid'];
+              if (DBUtil::updateObject($comment,'EZComments')) {
+                  $counter++;
+              }
+        }    
+    }
+
+    return LogUtil::registerStatus('updated / migrated: '.$counter.' comments from pnProfile to MyProfile, the successor of pnProfile');
 }

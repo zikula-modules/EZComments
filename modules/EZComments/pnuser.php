@@ -113,7 +113,6 @@ function EZComments_user_view($args)
 
     // we may get some input in from the navigation bar
     $order 		= FormUtil::getpassedValue('order');
-    $template	= FormUtil::getPassedValue('template');
     if ($order == 1) {
         $sortorder = 'DESC';
     } else {
@@ -134,10 +133,9 @@ function EZComments_user_view($args)
 		$startnum = -1;
 		$numitems = -1;
 	}
-    $items = pnModAPIFunc('EZComments',
-                          'user',
-                          'getall',
-                           compact('mod', 'objectid','sortorder','status','numitems','startnum'));
+
+    $items = pnModAPIFunc('EZComments', 'user', 'getall',
+                           compact('mod', 'objectid', 'sortorder', 'status', 'numitems', 'startnum'));
 
     if ($items === false) {
         return LogUtil::registerError(_EZCOMMENTS_FAILED, null, 'index.php');
@@ -181,24 +179,19 @@ function EZComments_user_view($args)
 	                                 'itemsperpage' => $numitems));
 
     // find out which template to use
-    $template = pnModGetVar('EZComments', 'template');
-    if (!empty($template)) {
-        $template = $template;
-    } 
-	else if (isset($args['template'])) {
-        $template = $args['template'];
-    }
+    $template = isset($args['template']) ? $args['template'] : FormUtil::getPassedValue('template');
     if (!$renderer->template_exists(DataUtil::formatForOS($template . '/ezcomments_user_view.htm'))) {
-        $template = pnModGetVar('EZComments', 'template');
+        $template = pnModGetVar('EZComments', 'template', 'Standard');
     }
     $renderer->assign('template', $template);
-    
+
     // include stylesheet if there is a style sheet
     $css = 'modules/EZComments/pntemplates/' . $template . '/style.css';
     pnModLangLoad('EZComments','template_'.$template);
     if (file_exists($css)) {
 	  	PageUtil::addVar('stylesheet',$css);
 	}
+
     return $renderer->fetch(DataUtil::formatForOS($template) . '/ezcomments_user_view.htm');
 } 
 

@@ -19,12 +19,12 @@
 function EZComments_migrateapi_reviews()
 {
     // Security check
-    if (!pnSecAuthAction(0, 'EZComments::', "::", ACCESS_ADMIN)) {
-        return LogUtil::registerError('News migration: Not Admin');
-        return false;
+    if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
+        return LogUtil::registerError('Reviews migration: Not Admin');
     } 
 
     // Get datbase setup
+    pnModDBInfoLoad('Reviews', 'EZComments/pnmigrateapi/Reviews', true);
     $dbconn = pnDBGetConn(true);
     $pntable = pnDBGetTables();
 
@@ -38,7 +38,7 @@ function EZComments_migrateapi_reviews()
     $Usercolumn = $pntable['users_column'];
 
     // note: there's nothing we can do with the score......
-    $sql = "SELECT $Commentscolumn[cid], 
+    $sql = "SELECT $Commentscolumn[cid],
                    $Commentscolumn[rid],
                    $Commentscolumn[date], 
                    $Usercolumn[uid], 
@@ -49,12 +49,12 @@ function EZComments_migrateapi_reviews()
 
     $result = $dbconn->Execute($sql); 
     if ($dbconn->ErrorNo() != 0) {
-        return LogUtil::registerError('News migration: DB Error');
+        return LogUtil::registerError('Reviews migration: DB Error');
     } 
 
     // array to rebuild the patents
     $comments = array(0 => array('newid' => -1));
-    
+
     // loop through the old comments and insert them one by one into the DB
     for (; !$result->EOF; $result->MoveNext()) {
         list($cid, $rid, $date, $uid, $comment, $score) = $result->fields;
@@ -63,21 +63,23 @@ function EZComments_migrateapi_reviews()
                            'user',
                            'create',
                            array('mod'  => 'Reviews',
-                                   'objectid' => pnVarPrepForStore($rid),
-                                   'url'        => 'index.php?name=Reviews&req=showcontent&id=' . $rid,
-                                   'comment'  => $comment,
+                                 'objectid' => pnVarPrepForStore($rid),
+                                 'url'      => 'index.php?name=Reviews&req=showcontent&id=' . $rid,
+                                 'comment'  => $comment,
                                  'subject'  => '',
                                  'uid'      => $uid,
                                  'date'     => $date));
 
         if (!$id) {
-            return LogUtil::registerError('News migration: Error creating comment');
+            return LogUtil::registerError('Reviews migration: Error creating comment');
         } 
     } 
     $result->Close(); 
 
     // activate the ezcomments hook for the news module
-    pnModAPIFunc('Modules', 'admin', 'enablehooks', array('callermodname' => 'Reviews', 'hookmodname' => 'EZComments'));
+    pnModAPIFunc('Modules', 'admin', 'enablehooks',
+                 array('callermodname' => 'Reviews',
+                       'hookmodname' => 'EZComments'));
 
-    LogUtil::registerStatus('News migration successful');
+    LogUtil::registerStatus('Reviews migration successful');
 }

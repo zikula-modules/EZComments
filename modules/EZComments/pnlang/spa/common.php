@@ -10,6 +10,10 @@
 
 // new for 2.0 (Zikula-only)
 
+define('_EZCOMMENTS_MODIFYOWNTIME',			'Número de horas en las que los usuarios están autorizados para modificar el texto de los comentarios propios. El valor -1 desactiva esta funcionalidad.');
+
+// Search plugin
+define('_EZCOMMENTS_SEARCHLENGTHHINT', 		'Los comentarios sólo pueden ser buscados con frases no menores a %minlen% y no mayores a %maxlen% caracteres!');
 // ContactList integration
 define('_EZCOMMENTS_USER_IGNORES_YOU',      'El usuario propietario del contenido te ha deshabilitado. No puedes publicar ningún comentario aquí!');
 
@@ -230,9 +234,9 @@ define('_EZCOMMENTS_SHOWALL',                 'Mostrar todos los comentarios');
 
 // akismet
 define('_EZCOMMENTS_AKISMET',                 'Servicio de detección de spam Akismet');
-define('_EZCOMMENTS_AKISMETNOTE',             '<a href="http://akismet.com/">Akismet</a> es un servicio de detección de spam que puede, en muchos casos, eliminar comentarios y trackback spam. Para usar akismet necesitas instalar y configurar el <a href="http://noc.postnuke.com/projects/ezcomments">módulo Akismet</a>.');
+define('_EZCOMMENTS_AKISMETNOTE',             '<a href="http://akismet.com/">Akismet</a> es un servicio de detección de spam que puede, en muchos casos, eliminar el spam de comentarios y trackback. Para usar Akismet necesitas instalar y configurar el <a href="http://code.zikula.org/ezcomments/downloads">módulo Akismet</a>.');
 define('_EZCOMMENTS_ENABLEAKISMET',           'Habilitar akismet');
-define('_EZCOMMENTS_AKISMETSTATUS',           'Estado a aplciar a los comentarios marcados como spam por akismet');
+define('_EZCOMMENTS_AKISMETSTATUS',           'Estado a aplicar a los comentarios marcados como spam por akismet');
 
 // username requried for guest comments
 define('_EZCOMMENTS_ANON_NAME',               'Se requiere nombre para usuarios no registrados');
