@@ -10,15 +10,16 @@
 
 /**
  * Return to index page
- * 
- * This is the default function called when EZComments is called 
- * as a module. As we do not intend to output anything, we just 
+ *
+ * This is the default function called when EZComments is called
+ * as a module. As we do not intend to output anything, we just
  * redirect to the start page.
- * 
+ *
  * @since 0.2
  */
 function EZComments_user_main($args)
 {
+    $dom = ZLanguage::getModuleDomain('EZComments');
     if (!pnUserLoggedIn()) {
         return pnRedirect(pnGetBaseUrl());
     }
@@ -52,8 +53,8 @@ function EZComments_user_main($args)
                                 'uid'      => pnUserGetVar('uid')
                                 ));
     if ($items === false) {
-        return LogUtil::registerError(_EZCOMMENTS_FAILED);
-    } 
+        return LogUtil::registerError(__('Internal Error', $dom));
+    }
 
     // loop through each item adding the relevant links
     $comments = array();
@@ -62,11 +63,11 @@ function EZComments_user_main($args)
         $options[] = array(
                         'url'     => $item['url'] . '#comments',
                         'image' => 'demo.gif',
-                        'title' => _VIEW); 
+                        'title' => __('View', $dom));
         $options[] = array(
                         'url'   => pnModURL('EZComments', 'user', 'modify', array('id' => $item['id'])),
                         'image' => 'xedit.gif',
-                        'title' => _EDIT);
+                        'title' => __('Edit', $dom));
         $item['options'] = $options;
         $comments[] = $item;
     }
@@ -83,15 +84,15 @@ function EZComments_user_main($args)
 
     // Return the output
     return $renderer->fetch('ezcomments_user_main.htm');
-     
+
 }
 
 /**
  * Display comments for a specific item
- * 
+ *
  * This function provides the main user interface to the comments
- * module. 
- * 
+ * module.
+ *
  * @param $args['objectid']      ID of the item to display comments for
  * @param $args['extrainfo']     URL to return to if user chooses to comment
  * @param $args['owneruid']      User ID of the content owner
@@ -102,6 +103,7 @@ function EZComments_user_main($args)
  */
 function EZComments_user_view($args)
 {
+    $dom = ZLanguage::getModuleDomain('EZComments');
     // work out the input from the hook
     $mod         = pnModGetName();
     $objectid     = $args['objectid'];
@@ -120,7 +122,7 @@ function EZComments_user_view($args)
     } else {
         $sortorder = 'ASC';
     }
-  
+
     $status = 0;
 
     // check if we're using the pager
@@ -140,8 +142,8 @@ function EZComments_user_view($args)
                            compact('mod', 'objectid', 'sortorder', 'status', 'numitems', 'startnum'));
 
     if ($items === false) {
-        return LogUtil::registerError(_EZCOMMENTS_FAILED, null, 'index.php');
-    }     
+        return LogUtil::registerError(__('Internal Error', $dom), null, 'index.php');
+    }
 
     $comments = EZComments_prepareCommentsForDisplay($items);
     if ($enablepager) {
@@ -165,10 +167,10 @@ function EZComments_user_view($args)
     $redirect = base64_encode($redirect);
     $renderer->assign('redirect',    $redirect);
     $renderer->assign('objectid',   $objectid);
-    
+
     // assign the user is of the content owner
     $renderer->assign('owneruid',    $owneruid);
-    
+
     // assign url that should be stored in db and sent in email if it
     // differs from the redirect url
     $renderer->assign('useurl',        $useurl);
@@ -195,14 +197,14 @@ function EZComments_user_view($args)
     }
 
     return $renderer->fetch(DataUtil::formatForOS($template) . '/ezcomments_user_view.htm');
-} 
+}
 
 /**
- * Display a comment form 
- * 
+ * Display a comment form
+ *
  * This function displays a comment form, if you do not want users to
  * comment on the same page as the item is.
- * 
+ *
  * @param $comment the comment (taken from HTTP put)
  * @param $mod the name of the module the comment is for (taken from HTTP put)
  * @param $objectid ID of the item the comment is for (taken from HTTP put)
@@ -215,6 +217,7 @@ function EZComments_user_view($args)
  */
 function EZComments_user_comment($args)
 {
+    $dom = ZLanguage::getModuleDomain('EZComments');
     $mod         = FormUtil::getPassedValue('mod',         isset($args['mod'])         ? $args['mod']         : null, 'POST');
     $objectid    = FormUtil::getPassedValue('objectid', isset($args['objectid'])     ? $args['objectid'] : null, 'POST');
     $redirect    = FormUtil::getPassedValue('redirect', isset($args['redirect'])     ? $args['redirect'] : null, 'POST');
@@ -253,13 +256,13 @@ function EZComments_user_comment($args)
                            compact('mod', 'objectid','sortorder','status','numitems','startnum'));
 
     if ($items === false) {
-        return LogUtil::registerError(_EZCOMMENTS_FAILED, null, 'index.php');;
-    }     
+        return LogUtil::registerError(__('Internal Error', $dom), null, 'index.php');;
+    }
 
     $comments = EZComments_prepareCommentsForDisplay($items);
     if ($enablepager) {
         $commentcount = pnModAPIFunc('EZComments', 'user', 'countitems', array('mod' => $mod, 'objectid' => $objectid));
-    } 
+    }
     else {
         $commentcount = count($comments);
     }
@@ -288,7 +291,7 @@ function EZComments_user_comment($args)
 
     // assign the user is of the content owner
     $renderer->assign('owneruid',    (int)FormUtil::getPassedValue('owneruid'));
-    
+
     // assign useurl if there was another url for email and storing submitted
     $renderer->assign('useurl',        $useurl);
 
@@ -296,7 +299,7 @@ function EZComments_user_comment($args)
     $template = pnModGetVar('EZComments', 'template');
     if (!empty($template)) {
         $template = $template;
-    } 
+    }
     else if (isset($args['template'])) {
         $template = $args['template'];
     }
@@ -308,7 +311,7 @@ function EZComments_user_comment($args)
 
 
     if (!$renderer->template_exists(DataUtil::formatForOS($template . '/ezcomments_user_comment.htm'))) {
-        return LogUtil::registerError(_EZCOMMENTS_FAILED, null, 'index.php');;
+        return LogUtil::registerError(__('Internal Error', $dom), null, 'index.php');;
     }
 
     return $renderer->fetch(DataUtil::formatForOS($template) . '/ezcomments_user_comment.htm');
@@ -316,10 +319,10 @@ function EZComments_user_comment($args)
 
 /**
  * Create a comment for a specific item
- * 
+ *
  * This is a standard function that is called with the results of the
  * form supplied by EZComments_user_view to create a new item
- * 
+ *
  * @param $comment the comment (taken from HTTP put)
  * @param $mod the name of the module the comment is for (taken from HTTP put)
  * @param $objectid ID of the item the comment is for (taken from HTTP put)
@@ -330,6 +333,7 @@ function EZComments_user_comment($args)
  */
 function EZComments_user_create($args)
 {
+    $dom = ZLanguage::getModuleDomain('EZComments');
     $mod         = FormUtil::getPassedValue('mod',         isset($args['mod'])         ? $args['mod']         : null, 'POST');
     $owneruid     = FormUtil::getPassedValue('owneruid',    isset($args['owneruid'])     ? $args['owneruid'] : null, 'POST');
     $objectid     = FormUtil::getPassedValue('objectid',    isset($args['objectid'])     ? $args['objectid'] : null, 'POST');
@@ -346,26 +350,26 @@ function EZComments_user_create($args)
     // Confirm authorisation code.
     if (!SecurityUtil::confirmAuthKey()) {
         return LogUtil::registerAuthidError($redirect);
-    } 
+    }
 
     // check we've actually got a comment....
     if (!isset($comment) || empty($comment)) {
-        return LogUtil::registerError(_EZCOMMENTS_EMPTYCOMMENT, null, $redirect.'#comments');
+        return LogUtil::registerError(__('Error! Sorry! The comment contains no text', $dom), null, $redirect.'#comments');
     }
 
-    // check if the user logged in and if we're allowing anon users to 
+    // check if the user logged in and if we're allowing anon users to
     // set a name and e-mail address
     if (!pnUserLoggedIn()) {
         $anonname         = FormUtil::getPassedValue('anonname',         isset($args['anonname'])     ? $args['anonname']     : null, 'POST');
         $anonmail         = FormUtil::getPassedValue('anonmail',         isset($args['anonmail'])     ? $args['anonmail']     : null, 'POST');
         $anonwebsite     = FormUtil::getPassedValue('anonwebsite',     isset($args['anonwebsite']) ? $args['anonwebsite']     : null, 'POST');
-    } 
+    }
     else {
         $anonname = '';
         $anonmail = '';
         $anonwebsite = '';
     }
-    
+
     $redirect = str_replace('&amp;', '&', $redirect);
     // now parse out the hostname from the url for storing in the DB
     $url = str_replace(pnGetBaseURL(), '', $url);
@@ -388,16 +392,16 @@ function EZComments_user_create($args)
                              'anonwebsite' => $anonwebsite));
 
     return pnRedirect($redirect.'#comments');
-} 
+}
 
 /**
  * Prepare comments to be displayed
- * 
+ *
  * We loop through the "raw data" returned from the API to prepare these data
- * to be displayed. 
+ * to be displayed.
  * We check for necessary rights, and derive additional information (e.g. user
  * data) drom other modules.
- * 
+ *
  * @param $items An array of comment items as returned from the API
  * @return array An array to display (augmented information / perm. check)
  * @since 0.2
@@ -429,11 +433,11 @@ function EZComments_prepareCommentsForDisplay($items)
                     $comment['onlinestatus']     = true;
                     $comment['online']             = true;
                 }
-            } 
+            }
             else {
                 $comment['onlinestatus'] = false;
             }
-        } 
+        }
         else {
             // if anonymous, uname is empty
             $comment['uname'] = '';
@@ -454,7 +458,7 @@ function EZComments_prepareCommentsForDisplay($items)
 
 /**
  * Sort comments by thread
- * 
+ *
  * @param $comments An array of comments
  * @return array The sorted array
  * @since 0.2
@@ -466,13 +470,13 @@ function EZComments_threadComments($comments)
 
 /**
  * Get all child comments
- * 
+ *
  * This function returns all child comments to a given comment.
  * It is called recursively
- * 
+ *
  * @param $comments An array of comments
  * @param $id The id of the parent comment
- * @param $level The indentation level 
+ * @param $level The indentation level
  * @return array The sorted array
  * @access private
  * @since 0.2
@@ -484,14 +488,14 @@ function EZComments_displayChildren($comments, $id, $level)
         if ($comment['replyto'] == $id) {
             $comment['level'] = $level;
             $comments2[] = $comment;
-            $comments2 = array_merge($comments2, 
+            $comments2 = array_merge($comments2,
                                      EZComments_displayChildren($comments, $comment['id'], $level+1));
         }
     }
     return $comments2;
 }
 
-/** 
+/**
  * return an rss/atom feed of the last x comments
  *
  * @author Mark west
@@ -521,19 +525,19 @@ function EZComments_user_feed()
     $renderer = & pnRender::getInstance('EZComments');
 
     // get the last x comments
-    $renderer->assign('comments', $comments = pnModAPIFunc('EZComments', 'user', 'getall', 
+    $renderer->assign('comments', $comments = pnModAPIFunc('EZComments', 'user', 'getall',
         array(
-            'numitems'     => $feedcount, 
-            'sortorder' => 'DESC', 
-            'mod'         => $mod, 
-            'objectid'     => $objectid, 
+            'numitems'     => $feedcount,
+            'sortorder' => 'DESC',
+            'mod'         => $mod,
+            'objectid'     => $objectid,
             'status'     => 0)
             ));
 
     // grab the item url from one of the comments
     if (isset($comments[0]['url'])) {
         $renderer->assign('itemurl', $comments[0]['url']);
-    } 
+    }
     else {
         // attempt to guess the url (api compliant mods only....)
         $renderer->assign('itemurl', pnModURL($mod, 'user', 'display', array('objectid' => $objectid)));

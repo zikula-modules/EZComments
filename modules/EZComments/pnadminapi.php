@@ -10,25 +10,25 @@
 
 /**
  * EZComments_adminapi_getUsedModules()
- * 
+ *
  * This function returns an array of the modules
  * for which a comment is available. This is used
  * for the "clean-up" feature that eliminates
  * orphaned comments after a module is deletd.
- * 
- * @return list of all modules used 
+ *
+ * @return list of all modules used
  */
 function EZComments_adminapi_getUsedModules()
 {
     if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
         return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));
-    } 
-    
+    }
+
     $dbconn = pnDBGetConn(true);
     $pntable = pnDBGetTables();
 
     $table = $pntable['EZComments'];
-    $column = &$pntable['EZComments_column']; 
+    $column = &$pntable['EZComments_column'];
 
     $sql = "SELECT    $column[modname]
             FROM      $table
@@ -42,18 +42,18 @@ function EZComments_adminapi_getUsedModules()
     $mods = array();
     for (; !$result->EOF; $result->MoveNext()) {
         list($mods[]) = $result->fields;
-    } 
-    $result->Close(); 
+    }
+    $result->Close();
 
     return $mods;
 }
 
 /**
  * EZComments_adminapi_deleteall()
- * 
+ *
  * Delete all comments for a given module. Used to clean
  * up orphaned comments.
- * 
+ *
  * @param $args[module] the module for which to delete for
  * @return boolean sucess status
  **/
@@ -62,14 +62,14 @@ function EZComments_adminapi_deleteall($args)
       // Security and argument check
     if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
         return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));
-    } 
-    if (!isset($args['module'])) { 
+    }
+    if (!isset($args['module'])) {
         return false;
     }
 
-    // get tables    
+    // get tables
     $pntable = pnDBGetTables();
-    $column = &$pntable['EZComments_column']; 
+    $column = &$pntable['EZComments_column'];
     // construct where clause and delete...
     $where ="WHERE $column[modname] = '$args[module]'";
     return DBUtil::deleteWhere('EZComments',$where);
@@ -91,7 +91,7 @@ function EZComments_adminapi_deletebyitem($args)
 {
     if (!isset($args['objectid'])) {
         return false;
-    } 
+    }
     if (!isset($args['mod'])) {
         $mod = pnModGetName();
     } else {
@@ -101,7 +101,7 @@ function EZComments_adminapi_deletebyitem($args)
     if (!($objectid > 0)) {
         return false;
     }
-    
+
     // Security check
     $res = pnModAPIFunc('EZComments','user','checkPermission',array(
         'module' => $mod,
@@ -110,7 +110,7 @@ function EZComments_adminapi_deletebyitem($args)
 
     if (!$res) {
         return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));
-    } 
+    }
 
     // get db table and column for where statement
     $pntable = pnDBGetTables();
@@ -118,32 +118,33 @@ function EZComments_adminapi_deletebyitem($args)
 
     $where = $column['modname']." = '".$mod."' AND ".$column['objectid']." = '".$objectid."'";
     return DBUtil::deleteWhere('EZComments',$where);
-} 
+}
 
 /**
  * delete an item
- * 
+ *
  * @param $args['id']  ID of the item
  * @return bool true on success, false on failure
  */
 function EZComments_adminapi_delete($args)
 {
-    // Get arguments from argument array 
+    $dom = ZLanguage::getModuleDomain('EZComments');
+    // Get arguments from argument array
     extract($args);
 
     // Argument check
     if ((isset($args['id']) && !is_numeric($args['id']))) {
-        return LogUtil::registerError(_MODARGSERROR);
+        return LogUtil::registerError(__('Error! Could not do what you wanted. Please check your input.', $dom));
     }
 
     // The user API function is called.
     $item = pnModAPIFunc('EZComments', 'user', 'get', array('id' => $id));
 
     if (!$item) {
-        return LogUtil::registerError(_NOSUCHITEM);
+        return LogUtil::registerError(__('No such item found.', $dom));
     }
 
-    // Security check 
+    // Security check
     $securityCheck = pnModAPIFunc('EZComments','user','checkPermission',array(
                     'module'    => '',
                     'objectid'    => '',
@@ -155,7 +156,7 @@ function EZComments_adminapi_delete($args)
 
     // Check for an error with the database code
     if (!DBUtil::deleteObjectByID('EZComments', (int)pnVarPrepForStore($id))) {
-        return LogUtil::registerError(_DELETEFAILED);
+        return LogUtil::registerError(__('Error! Sorry! Deletion attempt failed.', $dom));
     }
 
     // Let any hooks know that we have deleted an item.
@@ -167,7 +168,7 @@ function EZComments_adminapi_delete($args)
 
 /**
  * update an item
- * 
+ *
  * @param    $args['id'] the ID of the item
  * @param    $args['subject']  the new subject of the item
  * @param    $args['comment'] the new text of the item
@@ -175,12 +176,13 @@ function EZComments_adminapi_delete($args)
  */
 function EZComments_adminapi_update($args)
 {
+    $dom = ZLanguage::getModuleDomain('EZComments');
     // Argument check
     if ((!isset($args['subject'])) ||
         (!isset($args['comment'])) ||
         (isset($args['id']) && !is_numeric($args['id'])) ||
         (isset($args['status']) && !is_numeric($args['status']))) {
-        return LogUtil::registerError(_MODARGSERROR);
+        return LogUtil::registerError(__('Error! Could not do what you wanted. Please check your input.', $dom));
     }
 
     // optional arguments
@@ -192,7 +194,7 @@ function EZComments_adminapi_update($args)
     $item = pnModAPIFunc('EZComments', 'user', 'get', array('id' => $args['id']));
 
     if (!$item) {
-        return LogUtil::registerError(_NOSUCHITEM);
+        return LogUtil::registerError(__('No such item found.', $dom));
     }
 
     // Security check.
@@ -208,7 +210,7 @@ function EZComments_adminapi_update($args)
     // Check for an error with the database code, and if so set an
     // appropriate error message and return
     if (!DBUtil::updateObject($args, 'EZComments')) {
-        return LogUtil::registerError(_UPDATEFAILED);
+        return LogUtil::registerError(__('Error! Update attempt failed.', $dom));
     }
 
     // Let any hooks know that we have updated an item.
@@ -220,7 +222,7 @@ function EZComments_adminapi_update($args)
 
 /**
  * clean up comments for a removed module
- * 
+ *
  * @param $args['extrainfo']   array extrainfo array
  * @return array extrainfo array
  */
@@ -245,7 +247,7 @@ function EZComments_adminapi_deletemodule($args)
     // Database information
     $pntable = pnDBGetTables();
     $EZCommentstable = $pntable['EZComments'];
-    $EZCommentscolumn = &$pntable['EZComments_column']; 
+    $EZCommentscolumn = &$pntable['EZComments_column'];
 
     // Get items
     $where = "WHERE ".$EZCommentscolumn['modname']." = '" . pnVarPrepForStore($mod) . "'";
@@ -255,22 +257,23 @@ function EZComments_adminapi_deletemodule($args)
 
 /**
  * delete an item
- * 
+ *
  * @param $args['purgerejected'] Purge all rejected comments
  * @param $args['purgepending']  Purge all pending comments
  * @return bool true on success, false on failure
  */
 function EZComments_adminapi_purge($args)
 {
-    // Get arguments from argument array 
+    $dom = ZLanguage::getModuleDomain('EZComments');
+    // Get arguments from argument array
     extract($args);
 
     // Argument check
     if (!isset($purgerejected) && !isset($purgepending)) {
-        return LogUtil::registerError(_MODARGSERROR);
+        return LogUtil::registerError(__('Error! Could not do what you wanted. Please check your input.', $dom));
     }
 
-    // Security check 
+    // Security check
     if (!SecurityUtil::checkPermission('EZComments::', "::", ACCESS_DELETE)) {
         return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));
     }
@@ -282,14 +285,14 @@ function EZComments_adminapi_purge($args)
     if ((bool)$purgerejected) {
         $where ="WHERE ".$column['status']." = '2'";
         if (!DBUtil::deleteWhere('EZComments',$where)) {
-            return LogUtil::registerError(_DELETEFAILED);
+            return LogUtil::registerError(__('Error! Sorry! Deletion attempt failed.', $dom));
         }
     }
 
     if ((bool)$purgepending) {
         $where = "WHERE ".$column['status']." = '1'";
         if (!DBUtil::deleteWhere('EZComments',$where)) {
-            return LogUtil::registerError(_DELETEFAILED);
+            return LogUtil::registerError(__('Error! Sorry! Deletion attempt failed.', $dom));
         }
     }
 
@@ -299,26 +302,27 @@ function EZComments_adminapi_purge($args)
 
 /**
  * update an item status
- * 
+ *
  * @param $args['id'] the ID of the item
  * @param $args['status']  the new status of the item
  * @return bool true on success, false on failure
  */
 function EZComments_adminapi_updatestatus($args)
 {
+    $dom = ZLanguage::getModuleDomain('EZComments');
     // get arguments
     $id      = $args['id'];
     $status  = $args['status'];
     // Argument check
     if (isset($id) && !is_numeric($id) && isset($status) && !is_numeric($status)) {
-        return LogUtil::registerError(_MODARGSERROR);
+        return LogUtil::registerError(__('Error! Could not do what you wanted. Please check your input.', $dom));
     }
 
     // Get the comment
     $item = pnModAPIFunc('EZComments', 'user', 'get', array('id' => $id));
 
     if (!$item) {
-        return LogUtil::registerError(_NOSUCHITEM);
+        return LogUtil::registerError(__('No such item found.', $dom));
     }
 
     // Security check.
@@ -335,7 +339,7 @@ function EZComments_adminapi_updatestatus($args)
     $item['status'] = $args['status'];
     if (DBUtil::updateObject($item,'EZComments')) {
         // Let any hooks know that we have updated an item.
-        pnModCallHooks('item', 'update', $id, array('module' => 'EZComments'));          
+        pnModCallHooks('item', 'update', $id, array('module' => 'EZComments'));
         return true;
     }
     else return false;
@@ -343,7 +347,7 @@ function EZComments_adminapi_updatestatus($args)
 
 /**
  * count items
- * 
+ *
  * maintained for backwards compatability
  * simply passes parameters onto the user api
  */
@@ -360,18 +364,17 @@ function ezcomments_adminapi_countitems($args)
  */
 function EZComments_adminapi_getlinks()
 {
+    $dom = ZLanguage::getModuleDomain('EZComments');
     $links = array();
 
-    pnModLangLoad('EZComments', 'admin');
-
     if (SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
-        $links[] = array('url' => pnModURL('EZComments', 'admin'), 'text' => _EZCOMMENTS_ADMIN_MAIN);
-        $links[] = array('url' => pnModURL('EZComments', 'admin', 'cleanup'), 'text' => _EZCOMMENTS_CLEANUP);
-        $links[] = array('url' => pnModURL('EZComments', 'admin', 'migrate'), 'text' => _EZCOMMENTS_MIGRATE);
-        $links[] = array('url' => pnModURL('EZComments', 'admin', 'purge'), 'text' => _EZCOMMENTS_PURGE, 'linebreak' => true);
-        $links[] = array('url' => pnModURL('EZComments', 'admin', 'stats'), 'text' =>  _EZCOMMENTS_STATS);
-        $links[] = array('url' => pnModURL('EZComments', 'admin', 'applyrules'), 'text' => _EZCOMMENTS_APPLYMODRULES);
-        $links[] = array('url' => pnModURL('EZComments', 'admin', 'modifyconfig'), 'text' => _MODIFYCONFIG);
+        $links[] = array('url' => pnModURL('EZComments', 'admin'), 'text' => __('View comments', $dom));
+        $links[] = array('url' => pnModURL('EZComments', 'admin', 'cleanup'), 'text' => __('Delete orphanded comments', $dom));
+        $links[] = array('url' => pnModURL('EZComments', 'admin', 'migrate'), 'text' => __('Migrate Comments', $dom));
+        $links[] = array('url' => pnModURL('EZComments', 'admin', 'purge'), 'text' => __('Purge comments', $dom), 'linebreak' => true);
+        $links[] = array('url' => pnModURL('EZComments', 'admin', 'stats'), 'text' =>  __('Comment statistics', $dom));
+        $links[] = array('url' => pnModURL('EZComments', 'admin', 'applyrules'), 'text' => __('Re-apply moderation rules', $dom));
+        $links[] = array('url' => pnModURL('EZComments', 'admin', 'modifyconfig'), 'text' => __('Settings', $dom));
     }
 
     return $links;

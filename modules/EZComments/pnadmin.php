@@ -10,15 +10,16 @@
 
 /**
  * Main administration function
- * 
+ *
  * This function provides the main administration interface to the comments
- * module. 
- * 
+ * module.
+ *
  * @return string output the admin interface
  */
-function EZComments_admin_main() 
+function EZComments_admin_main()
 {
-    // Security check 
+    $dom = ZLanguage::getModuleDomain('EZComments');
+    // Security check
     if(!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
         return LogUtil::registerPermissionError('index.php');
     }
@@ -54,8 +55,8 @@ function EZComments_admin_main()
                                 ));
 
     if ($items === false) {
-        return LogUtil::registerError(_EZCOMMENTS_FAILED);
-    } 
+        return LogUtil::registerError(__('Internal Error', $dom));
+    }
 
     // loop through each item adding the relevant links
     $comments = array();
@@ -63,10 +64,10 @@ function EZComments_admin_main()
     {
         $options = array(array('url' => $item['url'] . '#comments',
                                'image' => 'demo.gif',
-                               'title' => _VIEW)); 
+                               'title' => __('View', $dom)));
         $options[] = array('url'   => pnModURL('EZComments', 'admin', 'modify', array('id' => $item['id'])),
                            'image' => 'xedit.gif',
-                           'title' => _EDIT);
+                           'title' => __('Edit', $dom));
         $item['options'] = $options;
         $comments[] = $item;
     }
@@ -118,11 +119,11 @@ function EZComments_admin_delete($args)
     // delete functionalityx has been moved to the modify function which uses pnForms.
     // We need this function for backwards compatibility only
 
-    // Get parameters from whatever input we need. 
+    // Get parameters from whatever input we need.
     $id             = FormUtil::getPassedValue('id',       isset($args['id']) ? $args['id'] : null, 'GETPOST');
     $objectid       = FormUtil::getPassedValue('objectid', isset($args['objectid']) ? $args['objectid'] : null, 'GETPOST');
     $redirect       = FormUtil::getPassedValue('redirect', isset($args['redirect']) ? $args['redirect'] : '', 'GETPOST');
-    return pnRedirect(pnModURL('EZComments', 'admin', 'modify', 
+    return pnRedirect(pnModURL('EZComments', 'admin', 'modify',
                                array('id'       => $id,
                                      'objectid' => $objectid,
                                      'redirect' => $redirect)));
@@ -142,7 +143,8 @@ function EZComments_admin_delete($args)
  */
 function EZComments_admin_processselected($args)
 {
-    // Get parameters from whatever input we need. 
+    $dom = ZLanguage::getModuleDomain('EZComments');
+    // Get parameters from whatever input we need.
     $comments = FormUtil::getPassedValue('comments', isset($args['comments']) ? $args['comments'] : null, 'POST');
     $action = FormUtil::getPassedValue('action', isset($args['action']) ? $args['action'] : null, 'POST');
     $redirect = FormUtil::getPassedValue('redirect', isset($args['redirect']) ? $args['redirect'] : null, 'POST');
@@ -153,32 +155,32 @@ function EZComments_admin_processselected($args)
         return LogUtil::registerAuthidError(pnModURL('EZComments', 'admin', 'main'));
     }
 
-    // loop round each comment deleted them in turn 
+    // loop round each comment deleted them in turn
     foreach ($comments as $comment) {
         switch(strtolower($action)) {
             case 'delete':
-                // The API function is called. 
+                // The API function is called.
                 if (pnModAPIFunc('EZComments', 'admin', 'delete', array('id' => $comment))) {
                     // Success
-                    LogUtil::registerStatus(_DELETESUCCEDED);
+                    LogUtil::registerStatus(__('Done! Item deleted.', $dom));
                 }
                 break;
             case 'approve':
                 if (pnModAPIFunc('EZComments', 'admin', 'updatestatus', array('id' => $comment, 'status' => 0))) {
                     // Success
-                    LogUtil::registerStatus(_UPDATESUCCEDED);
+                    LogUtil::registerStatus(__('Done! Item updated.', $dom));
                 }
                 break;
             case 'hold':
                 if (pnModAPIFunc('EZComments', 'admin', 'updatestatus', array('id' => $comment, 'status' => 1))) {
                     // Success
-                    LogUtil::registerStatus(_UPDATESUCCEDED);
+                    LogUtil::registerStatus(__('Done! Item updated.', $dom));
                 }
                 break;
             case 'reject':
                 if (pnModAPIFunc('EZComments', 'admin', 'updatestatus', array('id' => $comment, 'status' => 2))) {
                     // Success
-                    LogUtil::registerStatus(_UPDATESUCCEDED);
+                    LogUtil::registerStatus(__('Done! Item updated.', $dom));
                 }
                 break;
         }
@@ -202,9 +204,9 @@ function EZComments_admin_processselected($args)
  * @author The EZComments Development Team
  * @return string The configuration page
  */
-function EZComments_admin_modifyconfig() 
+function EZComments_admin_modifyconfig()
 {
-    // Security check 
+    // Security check
     if(!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
         return LogUtil::registerPermissionError('index.php');
     }
@@ -221,15 +223,16 @@ function EZComments_admin_modifyconfig()
 
 /**
  * Migration functionality
- * 
+ *
  * This function provides a common interface to migration scripts.
- * The migration scripts will upgrade from different other modules 
+ * The migration scripts will upgrade from different other modules
  * (like NS-Comments, Reviews, My_eGallery, ...) to EZComments.
- * 
+ *
  * @return output the migration interface
  */
 function EZComments_admin_migrate()
 {
+    $dom = ZLanguage::getModuleDomain('EZComments');
     if(!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
         return LogUtil::registerPermissionError('index.php');
     }
@@ -247,9 +250,9 @@ function EZComments_admin_migrate()
     closedir($d);
 
     if (!$selectitems) {
-        LogUtil::registerStatus(_EZCOMMENTS_MIGRATE_NOTHINGTODO);
+        LogUtil::registerStatus(__('No migration plugins available', $dom));
         return pnRedirect(pnModURL('EZComments', 'admin'));
-    } 
+    }
 
     // Create output object
     $renderer = & pnRender::getInstance('EZComments', false);
@@ -263,14 +266,15 @@ function EZComments_admin_migrate()
 
 /**
  * Do the migration
- * 
+ *
  * This is the function that is called to do the actual
  * migration.
- * 
+ *
  * @param $migrate The plugin to do the migration
  */
 function EZComments_admin_migrate_go()
 {
+    $dom = ZLanguage::getModuleDomain('EZComments');
     // Permissions
     if(!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
         return LogUtil::registerPermissionError('index.php');
@@ -279,11 +283,11 @@ function EZComments_admin_migrate_go()
     // Authentication key
     if (!SecurityUtil::confirmAuthKey()) {
         return LogUtil::registerAuthidError(pnModURL('EZComments', 'admin', 'main'));
-    } 
+    }
     // Parameter
     $migrate = FormUtil::getPassedValue('migrate');
-    if (!isset($migrate)){ 
-        return _EZCOMMENTS_MODSARGSERROR;
+    if (!isset($migrate)){
+        return __('_EZCOMMENTS_MODSARGSERROR', $dom);
     }
 
     // Eintrag in Datenbank
@@ -299,16 +303,17 @@ function EZComments_admin_migrate_go()
 
 /**
  * Cleanup functionality
- * 
+ *
  * This is the interface to the Cleanup functionality.
  * When a Module is deleted, EZComments doesn't know about
  * this. Thus, any comments for this module stay in the database.
  * With this functionality you can delete these comments.
- * 
+ *
  * @return output the cleanup interface
  */
 function EZComments_admin_cleanup()
 {
+    $dom = ZLanguage::getModuleDomain('EZComments');
     if(!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
         return LogUtil::registerPermissionError('index.php');
     }
@@ -318,16 +323,16 @@ function EZComments_admin_cleanup()
     $allmods = array();
     foreach ($mods as $mod) {
         $allmods[] = $mod['name'];
-    } 
+    }
 
     $usedmods = pnModAPIFunc('EZComments', 'admin', 'getUsedModules');
 
     $orphanedmods = array_diff($usedmods, $allmods);
 
     if (!$orphanedmods) {
-        LogUtil::registerStatus(_EZCOMMENTS_CLEANUP_NOTHINGTODO);
+        LogUtil::registerStatus(__('No orphaned comments', $dom));
         return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
-    } 
+    }
 
     $selectitems = array();
     foreach ($orphanedmods as $mod) {
@@ -338,18 +343,19 @@ function EZComments_admin_cleanup()
     $renderer->assign('selectitems', $selectitems);
 
     return $renderer->fetch('ezcomments_admin_cleanup.htm');
-} 
+}
 
 /**
  * Do the migration
- * 
+ *
  * This is the function that is called to do the actual
  * deletion of orphaned comments.
- * 
+ *
  * @param  $module The Module to delete for
  */
 function EZComments_admin_cleanup_go()
-{ 
+{
+    $dom = ZLanguage::getModuleDomain('EZComments');
     // Permissions
     if(!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
         return LogUtil::registerPermissionError('index.php');
@@ -358,19 +364,19 @@ function EZComments_admin_cleanup_go()
     // Authentication key
     if (!SecurityUtil::confirmAuthKey()) {
         return LogUtil::registerAuthidError(pnModURL('EZComments', 'admin', 'main'));
-    } 
+    }
 
     $module = FormUtil::getPassedValue('EZComments_module');
     if (!isset($module)) {
-        return _EZCOMMENTS_MODSARGSERROR;
-    } 
+        return __('_EZCOMMENTS_MODSARGSERROR', $dom);
+    }
 
     if (!pnModAPIFunc('EZComments', 'admin', 'deleteall', compact('module'))) {
-        return _EZCOMMENTS_GENERALFAILIURE;
-    } 
+        return __('_EZCOMMENTS_GENERALFAILIURE', $dom);
+    }
 
     return pnRedirect(pnModURL('EZComments', 'admin', 'cleanup'));
-} 
+}
 
 /**
  * purge comments
@@ -382,6 +388,7 @@ function EZComments_admin_cleanup_go()
  */
 function EZComments_admin_purge($args)
 {
+    $dom = ZLanguage::getModuleDomain('EZComments');
     // Get parameters from whatever input we need.
     $purgepending = FormUtil::getPassedValue('purgepending', isset($args['purgepending']) ? $args['purgepending'] : null, 'POST');
     $purgerejected = FormUtil::getPassedValue('purgerejected', isset($args['purgerejected']) ? $args['purgerejected'] : null, 'POST');
@@ -411,11 +418,11 @@ function EZComments_admin_purge($args)
         return LogUtil::registerAuthidError(pnModURL('EZComments', 'admin', 'main'));
     }
 
-    // The API function is called. 
-    if (pnModAPIFunc('EZComments', 'admin', 'purge', 
+    // The API function is called.
+    if (pnModAPIFunc('EZComments', 'admin', 'purge',
         array('purgepending' => $purgepending, 'purgerejected' => $purgerejected))) {
         // Success
-        LogUtil::registerStatus(_DELETESUCCEDED);
+        LogUtil::registerStatus(__('Done! Item deleted.', $dom));
     }
 
     // This function generated no output, and so now it is complete we redirect
@@ -520,7 +527,8 @@ function EZComments_admin_modulestats()
  */
 function EZComments_admin_deletemodule($args)
 {
-    // Get parameters from whatever input we need. 
+    $dom = ZLanguage::getModuleDomain('EZComments');
+    // Get parameters from whatever input we need.
     $modid = FormUtil::getPassedValue('modid', isset($args['modid']) ? $args['modid'] : null, 'GETPOST');
     $confirmation = FormUtil::getPassedValue('confirmation', isset($args['confirmation']) ? $args['confirmation'] : null, 'GETPOST');
 
@@ -555,13 +563,13 @@ function EZComments_admin_deletemodule($args)
         return LogUtil::registerAuthidError(pnModURL('EZComments', 'admin', 'main'));
     }
 
-    // The API function is called. 
-    // note: the api call is a little different here since we'll really calling a hook function that will 
+    // The API function is called.
+    // note: the api call is a little different here since we'll really calling a hook function that will
     // normally be executed when a module is deleted. The extra nesting of the modname inside an extrainfo
     // array reflects this
     if (pnModAPIFunc('EZComments', 'admin', 'deletemodule', array('extrainfo' => array('module' => $modinfo['name'])))) {
         // Success
-        LogUtil::registerStatus(_DELETESUCCEDED);
+        LogUtil::registerStatus(__('Done! Item deleted.', $dom));
     }
 
     // This function generated no output, and so now it is complete we redirect
@@ -579,14 +587,15 @@ function EZComments_admin_deletemodule($args)
  */
 function EZComments_admin_deleteitem($args)
 {
-    // Get parameters from whatever input we need. 
+    $dom = ZLanguage::getModuleDomain('EZComments');
+    // Get parameters from whatever input we need.
     $mod = FormUtil::getPassedValue('mod', isset($args['mod']) ? $args['mod'] : null, 'GETPOST');
     $objectid = FormUtil::getPassedValue('objectid', isset($args['objectid']) ? $args['objectid'] : null, 'GETPOST');
     $confirmation = FormUtil::getPassedValue('confirmation', isset($args['confirmation']) ? $args['confirmation'] : null, 'GETPOST');
 
     // input check
     if (!isset($mod) || !is_string($mod) || !isset($objectid) || !is_numeric($objectid)) {
-        return LogUtil::registerError(_MODARGSERROR);
+        return LogUtil::registerError(__('Error! Could not do what you wanted. Please check your input.', $dom));
         return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
     }
 
@@ -621,13 +630,13 @@ function EZComments_admin_deleteitem($args)
         return LogUtil::registerAuthidError(pnModURL('EZComments', 'admin', 'main'));
     }
 
-    // The API function is called. 
-    // note: the api call is a little different here since we'll really calling a hook function that will 
+    // The API function is called.
+    // note: the api call is a little different here since we'll really calling a hook function that will
     // normally be executed when a module is deleted. The extra nesting of the modname inside an extrainfo
     // array reflects this
     if (pnModAPIFunc('EZComments', 'admin', 'deletebyitem', array('mod' => $modinfo['name'], 'objectid' => $objectid))) {
         // Success
-        LogUtil::registerStatus(_DELETESUCCEDED);
+        LogUtil::registerStatus(__('Done! Item deleted.', $dom));
     }
 
     return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
@@ -645,7 +654,8 @@ function EZComments_admin_deleteitem($args)
  */
 function EZComments_admin_applyrules($args)
 {
-    // Get parameters from whatever input we need. 
+    $dom = ZLanguage::getModuleDomain('EZComments');
+    // Get parameters from whatever input we need.
     $mod = FormUtil::getPassedValue('mod', isset($args['mod']) ? $args['mod'] : null, 'GETPOST');
     $confirmation = FormUtil::getPassedValue('confirmation', isset($args['confirmation']) ? $args['confirmation'] : null, 'GETPOST');
     $allcomments = FormUtil::getPassedValue('allcomments', isset($args['allcomments']) ? $args['allcomments'] : null, 'GETPOST');
@@ -669,7 +679,7 @@ function EZComments_admin_applyrules($args)
         // No confirmation yet
 
         // assign the status flags
-        $renderer->assign('statuslevels', array('1' => _EZCOMMENTS_PENDING, '2' => _EZCOMMENTS_REJECTED,'0' => _EZCOMMENTS_APPROVED));
+        $renderer->assign('statuslevels', array('1' => __('Pending', $dom), '2' => __('Rejected', $dom),'0' => __('Approved', $dom)));
 
         // Return the output that has been generated by this function
         return $renderer->fetch('ezcomments_admin_applyrules_form.htm');
@@ -699,7 +709,7 @@ function EZComments_admin_applyrules($args)
         $commentstatus = _EZComments_userapi_checkcomment($comment['comment']);
         // akismet
         if (pnModAvailable('akismet') && pnModGetVar('EZComments', 'akismet')
-            && pnModAPIFunc('akismet', 'user', 'isspam', 
+            && pnModAPIFunc('akismet', 'user', 'isspam',
                               array('author' => ($comment['uid'] > 0) ?  pnUserGetVar('uname', $comment['uid']) : $comment['anonname'],
                                     'authoremail' => ($comment['uid'] > 0) ? pnUserGetVar('email', $comment['uid']) : $comment['anonmail'],
                                     'authorurl' => ($comment['uid'] > 0) ? pnUserGetVar('url', $comment['uid']) : $comment['anonwebsite'],
@@ -713,10 +723,10 @@ function EZComments_admin_applyrules($args)
             continue;
         }
         $options = array(array('url' => $comment['url'] . '#comments',
-                               'title' => _VIEW));
+                               'title' => __('View', $dom)));
         if (SecurityUtil::checkPermission('EZComments::', "$comment[mod]:$comment[objectid]:$comment[id]", ACCESS_EDIT)) {
             $options[] = array('url'   => pnModURL('EZComments', 'admin', 'modify', array('id' => $comment['id'])),
-                               'title' => _EDIT);
+                               'title' => __('Edit', $dom));
         }
         $comment['options'] = $options;
         if (($subjectstatus == 1 || $commentstatus == 1 || $akismetstatus == 1) && $comment['status'] != 1) {

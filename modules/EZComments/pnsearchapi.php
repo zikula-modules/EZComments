@@ -13,11 +13,7 @@
  **/
 function EZComments_searchapi_info()
 {
-    return array(    
-           'title'     => 'EZComments', 
-        'functions' => array(
-                                'EZComments' => 'search'
-                             ));
+    return array('title' => 'EZComments', 'functions' => array('EZComments' => 'search'));
 }
 
 /**
@@ -29,11 +25,11 @@ function EZComments_searchapi_info()
  **/
 function EZComments_searchapi_options($args)
 {
-    if (SecurityUtil::checkPermission( 'EZComments::', '::', ACCESS_READ)) {
+    if (SecurityUtil::checkPermission('EZComments::', '::', ACCESS_READ)) {
         // Create output object - this object will store all of our output so that
         // we can return it easily when required
         $pnRender = & pnRender::getInstance('EZComments');
-        $pnRender->assign('active',(isset($args['active'])&&isset($args['active']['EZComments']))||(!isset($args['active'])));
+        $pnRender->assign('active', (isset($args['active']) && isset($args['active']['EZComments'])) || (!isset($args['active'])));
         return $pnRender->fetch('ezcomments_search_form.htm');
     }
     return '';
@@ -48,55 +44,45 @@ function EZComments_searchapi_options($args)
  **/
 function EZComments_searchapi_search($args)
 {
-    if (!SecurityUtil::checkPermission( 'EZComments::', '::', ACCESS_READ)) {
+    if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_READ)) {
         return true;
     }
 
     if (strlen($args['q']) < 3 || strlen($args['q']) > 30) {
-        return LogUtil::registerStatus(pnML('_EZCOMMENTS_SEARCHLENGTHHINT', array('minlen' => $minlen, 'maxlen' => $maxlen)));
+        return LogUtil::registerStatus(__f('The comments can only be searched for words that are longer than %1$s and less than %2$s characters!', array($minlen, $maxlen), $dom));
     }
 
     pnModDBInfoLoad('Search');
-    $pntable         = pnDBGetTables();
+    $pntable = pnDBGetTables();
     // ezcomments tables
-    $ezcommentstable     = $pntable['EZComments'];
+    $ezcommentstable = $pntable['EZComments'];
     $ezcommentscolumn = $pntable['EZComments_column'];
     // our own tables
-    $searchTable     = $pntable['search_result'];
-    $searchColumn     = $pntable['search_result_column'];
+    $searchTable = $pntable['search_result'];
+    $searchColumn = $pntable['search_result_column'];
     // where
-    $where = search_construct_where($args, 
-                                    array($ezcommentscolumn['subject'], 
-                                          $ezcommentscolumn['comment']));
-    $where.=" AND ".$ezcommentscolumn['url']." != ''";
+    $where = search_construct_where($args, array($ezcommentscolumn['subject'], $ezcommentscolumn['comment']));
+    $where .= " AND " . $ezcommentscolumn['url'] . " != ''";
     $sessionId = session_id();
 
-    $insertSql = 
-        "INSERT INTO $searchTable
+    $insertSql = "INSERT INTO $searchTable
           ($searchColumn[title],
            $searchColumn[text],
            $searchColumn[extra],
            $searchColumn[module],
            $searchColumn[created],
            $searchColumn[session])
-        VALUES 
+        VALUES
         ";
 
     $comments = DBUtil::selectObjectArray('EZComments', $where);
 
-    foreach ($comments as $comment)
-    {
-          $sql = $insertSql . '(' 
-                 . '\'' . DataUtil::formatForStore($comment['subject']) . '\', '
-                 . '\'' . DataUtil::formatForStore($comment['comment']) . '\', '
-                 . '\'' . DataUtil::formatForStore($comment['url']) . '\', '
-                 . '\'' . 'EZComments' . '\', '
-                 . '\'' . DataUtil::formatForStore($comment['date']) . '\', '
-                 . '\'' . DataUtil::formatForStore($sessionId) . '\')';
-          $insertResult = DBUtil::executeSQL($sql);
-          if (!$insertResult) {
-              return LogUtil::registerError (_GETFAILED);
-          }
+    foreach ($comments as $comment) {
+        $sql = $insertSql . '(' . '\'' . DataUtil::formatForStore($comment['subject']) . '\', ' . '\'' . DataUtil::formatForStore($comment['comment']) . '\', ' . '\'' . DataUtil::formatForStore($comment['url']) . '\', ' . '\'' . 'EZComments' . '\', ' . '\'' . DataUtil::formatForStore($comment['date']) . '\', ' . '\'' . DataUtil::formatForStore($sessionId) . '\')';
+        $insertResult = DBUtil::executeSQL($sql);
+        if (!$insertResult) {
+            return LogUtil::registerError(__('Error! Could not load items.', $dom));
+        }
     }
     return true;
 }

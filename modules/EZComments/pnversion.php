@@ -8,11 +8,15 @@
  * @license See license.txt
  */
 
+$dom = ZLanguage::getModuleDomain('EZComments');
+
 // Information for the modules admin
 $modversion['name']        = 'EZComments';
-$modversion['displayname'] = _EZCOMMENTS_DISPLAYNAME;
-$modversion['version']     = '1.61';
-$modversion['description'] = _EZCOMMENTS_DESCRIPTION;
+$modversion['displayname'] = __('Comments', $dom);
+//! module url in lowercase and different to displayname
+$modversion['url'] = __('comments', $dom);
+$modversion['version']     = '1.62';
+$modversion['description'] = __('Attach comments to every kind of content using hooks', $dom);
 
 // I suspect these are not respected as the should
 $modversion['admin']       = 1;
@@ -27,7 +31,7 @@ $modversion['official']    = 0;
 $modversion['author']      = 'The EZComments Development Team';
 $modversion['contact']     = 'http://code.zikula.org/ezcomments/';
 
-// This one adds the info to the DB, so that users can click on the 
+// This one adds the info to the DB, so that users can click on the
 // headings in the permission module
 $modversion['securityschema'] = array(
                                       'EZComments::'         => 'Module:Item ID:Comment ID',
