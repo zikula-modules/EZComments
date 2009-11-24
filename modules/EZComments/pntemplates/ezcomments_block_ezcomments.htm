@@ -7,7 +7,7 @@
     <a href="<!--[$comment.url|pnvarprepfordisplay]-->#comment<!--[$comment.id|pnvarprepfordisplay]-->"><!--[$comment.comment|strip_tags:false|truncate:30|pnvarprepfordisplay]--></a>
     <!--[/if]-->
     <!--[if $showusername and $comment.uname neq '']-->
-    <!--[pnml name=_BY]-->
+    <!--[gt text="by"]-->
     <!--[if $linkusername]-->
     <!--[$comment.uname|userprofilelink]-->
     <!--[else]-->
@@ -15,7 +15,7 @@
     <!--[/if]-->
     <!--[/if]-->
     <!--[if $showdate]-->
-    <!--[pnml name=_ON]-->&nbsp;<!--[$comment.date|pndate_format|pnvarprephtmldisplay]-->
+    <!--[gt text="on"]-->&nbsp;<!--[$comment.date|pndate_format|pnvarprephtmldisplay]-->
     <!--[/if]-->
   </li>
   <!--[/foreach]-->

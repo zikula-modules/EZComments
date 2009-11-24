@@ -1,18 +1,18 @@
 <!--[*  $Id$  *]-->
 <!--[include file="ezcomments_admin_menu.htm"]-->
 <div class="pn-admincontainer">
-  <h2><!--[pnml name="_EZCOMMENTS_MIGRATE_EXPLAIN"]--></h2>
+  <h2><!--[gt text="Import comments from other modules"]--></h2>
   <form class="pn-adminform" action="<!--[pnmodurl modname="EZComments" type="admin" func="migrate_go"]-->" method="post" enctype="application/x-www-form-urlencoded">
     <fieldset>
-      <legend><!--[pnml name="_EZCOMMENTS_MIGRATE_EXPLAIN"]--></legend>
+      <legend><!--[gt text="Import comments from other modules"]--></legend>
       <input type="hidden" name="authid" value="<!--[pnsecgenauthkey module="EZComments"]-->" />
       <div class="pn-adminformrow">
-        <label for="ezcomments_migrate"><!--[pnml name="_EZCOMMENTS_MIGRATE_LABEL"]--></label>
+        <label for="ezcomments_migrate"><!--[gt text="Migrate:"]--></label>
         <select id="ezcomments_migrate" name="migrate"><!--[html_options options=$selectitems]--></select>
       </div>
     </fieldset>
     <div class="pn-adminformrow pn-adminformbuttons">
-      <input name="submit" type="submit" value="<!--[pnml name="_EZCOMMENTS_MIGRATE_GO"]-->" />
+      <input name="submit" type="submit" value="<!--[gt text="Start migration"]-->" />
     </div>
   </form>
 </div>

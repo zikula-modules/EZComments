@@ -1,16 +1,16 @@
 <!--[*  $Id$  *]-->
 <!--[include file="ezcomments_admin_menu.htm"]-->
 <div class="pn-admincontainer">
-  <h2><!--[pnml name=_EZCOMMENTS_STATS]--> : <!--[$name|pnvarprepfordisplay]--></h2>
+  <h2><!--[gt text="Comment statistics"]--> : <!--[$name|pnvarprepfordisplay]--></h2>
   <table class="pn-admintable">
     <thead>
       <tr>
-        <th><!--[pnml name=_EZCOMMENTS_ITEM]--></th>
-        <th><!--[pnml name=_EZCOMMENTS_TOTAL]--></th>
-        <th><!--[pnml name=_EZCOMMENTS_APPROVED]--></th>
-        <th><!--[pnml name=_EZCOMMENTS_PENDING]--></th>
-        <th><!--[pnml name=_EZCOMMENTS_REJECTED]--></th>
-        <th><!--[pnml name=_OPTIONS]--></th>
+        <th><!--[gt text="Item ID"]--></th>
+        <th><!--[gt text="Total comments"]--></th>
+        <th><!--[gt text="Approved"]--></th>
+        <th><!--[gt text="Pending"]--></th>
+        <th><!--[gt text="Rejected"]--></th>
+        <th><!--[gt text="Options"]--></th>
       </tr>
     </thead>
     <tbody>
@@ -22,7 +22,7 @@
         <td><!--[$commentstat.pendingcomments|pnvarprepfordisplay]--></td>
         <td><!--[$commentstat.rejectedcomments|pnvarprepfordisplay]--></td>
         <td>
-          [<a href="<!--[pnmodurl modname=EZComments type=admin func=deleteitem mod=$name objectid=$commentstat.objectid]-->"><!--[pnml name=_DELETE]--></a>]
+          [<a href="<!--[pnmodurl modname=EZComments type=admin func=deleteitem mod=$name objectid=$commentstat.objectid]-->"><!--[gt text="Delete"]--></a>]
         </td>
       </tr>
       <!--[/foreach]-->

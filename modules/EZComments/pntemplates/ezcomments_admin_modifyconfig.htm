@@ -1,123 +1,124 @@
 <!--[*  $Id$  *]-->
 <!--[include file="ezcomments_admin_menu.htm"]-->
 <div class="pn-admincontainer">
-  <h2><!--[pnml name="_MODIFYCONFIG"]--></h2>
-  <!--[ pnform cssClass="pn-adminform" ]-->
-  <!--[ pnformvalidationsummary ]-->
+  <h2><!--[gt text="Settings"]--></h2>
+  <!--[pnform cssClass="pn-adminform"]-->
+  <!--[pnformvalidationsummary]-->
   <fieldset>
-    <legend><!--[pnml name=_EZCOMMENTS_MISCSETTINGS]--></legend>
+    <legend><!--[gt text="Miscellaneous"]--></legend>
     <div class="pn-adminformrow">
-      <!--[ pnformlabel for="ezcomments_template" text='_EZCOMMENTS_TEMPLATE' ]-->
-      <!--[ pnformdropdownlist id="ezcomments_template" items=$templates selectedValue=$pncore.EZComments.template ]-->
+      <!--[pnformlabel for="ezcomments_template" __text='Default template']-->
+      <!--[pnformdropdownlist id="ezcomments_template" items=$templates selectedValue=$pncore.EZComments.template]-->
     </div>
     <div class="pn-adminformrow">
-      <!--[ pnformlabel for="ezcomments_anonusersinfo" text='_EZCOMMENTS_ALLOWANONUSERSETINFO' ]-->
-      <!--[ pnformcheckbox id="ezcomments_anonusersinfo" checked=$pncore.EZComments.anonusersinfo ]-->
+      <!--[pnformlabel for="ezcomments_anonusersinfo" __text='Allow unregistered users to set user information']-->
+      <!--[pnformcheckbox id="ezcomments_anonusersinfo" checked=$pncore.EZComments.anonusersinfo]-->
     </div>
     <div class="pn-adminformrow">
-      <!--[ pnformlabel for="ezcomments_anonusersrequirename" text='_EZCOMMENTS_ANON_NAME' ]-->
-      <!--[ pnformcheckbox id="ezcomments_anonusersrequirename" checked=$pncore.EZComments.anonusersrequirename ]-->
+      <!--[pnformlabel for="ezcomments_anonusersrequirename" __text='Require name for unregistered user']-->
+      <!--[pnformcheckbox id="ezcomments_anonusersrequirename" checked=$pncore.EZComments.anonusersrequirename]-->
     </div>
     <div class="pn-adminformrow">
-      <!--[ pnformlabel for="ezcomments_logip" text='_EZCOMMENTS_LOGIPADDR' ]-->
-      <!--[ pnformcheckbox id="ezcomments_logip" checked=$pncore.EZComments.logip ]-->
+      <!--[pnformlabel for="ezcomments_logip" __text='Log IP addresses']-->
+      <!--[pnformcheckbox id="ezcomments_logip" checked=$pncore.EZComments.logip]-->
     </div>
     <div class="pn-adminformrow">
-      <!--[ pnformlabel for="ezcomments_itemsperpage" text='_EZCOMMENTS_ITEMSPERPAGE' ]-->
-      <!--[ pnformtextinput id="ezcomments_itemsperpage" text=$pncore.EZComments.itemsperpage|pnvarprepfordisplay size="5" maxLength="5" ]-->
+      <!--[pnformlabel for="ezcomments_itemsperpage" __text='Comments per page (admin view)']-->
+      <!--[pnformtextinput id="ezcomments_itemsperpage" __text=$pncore.EZComments.itemsperpage|pnvarprepfordisplay size="5" maxLength="5"]-->
     </div>
     <div class="pn-adminformrow">
-      <!--[ pnformlabel for="ezcomments_enablepager" text='_EZCOMMENTS_ENABLEPAGER' ]-->
-      <!--[ pnformcheckbox id="ezcomments_enablepager" checked=$pncore.EZComments.enablepager ]-->
+      <!--[pnformlabel for="ezcomments_enablepager" __text='Enable pager (user view)']-->
+      <!--[pnformcheckbox id="ezcomments_enablepager" checked=$pncore.EZComments.enablepager]-->
     </div>
     <div class="pn-adminformrow">
-      <!--[ pnformlabel for="ezcomments_commentsperpage" text='_EZCOMMENTS_COMMENTSPERPAGE' ]-->
-      <!--[ pnformtextinput id="ezcomments_commentsperpage" text=$pncore.EZComments.commentsperpage|pnvarprepfordisplay size="5" maxLength="5" ]-->
+      <!--[pnformlabel for="ezcomments_commentsperpage" __text='Comments per page (user view)']-->
+      <!--[pnformtextinput id="ezcomments_commentsperpage" __text=$pncore.EZComments.commentsperpage|pnvarprepfordisplay size="5" maxLength="5"]-->
     </div>
   </fieldset>
   <fieldset>
-    <legend><!--[pnml name=_EZCOMMENTS_NOTIFICATIONSETTINGS]--></legend>
-    <!--[pnml name="_EZCOMMENTS_TOOWNERORADMIN"]-->
+    <legend><!--[gt text="Notification"]--></legend>
+    <!--[gt text="The notification email will be sent to the owner of the content. If there is no owner known, the notification mail will be sent to the site administrator."]-->
     <div class="pn-adminformrow">
-      <!--[ pnformlabel for="ezcomments_MailToAdmin" text='_EZCOMMENTS_SENDINFOMAIL' ]-->
-      <!--[ pnformcheckbox id="ezcomments_MailToAdmin" checked=$pncore.EZComments.MailToAdmin ]-->
+      <!--[pnformlabel for="ezcomments_MailToAdmin" __text='Send mail on new comment']-->
+      <!--[pnformcheckbox id="ezcomments_MailToAdmin" checked=$pncore.EZComments.MailToAdmin]-->
     </div>
     <div class="pn-adminformrow">
-      <!--[ pnformlabel for="ezcomments_moderationmail" text='_EZCOMMENTS_SENDINFOMAILMOD' ]-->
-      <!--[ pnformcheckbox id="ezcomments_moderationmail" checked=$pncore.EZComments.moderationmail ]-->
-    </div>
-  </fieldset>
-  <fieldset>
-    <legend><!--[pnml name=_EZCOMMENTS_MODERATIONSETTINGS]--></legend>
-    <div class="pn-adminformrow">
-      <!--[ pnformlabel for="ezcomments_moderation" text='_EZCOMMENTS_MODERERATE' ]-->
-      <!--[ pnformcheckbox id="ezcomments_moderation" checked=$pncore.EZComments.moderation ]-->
-    </div>
-    <div class="pn-adminformrow">
-      <!--[ pnformlabel for="ezcomments_alwaysmoderate" text='_EZCOMMENTS_ALWAYSMODERERATE' ]-->
-      <!--[ pnformcheckbox id="ezcomments_alwaysmoderate" checked=$pncore.EZComments.alwaysmoderate ]-->
-    </div>
-    <div class="pn-adminformrow">
-      <!--[ pnformlabel for="ezcomments_dontmoderateifcommented" text='_EZCOMMENTS_DONTMODERATEIFCOMMENTED' ]-->
-      <!--[ pnformcheckbox id="ezcomments_dontmoderateifcommented" checked=$pncore.EZComments.dontmoderateifcommented ]-->
-    </div>
-    <div class="pn-adminformrow">
-      <!--[ pnformlabel for="ezcomments_modlinkcount" text='_EZCOMMENTS_MODLINKCOUNT' ]-->
-      <!--[ pnformtextinput id="ezcomments_modlinkcount" text=$pncore.EZComments.modlinkcount|pnvarprepfordisplay size="5" maxLength="5" ]-->
-    </div>
-    <div class="pn-adminformrow">
-      <!--[ pnformlabel for="ezcomments_modlist" text='_EZCOMMENTS_MODLIST' ]-->
-      <!--[ pnformtextinput id="ezcomments_modlist" textMode="multiline" rows="5" cols="50" text=$modlist|pnvarprepfordisplay ]-->
-      <p><!--[pnml name=_EZCOMMENTS_SEPERATELINE]--></p>
-    </div>
-    <div class="pn-adminformrow">
-      <!--[ pnformlabel for="ezcomments_blacklinkcount" text='_EZCOMMENTS_BLACKLINKCOUNT' ]-->
-      <!--[ pnformtextinput id="ezcomments_blacklinkcount" text=$pncore.EZComments.blacklinkcount|pnvarprepfordisplay size="5" maxLength="5" ]-->
-    </div>
-    <div class="pn-adminformrow">
-      <!--[ pnformlabel for="ezcomments_blacklist" text='_EZCOMMENTS_BLACKLIST' ]-->
-      <!--[ pnformtextinput id="ezcomments_blacklist" textMode="multiline" rows="5" cols="50" text=$blacklist|pnvarprepfordisplay ]-->
-      <p><!--[pnml name=_EZCOMMENTS_SEPERATELINE]--></p>
-      <p><!--[pnml name=_EZCOMMENTS_BLACKLISTNOTE]--></p>
-    </div>
-    <div class="pn-adminformrow">
-      <!--[ pnformlabel for="ezcomments_proxyblacklist" text='_EZCOMMENTS_PROXYBLACKLIST' ]-->
-      <!--[ pnformcheckbox id="ezcomments_proxyblacklist" checked=$pncore.EZComments.proxyblacklist ]-->
-    </div>
-    <div class="pn-adminformrow">
-      <!--[ pnformlabel for="ezcomments_modifyowntime" text='_EZCOMMENTS_MODIFYOWNTIME' ]-->
-      <!--[ pnformintinput id="ezcomments_modifyowntime" text=$pncore.EZComments.modifyowntime minValue="-1" ]-->
+      <!--[pnformlabel for="ezcomments_moderationmail" __text='Send mail on comment requiring moderation']-->
+      <!--[pnformcheckbox id="ezcomments_moderationmail" checked=$pncore.EZComments.moderationmail]-->
     </div>
   </fieldset>
   <fieldset>
-    <legend><!--[pnml name=_EZCOMMENTS_AKISMET]--></legend>
-    <p><!--[pnml name=_EZCOMMENTS_AKISMETNOTE html=true]--></p>
+    <legend><!--[gt text="Moderation"]--></legend>
+    <div class="pn-adminformrow">
+      <!--[pnformlabel for="ezcomments_moderation" __text='Enable comment moderation']-->
+      <!--[pnformcheckbox id="ezcomments_moderation" checked=$pncore.EZComments.moderation]-->
+    </div>
+    <div class="pn-adminformrow">
+      <!--[pnformlabel for="ezcomments_alwaysmoderate" __text='All comments require moderation']-->
+      <!--[pnformcheckbox id="ezcomments_alwaysmoderate" checked=$pncore.EZComments.alwaysmoderate]-->
+    </div>
+    <div class="pn-adminformrow">
+      <!--[pnformlabel for="ezcomments_dontmoderateifcommented" __text='Don't require moderation for comments from users who've already commented']-->
+      <!--[pnformcheckbox id="ezcomments_dontmoderateifcommented" checked=$pncore.EZComments.dontmoderateifcommented]-->
+    </div>
+    <div class="pn-adminformrow">
+      <!--[pnformlabel for="ezcomments_modlinkcount" __text='Number of links in comment before moderation']-->
+      <!--[pnformtextinput id="ezcomments_modlinkcount" __text=$pncore.EZComments.modlinkcount|pnvarprepfordisplay size="5" maxLength="5"]-->
+    </div>
+    <div class="pn-adminformrow">
+      <!--[pnformlabel for="ezcomments_modlist" __text='Words to trigger moderation']-->
+      <!--[pnformtextinput id="ezcomments_modlist" textMode="multiline" rows="5" cols="50" __text=$modlist|pnvarprepfordisplay]-->
+      <p><!--[gt text="Separate multiple words with new lines"]--></p>
+    </div>
+    <div class="pn-adminformrow">
+      <!--[pnformlabel for="ezcomments_blacklinkcount" __text='Number of links in comment before blacklisting']-->
+      <!--[pnformtextinput id="ezcomments_blacklinkcount" __text=$pncore.EZComments.blacklinkcount|pnvarprepfordisplay size="5" maxLength="5"]-->
+    </div>
+    <div class="pn-adminformrow">
+      <!--[pnformlabel for="ezcomments_blacklist" __text='Words to blacklist from comments']-->
+      <!--[pnformtextinput id="ezcomments_blacklist" textMode="multiline" rows="5" cols="50" __text=$blacklist|pnvarprepfordisplay]-->
+      <p><!--[gt text="Separate multiple words with new lines"]--></p>
+      <p><!--[gt text="Note: Comments containing words listed here will be completely ignored by the comments module"]--></p>
+    </div>
+    <div class="pn-adminformrow">
+      <!--[pnformlabel for="ezcomments_proxyblacklist" __text='Blacklist comments from insecure proxies']-->
+      <!--[pnformcheckbox id="ezcomments_proxyblacklist" checked=$pncore.EZComments.proxyblacklist]-->
+    </div>
+    <div class="pn-adminformrow">
+      <!--[pnformlabel for="ezcomments_modifyowntime" __text='Number of hours where users are allowed to modify the text of own comments. The value -1 deactivates this function.']-->
+      <!--[pnformintinput id="ezcomments_modifyowntime" __text=$pncore.EZComments.modifyowntime minValue="-1"]-->
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend><!--[gt text="Akismet spam dectection service"]--></legend>
+    <p><!--[gt text="<a href="http://akismet.com/">Akismet</a> is a spam detection service that can, in many 
+cases, eliminate comment and trackback spam. To use akismet you need to install and configure the <a href="http://code.zikula.org/ezcomments/">Akismet module</a>."]--></p>
     <!--[if $akismetavailable]-->
     <div class="pn-adminformrow">
-      <!--[ pnformlabel for="ezcomments_akismet" text='_EZCOMMENTS_ENABLEAKISMET' ]-->
-      <!--[ pnformcheckbox id="ezcomments_akismet" checked=$pncore.EZComments.akismet ]-->
+      <!--[pnformlabel for="ezcomments_akismet" __text='Enable akismet']-->
+      <!--[pnformcheckbox id="ezcomments_akismet" checked=$pncore.EZComments.akismet]-->
     </div>
     <div class="pn-adminformrow">
-      <!--[ pnformlabel for="ezcomments_akismetstatus" text='_EZCOMMENTS_AKISMETSTATUS' ]-->
-      <!--[ pnformdropdownlist id="ezcomments_akismetstatus" items=$statuslevels selectedValue=$pncore.EZComments.akismetstatus ]-->
+      <!--[pnformlabel for="ezcomments_akismetstatus" __text='Status level to apply to comments flagged as spam by akismet']-->
+      <!--[pnformdropdownlist id="ezcomments_akismetstatus" items=$statuslevels selectedValue=$pncore.EZComments.akismetstatus]-->
     </div>
     <!--[/if]-->
   </fieldset>
   <fieldset>
-    <legend><!--[pnml name=_EZCOMMENTS_FEEDS]--></legend>
-    <p><!--[pnml name=_EZCOMMENTS_FEEDNOTE]--></p>
+    <legend><!--[gt text="Feeds"]--></legend>
+    <p><!--[gt text="Note: both the feed type and feed count can be overriden using feedtype and feedcount parameters appended to the feed URL"]--></p>
     <div class="pn-adminformrow">
-      <!--[ pnformlabel for="ezcomments_feedtype" text='_EZCOMMENTS_FEEDTYPE' ]-->
-      <!--[ pnformdropdownlist id="ezcomments_feedtype" items=$feeds selectedValue=$pncore.EZComments.feedtype ]-->
+      <!--[pnformlabel for="ezcomments_feedtype" __text='Type of feed']-->
+      <!--[pnformdropdownlist id="ezcomments_feedtype" items=$feeds selectedValue=$pncore.EZComments.feedtype]-->
     </div>
     <div class="pn-adminformrow">
-      <!--[ pnformlabel for="ezcomments_feedcount" text='_EZCOMMENTS_FEEDCOUNT' ]-->
-      <!--[ pnformtextinput id="ezcomments_feedcount" text=$pncore.EZComments.feedcount|pnvarprepfordisplay size="5" maxLength="5" ]-->
+      <!--[pnformlabel for="ezcomments_feedcount" __text='Number of items to display in feed']-->
+      <!--[pnformtextinput id="ezcomments_feedcount" __text=$pncore.EZComments.feedcount|pnvarprepfordisplay size="5" maxLength="5"]-->
     </div>
   </fieldset>
   <!--[pnmodcallhooks hookobject="module" hookaction="modifyconfig" hookid="EZComments" module="EZComments"]-->
   <div class="pn-adminformrow pn-adminformbuttons">
-    <!--[pnformbutton id="submit" commandName="submit" text="_SUBMIT"]-->
+    <!--[pnformbutton id="submit" commandName="submit" __text="Submit"]-->
   </div>
-  <!--[ /pnform ]-->
+  <!--[/pnform]-->
 </div>

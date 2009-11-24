@@ -24,13 +24,14 @@
  */
 function smarty_modifier_commentstatus($string)
 {
+    $dom = ZLanguage::getModuleDomain('EZComments');
     switch ($string) {
         case '0':
-            return strtolower(_EZCOMMENTS_APPROVED);
+            return strtolower(__('Approved', $dom));
         case '1':
-            return strtolower(_EZCOMMENTS_PENDING);
+            return strtolower(__('Pending', $dom));
         case '2':
-            return strtolower(_EZCOMMENTS_REJECTED);
+            return strtolower(__('Rejected', $dom));
         case '-1':
         default:
             return;

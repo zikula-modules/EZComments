@@ -1,18 +1,18 @@
 <!--[*  $Id$  *]-->
 <!--[include file="ezcomments_admin_menu.htm"]-->
 <div class="pn-admincontainer">
-  <h2><!--[pnml name="_EZCOMMENTS_CLEANUP_EXPLAIN"]--></h2>
+  <h2><!--[gt text="This functionality allows you to delete comments that are in the database for removed modules."]--></h2>
   <form class="pn-adminform" action="<!--[pnmodurl modname="EZComments" type="admin" func="cleanup_go"]-->" method="post" enctype="application/x-www-form-urlencoded">
     <fieldset>
-      <legend><!--[pnml name="_EZCOMMENTS_CLEANUP_EXPLAIN"]--></legend>
+      <legend><!--[gt text="This functionality allows you to delete comments that are in the database for removed modules."]--></legend>
       <input type="hidden" name="authid" value="<!--[pnsecgenauthkey module="EZComments"]-->" />
       <div class="pn-adminformrow">
-        <label for="ezcomments_module"><!--[pnml name="_EZCOMMENTS_CLEANUP_LABEL"]--></label>
+        <label for="ezcomments_module"><!--[gt text="Select module:"]--></label>
         <select id="ezcomments_module" name="module"><!--[html_options options=$selectitems]--></select>
       </div>
     </fieldset>
     <div class="pn-adminformrow pn-adminformbuttons">
-      <input name="submit" type="submit" value="<!--[pnml name="_EZCOMMENTS_CLEANUP_GO"]-->" />
+      <input name="submit" type="submit" value="<!--[gt text="Delete all comments for this module"]-->" />
     </div>
   </form>
 </div>

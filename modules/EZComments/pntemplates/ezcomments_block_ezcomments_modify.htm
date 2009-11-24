@@ -1,6 +1,6 @@
 <tr>
   <td>
-    <label for="ezcomments_numentries"><!--[pnml name="_EZCOMMENTS_NUMENTRIES"]--></label>
+    <label for="ezcomments_numentries"><!--[gt text="Number of comments to display"]--></label>
   </td>
   <td>
     <input id="ezcomments_numentries" type="text" name="numentries" value="<!--[$numentries|pnvarprephtmldisplay]-->" size="5" maxlength="5" />
@@ -8,18 +8,18 @@
 </tr>
 <tr>
   <td>
-    <label for="ezcomments_module"><!--[pnml name="_EZCOMMENTS_SELECT_MODULE"]--></label>
+    <label for="ezcomments_module"><!--[gt text="Show comments for the following module"]--></label>
   </td>
   <td>
     <select id="ezcomments_modname" name="mod">
-      <option label="*" value="*" <!--[if $mod eq "*"]-->selected="selected"<!--[/if]-->><!--[pnml name="_EZCOMMENTS_ALLMODULES"]--></option>
+      <option label="*" value="*" <!--[if $mod eq "*"]-->selected="selected"<!--[/if]-->><!--[gt text="All"]--></option>
       <!--[html_options values=$usermods output=$usermods selected=$mod]-->
     </select>
   </td>
 </tr>
 <tr>
   <td>
-    <label for="ezcomments_showusername"><!--[pnml name="_EZCOMMENTS_SHOWUSERNAME"]--></label>
+    <label for="ezcomments_showusername"><!--[gt text="Show username?"]--></label>
   </td>
   <td>
     <!--[if $showusername]-->
@@ -31,7 +31,7 @@
 </tr>
 <tr>
   <td>
-    <label for="ezcomments_linkusername"><!--[pnml name="_EZCOMMENTS_LINKUSERNAME"]--></label>
+    <label for="ezcomments_linkusername"><!--[gt text="Link username to profile?"]--></label>
   </td>
   <td>
     <!--[if $linkusername]-->
@@ -43,7 +43,7 @@
 </tr>
 <tr>
   <td>
-    <label for="ezcomments_showdate"><!--[pnml name="_EZCOMMENTS_SHOWDATE"]--></label>
+    <label for="ezcomments_showdate"><!--[gt text="Show Date?"]--></label>
   </td>
   <td>
     <!--[if $showdate]-->
@@ -55,7 +55,7 @@
 </tr>
 <tr>
   <td>
-    <label for="ezcomments_showpending"><!--[pnml name="_EZCOMMENTS_SHOWPENDING"]--></label>
+    <label for="ezcomments_showpending"><!--[gt text="Show pending comments?"]--></label>
   </td>
   <td>
     <!--[if $showpending]-->
