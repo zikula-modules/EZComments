@@ -166,7 +166,7 @@ function EZComments_userapi_create($args)
     extract($args);
     $dom = ZLanguage::getModuleDomain('EZComments');
     if (!isset($mod) || !isset($objectid) || !isset($comment)) {
-        return LogUtil::registerError(__('Error! Could not do what you wanted. Please check your input.', $dom));
+        return LogUtil::registerArgsError();
     }
     $owneruid = (int) $args['owneruid'];
     // Sometimes the displayurl for the redirect is another url then the url,
@@ -185,7 +185,7 @@ function EZComments_userapi_create($args)
     // ContactList ignore check. If the user is ignored by the
     // content owner the user will not be able to post any comment...
     if ((pnUserGetVar('uid') > 1) && ($owneruid > 0) && pnModAvailable('ContactList') && pnModAPIFunc('ContactList', 'user', 'isIgnored', array('iuid' => pnUserGetVar('uid'), 'uid' => $owneruid))) {
-        return LogUtil::registerError(__('_EZCOMMENTS_USER_IGNORES_YOU', $dom));
+        return LogUtil::registerError(__('Error! Sorry! The user ignores you', $dom));
     }
 
     // check unregistered user included name (if required)
@@ -224,7 +224,7 @@ function EZComments_userapi_create($args)
 
     // Security check
     if (!SecurityUtil::checkPermission("EZComments::$type", "$mod:$objectid:", ACCESS_COMMENT)) {
-        return LogUtil::registerPermissionError('index.php');
+        return LogUtil::registerPermissionError();
     }
 
     // Get database setup
@@ -388,7 +388,7 @@ function EZComments_userapi_get($args)
 {
     $dom = ZLanguage::getModuleDomain('EZComments');
     if (!isset($args['id']) || empty($args['id'])) {
-        return LogUtil::registerError(__('Error! Could not do what you wanted. Please check your input.', $dom));
+        return LogUtil::registerArgsError();
     }
 
     // init empty comment

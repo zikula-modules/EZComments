@@ -134,7 +134,7 @@ function EZComments_adminapi_delete($args)
 
     // Argument check
     if ((isset($args['id']) && !is_numeric($args['id']))) {
-        return LogUtil::registerError(__('Error! Could not do what you wanted. Please check your input.', $dom));
+        return LogUtil::registerArgsError();
     }
 
     // The user API function is called.
@@ -182,7 +182,7 @@ function EZComments_adminapi_update($args)
         (!isset($args['comment'])) ||
         (isset($args['id']) && !is_numeric($args['id'])) ||
         (isset($args['status']) && !is_numeric($args['status']))) {
-        return LogUtil::registerError(__('Error! Could not do what you wanted. Please check your input.', $dom));
+        return LogUtil::registerArgsError();
     }
 
     // optional arguments
@@ -270,7 +270,7 @@ function EZComments_adminapi_purge($args)
 
     // Argument check
     if (!isset($purgerejected) && !isset($purgepending)) {
-        return LogUtil::registerError(__('Error! Could not do what you wanted. Please check your input.', $dom));
+        return LogUtil::registerArgsError();
     }
 
     // Security check
@@ -315,7 +315,7 @@ function EZComments_adminapi_updatestatus($args)
     $status  = $args['status'];
     // Argument check
     if (isset($id) && !is_numeric($id) && isset($status) && !is_numeric($status)) {
-        return LogUtil::registerError(__('Error! Could not do what you wanted. Please check your input.', $dom));
+        return LogUtil::registerArgsError();
     }
 
     // Get the comment

@@ -112,7 +112,7 @@ function EZComments_user_view($args)
 
     // security check
     if (!SecurityUtil::checkPermission('EZComments::', "$mod:$objectid:", ACCESS_OVERVIEW)) {
-        return LogUtil::registerPermissionError('index.php');
+        return LogUtil::registerPermissionError();
     }
 
     // we may get some input in from the navigation bar
@@ -237,7 +237,7 @@ function EZComments_user_comment($args)
 
     // check if commenting is setup for the input module
     if (!pnModAvailable($mod) || !pnModIsHooked('EZComments', $mod)) {
-        return LogUtil::registerPermissionError(pnGetBaseURL());
+        return LogUtil::registerPermissionError();
     }
 
     // check if we're using the pager

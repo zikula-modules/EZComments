@@ -1,67 +1,67 @@
 <tr>
-  <td>
-    <label for="ezcomments_numentries"><!--[gt text="Number of comments to display"]--></label>
-  </td>
-  <td>
-    <input id="ezcomments_numentries" type="text" name="numentries" value="<!--[$numentries|pnvarprephtmldisplay]-->" size="5" maxlength="5" />
-  </td>
+    <td>
+        <label for="ezcomments_numentries"><!--[gt text="Number of comments to display" domain="module_ezcomments"]--></label>
+    </td>
+    <td>
+        <input id="ezcomments_numentries" type="text" name="numentries" value="<!--[$numentries|pnvarprephtmldisplay]-->" size="5" maxlength="5" />
+    </td>
 </tr>
 <tr>
-  <td>
-    <label for="ezcomments_module"><!--[gt text="Show comments for the following module"]--></label>
-  </td>
-  <td>
-    <select id="ezcomments_modname" name="mod">
-      <option label="*" value="*" <!--[if $mod eq "*"]-->selected="selected"<!--[/if]-->><!--[gt text="All"]--></option>
-      <!--[html_options values=$usermods output=$usermods selected=$mod]-->
-    </select>
-  </td>
+    <td>
+        <label for="ezcomments_module"><!--[gt text="Show comments for the following module" domain="module_ezcomments"]--></label>
+    </td>
+    <td>
+        <select id="ezcomments_modname" name="mod">
+            <option label="*" value="*" <!--[if $mod eq "*"]-->selected="selected"<!--[/if]-->><!--[gt text="All" domain="module_ezcomments"]--></option>
+            <!--[html_options values=$usermods output=$usermods selected=$mod]-->
+        </select>
+    </td>
 </tr>
 <tr>
-  <td>
-    <label for="ezcomments_showusername"><!--[gt text="Show username?"]--></label>
-  </td>
-  <td>
-    <!--[if $showusername]-->
-    <input id="ezcomments_showusername" type="checkbox" name="showusername" value="1" checked="checked" />
-    <!--[else]-->
-    <input id="ezcomments_showusername" type="checkbox" name="showusername" value="1" />
-    <!--[/if]-->
-  </td>
+    <td>
+        <label for="ezcomments_showusername"><!--[gt text="Show username?" domain="module_ezcomments"]--></label>
+    </td>
+    <td>
+        <!--[if $showusername]-->
+        <input id="ezcomments_showusername" type="checkbox" name="showusername" value="1" checked="checked" />
+        <!--[else]-->
+        <input id="ezcomments_showusername" type="checkbox" name="showusername" value="1" />
+        <!--[/if]-->
+    </td>
 </tr>
 <tr>
-  <td>
-    <label for="ezcomments_linkusername"><!--[gt text="Link username to profile?"]--></label>
-  </td>
-  <td>
-    <!--[if $linkusername]-->
-    <input id="ezcomments_linkusername" type="checkbox" name="linkusername" value="1" checked="checked" />
-    <!--[else]-->
-    <input id="ezcomments_linkusername" type="checkbox" name="linkusername" value="1" />
-    <!--[/if]-->
-  </td>
+    <td>
+        <label for="ezcomments_linkusername"><!--[gt text="Link username to profile?" domain="module_ezcomments"]--></label>
+    </td>
+    <td>
+        <!--[if $linkusername]-->
+        <input id="ezcomments_linkusername" type="checkbox" name="linkusername" value="1" checked="checked" />
+        <!--[else]-->
+        <input id="ezcomments_linkusername" type="checkbox" name="linkusername" value="1" />
+        <!--[/if]-->
+    </td>
 </tr>
 <tr>
-  <td>
-    <label for="ezcomments_showdate"><!--[gt text="Show Date?"]--></label>
-  </td>
-  <td>
-    <!--[if $showdate]-->
-    <input id="ezcomments_showdate" type="checkbox" name="showdate" value="1" checked="checked" />
-    <!--[else]-->
-    <input id="ezcomments_showdate" type="checkbox" name="showdate" value="1" />
-    <!--[/if]-->
-  </td>
+    <td>
+        <label for="ezcomments_showdate"><!--[gt text="Show Date?" domain="module_ezcomments"]--></label>
+    </td>
+    <td>
+        <!--[if $showdate]-->
+        <input id="ezcomments_showdate" type="checkbox" name="showdate" value="1" checked="checked" />
+        <!--[else]-->
+        <input id="ezcomments_showdate" type="checkbox" name="showdate" value="1" />
+        <!--[/if]-->
+    </td>
 </tr>
 <tr>
-  <td>
-    <label for="ezcomments_showpending"><!--[gt text="Show pending comments?"]--></label>
-  </td>
-  <td>
-    <!--[if $showpending]-->
-    <input id="ezcomments_showpending" type="checkbox" name="showpending" value="1" checked="checked" />
-    <!--[else]-->
-    <input id="ezcomments_showpending" type="checkbox" name="showpending" value="1" />
-    <!--[/if]-->
-  </td>
+    <td>
+        <label for="ezcomments_showpending"><!--[gt text="Show pending comments?" domain="module_ezcomments"]--></label>
+    </td>
+    <td>
+        <!--[if $showpending]-->
+        <input id="ezcomments_showpending" type="checkbox" name="showpending" value="1" checked="checked" />
+        <!--[else]-->
+        <input id="ezcomments_showpending" type="checkbox" name="showpending" value="1" />
+        <!--[/if]-->
+    </td>
 </tr>

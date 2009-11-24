@@ -287,7 +287,7 @@ function EZComments_admin_migrate_go()
     // Parameter
     $migrate = FormUtil::getPassedValue('migrate');
     if (!isset($migrate)){
-        return __('_EZCOMMENTS_MODSARGSERROR', $dom);
+        return LogUtil::registerArgsError();
     }
 
     // Eintrag in Datenbank
@@ -368,11 +368,11 @@ function EZComments_admin_cleanup_go()
 
     $module = FormUtil::getPassedValue('EZComments_module');
     if (!isset($module)) {
-        return __('_EZCOMMENTS_MODSARGSERROR', $dom);
+        return LogUtil::registerArgsError();
     }
 
     if (!pnModAPIFunc('EZComments', 'admin', 'deleteall', compact('module'))) {
-        return __('_EZCOMMENTS_GENERALFAILIURE', $dom);
+        return __('Error! Sorry! A general failure occurs', $dom);
     }
 
     return pnRedirect(pnModURL('EZComments', 'admin', 'cleanup'));
@@ -595,7 +595,7 @@ function EZComments_admin_deleteitem($args)
 
     // input check
     if (!isset($mod) || !is_string($mod) || !isset($objectid) || !is_numeric($objectid)) {
-        return LogUtil::registerError(__('Error! Could not do what you wanted. Please check your input.', $dom));
+        return LogUtil::registerArgsError();
         return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
     }
 
@@ -757,7 +757,7 @@ function EZComments_admin_applyrules($args)
             $comment['status'] = 2;
             pnModAPIFunc('EZComments', 'admin', 'update', $comment);
         }
-        LogUtil::registerStatus('New comment rules applied');
+        LogUtil::registerStatus(__('New comment rules applied', $dom));
         return pnRedirect(pnModURL('EZComments', 'admin'));
     }
 }
