@@ -12,9 +12,10 @@ class EZComments_admin_modifyconfighandler
 {
     function initialize(&$renderer)
     {
+        $dom = ZLanguage::getModuleDomain('EZComments');
         $renderer->caching = false;
         $renderer->add_core_data();
-        
+
         $templates = array();
         $rawtemplates = pnModAPIFunc('EZComments', 'user', 'gettemplates');
         if(is_array($rawtemplates) && count($rawtemplates) <>0) {
@@ -27,52 +28,53 @@ class EZComments_admin_modifyconfighandler
         // is the akismet module available
         $renderer->assign('akismetavailable', pnModAvailable('akismet'));
 
-        $statuslevels = array( array('text' => _EZCOMMENTS_APPROVED, 'value' => 0),
-                               array('text' => _EZCOMMENTS_PENDING,  'value' => 1),
-                               array('text' => _EZCOMMENTS_REJECTED, 'value' => 2));
-        $renderer->assign('statuslevels', $statuslevels); 
+        $statuslevels = array( array('text' => __('Approved', $dom), 'value' => 0),
+                               array('text' => __('Pending', $dom),  'value' => 1),
+                               array('text' => __('Rejected', $dom), 'value' => 2));
+        $renderer->assign('statuslevels', $statuslevels);
 
-        $feeds = array( array('text' => _EZCOMMENTS_ATOM, 'value' => 'atom'),
-                        array('text' => _EZCOMMENTS_RSS,  'value' => 'rss'));
-        $renderer->assign('feeds', $feeds); 
-        
+        $feeds = array( array('text' => __('Atom 0.3', $dom), 'value' => 'atom'),
+                        array('text' => __('RSS 2.0', $dom),  'value' => 'rss'));
+        $renderer->assign('feeds', $feeds);
+
         return true;
     }
 
 
     function handleCommand(&$renderer, &$args)
     {
+        $dom = ZLanguage::getModuleDomain('EZComments');
         // Security check
         if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError('index.php');
-        }  
+        }
         if ($args['commandName'] == 'submit') {
-            $ok = $renderer->pnFormIsValid(); 
+            $ok = $renderer->pnFormIsValid();
             $data = $renderer->pnFormGetValues();
 
             if(empty($data['ezcomments_itemsperpage'])) {
                 $ifield = & $renderer->pnFormGetPluginById('ezcomments_itemsperpage');
-                $ifield->setError(DataUtil::formatForDisplay(_EZCOMMENTS_MISSINGVALUE));
+                $ifield->setError(DataUtil::formatForDisplay(__('missing value', $dom)));
                 $ok = false;
             }
             if(empty($data['ezcomments_modlinkcount'])) {
                 $ifield = & $renderer->pnFormGetPluginById('ezcomments_modlinkcount');
-                $ifield->setError(DataUtil::formatForDisplay(_EZCOMMENTS_MISSINGVALUE));
+                $ifield->setError(DataUtil::formatForDisplay(__('missing value', $dom)));
                 $ok = false;
             }
             if(empty($data['ezcomments_blacklinkcount'])) {
                 $ifield = & $renderer->pnFormGetPluginById('ezcomments_blacklinkcount');
-                $ifield->setError(DataUtil::formatForDisplay(_EZCOMMENTS_MISSINGVALUE));
+                $ifield->setError(DataUtil::formatForDisplay(__('missing value', $dom)));
                 $ok = false;
             }
             if(empty($data['ezcomments_feedcount'])) {
                 $ifield = & $renderer->pnFormGetPluginById('ezcomments_feedcount');
-                $ifield->setError(DataUtil::formatForDisplay(_EZCOMMENTS_MISSINGVALUE));
+                $ifield->setError(DataUtil::formatForDisplay(__('missing value', $dom)));
                 $ok = false;
             }
             if(empty($data['ezcomments_commentsperpage'])) {
                 $ifield = & $renderer->pnFormGetPluginById('ezcomments_commentsperpage');
-                $ifield->setError(DataUtil::formatForDisplay(_EZCOMMENTS_MISSINGVALUE));
+                $ifield->setError(DataUtil::formatForDisplay(__('missing value', $dom)));
                 $ok = false;
             }
             if (!$ok) {
@@ -103,7 +105,7 @@ class EZComments_admin_modifyconfighandler
             pnModSetVar('EZComments', 'anonusersrequirename',    $data['ezcomments_anonusersrequirename']);
             pnModSetVar('EZComments', 'modifyowntime',           $data['ezcomments_modifyowntime']);
 
-            LogUtil::registerStatus(_CONFIGUPDATED);
+            LogUtil::registerStatus(__('Done! Module configuration updated.', $dom));
         }
         return true;
     }
