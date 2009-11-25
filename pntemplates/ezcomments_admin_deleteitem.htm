@@ -1,19 +1,22 @@
 <!--[*  $Id$  *]-->
 <!--[include file="ezcomments_admin_menu.htm"]-->
-<div class="pn-admincontainer">
-  <h2><!--[gt text="Delete"]--></h2>
-  <form class="pn-adminform" action="<!--[pnmodurl modname="EZComments" type="admin" func="deleteitem"]-->" method="post" enctype="application/x-www-form-urlencoded">
-    <fieldset>
-      <legend><!--[gt text="Delete"]--></legend>
-      <input type="hidden" name="authid" value="<!--[pnsecgenauthkey module="EZComments"]-->" />
-      <input type="hidden" name="confirmation" value="1" />
-      <input type="hidden" name="mod" value="<!--[$name|pnvarprepfordisplay]-->" />
-      <input type="hidden" name="objectid" value="<!--[$objectid|pnvarprepfordisplay]-->" />
-      <div class="pn-adminformrow pn-adminformbuttons">
-        <label for="ezcomments_submit"><!--[gt text='Confirm deletion of all comments for object id %1$s attached to module %2$s' tag1=$objectid tag2=$name]--></label>
-        <input id="ezcomments_submit" name="submit" type="submit" value="<!--[gt text="Delete"]-->" />
-      </div>
-    </fieldset>
-  </form>
-  <a href="<!--[pnmodurl modname="EZComments" type="admin" func="main"]-->"><!--[gt text='Cancel deletion of all comments for object id %1$s attached to module %2$s' tag1=$objectid tag2=$name]--></a>
+<div class="z-admincontainer">
+    <h2><!--[gt text="Delete item"]--></h2>
+    <p class="z-warningmsg"><!--[gt text='Confirm deletion of all comments for object ID \'%1$s\' attached to module \'%2$s\'' tag1=$objectid tag2=$name]--></p>
+    <form class="z-form" action="<!--[pnmodurl modname="EZComments" type="admin" func="deleteitem"]-->" method="post" enctype="application/x-www-form-urlencoded">
+        <div>
+            <input type="hidden" name="authid" value="<!--[insert name='generateauthkey' module='EZComments']-->" />
+            <input type="hidden" name="confirmation" value="1" />
+            <input type="hidden" name="mod" value="<!--[$name|pnvarprepfordisplay]-->" />
+            <input type="hidden" name="objectid" value="<!--[$objectid|pnvarprepfordisplay]-->" />
+            <fieldset>
+                <legend><!--[gt text="Confirmation prompt"]--></legend>
+                <div class="z-formbuttons">
+                    <!--[pnbutton src='button_ok.gif' set='icons/small' __alt='Delete' __title='Delete']-->
+                    <a href="<!--[pnmodurl modname='EZComments' type='admin' func='main']-->"><!--[pnimg modname='core' src='button_cancel.gif' set='icons/small' __alt='Cancel' __title='Cancel']--></a>
+                </div>
+            </fieldset>
+        </div>
+    </form>
 </div>
+

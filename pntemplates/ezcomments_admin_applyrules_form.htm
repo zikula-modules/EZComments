@@ -1,27 +1,31 @@
 <!--[*  $Id$  *]-->
 <!--[include file="ezcomments_admin_menu.htm"]-->
-<div class="pn-admincontainer">
-  <h2><!--[gt text="Re-apply moderation rules"]--></h2>
-  <p><!--[gt text="This page allows to to re-apply the defined moderation rules to all existing comments allowing all comments to be re-checked if you change your moderation rules."]--></p>
-  <form class="pn-adminform" action="<!--[pnmodurl modname="EZComments" type="admin" func="applyrules"]-->" method="post" enctype="application/x-www-form-urlencoded">
-    <fieldset>
-      <legend><!--[gt text="Re-apply moderation rules"]--></legend>
-      <input type="hidden" name="authid" value="<!--[pnsecgenauthkey module="EZComments"]-->" />
-      <input type="hidden" name="confirmation" value="1" />
-      <div class="pn-adminformrow">
-        <label for="ezcomments_allcomments"><!--[gt text="Apply moderation rules to all comments"]--></label>
-        <input id="ezcomments_allcomments" name="allcomments" type="checkbox" value="1" />
-      </div>
-      <p><!--[gt text="OR"]--></p>
-      <div class="pn-adminformrow">
-        <label for="ezcomments_status"><!--[gt text="Comments with the status"]--></label>
-        <select id="ezcomments_status" name="status">
-          <!--[html_options options=$statuslevels]-->
-        </select>
-      </div>
-    </fieldset>
-    <div class="pn-adminformrow pn-adminformbuttons">
-      <input id="ezcomments_submit" name="submit" type="submit" value="<!--[gt text="Submit"]-->" />
-    </div>
-  </form>
+<div class="z-admincontainer">
+    <h2><!--[gt text="Re-apply moderation rules"]--></h2>
+    <p class="z-informationmsg"><!--[gt text="This page allows to to re-apply the defined moderation rules to all existing comments allowing all comments to be re-checked if you change your moderation rules."]--></p>
+    <form class="z-form" action="<!--[pnmodurl modname="EZComments" type="admin" func="applyrules"]-->" method="post" enctype="application/x-www-form-urlencoded">
+        <div>
+            <input type="hidden" name="authid" value="<!--[insert name='generateauthkey' module='EZComments']-->" />
+            <input type="hidden" name="confirmation" value="1" />
+            <fieldset>
+                <legend><!--[gt text="Re-apply moderation rules"]--></legend>
+                <div class="z-formrow">
+                    <label for="ezcomments_allcomments"><!--[gt text="Apply moderation rules to all comments"]--></label>
+                    <input id="ezcomments_allcomments" name="allcomments" type="checkbox" value="1" />
+                </div>
+                <div class="z-formrow">
+                    <span class="z-label"><!--[gt text="OR"]--></span>
+                </div>
+                <div class="z-formrow">
+                    <label for="ezcomments_status"><!--[gt text="Comments with the status"]--></label>
+                    <select id="ezcomments_status" name="status">
+                        <!--[html_options options=$statuslevels]-->
+                    </select>
+                </div>
+            </fieldset>
+            <div class="z-formbuttons">
+                <!--[pnbutton src='button_ok.gif' set='icons/small' __alt='Submit' __title='Submit']-->
+            </div>
+        </div>
+    </form>
 </div>

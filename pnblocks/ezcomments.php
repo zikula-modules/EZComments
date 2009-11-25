@@ -25,14 +25,17 @@ function EZComments_EZCommentsblock_init()
  */
 function EZComments_EZCommentsblock_info()
 { 
-    // Values
-    return array('text_type'      => 'EZComments',
-                 'module'         => 'EZComments',
-                 'text_type_long' => 'Show latest comments',
-                 'allow_multiple' => true,
-                 'form_content'   => false,
-                 'form_refresh'   => false,
-                 'show_preview'   => true);
+    $dom = ZLanguage::getModuleDomain('EZComments');
+
+    return array('module'          => 'EZComments',
+                 'text_type'       => DataUtil::formatForDisplay(__('Comments', $dom)),
+                 'text_type_long'  => DataUtil::formatForDisplay(__('Show latest comments', $dom)),
+                 'allow_multiple'  => true,
+                 'form_content'    => false,
+                 'form_refresh'    => false,
+                 'show_preview'    => true,
+                 'admin_tableless' => true);
+
 } 
 
 /**
@@ -55,20 +58,23 @@ function EZComments_EZCommentsblock_display($blockinfo)
     
     // Get variables from content block
     $vars = pnBlockVarsFromContent($blockinfo['content']);
-    extract($vars);
 
-    if (!isset($numentries)) {
-        $numentries = 5;
-    } 
-    if (!isset($showdate)) {
-        $showdate = 0;
-    } 
-    if (!isset($showusername)) {
-        $showusername = 0;
-    } 
-    if (!isset($linkusername)) {
-        $linkusername = 0;
-    } 
+    // Defaults
+    if (!isset($vars['numentries'])) {
+        $vars['numentries'] = 5;
+    }
+
+    if (!isset($vars['showdate'])) {
+        $vars['showdate'] = 0;
+    }
+
+    if (!isset($vars['showusername'])) {
+        $vars['showusername'] = 0;
+    }
+
+    if (!isset($vars['linkusername'])) {
+        $vars['linkusername'] = 0;
+    }
 
     $options = array('numitems' => $numentries);
                      
@@ -83,14 +89,11 @@ function EZComments_EZCommentsblock_display($blockinfo)
 
     
     // get the comments
-    $items = pnModAPIFunc('EZComments', 
-                          'user', 
-                          'getall', 
-                          $options);
+    $items = pnModAPIFunc('EZComments', 'user', 'getall', $options);
     // augment the info
     $comments = EZComments_prepareCommentsForDisplay($items);
     
-    $renderer = new pnRender('EZComments'); 
+    $renderer = & pnRender::getInstance('EZComments');
     $renderer->assign($vars);
     $renderer->assign('comments', $comments); 
 
@@ -111,20 +114,45 @@ function EZComments_EZCommentsblock_modify($blockinfo)
         return false;
     } 
     // Get current content
-    $vars = pnBlockVarsFromContent($blockinfo['content']); 
+    $vars = pnBlockVarsFromContent($blockinfo['content']);
+
+    // Defaults
+    if (!isset($vars['numentries'])) {
+        $vars['numentries'] = 5;
+    }
+
+    if (!isset($vars['showdate'])) {
+        $vars['showdate'] = 0;
+    }
+
+    if (!isset($vars['showusername'])) {
+        $vars['showusername'] = 0;
+    }
+
+    if (!isset($vars['linkusername'])) {
+        $vars['linkusername'] = 0;
+    }
+
+    $options = array('numitems' => $numentries);
+                     
+    if (isset($mod) && $mod != '*') {
+        $options['mod'] = $mod;
+    }
+
+    if (!isset($showpending) || $showpending == 0) {
+        // don't show pending comments
+        $options['status'] = 0;
+    }
 
     // get all modules with EZComments active
-    $usermods = pnModAPIFunc('Modules', 
-                             'admin', 
-                             'gethookedmodules', 
-                             array('hookmodname'=> 'EZComments'));
+    $usermods = pnModAPIFunc('Modules', 'admin', 'gethookedmodules', array('hookmodname'=> 'EZComments'));
 
     // Create output object
-    $renderer = new pnRender('EZComments'); 
+    $renderer = & pnRender::getInstance('EZComments');
     // As Admin output changes often, we do not want caching.
     $renderer->caching = false; 
     // assign the block vars
-    $renderer->assign($vars); 
+    $renderer->assign($vars);
 
     $renderer->assign('usermods', array_keys($usermods));
     

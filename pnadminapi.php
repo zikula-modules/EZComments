@@ -369,8 +369,8 @@ function EZComments_adminapi_getlinks()
 
     if (SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
         $links[] = array('url' => pnModURL('EZComments', 'admin'), 'text' => __('View comments', $dom));
-        $links[] = array('url' => pnModURL('EZComments', 'admin', 'cleanup'), 'text' => __('Delete orphanded comments', $dom));
-        $links[] = array('url' => pnModURL('EZComments', 'admin', 'migrate'), 'text' => __('Migrate Comments', $dom));
+        $links[] = array('url' => pnModURL('EZComments', 'admin', 'cleanup'), 'text' => __('Delete orphaned comments', $dom));
+        $links[] = array('url' => pnModURL('EZComments', 'admin', 'migrate'), 'text' => __('Migrate comments', $dom));
         $links[] = array('url' => pnModURL('EZComments', 'admin', 'purge'), 'text' => __('Purge comments', $dom), 'linebreak' => true);
         $links[] = array('url' => pnModURL('EZComments', 'admin', 'stats'), 'text' =>  __('Comment statistics', $dom));
         $links[] = array('url' => pnModURL('EZComments', 'admin', 'applyrules'), 'text' => __('Re-apply moderation rules', $dom));

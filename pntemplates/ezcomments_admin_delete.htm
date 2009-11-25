@@ -1,23 +1,24 @@
 <!--[*  $Id$  *]-->
 <!--[include file="ezcomments_admin_menu.htm"]-->
-<div class="pn-admincontainer">
-  <h2><!--[gt text="Delete"]--></h2>
-  <form class="pn-adminform" action="<!--[pnmodurl modname="EZComments" type="admin" func="delete"]-->" method="post" enctype="application/x-www-form-urlencoded">
-    <fieldset>
-      <legend><!--[gt text="Delete"]--></legend>
-      <input type="hidden" name="authid" value="<!--[pnsecgenauthkey module="EZComments"]-->" />
-      <input type="hidden" name="confirmation" value="1" />
-      <input type="hidden" name="id" value="<!--[$id|pnvarprepfordisplay]-->" />
-      <input type="hidden" name="redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" />
-      <div class="pn-adminformrow pn-adminformbuttons">
-        <label for="ezcomments_submit"><!--[gt text="Confirm deletion?"]--></label>
-        <input id="ezcomments_submit" name="submit" type="submit" value="<!--[gt text="Delete"]-->" />
-      </div>
-    </fieldset>
-  </form>
-  <!--[if $redirect neq '']-->
-  <a href="<!--[$redirect|pnvarprepfordisplay]-->"><!--[gt text="Cancel item deletion."]--></a>
-  <!--[else]-->
-  <a href="<!--[pnmodurl modname="EZComments" type="admin" func="main"]-->"><!--[gt text="Cancel item deletion."]--></a>
-  <!--[/if]-->
+<div class="z-admincontainer">
+    <h2><!--[gt text="Delete"]--></h2>
+    <form class="z-form" action="<!--[pnmodurl modname="EZComments" type="admin" func="delete"]-->" method="post" enctype="application/x-www-form-urlencoded">
+        <div>
+            <input type="hidden" name="authid" value="<!--[insert name='generateauthkey' module='EZComments']-->" />
+            <input type="hidden" name="confirmation" value="1" />
+            <input type="hidden" name="id" value="<!--[$id|pnvarprepfordisplay]-->" />
+            <input type="hidden" name="redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" />
+            <fieldset>
+                <legend><!--[gt text="Confirmation prompt"]--></legend>
+                <div class="z-formbuttons">
+                    <!--[pnbutton src='button_ok.gif' set='icons/small' __alt='Delete' __title='Delete']-->
+                    <!--[if $redirect neq '']-->
+                    <a href="<!--[$redirect|pnvarprepfordisplay]-->"><!--[pnimg modname='core' src='button_cancel.gif' set='icons/small' __alt='Cancel' __title='Cancel']--></a>
+                    <!--[else]-->
+                    <a href="<!--[pnmodurl modname='EZComments' type='admin' func='main']-->"><!--[pnimg modname='core' src='button_cancel.gif' set='icons/small' __alt='Cancel' __title='Cancel']--></a>
+                    <!--[/if]-->
+                </div>
+            </fieldset>
+        </div>
+    </form>
 </div>

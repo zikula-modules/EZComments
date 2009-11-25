@@ -1,25 +1,25 @@
 <!--[nocache]--><!--[php]-->header("Content-type: text/xml");<!--[/php]--><!--[/nocache]-->
 <?xml version="1.0" encoding="<!--[charset]-->"?>
 <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/">
-<channel>
-	<title><!--[pnconfiggetvar name=sitename]--></title>
-	<link><!--[pngetbaseurl]--></link>
-	<description><!--[pnconfiggetvar name=backend_title]--></description>
-	<language><!--[pnconfiggetvar name=backend_language]--></language>
-	<image>
-		<title><!--[pnconfiggetvar name=sitename]--></title>
-		<url><!--[pngetbaseurl]-->images/<!--[pnconfiggetvar name=site_logo]--></url>
-		<link><!--[pngetbaseurl]--></link>
-	</image>
-	<webMaster><!--[pnconfiggetvar name=adminmail]--></webMaster>
-	<!--[foreach from=$comments item=comment]-->
-		<item>
-			<title><!--[$comment.subject|pnvarprepfordisplay]--></title>
-			<link><!--[pngetbaseurl]--><!--[$comment.url|pnvarprepfordisplay]-->#comment<!--[$comment.id|pnvarprepfordisplay]--></link>
-			<pubDate><!--[$comment.date|strtotime|date_format:"%a, %d %b %Y %H:%M:%S %z"]--></pubDate>
-			<guid><!--[pngetbaseurl]--><!--[$comment.url|pnvarprepfordisplay]-->#comment<!--[$comment.id|pnvarprepfordisplay]--></guid>
-			<description><!--[$comment.comment|pnvarprepfordisplay]--></description>
-		</item>
-	<!--[/foreach]-->
+    <channel>
+        <title><!--[pnconfiggetvar name=sitename]--></title>
+    <link><!--[pngetbaseurl]--></link>
+    <description><!--[pnconfiggetvar name=backend_title]--></description>
+    <language><!--[pnconfiggetvar name=backend_language]--></language>
+    <image>
+        <title><!--[pnconfiggetvar name=sitename]--></title>
+        <url><!--[pngetbaseurl]-->images/<!--[pnconfiggetvar name=site_logo]--></url>
+    <link><!--[pngetbaseurl]--></link>
+</image>
+<webMaster><!--[pnconfiggetvar name=adminmail]--></webMaster>
+<!--[foreach from=$comments item=comment]-->
+<item>
+    <title><!--[$comment.subject|pnvarprepfordisplay]--></title>
+<link><!--[pngetbaseurl]--><!--[$comment.url|pnvarprepfordisplay]-->#comment<!--[$comment.id|pnvarprepfordisplay]--></link>
+<pubDate><!--[$comment.date|strtotime|date_format:"%a, %d %b %Y %H:%M:%S %z"]--></pubDate>
+<guid><!--[pngetbaseurl]--><!--[$comment.url|pnvarprepfordisplay]-->#comment<!--[$comment.id|pnvarprepfordisplay]--></guid>
+<description><!--[$comment.comment|pnvarprepfordisplay]--></description>
+</item>
+<!--[/foreach]-->
 </channel>
 </rss>
