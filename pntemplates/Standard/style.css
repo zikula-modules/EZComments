@@ -1,50 +1,55 @@
 /** Template Standard for EZComments comments display **/
 
-.ezc_box {
-    margin: 2px;
-    padding: 5px;
+.ezc_bg1 {
+    background-color: #F2F2F2;
 }
-.ezc_commentscroll {
-    margin-top: 5px;
-    max-height: 250px;
-    overflow-x:  hidden;
-    overflow-y: auto;
+.ezc_bg2 {
+    background-color: #EAEAEA;
 }
 .ezc_comment {
-
+    border-radius: 6px;
+    -webkit-border-radius: 6px;    /* for Safari */
+    -moz-border-radius: 6px;       /* for Firefox */
+    overflow: hidden;              /* for MSIE8 */
+    color:#444444;
+    margin:15px 0;
+    overflow:hidden;
+    padding:5px 10px;
 }
-.ezc_info {
-    float: right;
-    margin: 5px;
-    padding: 5px;
-    width: 140px;
-    min-height: 100px;
-    text-align: center;
+.ezc_comment .ezc_author {
+    border-right: 1px solid white;
+    width:25%;
+    float:left;
 }
-.ezc_title {
-    font-weight: bold;
-    font-size: 1.2em;
-    font-variant: small-caps;
+.ezc_comment .ezc_author .ezc_avatar {
+    padding:5px;
+    text-align:center;
 }
-.ezc_avatar {
-    text-align: center;
+.ezc_comment ul.ezc_options,
+.ezc_comment ul.ezc_options li {
+    list-style-image:none;
+    list-style-position:outside;
+    list-style-type:none;
+    margin:0;
+    padding:5px;
+    text-align:center;
 }
-.ezc_userinfo {
-    font-size: 0.9em;
-    text-align: left;
+.ezc_comment .ezc_body {
+    background: inherit;
+    border: none;
+    padding: 0;
+    color: #333333;
+    width:74%;
+    float:right;
 }
-.ezc_icons {
-    text-align: center;
+.ezc_comment .ezc_body .ezc_info {
+    border-bottom:1px solid white;
+    height:1.5em;
+    padding:5px;
 }
-.ezc_pager {
-    text-align: center;
-}
-.ezc_line {
-    clear: both;
-}
-.ezc_line hr {
-    border:0px;
-    border-top:solid 1px #C0C0C0;
-    border-bottom:transparent;
-    margin-top:10px;
+.ezc_comment .ezc_body .ezc_content {
+    height:auto !important;
+    min-height:4em;
+    overflow:hidden;
+    padding:5px;
 }

@@ -152,9 +152,10 @@ function EZComments_user_view($args)
         $commentcount = count($comments);
     }
     // create the pnRender object
-    // don't use caching (for now...)
-    $renderer = & pnRender::getInstance('EZComments', false);
+    $renderer = & pnRender::getInstance('EZComments', false, null, true);
 
+    $renderer->assign('avatarpath', pnModGetVar('Users', 'avatarpath'));
+    $renderer->assign('msgmodule', pnConfigGetVar('messagemodule', ''));
     $renderer->assign('comments',   $comments);
     $renderer->assign('commentcount', $commentcount);
     $renderer->assign('modinfo',    pnModGetInfo(pnModGetIDFromName($mod)));

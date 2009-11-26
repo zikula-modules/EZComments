@@ -1,65 +1,59 @@
 <!--[*  $Id$ *]-->
 
-<a id="comments"></a>
-
 <!--[if $comments eq true]-->
-<!--[* Here we show the given comments *]-->
 
-<h3><!--[gt text="Comments" domain="module_ezcomments"]--></h3>
+<h3 id="comments"><!--[gt text="Comments" domain="module_ezcomments"]--></h3>
+
 <!--[if $allowadd]-->
 <a href="#commentform"><!--[gt text="Add a new comment" domain="module_ezcomments"]--></a>
 <!--[/if]-->
-<!--[pnmodavailable modname="InterCom" assign="intercom"]-->
 
 <!--[foreach from=$comments item="comment"]-->
-<div class="ezc_box">
-    <div class="ezc_info">
+<div class="ezc_comment z-clearfix <!--[cycle values='ezc_bg1,ezc_bg2']-->" >
+    <div class="ezc_author">
         <div class="ezc_avatar">
-            <!--[if $comment._YOURAVATAR ne "" and $comment._YOURAVATAR ne "blank.gif"]-->
-            <img src="<!--[pngetbaseurl]-->/images/avatar/<!--[$comment._YOURAVATAR]-->" />
+            <!--[if $comment.anonname neq '' && $comment.anonwebsite neq '']-->
+            <strong><a href="<!--[$comment.anonwebsite]-->"><!--[$comment.anonname]--></a></strong>
+            <!--[elseif $comment.anonname neq '' && $comment.anonwebsite eq '']-->
+            <strong><!--[$comment.anonname]--></strong>
             <!--[else]-->
-            <img src="<!--[pngetbaseurl]-->images/icons/large/personal.gif" />
-            <!--[/if]-->
-        </div>
-        <div class="ezc_userinfo">
-            <!--[gt text="Author" domain="module_ezcomments"]-->:
-            <!--[if $comment.anonname ne '']-->
-            <!--[if $comment.anonwebsite != '']-->
-            <a href="<!--[$comment.anonwebsite]-->">
-                <!--[/if]-->
-                <!--[$comment.anonname]-->
-                <!--[if $comment.anonwebsite ne '']-->
-            </a>
-            <!--[/if]-->
-            <!--[else]-->
-            <!--[$comment.pn_uname|userprofilelink]-->
+            <strong><!--[$comment.pn_uname|userprofilelink]--></strong>
             <!--[/if]-->
             <br />
-            <!--[$comment.date|pndate_format]-->
-        </div>
-        <div class="ezc_icons">
-            <!--[if $intercom]-->
-            <!--[if $comment.anonmail ne '']-->
-            <a href="mailto:<!--[$comment.anonmail]-->"><img src="<!--[pngetbaseurl]-->images/icons/extrasmall/mail_generic.gif" alt="<!--[gt text="Send mail to user" domain="module_ezcomments"]-->" title="<!--[gt text="Send mail to user" domain="module_ezcomments"]-->" /></a>
-            <!--[else]-->
-            <a href="<!--[pnmodurl modname="InterCom" func="newpm" uid=$comment.uid]-->"><img src="<!--[pngetbaseurl]-->images/icons/extrasmall/mail_generic.gif" alt="<!--[gt text="Send mail to user" domain="module_ezcomments"]-->" title="<!--[gt text="Send mail to user" domain="module_ezcomments"]-->" /></a>
+            <!--[assign var='defaultavatar' value="`$baseurl`modules/EZComments/pnimages/gravatar_80.jpg"]-->
+            <!--[if $comment.anonname eq '']-->
+            <!--[if $comment._YOURAVATAR neq '' && $comment._YOURAVATAR neq 'blank.gif' && $comment._YOURAVATAR neq 'gravatar.gif']-->
+            <!--[assign var='defaultavatar' value="`$baseurl``$avatarpath`/`$comment._YOURAVATAR`"|default:$defaultavatar]-->
             <!--[/if]-->
-
-            <!--[if $comment.del]-->
-            <a href="<!--[pnmodurl fqurl="true" modname=EZComments type=user func=modify id=$comment.id redirect=$redirect]-->"><img src="<!--[pngetbaseurl]-->images/icons/extrasmall/14_layer_deletelayer.gif"></a>
-            <!--[/if]-->
-
+            <img src="<!--[gravatar email=$comment.pn_email size=80 default=$defaultavatar]-->" alt="<!--[$comment.anonname]-->'s Avatar" />
             <!--[/if]-->
         </div>
+        <ul class="ezc_options">
+            <li><strong><!--[gt text="Posted:"]--> </strong></li>
+            <li><!--[$comment.date|pndate_format:'datetimebrief']--></li>
+            <!--[if $pncore.logged_in eq true]-->
+            <li>
+                <!--[$comment.pn_uname|userprofilelink:'':"`$baseurl`images/icons/extrasmall/personal.gif"]-->
+                <!--[if $msgmodule]-->
+                <a href="<!--[pnmodurl modname=$msgmodule func="inbox" func="newpm" uid=$comment.uid]-->"><!--[pnimg modname=core src=mail_generic.gif set='icons/extrasmall' __title="Send mail to user" __alt="Send mail to user"]--></a>
+                <!--[elseif $comment.anonmail ne '']-->
+                <a href="mailto:<!--[$comment.anonmail]-->"><!--[pnimg modname=core src=mail_generic.gif set='icons/extrasmall' __title="Send mail to user" __alt="Send mail to user"]--></a>
+                <!--[/if]-->
+                <!--[if $comment.del]-->
+                <a href="<!--[pnmodurl fqurl="true" modname=EZComments type=user func=modify id=$comment.id redirect=$redirect]-->"><!--[pnimg modname=core src=14_layer_deletelayer.gif set='icons/extrasmall' __title="Delete comment" __alt="Delete comment"]--></a>
+                <!--[/if]-->
+            </li>
+            <!--[/if]-->
+        </ul>
     </div>
-    <div class="ezc_comment">
-        <span class="ezc_title"><!--[$comment.subject|pnvarprepfordisplay]--></span>
-        <div class="ezc_commentscroll">
+
+    <div class="ezc_body">
+        <div class="ezc_info">
+            <strong class="ezc_title"><!--[$comment.subject|pnvarprepfordisplay]--></strong>
+        </div>
+        <div class="ezc_content">
             <!--[$comment.comment|pnvarprepfordisplay|nl2br|pnmodcallhooks]-->
         </div>
-    </div>
-    <div class="ezc_line">
-        <hr />
     </div>
 </div>
 <!--[foreachelse]-->
@@ -67,17 +61,13 @@
 <!--[/foreach]-->
 
 <!--[if $enablepager]-->
-<div class="z-center">
-    <!--[pager show="page" rowcount=$pager.numitems limit=$pager.itemsperpage posvar=comments_startnum shift=1]-->
-</div>
+<div class="z-center"><!--[pager show="page" rowcount=$pager.numitems limit=$pager.itemsperpage posvar=comments_startnum shift=1]--></div>
 <!--[/if]-->
 
 <!--[/if]-->
 
 <!--[if $allowadd]-->
-<a id="commentform"></a>
-<!--[* This is the form to comment. It is shown only, when the user is allowed to. *]-->
-<form class="z-form z-linear" id="post" action="<!--[pnmodurl modname=EZComments func=create]-->" method="post">
+<form class="z-form z-linear" id="commentform" action="<!--[pnmodurl modname=EZComments func=create]-->" method="post">
     <div>
         <input type="hidden" name="authid" id="authid" value="<!--[pnsecgenauthkey module=EZComments]-->" />
         <input type="hidden" name="redirect" id="EZComments_redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" />
@@ -100,6 +90,10 @@
                 <label for="anonmail"><!--[gt text="E-mail address (will not be published)" domain="module_ezcomments"]--></label>
                 <input type="text" name="anonmail" id="anonmail" size="50" maxlength="255" />
             </div>
+            <div class="z-formrow">
+                <label for="anonwebsite"><!--[gt text="Homepage" domain="module_ezcomments"]--></label>
+                <input type="text" name="anonwebsite" id="anonwebsite" size="50" maxlength="255" />
+            </div>
             <!--[/if]-->
             <div class="z-formrow">
                 <label for="message"><!--[gt text="Comment" domain="module_ezcomments"]--></label>
@@ -119,4 +113,3 @@
     </p>
 </div>
 <!--[/if]-->
-
