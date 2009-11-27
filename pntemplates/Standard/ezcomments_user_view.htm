@@ -22,7 +22,7 @@
             <br />
             <!--[assign var='defaultavatar' value="`$baseurl`modules/EZComments/pnimages/gravatar_80.jpg"]-->
             <!--[if $comment.anonname eq '']-->
-            <!--[if $comment._YOURAVATAR neq '' && $comment._YOURAVATAR neq 'blank.gif' && $comment._YOURAVATAR neq 'gravatar.gif']-->
+            <!--[if isset($comment._YOURAVATAR) && !empty($comment._YOURAVATAR) && $comment._YOURAVATAR neq 'blank.gif' && $comment._YOURAVATAR neq 'gravatar.gif']-->
             <!--[assign var='defaultavatar' value="`$baseurl``$avatarpath`/`$comment._YOURAVATAR`"|default:$defaultavatar]-->
             <!--[/if]-->
             <img src="<!--[gravatar email=$comment.pn_email size=80 default=$defaultavatar]-->" alt="<!--[$comment.anonname]-->'s Avatar" />
