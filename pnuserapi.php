@@ -185,14 +185,14 @@ function EZComments_userapi_create($args)
     // ContactList ignore check. If the user is ignored by the
     // content owner the user will not be able to post any comment...
     if ((pnUserGetVar('uid') > 1) && ($owneruid > 0) && pnModAvailable('ContactList') && pnModAPIFunc('ContactList', 'user', 'isIgnored', array('iuid' => pnUserGetVar('uid'), 'uid' => $owneruid))) {
-        return LogUtil::registerError(__('Error! Sorry! The user ignores you', $dom));
+        return LogUtil::registerError(__('Error! Sorry! The user ignores you.', $dom));
     }
 
     // check unregistered user included name (if required)
     $anonname = trim($anonname);
     if (!pnUserLoggedIn()) {
         if (pnModGetVar('EZComments', 'anonusersrequirename') && empty($anonname)) {
-            return LogUtil::registerError(__('Error! Sorry! The name field is required. Comment rejected', $dom));
+            return LogUtil::registerError(__('Error! Sorry! The name field is required. Comment rejected.', $dom));
         }
     }
     if (!isset($replyto) || empty($replyto)) {
@@ -273,7 +273,7 @@ function EZComments_userapi_create($args)
 
     // check for a blacklisted return
     if (in_array(2, $status)) {
-        return LogUtil::registerError(__('Your comment contains unacceptable content and has been rejected', $dom));
+        return LogUtil::registerError(__('Error! Your comment contains unacceptable content and has been rejected.', $dom));
     }
     // check for a moderated return
     $maxstatus = 0;
@@ -306,10 +306,10 @@ function EZComments_userapi_create($args)
     // set an approriate status/errormsg
     switch ($maxstatus) {
         case '0':
-            LogUtil::registerStatus(__('Comment added', $dom));
+            LogUtil::registerStatus(__('Done! Comment added.', $dom));
             break;
         case '1':
-            LogUtil::registerStatus(__('Your comment was held for moderation and will be reviewed shortly', $dom));
+            LogUtil::registerStatus(__('Done! Your comment was held for moderation and will be reviewed shortly.', $dom));
             break;
     }
 

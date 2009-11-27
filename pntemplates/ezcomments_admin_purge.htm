@@ -7,7 +7,7 @@
             <input type="hidden" name="authid" value="<!--[insert name='generateauthkey' module='EZComments']-->" />
             <input type="hidden" name="confirmation" value="1" />
             <fieldset>
-                <legend><!--[gt text="Purge comments"]--></legend>
+                <legend><!--[gt text="Options"]--></legend>
                 <div class="z-formrow">
                     <label for="ezcomments_purgepending"><!--[gt text="Purge all pending comments"]--></label>
                     <input id="ezcomments_purgepending" name="purgepending" type="checkbox" />
@@ -19,6 +19,7 @@
             </fieldset>
             <div class="z-formbuttons">
                 <!--[pnbutton src='button_ok.gif' set='icons/small' __alt='Delete' __title='Delete']-->
+                <a href="<!--[pnmodurl modname='EZComments' type='admin' func='main']-->"><!--[pnimg modname='core' src='button_cancel.gif' set='icons/small' __alt='Cancel' __title='Cancel']--></a>
             </div>
         </div>
     </form>

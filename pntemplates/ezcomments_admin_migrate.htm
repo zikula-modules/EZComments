@@ -6,14 +6,15 @@
         <div>
             <input type="hidden" name="authid" value="<!--[insert name='generateauthkey' module='EZComments']-->" />
             <fieldset>
-                <legend><!--[gt text="Import comments from other modules"]--></legend>
+                <legend><!--[gt text="Migration"]--></legend>
                 <div class="z-formrow">
-                    <label for="ezcomments_migrate"><!--[gt text="Migrate"]--></label>
+                    <label for="ezcomments_migrate"><!--[gt text="Module"]--></label>
                     <select id="ezcomments_migrate" name="migrate"><!--[html_options options=$selectitems]--></select>
                 </div>
             </fieldset>
             <div class="z-formbuttons">
                 <!--[pnbutton src='button_ok.gif' set='icons/small' __alt='Start migration' __title='Start migration']-->
+                <a href="<!--[pnmodurl modname='EZComments' type='admin' func='main']-->"><!--[pnimg modname='core' src='button_cancel.gif' set='icons/small' __alt='Cancel' __title='Cancel']--></a>
             </div>
         </div>
     </form>

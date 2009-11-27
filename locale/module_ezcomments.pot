@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Zikula 1.2.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-27 11:01+0000\n"
+"POT-Creation-Date: 2009-11-27 13:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -45,15 +45,15 @@ msgid "Done! Item updated."
 msgstr ""
 
 #: pnadmin.php:253
-msgid "No migration plugins available"
+msgid "No migration plugins available."
 msgstr ""
 
 #: pnadmin.php:333
-msgid "No orphaned comments"
+msgid "No orphaned comments."
 msgstr ""
 
 #: pnadmin.php:375
-msgid "Error! Sorry! A general failure occurs"
+msgid "Error! Sorry! A general failure occurs."
 msgstr ""
 
 #: pnadmin.php:682 pntemplates/plugins/modifier.commentstatus.php:32
@@ -134,15 +134,16 @@ msgid "Error! Could not load items."
 msgstr ""
 
 #: pnuserapi.php:188
-msgid "Error! Sorry! The user ignores you"
+msgid "Error! Sorry! The user ignores you."
 msgstr ""
 
 #: pnuserapi.php:195
-msgid "Error! Sorry! The name field is required. Comment rejected"
+msgid "Error! Sorry! The name field is required. Comment rejected."
 msgstr ""
 
 #: pnuserapi.php:276
-msgid "Your comment contains unacceptable content and has been rejected"
+msgid ""
+"Error! Your comment contains unacceptable content and has been rejected."
 msgstr ""
 
 #: pnuserapi.php:303
@@ -150,11 +151,12 @@ msgid "Error! Creation attempt failed."
 msgstr ""
 
 #: pnuserapi.php:309
-msgid "Comment added"
+msgid "Done! Comment added."
 msgstr ""
 
 #: pnuserapi.php:312
-msgid "Your comment was held for moderation and will be reviewed shortly"
+msgid ""
+"Done! Your comment was held for moderation and will be reviewed shortly."
 msgstr ""
 
 #: pnuserapi.php:350 pntemplates/ezcomments_mail_newcomment.htm:1
@@ -191,7 +193,7 @@ msgid "website of anonymous user is invalid"
 msgstr ""
 
 #: pnincludes/ezcomments_admin_modifyhandler.class.php:106
-#: pnincludes/ezcomments_user_modifyhandler.class.php:123 pnuser.php:358
+#: pnincludes/ezcomments_user_modifyhandler.class.php:123
 msgid "Error! Sorry! The comment contains no text"
 msgstr ""
 
@@ -213,6 +215,10 @@ msgstr ""
 
 #: pnincludes/ezcomments_admin_modifyconfighandler.class.php:108
 msgid "Done! Module configuration updated."
+msgstr ""
+
+#: pnuser.php:358
+msgid "Error! Sorry! The comment contains no text."
 msgstr ""
 
 #: pnaccountapi.php:22
@@ -240,7 +246,6 @@ msgid "Migrate comments"
 msgstr ""
 
 #: pnadminapi.php:374 pntemplates/ezcomments_admin_purge.htm:4
-#: pntemplates/ezcomments_admin_purge.htm:10
 msgid "Purge comments"
 msgstr ""
 
@@ -251,7 +256,6 @@ msgstr ""
 
 #: pnadminapi.php:376 pntemplates/ezcomments_admin_applyrules_results.htm:4
 #: pntemplates/ezcomments_admin_applyrules_form.htm:4
-#: pntemplates/ezcomments_admin_applyrules_form.htm:11
 msgid "Re-apply moderation rules"
 msgstr ""
 
@@ -260,11 +264,11 @@ msgid "Settings"
 msgstr ""
 
 #: pninit.php:28 pninit.php:35 pninit.php:41
-msgid "Error creating hook"
+msgid "Error creating hook."
 msgstr ""
 
 #: pninit.php:124 pninit.php:129 pninit.php:134
-msgid "Error deleting hook"
+msgid "Error deleting hook."
 msgstr ""
 
 #: pntemplates/Standard/ezcomments_user_view.htm:8
@@ -273,7 +277,7 @@ msgid "Add a new comment"
 msgstr ""
 
 #: pntemplates/Standard/ezcomments_user_view.htm:32
-msgid "Posted:"
+msgid "Posted on"
 msgstr ""
 
 #: pntemplates/Standard/ezcomments_user_view.htm:38
@@ -314,7 +318,9 @@ msgid "E-mail address (will not be published)"
 msgstr ""
 
 #: pntemplates/Standard/ezcomments_user_view.htm:94
-msgid "Homepage"
+#: pntemplates/ezcomments_user_modify.htm:21
+#: pntemplates/ezcomments_admin_modify.htm:21
+msgid "Website"
 msgstr ""
 
 #: pntemplates/Standard/ezcomments_user_view.htm:99
@@ -340,12 +346,8 @@ msgid "Register/log in."
 msgstr ""
 
 #: pntemplates/ezcomments_user_modify.htm:4
-msgid "Edit Comment"
-msgstr ""
-
-#: pntemplates/ezcomments_user_modify.htm:21
-#: pntemplates/ezcomments_admin_modify.htm:21
-msgid "Website"
+#: pntemplates/ezcomments_admin_modify.htm:5
+msgid "Edit comment"
 msgstr ""
 
 #: pntemplates/ezcomments_user_modify.htm:26
@@ -382,8 +384,17 @@ msgid "Update"
 msgstr ""
 
 #: pntemplates/ezcomments_user_modify.htm:64
+#: pntemplates/ezcomments_admin_deleteitem.htm:16
+#: pntemplates/ezcomments_admin_purge.htm:22
+#: pntemplates/ezcomments_admin_migrate.htm:17
+#: pntemplates/ezcomments_admin_applyrules_results.htm:108
+#: pntemplates/ezcomments_admin_cleanup.htm:18
+#: pntemplates/ezcomments_admin_delete.htm:16
+#: pntemplates/ezcomments_admin_delete.htm:18
+#: pntemplates/ezcomments_admin_deletemodule.htm:15
 #: pntemplates/ezcomments_admin_modify.htm:61
-msgid "Cancel item edits"
+#: pntemplates/ezcomments_admin_applyrules_form.htm:28
+msgid "Cancel"
 msgstr ""
 
 #: pntemplates/ezcomments_block_ezcomments_modify.htm:2
@@ -449,17 +460,9 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: pntemplates/ezcomments_admin_deleteitem.htm:16
-#: pntemplates/ezcomments_admin_cleanup.htm:18
-#: pntemplates/ezcomments_admin_delete.htm:16
-#: pntemplates/ezcomments_admin_delete.htm:18
-#: pntemplates/ezcomments_admin_deletemodule.htm:15
-msgid "Cancel"
-msgstr ""
-
 #: pntemplates/ezcomments_mail_newcomment.htm:2
 #: pntemplates/ezcomments_mail_modcomment.htm:2
-msgid "User Name"
+msgid "Username"
 msgstr ""
 
 #: pntemplates/ezcomments_mail_newcomment.htm:3
@@ -477,6 +480,16 @@ msgstr ""
 msgid "Moderate"
 msgstr ""
 
+#: pntemplates/ezcomments_admin_purge.htm:10
+#: pntemplates/ezcomments_admin_applyrules_results.htm:20
+#: pntemplates/ezcomments_admin_applyrules_results.htm:68
+#: pntemplates/ezcomments_admin_modulestats.htm:13
+#: pntemplates/ezcomments_admin_stats.htm:13
+#: pntemplates/ezcomments_user_main.htm:30
+#: pntemplates/ezcomments_admin_view.htm:38
+msgid "Options"
+msgstr ""
+
 #: pntemplates/ezcomments_admin_purge.htm:12
 msgid "Purge all pending comments"
 msgstr ""
@@ -486,12 +499,21 @@ msgid "Purge all rejected comments"
 msgstr ""
 
 #: pntemplates/ezcomments_admin_migrate.htm:4
-#: pntemplates/ezcomments_admin_migrate.htm:9
 msgid "Import comments from other modules"
 msgstr ""
 
+#: pntemplates/ezcomments_admin_migrate.htm:9
+msgid "Migration"
+msgstr ""
+
 #: pntemplates/ezcomments_admin_migrate.htm:11
-msgid "Migrate"
+#: pntemplates/ezcomments_admin_applyrules_results.htm:17
+#: pntemplates/ezcomments_admin_applyrules_results.htm:65
+#: pntemplates/ezcomments_admin_modulestats.htm:4
+#: pntemplates/ezcomments_admin_stats.htm:8
+#: pntemplates/ezcomments_user_main.htm:28
+#: pntemplates/ezcomments_admin_view.htm:35
+msgid "Module"
 msgstr ""
 
 #: pntemplates/ezcomments_admin_migrate.htm:16
@@ -502,28 +524,10 @@ msgstr ""
 msgid "The following comments will become rejected"
 msgstr ""
 
-#: pntemplates/ezcomments_admin_applyrules_results.htm:17
-#: pntemplates/ezcomments_admin_applyrules_results.htm:65
-#: pntemplates/ezcomments_admin_modulestats.htm:4
-#: pntemplates/ezcomments_admin_stats.htm:8
-#: pntemplates/ezcomments_user_main.htm:28
-#: pntemplates/ezcomments_admin_view.htm:35
-msgid "Module"
-msgstr ""
-
 #: pntemplates/ezcomments_admin_applyrules_results.htm:18
 #: pntemplates/ezcomments_admin_applyrules_results.htm:66
 #: pntemplates/ezcomments_admin_view.htm:36
 msgid "Comment type"
-msgstr ""
-
-#: pntemplates/ezcomments_admin_applyrules_results.htm:20
-#: pntemplates/ezcomments_admin_applyrules_results.htm:68
-#: pntemplates/ezcomments_admin_modulestats.htm:13
-#: pntemplates/ezcomments_admin_stats.htm:13
-#: pntemplates/ezcomments_user_main.htm:30
-#: pntemplates/ezcomments_admin_view.htm:38
-msgid "Options"
 msgstr ""
 
 #: pntemplates/ezcomments_admin_applyrules_results.htm:53
@@ -668,10 +672,10 @@ msgstr ""
 
 #: pntemplates/ezcomments_admin_modifyconfig.htm:96
 msgid ""
-"<a href=\"http://akismet.com/\">Akismet</a> is a spam detection service that "
-"can, in many cases, eliminate comment and trackback spam. To use akismet you "
-"need to install and configure the <a href=\"http://code.zikula.org/"
-"ezcomments/\">Akismet module</a>."
+"Notice: <a href=\"http://akismet.com/\">Akismet</a> is a spam detection "
+"service that can, in many cases, eliminate comment and trackback spam. To "
+"use akismet you need to install and configure the <a href=\"http://code."
+"zikula.org/ezcomments/\">Akismet module</a>."
 msgstr ""
 
 #: pntemplates/ezcomments_admin_modifyconfig.htm:99
@@ -733,10 +737,6 @@ msgstr ""
 msgid "Confirm deletion of all comments attached to module '%s'"
 msgstr ""
 
-#: pntemplates/ezcomments_admin_modify.htm:5
-msgid "Edit comment"
-msgstr ""
-
 #: pntemplates/ezcomments_admin_modify.htm:32
 msgid "IP address"
 msgstr ""
@@ -760,16 +760,22 @@ msgid ""
 "moderation rules."
 msgstr ""
 
+#: pntemplates/ezcomments_admin_applyrules_form.htm:11
+#: pntemplates/ezcomments_user_main.htm:77
+#: pntemplates/ezcomments_admin_view.htm:86
+msgid "Choose action"
+msgstr ""
+
 #: pntemplates/ezcomments_admin_applyrules_form.htm:13
 msgid "Apply moderation rules to all comments"
 msgstr ""
 
 #: pntemplates/ezcomments_admin_applyrules_form.htm:17
-msgid "OR"
+msgid "or"
 msgstr ""
 
 #: pntemplates/ezcomments_admin_applyrules_form.htm:20
-msgid "Comments with the status"
+msgid "Apply moderation rules to all comments with status"
 msgstr ""
 
 #: pntemplates/ezcomments_myprofile_tab.htm:1
@@ -823,11 +829,6 @@ msgstr ""
 #: pntemplates/ezcomments_user_main.htm:75
 #: pntemplates/ezcomments_admin_view.htm:84
 msgid "With selected comments"
-msgstr ""
-
-#: pntemplates/ezcomments_user_main.htm:77
-#: pntemplates/ezcomments_admin_view.htm:86
-msgid "Choose action"
 msgstr ""
 
 #: pntemplates/ezcomments_user_main.htm:79

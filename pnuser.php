@@ -355,7 +355,7 @@ function EZComments_user_create($args)
 
     // check we've actually got a comment....
     if (!isset($comment) || empty($comment)) {
-        return LogUtil::registerError(__('Error! Sorry! The comment contains no text', $dom), null, $redirect.'#comments');
+        return LogUtil::registerError(__('Error! Sorry! The comment contains no text.', $dom), null, $redirect.'#comments');
     }
 
     // check if the user logged in and if we're allowing anon users to

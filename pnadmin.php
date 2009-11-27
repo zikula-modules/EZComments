@@ -21,7 +21,7 @@ function EZComments_admin_main()
     $dom = ZLanguage::getModuleDomain('EZComments');
     // Security check
     if(!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
-        return LogUtil::registerPermissionError('index.php');
+        return LogUtil::registerPermissionError();
     }
 
     // get the status filter
@@ -208,7 +208,7 @@ function EZComments_admin_modifyconfig()
 {
     // Security check
     if(!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
-        return LogUtil::registerPermissionError('index.php');
+        return LogUtil::registerPermissionError();
     }
 
     // load edithandler class from file
@@ -234,7 +234,7 @@ function EZComments_admin_migrate()
 {
     $dom = ZLanguage::getModuleDomain('EZComments');
     if(!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
-        return LogUtil::registerPermissionError('index.php');
+        return LogUtil::registerPermissionError();
     }
 
     $migrated=unserialize(pnModGetVar('EZComments', 'migrated'));
@@ -250,7 +250,7 @@ function EZComments_admin_migrate()
     closedir($d);
 
     if (!$selectitems) {
-        LogUtil::registerStatus(__('No migration plugins available', $dom));
+        LogUtil::registerStatus(__('No migration plugins available.', $dom));
         return pnRedirect(pnModURL('EZComments', 'admin'));
     }
 
@@ -277,7 +277,7 @@ function EZComments_admin_migrate_go()
     $dom = ZLanguage::getModuleDomain('EZComments');
     // Permissions
     if(!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
-        return LogUtil::registerPermissionError('index.php');
+        return LogUtil::registerPermissionError();
     }
 
     // Authentication key
@@ -315,7 +315,7 @@ function EZComments_admin_cleanup()
 {
     $dom = ZLanguage::getModuleDomain('EZComments');
     if(!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
-        return LogUtil::registerPermissionError('index.php');
+        return LogUtil::registerPermissionError();
     }
 
     // build a simple array of all available modules
@@ -330,7 +330,7 @@ function EZComments_admin_cleanup()
     $orphanedmods = array_diff($usedmods, $allmods);
 
     if (!$orphanedmods) {
-        LogUtil::registerStatus(__('No orphaned comments', $dom));
+        LogUtil::registerStatus(__('No orphaned comments.', $dom));
         return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
     }
 
@@ -358,7 +358,7 @@ function EZComments_admin_cleanup_go()
     $dom = ZLanguage::getModuleDomain('EZComments');
     // Permissions
     if(!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
-        return LogUtil::registerPermissionError('index.php');
+        return LogUtil::registerPermissionError();
     }
 
     // Authentication key
@@ -372,7 +372,7 @@ function EZComments_admin_cleanup_go()
     }
 
     if (!pnModAPIFunc('EZComments', 'admin', 'deleteall', compact('module'))) {
-        return __('Error! Sorry! A general failure occurs', $dom);
+        return LogUtil::registerError(__('Error! Sorry! A general failure occurs.', $dom));
     }
 
     return pnRedirect(pnModURL('EZComments', 'admin', 'cleanup'));
@@ -396,7 +396,7 @@ function EZComments_admin_purge($args)
 
     // Security check
     if(!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_DELETE)) {
-        return LogUtil::registerPermissionError('index.php');
+        return LogUtil::registerPermissionError();
     }
 
     // Check for confirmation.
@@ -440,7 +440,7 @@ function EZComments_admin_stats($args)
 {
     // security check
     if(!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
-        return LogUtil::registerPermissionError('index.php');
+        return LogUtil::registerPermissionError();
     }
 
     // Create output object
@@ -481,7 +481,7 @@ function EZComments_admin_modulestats()
 {
     // security check
     if(!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
-        return LogUtil::registerPermissionError('index.php');
+        return LogUtil::registerPermissionError();
     }
 
     // get our input
@@ -534,7 +534,7 @@ function EZComments_admin_deletemodule($args)
 
     // Security check
     if(!SecurityUtil::checkPermission('EZComments::', $mod . '::', ACCESS_DELETE)) {
-        return LogUtil::registerPermissionError('index.php');
+        return LogUtil::registerPermissionError();
     }
 
     // get our module info
@@ -601,7 +601,7 @@ function EZComments_admin_deleteitem($args)
 
     // Security check
     if(!SecurityUtil::checkPermission('EZComments::', $mod . ':' . $objectid . ':', ACCESS_DELETE)) {
-        return LogUtil::registerPermissionError('index.php');
+        return LogUtil::registerPermissionError();
     }
 
     // get our module info
@@ -663,7 +663,7 @@ function EZComments_admin_applyrules($args)
 
     // Security check
     if(!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_DELETE)) {
-        return LogUtil::registerPermissionError('index.php');
+        return LogUtil::registerPermissionError();
     }
 
     // get our module info

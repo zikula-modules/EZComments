@@ -25,20 +25,20 @@ function EZComments_init()
 
     // register Hook
     if (!pnModRegisterHook('item', 'display', 'GUI', 'EZComments', 'user', 'view')) {
-        return LogUtil::registerError(__('Error creating hook', $dom));
+        return LogUtil::registerError(__('Error creating hook.', $dom));
         return false;
     }
 
     // register  delete Hook (Timo)
     // TODO: Check the Hook's name!
     if (!pnModRegisterHook('item', 'delete', 'API', 'EZComments', 'admin', 'deletebyitem')) {
-        return LogUtil::registerError(__('Error creating hook', $dom));
+        return LogUtil::registerError(__('Error creating hook.', $dom));
         return false;
     }
 
     // register the module delete hook
     if (!pnModRegisterHook('module', 'remove', 'API', 'EZComments', 'admin', 'deletemodule')) {
-        return LogUtil::registerError(__('Error creating hook', $dom));
+        return LogUtil::registerError(__('Error creating hook.', $dom));
     }
 
     pnModSetVar('EZComments', 'MailToAdmin', false);
@@ -121,17 +121,17 @@ function EZComments_delete()
     }
 
     if (!pnModUnregisterHook('item', 'display', 'GUI', 'EZComments', 'user', 'view')) {
-        return LogUtil::registerError(__('Error deleting hook', $dom));
+        return LogUtil::registerError(__('Error deleting hook.', $dom));
         return false;
     }
 
     if (!pnModUnregisterHook('item', 'delete', 'API', 'EZComments', 'admin', 'deletebyitem')) {
-        return LogUtil::registerError(__('Error deleting hook', $dom));
+        return LogUtil::registerError(__('Error deleting hook.', $dom));
         return false;
     }
 
     if (!pnModUnregisterHook('module', 'remove', 'API', 'EZComments', 'admin', 'deletemodule')) {
-        return LogUtil::registerError(__('Error deleting hook', $dom));
+        return LogUtil::registerError(__('Error deleting hook.', $dom));
         return false;
     }
 
