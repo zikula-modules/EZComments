@@ -1,40 +1,40 @@
 /** Template Standard for EZComments comments display **/
 
-.ezc_bg1 {
+#ezcomments .ezc_bg1 {
     background-color: #F2F2F2;
 }
-.ezc_bg2 {
+#ezcomments .ezc_bg2 {
     background-color: #EAEAEA;
 }
-.ezc_comment {
+#ezcomments .ezc_comment {
     border-radius: 6px;
     -webkit-border-radius: 6px;    /* for Safari */
     -moz-border-radius: 6px;       /* for Firefox */
     overflow: hidden;              /* for MSIE8 */
     color:#444444;
-    margin:15px 0;
-    overflow:hidden;
-    padding:5px 10px;
+    margin:1% 0;
+    padding:1%;
 }
-.ezc_comment .ezc_author {
-    border-right: 1px solid white;
-    width:25%;
+#ezcomments .ezc_comment .ezc_author {
+    border-right:1px solid white;
     float:left;
+    padding-right:1%;
+    width:24%;
 }
-.ezc_comment .ezc_author .ezc_avatar {
+#ezcomments .ezc_comment .ezc_author .ezc_avatar {
     padding:5px;
     text-align:center;
 }
-.ezc_comment ul.ezc_options,
-.ezc_comment ul.ezc_options li {
+#ezcomments .ezc_comment ul.ezc_options,
+#ezcomments .ezc_comment ul.ezc_options li {
     list-style-image:none;
     list-style-position:outside;
     list-style-type:none;
     margin:0;
-    padding:5px;
+    padding:2px 0;
     text-align:center;
 }
-.ezc_comment .ezc_body {
+#ezcomments .ezc_comment .ezc_body {
     background: inherit;
     border: none;
     padding: 0;
@@ -42,12 +42,12 @@
     width:74%;
     float:right;
 }
-.ezc_comment .ezc_body .ezc_info {
+#ezcomments .ezc_comment .ezc_body .ezc_info {
     border-bottom:1px solid white;
     height:1.5em;
     padding:5px;
 }
-.ezc_comment .ezc_body .ezc_content {
+#ezcomments .ezc_comment .ezc_body .ezc_content {
     height:auto !important;
     min-height:4em;
     overflow:hidden;
