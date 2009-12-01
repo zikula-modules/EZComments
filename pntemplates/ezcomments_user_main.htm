@@ -1,7 +1,9 @@
 <!--[*  $Id$  *]-->
 <!--[pnpageaddvar name="javascript" value="modules/EZComments/pnjavascript/toggle.js"]-->
+<!--[gt text="The last %s comment" plural="The last %s comments" count=$itemsperpage tag1=$itemsperpage assign=templatetitle]-->
+<!--[include file="ezcomments_user_header.htm"]-->
 
-<h2><!--[gt text="The last %s comment" plural="The last %s comments" count=$itemsperpage tag1=$itemsperpage]--></h2>
+<h3><!--[$templatetitle]--></h3>
 <form class="z-form" action="<!--[pnmodurl modname=EZComments]-->" method="post">
     <fieldset>
         <label for="ezcomments_filter"><!--[gt text="Filter by status"]--></label>
