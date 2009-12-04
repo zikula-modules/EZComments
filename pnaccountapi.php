@@ -16,6 +16,7 @@
 function EZComments_accountapi_getall($args)
 {
     $dom = ZLanguage::getModuleDomain('EZComments');
+
     // Create an array of links to return
     $items = array();
     $items['1'] = array('url'   => pnModURL('EZComments', 'user', 'main'),

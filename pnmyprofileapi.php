@@ -17,6 +17,7 @@ function EZComments_myprofileapi_getTitle($args)
 {
     $dom = ZLanguage::getModuleDomain('EZComments');
     $uid = (int) FormUtil::getPassedValue('uid');
+
     $settings = pnModAPIFunc('MyProfile', 'user', 'getSettings', array('uid' => $uid));
     if ($settings['nocomments'] == 1) {
         // Show no tab header

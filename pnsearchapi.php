@@ -13,7 +13,8 @@
  **/
 function EZComments_searchapi_info()
 {
-    return array('title' => 'EZComments', 'functions' => array('EZComments' => 'search'));
+    return array('title'     => 'EZComments',
+                 'functions' => array('EZComments' => 'search'));
 }
 
 /**
@@ -28,10 +29,11 @@ function EZComments_searchapi_options($args)
     if (SecurityUtil::checkPermission('EZComments::', '::', ACCESS_READ)) {
         // Create output object - this object will store all of our output so that
         // we can return it easily when required
-        $pnRender = & pnRender::getInstance('EZComments');
-        $pnRender->assign('active', (isset($args['active']) && isset($args['active']['EZComments'])) || (!isset($args['active'])));
-        return $pnRender->fetch('ezcomments_search_form.htm');
+        $render = & pnRender::getInstance('EZComments');
+        $render->assign('active', !isset($args['active']) || isset($args['active']['EZComments']));
+        return $render->fetch('ezcomments_search_form.htm');
     }
+
     return '';
 }
 
@@ -55,13 +57,13 @@ function EZComments_searchapi_search($args)
     pnModDBInfoLoad('Search');
     $pntable = pnDBGetTables();
     // ezcomments tables
-    $ezcommentstable = $pntable['EZComments'];
+    $ezcommentstable  = $pntable['EZComments'];
     $ezcommentscolumn = $pntable['EZComments_column'];
     // our own tables
-    $searchTable = $pntable['search_result'];
+    $searchTable  = $pntable['search_result'];
     $searchColumn = $pntable['search_result_column'];
     // where
-    $where = search_construct_where($args, array($ezcommentscolumn['subject'], $ezcommentscolumn['comment']));
+    $where  = search_construct_where($args, array($ezcommentscolumn['subject'], $ezcommentscolumn['comment']));
     $where .= " AND " . $ezcommentscolumn['url'] . " != ''";
     $sessionId = session_id();
 
@@ -84,6 +86,7 @@ function EZComments_searchapi_search($args)
             return LogUtil::registerError(__('Error! Could not load items.', $dom));
         }
     }
+
     return true;
 }
 
@@ -96,7 +99,7 @@ function EZComments_searchapi_search($args)
 function EZComments_searchapi_search_check(&$args)
 {
     $datarow = &$args['datarow'];
-    $url = $datarow['extra'];
+    $url     = $datarow['extra'];
     $datarow['url'] = $url;
     return true;
 }

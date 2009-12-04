@@ -20,7 +20,7 @@ function EZComments_admin_main()
 {
     $dom = ZLanguage::getModuleDomain('EZComments');
     // Security check
-    if(!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
+    if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
         return LogUtil::registerPermissionError();
     }
 
