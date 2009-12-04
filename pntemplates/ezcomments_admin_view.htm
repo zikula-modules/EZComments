@@ -33,8 +33,7 @@
                         <th><!--[gt text="Status"]--></th>
                         <th><!--[gt text="User"]--></th>
                         <th><!--[gt text="Content owner"]--></th>
-                        <th><!--[gt text="Module"]--></th>
-                        <th><!--[gt text="Comment type"]--></th>
+                        <th><!--[gt text="Module"]-->/<!--[gt text="Comment type"]--></th>
                         <th><!--[gt text="Comment"]--></th>
                         <th><!--[gt text="Options"]--></th>
                     </tr>
@@ -65,9 +64,14 @@
                             <!--[gt text="unknown"]-->
                             <!--[/if]-->
                         </td>
-                        <td><a href="<!--[$item.url|pnvarprepfordisplay]-->"><!--[$item.mod|pnvarprepfordisplay]--></a></td>
-                        <td><!--[$item.type|pnvarprepfordisplay]--></td>
-                        <td><!--[$item.comment|strip_tags|truncate:80]--></td>
+                        <td>
+                            <a href="<!--[$item.url|pnvarprepfordisplay]-->"><!--[$item.mod|pnvarprepfordisplay]--></a>
+                            <!--[if $item.type]--><!--[$item.type|pnvarprepfordisplay]--><!--[/if]-->
+                        </td>
+                        <td>
+                            <!--[if $item.subject]--><em><!--[$item.subject|strip_tags]-->: </em><!--[/if]-->
+                            <!--[$item.comment|strip_tags|truncate:80]-->
+                        </td>
                         <td>
                             <!--[assign var="options" value=$item.options]-->
                             <!--[section name=options loop=$options]-->
@@ -80,6 +84,8 @@
                     <!--[/foreach]-->
                 </tbody>
             </table>
+
+            <!--[pager show="page" rowcount=$pager.numitems limit=$pager.itemsperpage posvar=startnum shift=1]-->
 
             <fieldset>
                 <label for="ezcomments_action"><!--[gt text="With selected comments"]--></label>
@@ -94,5 +100,5 @@
             </fieldset>
         </div>
     </form>
-    <!--[pager show="page" rowcount=$pager.numitems limit=$pager.itemsperpage posvar=startnum shift=1]-->
+
 </div>

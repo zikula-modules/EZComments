@@ -434,7 +434,7 @@ function EZComments_userapi_countitems($args)
     $columns = $pntable['EZComments_column'];
 
     $sql = "SELECT COUNT(1)
-            FROM $eztable";
+            FROM $eztable ";
 
     $queryargs = array();
 
