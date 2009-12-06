@@ -28,8 +28,8 @@ function EZComments_EZCommentsblock_info()
     $dom = ZLanguage::getModuleDomain('EZComments');
 
     return array('module'          => 'EZComments',
-                 'text_type'       => DataUtil::formatForDisplay(__('Comments', $dom)),
-                 'text_type_long'  => DataUtil::formatForDisplay(__('Show latest comments', $dom)),
+                 'text_type'       => __('Comments', $dom),
+                 'text_type_long'  => __('Show latest comments', $dom),
                  'allow_multiple'  => true,
                  'form_content'    => false,
                  'form_refresh'    => false,
@@ -76,13 +76,13 @@ function EZComments_EZCommentsblock_display($blockinfo)
         $vars['linkusername'] = 0;
     }
 
-    $options = array('numitems' => $numentries);
-                     
-    if (isset($mod) && $mod != '*') {
-        $options['mod'] = $mod;
+    $options = array('numitems' => $vars['numentries']);
+
+    if (isset($vars['mod']) && $vars['mod'] != '*') {
+        $options['mod'] = $vars['mod'];
     }
 
-    if (!isset($showpending) || $showpending == 0) {
+    if (!isset($vars['showpending']) || $vars['showpending'] == 0) {
         // don't show pending comments
         $options['status'] = 0;
     }
@@ -133,13 +133,13 @@ function EZComments_EZCommentsblock_modify($blockinfo)
         $vars['linkusername'] = 0;
     }
 
-    $options = array('numitems' => $numentries);
+    $options = array('numitems' => $vars['numentries']);
                      
-    if (isset($mod) && $mod != '*') {
-        $options['mod'] = $mod;
+    if (isset($vars['mod']) && $vars['mod'] != '*') {
+        $options['mod'] = $vars['mod'];
     }
 
-    if (!isset($showpending) || $showpending == 0) {
+    if (!isset($vars['showpending']) || $vars['showpending'] == 0) {
         // don't show pending comments
         $options['status'] = 0;
     }
