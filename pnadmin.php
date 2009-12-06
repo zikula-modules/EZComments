@@ -366,7 +366,7 @@ function EZComments_admin_cleanup_go()
         return LogUtil::registerAuthidError(pnModURL('EZComments', 'admin', 'main'));
     }
 
-    $module = FormUtil::getPassedValue('EZComments_module');
+    $module = FormUtil::getPassedValue('ezcomments_module');
     if (!isset($module)) {
         return LogUtil::registerArgsError();
     }
@@ -375,7 +375,8 @@ function EZComments_admin_cleanup_go()
         return LogUtil::registerError(__('Error! Sorry! A general failure occurs.', $dom));
     }
 
-    return pnRedirect(pnModURL('EZComments', 'admin', 'cleanup'));
+    LogUtil::registerStatus(__('Done! All orphaned comments for this module deleted.', $dom));
+    return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
 }
 
 /**
