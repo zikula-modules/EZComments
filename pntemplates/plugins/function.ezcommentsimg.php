@@ -146,8 +146,8 @@ function smarty_function_ezcommentsimg($params, &$smarty)
     // If neither width nor height is set, get these parameters.
     // If one of them is set, we do NOT obtain the real dimensions.
     // This way it is easy to scale the image to a certain dimension.
-    if(!isset($params['width']) && !isset($params['height'])) {
-        if(!$_image_data = @getimagesize($imgsrc)) {
+    if (!isset($params['width']) && !isset($params['height'])) {
+        if (!$_image_data = @getimagesize($imgsrc)) {
             $smarty->trigger_error("ezcommentsimg: image $src is not a valid image file");
             return false;
         }

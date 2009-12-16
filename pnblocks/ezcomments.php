@@ -14,8 +14,7 @@
 function EZComments_EZCommentsblock_init()
 { 
     // Security
-    pnSecAddSchema('EZComments:EZCommentsblock:', 'Block title::');
-    return true;
+    SecurityUtil::registerPermissionSchema('EZComments:EZCommentsblock:', 'Block ID::');
 } 
 
 /**
@@ -46,16 +45,15 @@ function EZComments_EZCommentsblock_info()
  */
 function EZComments_EZCommentsblock_display($blockinfo)
 { 
-
     // Security check
-    if (!SecurityUtil::checkPermission('EZComments:EZCommentsblock:', "$blockinfo[title]::", ACCESS_READ)) {
+    if (!SecurityUtil::checkPermission('EZComments:EZCommentsblock:', "$blockinfo[bid]::", ACCESS_READ)) {
         return false;
     } 
 
     if (!pnModLoad('EZComments')) {
         return false;
     }
-    
+
     // Get variables from content block
     $vars = pnBlockVarsFromContent($blockinfo['content']);
 
@@ -87,18 +85,20 @@ function EZComments_EZCommentsblock_display($blockinfo)
         $options['status'] = 0;
     }
 
-    
     // get the comments
     $items = pnModAPIFunc('EZComments', 'user', 'getall', $options);
+
     // augment the info
     $comments = EZComments_prepareCommentsForDisplay($items);
     
     $renderer = & pnRender::getInstance('EZComments');
+
     $renderer->assign($vars);
     $renderer->assign('comments', $comments); 
 
     // Populate block info and pass to theme
     $blockinfo['content'] = $renderer->fetch('ezcomments_block_ezcomments.htm');
+
     return themesideblock($blockinfo);
 } 
 
@@ -110,9 +110,10 @@ function EZComments_EZCommentsblock_display($blockinfo)
  */
 function EZComments_EZCommentsblock_modify($blockinfo)
 {
-    if (!SecurityUtil::checkPermission('EZComments:EZCommentsblock:', "$blockinfo[title]::", ACCESS_ADMIN)) {
+    if (!SecurityUtil::checkPermission('EZComments:EZCommentsblock:', "$blockinfo[bid]::", ACCESS_ADMIN)) {
         return false;
     } 
+
     // Get current content
     $vars = pnBlockVarsFromContent($blockinfo['content']);
 
@@ -148,9 +149,8 @@ function EZComments_EZCommentsblock_modify($blockinfo)
     $usermods = pnModAPIFunc('Modules', 'admin', 'gethookedmodules', array('hookmodname'=> 'EZComments'));
 
     // Create output object
-    $renderer = & pnRender::getInstance('EZComments');
-    // As Admin output changes often, we do not want caching.
-    $renderer->caching = false; 
+    $renderer = & pnRender::getInstance('EZComments', false);
+
     // assign the block vars
     $renderer->assign($vars);
 
@@ -172,12 +172,12 @@ function EZComments_EZCommentsblock_update($blockinfo)
     $vars = pnBlockVarsFromContent($blockinfo['content']);
 
     // alter the corresponding variable
-    $vars['numentries'] = (int)FormUtil::getPassedValue('numentries', 5, 'POST');
-    $vars['showusername'] = (bool)FormUtil::getPassedValue('showusername', false, 'POST');
-    $vars['linkusername'] = (bool)FormUtil::getPassedValue('linkusername', false, 'POST');
-    $vars['showdate'] = (bool)FormUtil::getPassedValue('showdate', false, 'POST');
-    $vars['showpending'] = (bool)FormUtil::getPassedValue('showpending', false, 'POST');
-    $vars['mod'] = (string)FormUtil::getPassedValue('mod', '', 'POST');
+    $vars['mod']          = (string)FormUtil::getPassedValue('mod', '', 'POST');
+    $vars['numentries']   =    (int)FormUtil::getPassedValue('numentries', 5, 'POST');
+    $vars['showusername'] =   (bool)FormUtil::getPassedValue('showusername', false, 'POST');
+    $vars['linkusername'] =   (bool)FormUtil::getPassedValue('linkusername', false, 'POST');
+    $vars['showdate']     =   (bool)FormUtil::getPassedValue('showdate', false, 'POST');
+    $vars['showpending']  =   (bool)FormUtil::getPassedValue('showpending', false, 'POST');
 
     // write back the new contents
     $blockinfo['content'] = pnBlockVarsToContent($vars); 

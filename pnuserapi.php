@@ -732,6 +732,7 @@ function EZComments_userapi_getallbymodule($args = array())
  *
  * @return boolean
  */
+// FIXME check where this is called and with which params
 function EZComments_userapi_checkPermission($args = array())
 {
     // A guest will have no permission

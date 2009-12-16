@@ -18,6 +18,8 @@
  */
 function EZComments_init()
 {
+    $dom = ZLanguage::getModuleDomain('EZComments');
+
     // create main table
     if (!DBUtil::createTable('EZComments')) {
         return false;
@@ -77,9 +79,8 @@ function EZComments_init()
  */
 function EZComments_upgrade($oldversion)
 {
-    $dom = ZLanguage::getModuleDomain('EZComments');
-
-    switch ($oldversion) {
+    switch ($oldversion)
+    {
         case '1.2':
             pnModSetVar('EZComments', 'enablepager', false);
             pnModSetVar('EZComments', 'commentsperpage', '25');
@@ -99,6 +100,7 @@ function EZComments_upgrade($oldversion)
             pnModSetVar('EZComments', 'template', 'Standard');
             pnModSetVar('EZComments', 'modifyowntime', '6');
     }
+
     return true;
 }
 
@@ -113,10 +115,6 @@ function EZComments_upgrade($oldversion)
 function EZComments_delete()
 {
     $dom = ZLanguage::getModuleDomain('EZComments');
-    // drop main table
-    if (!DBUtil::dropTable('EZComments')) {
-        return false;
-    }
 
     if (!pnModUnregisterHook('item', 'display', 'GUI', 'EZComments', 'user', 'view')) {
         return LogUtil::registerError(__('Error deleting hook.', $dom));
@@ -128,6 +126,11 @@ function EZComments_delete()
 
     if (!pnModUnregisterHook('module', 'remove', 'API', 'EZComments', 'admin', 'deletemodule')) {
         return LogUtil::registerError(__('Error deleting hook.', $dom));
+    }
+
+    // drop main table
+    if (!DBUtil::dropTable('EZComments')) {
+        return false;
     }
 
     // delete all module vars for the ezcomments module

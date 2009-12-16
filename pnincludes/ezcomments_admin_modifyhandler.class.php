@@ -15,6 +15,7 @@ class EZComments_admin_modifyhandler
     function initialize(&$renderer)
     {
         $dom = ZLanguage::getModuleDomain('EZComments');
+
         $this->id = (int)FormUtil::getPassedValue('id', -1, 'GETPOST');
         $objectid =      FormUtil::getPassedValue('objectid', '', 'GETPOST');
         $redirect =      base64_decode(FormUtil::getPassedValue('redirect', '', 'GETPOST'));
@@ -24,7 +25,7 @@ class EZComments_admin_modifyhandler
 
         $comment = pnModAPIFunc('EZComments', 'user', 'get', array('id' => $this->id));
         if ($comment == false || !is_array($comment)) {
-            return LogUtil::registerError(__('No such item found.', $dom), pnModURL('EZComments', 'admin', 'main'));
+            return LogUtil::registerError(__('No such comment found.', $dom), pnModURL('EZComments', 'admin', 'main'));
         }
 
         // assign the status flags
@@ -33,6 +34,7 @@ class EZComments_admin_modifyhandler
                                array('text' => __('Rejected', $dom), 'value' => 2));
 
         $renderer->assign('statuslevels', $statuslevels);
+
         $renderer->assign('redirect', (isset($redirect) && !empty($redirect)) ? true : false);
 
         // finally asign the comment information
@@ -42,15 +44,16 @@ class EZComments_admin_modifyhandler
     }
 
 
-    function handleCommand(&$renderer, &$args)
+    function handleCommand(&$renderer, $args)
     {
         $dom = ZLanguage::getModuleDomain('EZComments');
+
         // Security check
-        $securityCheck = pnModAPIFunc('EZComments','user','checkPermission',array(
-                        'module'    => '',
-                        'objectid'    => '',
-                        'commentid'    => $this->id,
-                        'level'        => ACCESS_EDIT            ));
+        $securityCheck = pnModAPIFunc('EZComments', 'user', 'checkPermission',
+                                      array('module'    => '',
+                                            'objectid'  => '',
+                                            'commentid' => $this->id,
+                                            'level'     => ACCESS_EDIT));
         if (!$securityCheck) {
             return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));
         }
@@ -59,12 +62,13 @@ class EZComments_admin_modifyhandler
 
         if ($args['commandName'] == 'cancel') {
             // nothing to do
+
         } else if ($args['commandName'] == 'submit') {
             $ok = $renderer->pnFormIsValid();
 
             $data = $renderer->pnFormGetValues();
 
-            if($data['ezcomments_delete'] == true) {
+            if ($data['ezcomments_delete'] == true) {
                 // delete the comment
                 // The API function is called.
                 // note: the api call is a little different here since we'll really calling a hook function that will
@@ -72,27 +76,27 @@ class EZComments_admin_modifyhandler
                 // array reflects this
                 if (pnModAPIFunc('EZComments', 'admin', 'delete', array('id' => $this->id))) {
                     // Success
-                    LogUtil::registerStatus(__('Done! Item deleted.', $dom));
+                    LogUtil::registerStatus(__('Done! Comment deleted.', $dom));
                 }
             } else {
-                if(!empty($comment['anonname'])) {
+                if (!empty($comment['anonname'])) {
                     // poster is anonymous
                     // check anon fields
-                    if(empty($data['ezcomments_anonname'])) {
+                    if (empty($data['ezcomments_anonname'])) {
                         $ifield = & $renderer->pnFormGetPluginById('ezcomments_anonname');
-                        $ifield->setError(DataUtil::formatForDisplay(__('Name for anonymous user is missing', $dom)));
+                        $ifield->setError(DataUtil::formatForDisplay(__('Name for anonymous user is missing.', $dom)));
                         $ok = false;
                     }
                     // anonmail must be valid - really necessary if an admin changes this?
-                    if(empty($data['ezcomments_anonmail']) || !pnVarValidate($data['ezcomments_anonmail'], 'email') ) {
+                    if (empty($data['ezcomments_anonmail']) || !pnVarValidate($data['ezcomments_anonmail'], 'email') ) {
                         $ifield = & $renderer->pnFormGetPluginById('ezcomments_anonmail');
-                        $ifield->setError(DataUtil::formatForDisplay(__('email address of anonymous user is missing or invalid', $dom)));
+                        $ifield->setError(DataUtil::formatForDisplay(__('Email address of anonymous user is missing or invalid.', $dom)));
                         $ok = false;
                     }
                     // anonwebsite must be valid
-                    if(!empty($data['ezcomments_anonwebsite'])  && !pnVarValidate($data['ezcomments_anonmail'], 'url')) {
+                    if (!empty($data['ezcomments_anonwebsite'])  && !pnVarValidate($data['ezcomments_anonmail'], 'url')) {
                         $ifield = & $renderer->pnFormGetPluginById('ezcomments_anonwebsite');
-                        $ifield->setError(DataUtil::formatForDisplay(__('website of anonymous user is invalid', $dom)));
+                        $ifield->setError(DataUtil::formatForDisplay(__('Website of anonymous user is invalid.', $dom)));
                         $ok = false;
                     }
                 } else {
@@ -101,18 +105,18 @@ class EZComments_admin_modifyhandler
 
                 // no check on ezcomments_subject as this may be empty
 
-                if(empty($data['ezcomments_comment'])) {
+                if (empty($data['ezcomments_comment'])) {
                     $ifield = & $renderer->pnFormGetPluginById('ezcomments_comment');
-                    $ifield->setError(DataUtil::formatForDisplay(__('Error! Sorry! The comment contains no text', $dom)));
+                    $ifield->setError(DataUtil::formatForDisplay(__('Error! The comment contains no text.', $dom)));
                     $ok = false;
                 }
 
-                if(!$ok) {
+                if (!$ok) {
                     return false;
                 }
 
                 // Call the API to update the item.
-                if(pnModAPIFunc('EZComments', 'admin', 'update',
+                if (pnModAPIFunc('EZComments', 'admin', 'update',
                                 array('id'          => $this->id,
                                       'subject'     => $data['ezcomments_subject'],
                                       'comment'     => $data['ezcomments_comment'],
@@ -121,12 +125,12 @@ class EZComments_admin_modifyhandler
                                       'anonmail'    => $data['ezcomments_anonmail'],
                                       'anonwebsite' => $data['ezcomments_anonwebsite']))) {
                     // Success
-                    LogUtil::registerStatus(__('Done! Item updated.', $dom));
+                    LogUtil::registerStatus(__('Done! Comment updated.', $dom));
                 }
             }
         }
 
-        if($data['ezcomments_sendmeback'] == true) {
+        if ($data['ezcomments_sendmeback'] == true) {
             return pnRedirect($comment['url'] . '#comments');
         } else {
             return pnRedirect(pnModURL('EZComments', 'admin', 'main'));

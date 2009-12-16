@@ -49,9 +49,9 @@ function smarty_function_gravatar($params, &$smarty)
 
 	$gravatarURL = 'http://www.gravatar.com/avatar.php?gravatar_id=' . md5($email);
 
-	if($rating && $rating != '') $gravatarURL .= "&rating=".$rating;
-	if($size && $size != '') $gravatarURL .="&size=".$size;
-	if($default && $default != '') $gravatarURL .= "&default=".urlencode($default);
+	if ($rating && $rating != '') $gravatarURL .= "&rating=".$rating;
+	if ($size && $size != '') $gravatarURL .="&size=".$size;
+	if ($default && $default != '') $gravatarURL .= "&default=".urlencode($default);
 
 	return DataUtil::formatForDisplay($gravatarURL);
 }

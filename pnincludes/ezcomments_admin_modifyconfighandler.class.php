@@ -13,13 +13,15 @@ class EZComments_admin_modifyconfighandler
     function initialize(&$renderer)
     {
         $dom = ZLanguage::getModuleDomain('EZComments');
+
         $renderer->caching = false;
         $renderer->add_core_data();
 
         $templates = array();
         $rawtemplates = pnModAPIFunc('EZComments', 'user', 'gettemplates');
-        if(is_array($rawtemplates) && count($rawtemplates) <>0) {
-            foreach($rawtemplates as $rawtemplate) {
+        if (is_array($rawtemplates) && count($rawtemplates) <> 0) {
+            foreach ($rawtemplates as $rawtemplate)
+            {
                 $templates[] = array('text' => $rawtemplate, 'value' => $rawtemplate);
             }
         }
@@ -31,48 +33,53 @@ class EZComments_admin_modifyconfighandler
         $statuslevels = array( array('text' => __('Approved', $dom), 'value' => 0),
                                array('text' => __('Pending', $dom),  'value' => 1),
                                array('text' => __('Rejected', $dom), 'value' => 2));
+
         $renderer->assign('statuslevels', $statuslevels);
 
         $feeds = array( array('text' => __('Atom 0.3', $dom), 'value' => 'atom'),
                         array('text' => __('RSS 2.0', $dom),  'value' => 'rss'));
+
         $renderer->assign('feeds', $feeds);
 
         return true;
     }
 
 
-    function handleCommand(&$renderer, &$args)
+    function handleCommand(&$renderer, $args)
     {
         $dom = ZLanguage::getModuleDomain('EZComments');
+
         // Security check
         if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError('index.php');
+            return LogUtil::registerPermissionError();
         }
+
         if ($args['commandName'] == 'submit') {
             $ok = $renderer->pnFormIsValid();
             $data = $renderer->pnFormGetValues();
 
-            if(empty($data['ezcomments_itemsperpage'])) {
+            // TODO reduce this to a loop
+            if (empty($data['ezcomments_itemsperpage'])) {
                 $ifield = & $renderer->pnFormGetPluginById('ezcomments_itemsperpage');
                 $ifield->setError(DataUtil::formatForDisplay(__('missing value', $dom)));
                 $ok = false;
             }
-            if(empty($data['ezcomments_modlinkcount'])) {
+            if (empty($data['ezcomments_modlinkcount'])) {
                 $ifield = & $renderer->pnFormGetPluginById('ezcomments_modlinkcount');
                 $ifield->setError(DataUtil::formatForDisplay(__('missing value', $dom)));
                 $ok = false;
             }
-            if(empty($data['ezcomments_blacklinkcount'])) {
+            if (empty($data['ezcomments_blacklinkcount'])) {
                 $ifield = & $renderer->pnFormGetPluginById('ezcomments_blacklinkcount');
                 $ifield->setError(DataUtil::formatForDisplay(__('missing value', $dom)));
                 $ok = false;
             }
-            if(empty($data['ezcomments_feedcount'])) {
+            if (empty($data['ezcomments_feedcount'])) {
                 $ifield = & $renderer->pnFormGetPluginById('ezcomments_feedcount');
                 $ifield->setError(DataUtil::formatForDisplay(__('missing value', $dom)));
                 $ok = false;
             }
-            if(empty($data['ezcomments_commentsperpage'])) {
+            if (empty($data['ezcomments_commentsperpage'])) {
                 $ifield = & $renderer->pnFormGetPluginById('ezcomments_commentsperpage');
                 $ifield->setError(DataUtil::formatForDisplay(__('missing value', $dom)));
                 $ok = false;
@@ -107,7 +114,7 @@ class EZComments_admin_modifyconfighandler
 
             LogUtil::registerStatus(__('Done! Module configuration updated.', $dom));
         }
+
         return true;
     }
-
 }

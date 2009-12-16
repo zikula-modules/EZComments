@@ -8,6 +8,8 @@
  * @license See license.txt
  */
 
+// FIXME Check where this is called and possible merge
+
 /**
  * process multiple comments
  *
@@ -23,15 +25,16 @@
 function ezc_processSelected($args)
 {
     // Get parameters from whatever input we need.
-    list ($comments, $action) = FormUtil::getPassedValue('comments', 'action');
+    $comments = FormUtil::getPassedValue('comments');
+    $action   = FormUtil::getPassedValue('action');
 
-    // extract any input passed directly to the function
-    extract($args);
     $dom = ZLanguage::getModuleDomain('EZComments');
+
     // get the type of function call: admin or user
     $type = FormUtil::getPassedValue('type', 'user');
-    if (($type != "admin") && ($type != "user"))
-        $type = "user";
+    if (!in_array($type, array('user', 'admin'))) {
+        $type = 'user';
+    }
 
     // If we get here it means that the user has confirmed the action
     // Confirm authorisation code.
@@ -40,31 +43,36 @@ function ezc_processSelected($args)
     }
 
     // loop round each comment deleted them in turn
-    foreach ($comments as $comment) {
-        switch (strtolower($action)) {
+    foreach ($comments as $comment)
+    {
+        switch (strtolower($action))
+        {
             case 'delete':
                 // The API function is called.
                 if (pnModAPIFunc('EZComments', 'admin', 'delete', array('id' => $comment))) {
                     // Success
-                    LogUtil::registerStatus(__('Done! Item deleted.', $dom));
+                    LogUtil::registerStatus(__('Done! Comment deleted.', $dom));
                 }
                 break;
+
             case 'approve':
                 if (pnModAPIFunc('EZComments', 'admin', 'updatestatus', array('id' => $comment, 'status' => 0))) {
                     // Success
-                    LogUtil::registerStatus(__('Done! Item updated.', $dom));
+                    LogUtil::registerStatus(__('Done! Comment updated.', $dom));
                 }
                 break;
+
             case 'hold':
                 if (pnModAPIFunc('EZComments', 'admin', 'updatestatus', array('id' => $comment, 'status' => 1))) {
                     // Success
-                    LogUtil::registerStatus(__('Done! Item updated.', $dom));
+                    LogUtil::registerStatus(__('Done! Comment updated.', $dom));
                 }
                 break;
+
             case 'reject':
                 if (pnModAPIFunc('EZComments', 'admin', 'updatestatus', array('id' => $comment, 'status' => 2))) {
                     // Success
-                    LogUtil::registerStatus(__('Done! Item updated.', $dom));
+                    LogUtil::registerStatus(__('Done! Comment updated.', $dom));
                 }
                 break;
         }
@@ -72,13 +80,10 @@ function ezc_processSelected($args)
 
     // This function generated no output, and so now it is complete we redirect
     // the user to an appropriate page for them to carry on their work
-    if (!empty($redirect)) {
-        return pnRedirect($redirect);
+    if (isset($args['redirect']) && !empty($args['redirect'])) {
+        return pnRedirect($args['redirect']);
     } else {
-        if ($type == "user")
-            return pnRedirect(pnModURL('EZComments', 'user', 'main'));
-        else
-            return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
+        return pnRedirect(pnModURL('EZComments', $type, 'main'));
     }
 }
 
@@ -96,33 +101,30 @@ function ezc_modify($args)
 {
     // get the type of function call: admin or user
     $type = FormUtil::getPassedValue('type', 'user');
-    if (($type != "admin") && ($type != "user"))
-        $type = "user";
+    if (!in_array($type, array('user', 'admin'))) {
+        $type = 'user';
+    }
 
     // get our input
-    $id = FormUtil::getPassedValue('id', isset($args['id']) ? $args['id'] : null, 'GETPOST');
+    $id = isset($args['id']) ? $args['id'] : FormUtil::getPassedValue('id', null, 'GETPOST');
 
     // Security check
     $securityCheck = pnModAPIFunc('EZComments', 'user', 'checkPermission', array('module' => '', 'objectid' => '', 'commentid' => $id, 'level' => ACCESS_EDIT));
     if (!$securityCheck) {
         $redirect = base64_decode(FormUtil::getPassedValue('redirect'));
-        if (!isset($redirect))
-            $redirect = 'index.php';
+        if (!isset($redirect)) {
+            $redirect = pnGetHomepageURL();
+        }
         return LogUtil::registerPermissionError($redirect);
     }
 
     // load edithandler class from file
-    if ($type == "user")
-        Loader::requireOnce('modules/EZComments/pnincludes/ezcomments_user_modifyhandler.class.php');
-    else
-        Loader::requireOnce('modules/EZComments/pnincludes/ezcomments_admin_modifyhandler.class.php');
+    $class = "EZComments_{$type}_modifyhandler";
+    Loader::requireOnce('modules/EZComments/pnincludes/'.strtolower($class).'.class.php');
 
     // Create pnForm output object
     $pnf = FormUtil::newpnForm('EZComments');
 
     // Return the output that has been generated by this function
-    if ($type == "user")
-        return $pnf->pnFormExecute('ezcomments_user_modify.htm', new EZComments_user_modifyhandler());
-    else
-        return $pnf->pnFormExecute('ezcomments_admin_modify.htm', new EZComments_admin_modifyhandler());
+    return $pnf->pnFormExecute("ezcomments_{$type}_modify.htm", new $class);
 }
