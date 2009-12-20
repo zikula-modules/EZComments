@@ -1,9 +1,8 @@
-<!--[gt text="A new comment was submitted to your site that requires moderation"]-->:
-<!--[gt text="Username"]-->: <!--[$user|htmlentities|pnvarprepfordisplay]-->
-<!--[gt text="Date"]-->: <!--[$date|pndate_format|pnvarprepfordisplay]-->
-<!--[gt text="Subject"]-->: <!--[$subject|pnvarprepfordisplay]-->
-<!--[$comment|pnvarprepfordisplay]-->
+<!--[gt text='A new comment was submitted to your site that requires moderation']-->:
+<!--[gt text='Username:']--> <!--[$comment.userline|htmlentities|pnvarprepfordisplay]-->
+<!--[gt text='Date:']--> <!--[$comment.date|pndate_format|pnvarprepfordisplay]-->
+<!--[gt text='Subject:']--> <!--[$comment.subject|pnvarprepfordisplay]-->
+<!--[$comment.comment|pnvarprepfordisplay]-->
 
-<!--[gt text="Show"]-->: <!--[$url]-->
-<!--[gt text="Moderate"]-->: <!--[pngetbaseurl]--><!--[$moderate]-->
-<!--[gt text="Delete"]-->: <!--[pngetbaseurl]--><!--[$delete]-->
+<!--[gt text='Show:']--> <!--[$comment.url]-->#comments<!--[$comment.id]-->
+<!--[gt text='Moderate:']--> <!--[pnmodurl modname='EZComments' type='user' func='modify' id=$comment.id fqurl=true]-->

@@ -30,6 +30,7 @@ function EZComments_adminapi_getUsedModules()
     $table  = $pntable['EZComments'];
     $column = &$pntable['EZComments_column'];
 
+    // TODO Port to DBUtil
     $sql = "SELECT    $column[modname]
             FROM      $table
             GROUP BY  $column[modname]";
@@ -96,17 +97,16 @@ function EZComments_adminapi_deletebyitem($args)
         return false;
     }
 
-    $objectid = (int)$args['objectid'];
-    if ($objectid <= 0) {
+    if ($args['objectid'] <= 0) {
         return false;
     }
 
-    $mod = isset($args['mod']) ? $args['mod'] : pnModGetName();
+    $args['mod'] = isset($args['mod']) ? $args['mod'] : pnModGetName();
 
     // Security check
     $res = pnModAPIFunc('EZComments', 'user', 'checkPermission',
-                        array('module'   => $mod,
-                              'objectid' => $objectid));
+                        array('module'   => $args['mod'],
+                              'objectid' => $args['objectid']));
 
     if (!$res) {
         return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));
@@ -116,8 +116,8 @@ function EZComments_adminapi_deletebyitem($args)
     $pntable = &pnDBGetTables();
     $column  = $pntable['EZComments_column'];
 
-    $mod      = DataUtil::formatForStore($mod);
-    $objectid = DataUtil::formatForStore($objectid);
+    $mod      = DataUtil::formatForStore($args['mod']);
+    $objectid = DataUtil::formatForStore($args['objectid']);
     $where    = "$column[modname] = '$mod' AND $column[objectid] = '$objectid'";
 
     return DBUtil::deleteWhere('EZComments', $where);
@@ -149,7 +149,7 @@ function EZComments_adminapi_delete($args)
     $securityCheck = pnModAPIFunc('EZComments', 'user', 'checkPermission',
                                   array('module'    => '',
                                         'objectid'  => '',
-                                        'commentid' => (int)$args['id'],
+                                        'commentid' => $args['id'],
                                         'level'     => ACCESS_DELETE));
     if (!$securityCheck) {
         return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));

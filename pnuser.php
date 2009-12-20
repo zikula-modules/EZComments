@@ -64,6 +64,7 @@ function EZComments_user_main($args = array())
         $options[] = array('url'   => $item['url'] . '#comments',
                            'image' => 'demo.gif',
                            'title' => __('View', $dom));
+
         $options[] = array('url'   => pnModURL('EZComments', 'user', 'modify', array('id' => $item['id'])),
                            'image' => 'xedit.gif',
                            'title' => __('Edit', $dom));
@@ -302,7 +303,7 @@ function EZComments_user_comment($args)
                                      'itemsperpage' => $numitems));
 
     // find out which template to use
-    $templateset = isset($args['template']) ? $args['template'] : FormUtil::getPassedValue('template');
+    $templateset = isset($args['template']) ? $args['template'] : $template;
     if (!$renderer->template_exists(DataUtil::formatForOS($templateset) . '/ezcomments_user_comment.htm')) {
         $templateset = pnModGetVar('EZComments', 'template', 'Standard');
     }
@@ -343,8 +344,6 @@ function EZComments_user_create($args)
     $comment     = isset($args['comment'])  ? $args['comment']  : FormUtil::getPassedValue('comment',  null, 'POST');
     $subject     = isset($args['subject'])  ? $args['subject']  : FormUtil::getPassedValue('subject',  null, 'POST');
     $replyto     = isset($args['replyto'])  ? $args['replyto']  : FormUtil::getPassedValue('replyto',  null, 'POST');
-    $template    = isset($args['template']) ? $args['template'] : FormUtil::getPassedValue('template', null, 'POST');
-    $order       = isset($args['order'])    ? $args['order']    : FormUtil::getPassedValue('order',    null, 'POST');
     $owneruid    = isset($args['owneruid']) ? $args['owneruid'] : FormUtil::getPassedValue('owneruid',  null, 'POST');
 
     if (!isset($owneruid) || (!($owneruid > 1))) {

@@ -50,11 +50,14 @@ function EZComments_searchapi_search($args)
         return true;
     }
 
+    $dom = ZLanguage::getModuleDomain('EZComments');
+
     if (strlen($args['q']) < 3 || strlen($args['q']) > 30) {
         return LogUtil::registerStatus(__f('The comments can only be searched for words that are longer than %1$s and less than %2$s characters!', array($minlen, $maxlen), $dom));
     }
 
     pnModDBInfoLoad('Search');
+
     $pntable = pnDBGetTables();
     // ezcomments tables
     $ezcommentstable  = $pntable['EZComments'];
