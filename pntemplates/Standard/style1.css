@@ -1,0 +1,54 @@
+/**
+ * Style1 for the Standard template set for EZComments
+ *
+ * @author Mateo Tibaquira
+ * @author Alen Grakalic
+ * @link   http://templatica.com/articles/comments/01.html
+ */
+
+.ezcomments_wrapper,
+.ezcomments_wrapper li,
+.ezcomments_wrapper ul {
+  list-style:none;
+  margin:0;
+  padding:0;
+}
+.ezcomments_wrapper li {
+  font-size:13px;
+  margin:1.5em 0;
+  position:relative;
+}
+.ezcomments_wrapper a {
+  color:#5a7981;
+  text-decoration:none;
+}
+.ezcomments_wrapper a:hover {
+  color:#555;
+}
+.ezcomments_wrapper .ezc_metadata {
+  background:url(images/01_bg_comments1.gif) no-repeat 0 100%;
+  padding-bottom:32px;
+}
+.ezcomments_wrapper .ezc_metadata li {
+  color:#777;
+  display:inline;
+  margin:0;
+  font-size:12px;
+  position:static;
+}
+.ezcomments_wrapper .ezc_metadata .ezc_author {
+  font-size:14px;
+  font-weight:bold;
+}
+.ezcomments_wrapper .ezc_metadata .ezc_avatar img {
+  border:1px solid #bfd5da;
+  position:absolute;
+  left:20px;
+  top:68px;
+  z-index:100;
+}
+.ezcomments_wrapper .ezc_body {
+  padding:10px 20px 20px 120px;
+  background:url(images/01_bg_comments2.gif) no-repeat 0 100%;
+  min-height:58px;
+}

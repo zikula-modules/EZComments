@@ -41,29 +41,35 @@ function EZComments_init()
         return LogUtil::registerError(__('Error creating hook.', $dom));
     }
 
-    pnModSetVar('EZComments', 'MailToAdmin', false);
-    pnModSetVar('EZComments', 'migrated', serialize(array('dummy')));
+    // Misc
     pnModSetVar('EZComments', 'template', 'Standard');
-    pnModSetVar('EZComments', 'itemsperpage', 25);
     pnModSetVar('EZComments', 'anonusersinfo', false);
-    pnModSetVar('EZComments', 'moderation', 0);
-    pnModSetVar('EZComments', 'modlist', '');
-    pnModSetVar('EZComments', 'blacklist', '');
-    pnModSetVar('EZComments', 'modlinkcount', 2);
-    pnModSetVar('EZComments', 'blacklinkcount', 5);
-    pnModSetVar('EZComments', 'moderationmail', false);
-    pnModSetVar('EZComments', 'alwaysmoderate', false);
-    pnModSetVar('EZComments', 'proxyblacklist', false);
-    pnModSetVar('EZComments', 'logip', false);
-    pnModSetVar('EZComments', 'dontmoderateifcommented', false);
-    pnModSetVar('EZComments', 'feedtype', 'rss');
-    pnModSetVar('EZComments', 'feedcount', '10');
-    pnModSetVar('EZComments', 'enablepager', false);
-    pnModSetVar('EZComments', 'commentsperpage', '25');
-    pnModSetVar('EZComments', 'akismet', false);
-    pnModSetVar('EZComments', 'apikey', '');
     pnModSetVar('EZComments', 'anonusersrequirename', false);
-    pnModSetVar('EZComments', 'modifyowntime', '6');
+    pnModSetVar('EZComments', 'logip', false);
+    pnModSetVar('EZComments', 'itemsperpage', 25);
+    pnModSetVar('EZComments', 'enablepager', false);
+    pnModSetVar('EZComments', 'commentsperpage', 25);
+    pnModSetVar('EZComments', 'migrated', serialize(array('dummy')));
+    // Notification
+    pnModSetVar('EZComments', 'MailToAdmin', false);
+    pnModSetVar('EZComments', 'moderationmail', false);
+    // Moderation
+    pnModSetVar('EZComments', 'moderation', 0);
+    pnModSetVar('EZComments', 'alwaysmoderate', false);
+    pnModSetVar('EZComments', 'dontmoderateifcommented', false);
+    pnModSetVar('EZComments', 'modlinkcount', 2);
+    pnModSetVar('EZComments', 'modlist', '');
+    // Blacklisting
+    pnModSetVar('EZComments', 'blacklinkcount', 5);
+    pnModSetVar('EZComments', 'blacklist', '');
+    pnModSetVar('EZComments', 'proxyblacklist', false);
+    pnModSetVar('EZComments', 'modifyowntime', 6);
+    // Akismet
+    pnModSetVar('EZComments', 'akismet', false);
+    pnMoDSetVar('EZComments', 'akismetstatus', 1);
+    // Feeds
+    pnModSetVar('EZComments', 'feedtype', 'rss');
+    pnModSetVar('EZComments', 'feedcount', 10);
 
     // Initialisation successful
     return true;
@@ -88,17 +94,17 @@ function EZComments_upgrade($oldversion)
         case '1.3':
             pnModSetVar('EZComments', 'blacklinkcount', 5);
             pnModSetVar('EZComments', 'akismet', false);
-            pnModSetVar('EZComments', 'apikey', '');
 
         case '1.4':
             pnModSetVar('EZComments', 'anonusersrequirename', false);
-            pnModDelVar('EZComments', 'apikey');
             pnMoDSetVar('EZComments', 'akismetstatus', 1);
 
         case '1.5':
-            DBUtil::changeTable('EZComments');
+            if (!DBUtil::changeTable('EZComments')) {
+                return '1.5';
+            }
             pnModSetVar('EZComments', 'template', 'Standard');
-            pnModSetVar('EZComments', 'modifyowntime', '6');
+            pnModSetVar('EZComments', 'modifyowntime', 6);
     }
 
     return true;

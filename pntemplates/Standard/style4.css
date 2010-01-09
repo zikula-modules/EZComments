@@ -1,9 +1,9 @@
 /**
- * Style2 for the Standard template set for EZComments
+ * Style4 for the Standard template set for EZComments
  *
  * @author Mateo Tibaquira
  * @author Alen Grakalic
- * @link   http://templatica.com/articles/comments/02.html
+ * @link   http://templatica.com/articles/comments/04.html
  */
 
 .ezcomments_wrapper,
@@ -14,46 +14,48 @@
   padding:0;
 }
 .ezcomments_wrapper li {
+  background:url(images/04_bg_comments.gif) no-repeat 0 0;
   font-size:13px;
   margin:1.5em 0;
+  overflow:hidden;
   position:relative;
 }
 .ezcomments_wrapper a {
-  color:#89c140;
+  color:#edecd8;
   text-decoration:none;
 }
 .ezcomments_wrapper a:hover {
-  color:#555;
+  color:#fff;
 }
 .ezcomments_wrapper .ezc_metadata li {
+  background:none;
   color:#777;
   display:inline;
-  line-height:36px;
+  line-height:39px;
   margin:0;
-  font-size:13px;
-  position:static;
 }
 .ezcomments_wrapper .ezc_metadata .ezc_author {
-  background:url(images/02_ico_comments.gif) no-repeat 0 50%;
   float:left;
   font-weight:bold;
-  padding-left:35px;
-}
-.ezcomments_wrapper .ezc_metadata .ezc_options {
-  float:left;
-  padding-left:10px;
+  margin-bottom:10px;
+  padding-left:40px;
 }
 .ezcomments_wrapper .ezc_metadata .ezc_avatar {
   display:none;
 }
 .ezcomments_wrapper .ezc_metadata .ezc_date {
-  color:#999;
+  color:#fff;
   float:right;
   font-style:italic;
   font-size:11px;
+  margin-right:12px;
+}
+.ezcomments_wrapper .ezc_metadata .ezc_options {
+  float:left;
+  padding-left:10px;
 }
 .ezcomments_wrapper .ezc_body {
-  background:#fff url(images/02_bg_comments.gif) repeat-x;
+  background:#fff url(images/04_bg_comments.gif) no-repeat 0 100%;
   clear:both;
-  padding:20px 20px;
+  padding:10px 28px 40px 28px;
 }

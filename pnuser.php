@@ -144,22 +144,24 @@ function EZComments_user_view($args)
         return LogUtil::registerError(__('Internal Error.', $dom), null, 'index.php');
     }
 
-    $comments = EZComments_prepareCommentsForDisplay($items);
+    $items = EZComments_prepareCommentsForDisplay($items);
+
     if ($enablepager) {
-        $commentcount = pnModAPIFunc('EZComments', 'user', 'countitems', compact('mod', 'objectid'));
+        $commentcount = pnModAPIFunc('EZComments', 'user', 'countitems', compact('mod', 'objectid', 'status'));
     } else {
-        $commentcount = count($comments);
+        $commentcount = count($items);
     }
 
     // create the pnRender object
     $renderer = & pnRender::getInstance('EZComments', false, null, true);
 
+    $renderer->assign('comments',     $items);
+    $renderer->assign('commentcount', $commentcount);
+    $renderer->assign('order',        $sortorder);
     $renderer->assign('modinfo',      pnModGetInfo(pnModGetIDFromName($mod)));
     $renderer->assign('avatarpath',   pnModGetVar('Users', 'avatarpath'));
     $renderer->assign('msgmodule',    pnConfigGetVar('messagemodule', ''));
-    $renderer->assign('comments',     $comments);
-    $renderer->assign('commentcount', $commentcount);
-    $renderer->assign('order',        $sortorder);
+    $renderer->assign('prfmodule',    pnConfigGetVar('profilemodule', ''));
     $renderer->assign('allowadd',     SecurityUtil::checkPermission('EZComments::', "$mod:$objectid:", ACCESS_COMMENT));
     $renderer->assign('loggedin',     pnUserLoggedIn());
 
@@ -181,21 +183,30 @@ function EZComments_user_view($args)
     $renderer->assign('useurl',       $useurl);
 
     // assign all module vars (they may be useful...)
-    $renderer->assign(pnModGetVar('EZComments'));
+    $renderer->assign('modvars', pnModGetVar('EZComments'));
+
+    // flag to recognize the main call
+    static $mainScreen = true;
+    $renderer->assign('mainscreen',   $mainScreen);
+    $mainScreen = false;
 
     // assign the values for the pager
     $renderer->assign('pager', array('numitems'     => $commentcount,
                                      'itemsperpage' => $numitems));
 
     // find out which template to use
-    $templateset = isset($args['template']) ? $args['template'] : FormUtil::getPassedValue('template');
+    $templateset = isset($args['template']) ? $args['template'] : FormUtil::getPassedValue('eztpl');
+
     if (!$renderer->template_exists(DataUtil::formatForOS($templateset) . '/ezcomments_user_view.htm')) {
         $templateset = pnModGetVar('EZComments', 'template', 'Standard');
     }
     $renderer->assign('template', $templateset);
 
     // include stylesheet if there is a style sheet
-    $css = "modules/EZComments/pntemplates/$templateset/style.css";
+    $css = isset($args['ezccss']) ? $args['ezccss'] : FormUtil::getPassedValue('ezccss');
+    $css = $css ? "$css.css" : 'style.css';
+    // TODO Search in config/
+    $css = "modules/EZComments/pntemplates/$templateset/$css";
     if (file_exists($css)) {
         PageUtil::addVar('stylesheet',$css);
     }
@@ -230,9 +241,10 @@ function EZComments_user_comment($args)
     $comment     = isset($args['comment'])  ? $args['comment']  : FormUtil::getPassedValue('comment',  null, 'POST');
     $subject     = isset($args['subject'])  ? $args['subject']  : FormUtil::getPassedValue('subject',  null, 'POST');
     $replyto     = isset($args['replyto'])  ? $args['replyto']  : FormUtil::getPassedValue('replyto',  null, 'POST');
-    $template    = isset($args['template']) ? $args['template'] : FormUtil::getPassedValue('template', null, 'POST');
     $order       = isset($args['order'])    ? $args['order']    : FormUtil::getPassedValue('order',    null, 'POST');
-    $owneruid    = isset($args['owneruid']) ? $args['owneruid'] : FormUtil::getPassedValue('owneruid',  null, 'POST');
+    $owneruid    = isset($args['owneruid']) ? $args['owneruid'] : FormUtil::getPassedValue('owneruid', null, 'POST');
+    $template    = isset($args['template']) ? $args['template'] : FormUtil::getPassedValue('template', null, 'POST');
+    $stylesheet  = isset($args['ezccss'])   ? $args['ezccss']   : FormUtil::getPassedValue('ezccss',   null, 'POST');
 
     if ($order == 1) {
         $sortorder = 'DESC';
@@ -267,23 +279,22 @@ function EZComments_user_comment($args)
         return LogUtil::registerError(__('Internal Error.', $dom), null, 'index.php');;
     }
 
-    $comments = EZComments_prepareCommentsForDisplay($items);
+    $items = EZComments_prepareCommentsForDisplay($items);
+
     if ($enablepager) {
         $commentcount = pnModAPIFunc('EZComments', 'user', 'countitems', compact('mod', 'objectid'));
     } else {
-        $commentcount = count($comments);
+        $commentcount = count($items);
     }
 
     // don't use caching (for now...)
-    $renderer = & pnRender::getInstance('EZComments', false);
+    $renderer = & pnRender::getInstance('EZComments', false, null, true);
 
-    $renderer->assign('comments',     $comments);
+    $renderer->assign('comments',     $items);
     $renderer->assign('commentcount', $commentcount);
     $renderer->assign('order',        $sortorder);
-    $renderer->assign('allowadd',     SecurityUtil::checkPermission('EZComments::', "$mod:$objectid: ", ACCESS_COMMENT));
-    $renderer->assign('addurl',       pnModURL('EZComments', 'user', 'create'));
-    $renderer->assign('loggedin',     pnUserLoggedIn());
     $renderer->assign('redirect',     $redirect);
+    $renderer->assign('allowadd',     SecurityUtil::checkPermission('EZComments::', "$mod:$objectid: ", ACCESS_COMMENT));
     $renderer->assign('mod',          DataUtil::formatForDisplay($mod));
     $renderer->assign('objectid',     DataUtil::formatForDisplay($objectid));
     $renderer->assign('subject',      DataUtil::formatForDisplay($subject));
@@ -310,9 +321,11 @@ function EZComments_user_comment($args)
     $renderer->assign('template', $templateset);
 
     // include stylesheet if there is a style sheet
-    $css = "modules/EZComments/pntemplates/$templateset/style.css";
+    $css = $stylesheet ? "$stylesheet.css" : 'style.css';
+    // TODO Search in config/
+    $css = "modules/EZComments/pntemplates/$templateset/$css";
     if (file_exists($css)) {
-        PageUtil::addVar('stylesheet',$css);
+        PageUtil::addVar('stylesheet', $css);
     }
 
     // FIXME comment template missing
@@ -412,14 +425,13 @@ function EZComments_user_create($args)
  */
 function EZComments_prepareCommentsForDisplay($items)
 {
-    foreach ($items as $k => $item)
+    foreach (array_keys($items) as $k)
     {
-        if ($item['uid'] > 0) {
+        if ($items[$k]['uid'] > 0) {
             // get the user vars and merge into the comment array
-            $userinfo = pnUserGetVars($item['uid']);
+            $userinfo = pnUserGetVars($items[$k]['uid']);
             // the users url will clash with the comment url so lets move it out of the way
             $userinfo['website']   = isset($userinfo['__ATTRIBUTES__']['url']) ? $userinfo['__ATTRIBUTES__']['url'] : '';
-            $items[$k]['anonname'] = '';
 
             // work out if the user is online
             $userinfo['online'] = false;
@@ -428,13 +440,13 @@ function EZComments_prepareCommentsForDisplay($items)
                     $userinfo['online'] = true;
                 }
             }
-            $items[$k] = array_merge($item, array('author' => $userinfo));
+            $items[$k] = array_merge($items[$k], $userinfo);
+            $items[$k]['anonname'] = '';
+
         } else {
-            // if anonymous, uname is empty
+            // put the generic name if anonymous, uname is empty
             $items[$k]['uname'] = '';
-            if ($items[$k]['anonname'] == '') {
-                $items[$k]['anonname'] = pnConfigGetVar('anonymous');
-            }
+            $items[$k]['anonname'] = !empty($items[$k]['anonname']) ? $items[$k]['anonname'] : pnConfigGetVar('anonymous');
         }
 
         $items[$k]['del'] = pnModAPIFunc('EZComments', 'user', 'checkPermission',
