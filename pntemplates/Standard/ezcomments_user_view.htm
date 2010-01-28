@@ -1,5 +1,5 @@
 <!--[*  $Id$ *]-->
-<div class="ezcomments">
+<div id="ezc_comments" class="ezcomments">
     <!--[if $comments]-->
 
     <h3 class="ezcomments_title"><!--[gt text='Comments' domain='module_ezcomments']--></h3>
@@ -9,59 +9,67 @@
     <!--[/if]-->
 
     <ol class="ezcomments_wrapper">
-    <!--[foreach from=$comments item='comment']-->
-    <li class="ezc_comment z-clearfix <!--[cycle values='ezc_odd,ezc_even']-->" >
-        <ul class="ezc_metadata">
-            <li class="ezc_author">
-                <!--[if $comment.uname neq '']-->
+        <!--[foreach from=$comments item='comment']-->
+        <li class="ezc_comment z-clearfix <!--[cycle values='ezc_odd,ezc_even']-->" >
+            <ul class="ezc_metadata">
+                <li class="ezc_author">
+                    <!--[if $comment.uname neq '']-->
                     <strong><!--[$comment.uname|userprofilelink]--></strong>
-                <!--[elseif $comment.anonname neq '']-->
+                    <!--[elseif $comment.anonname neq '']-->
                     <!--[if $comment.anonwebsite neq '']-->
-                        <strong><a rel="nofollow" href="<!--[$comment.anonwebsite]-->"><!--[$comment.anonname]--></a></strong>
+                    <strong><a rel="nofollow" href="<!--[$comment.anonwebsite]-->"><!--[$comment.anonname]--></a></strong>
                     <!--[elseif $comment.anonname neq '' && $comment.anonwebsite eq '']-->
-                        <strong><!--[$comment.anonname]--></strong>
+                    <strong><!--[$comment.anonname]--></strong>
                     <!--[/if]-->
-                <!--[/if]-->
-            </li>
-            <li class="ezc_avatar">
-                <!--[assign var='defaultavatar' value="`$baseurl``$avatarpath`/blank.gif"]-->
-                <!--[if $comment.anonname eq '']-->
-                <!--[if isset($comment._YOURAVATAR) && !empty($comment._YOURAVATAR)]-->
-                <!--[assign var='defaultavatar' value="`$baseurl``$avatarpath`/`$comment._YOURAVATAR`"]-->
-                <!--[/if]-->
-                <img src="<!--[gravatar email=$comment.email size='80' default=$defaultavatar]-->" alt="<!--[gt text="%s's Avatar" tag1=$comment.uname]-->" />
-                <!--[else]-->
-                <img src="<!--[gravatar email=$comment.anonmail size='80' default=$defaultavatar]-->" alt="<!--[gt text="%s's Avatar" tag1=$comment.anonname]-->" />
-                <!--[/if]-->
-            </li>
-            <li class="ezc_date">
-                <span><!--[gt text='Posted on %s' tag1=$comment.date|pndate_format:'datetimelong' domain='module_ezcomments']--> </span>
-            </li>
-            <!--[if $pncore.logged_in eq true]-->
-            <li class="ezc_options">
-                <!--[if $prfmodule]-->
+                    <!--[/if]-->
+                </li>
+                <li class="ezc_avatar">
+                    <!--[assign var='defaultavatar' value="`$baseurl``$avatarpath`/blank.gif"]-->
+                    <!--[if $comment.anonname eq '']-->
+                    <!--[if isset($comment._YOURAVATAR) && !empty($comment._YOURAVATAR)]-->
+                    <!--[assign var='defaultavatar' value="`$baseurl``$avatarpath`/`$comment._YOURAVATAR`"]-->
+                    <!--[/if]-->
+                    <img src="<!--[gravatar email=$comment.email size='80' default=$defaultavatar]-->" alt="<!--[gt text="%s's Avatar" tag1=$comment.uname]-->" />
+                    <!--[else]-->
+                    <img src="<!--[gravatar email=$comment.anonmail size='80' default=$defaultavatar]-->" alt="<!--[gt text="%s's Avatar" tag1=$comment.anonname]-->" />
+                    <!--[/if]-->
+                </li>
+                <li class="ezc_date">
+                    <span><!--[gt text='Posted on %s' tag1=$comment.date|pndate_format:'datetimelong' domain='module_ezcomments']--> </span>
+                </li>
+                <!--[if $pncore.logged_in eq true]-->
+                <li class="ezc_options">
+                    <!--[if $prfmodule]-->
                     <!--[$comment.uname|userprofilelink:'':"`$baseurl`images/icons/extrasmall/personal.gif"]-->
-                <!--[/if]-->
-                <!--[if $msgmodule]-->
+                    <!--[/if]-->
+                    <!--[if $msgmodule]-->
                     <a href="<!--[pnmodurl modname=$msgmodule func='inbox' func='newpm' uid=$comment.uid]-->"><!--[pnimg modname='core' src='mail_generic.gif' set='icons/extrasmall' __title='Send mail to user' __alt='Send mail to user']--></a>
-                <!--[/if]-->
-                <!--[if $comment.del]-->
+                    <!--[/if]-->
+                    <!--[if $comment.del]-->
                     <a href="<!--[pnmodurl fqurl=true modname='EZComments' type='user' func='modify' id=$comment.id redirect=$redirect]-->"><!--[pnimg modname='core' src='14_layer_deletelayer.gif' set='icons/extrasmall' __title='Delete comment' __alt='Delete comment']--></a>
+                    <!--[/if]-->
+                </li>
                 <!--[/if]-->
-            </li>
-            <!--[/if]-->
-        </ul>
+            </ul>
 
-        <div class="ezc_body">
-            <div class="ezc_subject">
-                <strong><!--[$comment.subject|default:''|pnvarprepfordisplay]--></strong>
+            <div class="ezc_tr">
+                <div class="ezc_tl">
+                    <div class="ezc_br">
+                        <div class="ezc_bl">
+                            <div class="ezc_body">
+                                <div class="ezc_subject">
+                                    <strong><!--[$comment.subject|default:''|pnvarprepfordisplay]--></strong>
+                                </div>
+                                <div class="ezc_content">
+                                    <!--[$comment.comment|pnvarprepfordisplay|nl2br|pnmodcallhooks]-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="ezc_content">
-                <!--[$comment.comment|pnvarprepfordisplay|nl2br|pnmodcallhooks]-->
-            </div>
-        </div>
-    </li>
-    <!--[/foreach]-->
+        </li>
+        <!--[/foreach]-->
     </ol>
 
     <!--[if $enablepager]-->

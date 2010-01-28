@@ -1,59 +1,61 @@
 /**
- * Style2 for the Standard template set for EZComments
- *
- * @author Mateo Tibaquira
- * @author Alen Grakalic
- * @link   http://templatica.com/articles/comments/02.html
- */
+* Style1 for the Standard template set for EZComments
+*
+* @author Mateo Tibaquira, Carsten Volmer
+* @author Alen Grakalic
+* @link   http://templatica.com/articles/comments/01.html
+*/
 
-.ezcomments_wrapper,
-.ezcomments_wrapper li,
-.ezcomments_wrapper ul {
-  list-style:none;
-  margin:0;
-  padding:0;
+#ezc_comments .ezcomments_wrapper,
+#ezc_comments .ezcomments_wrapper li,
+#ezc_comments .ezcomments_wrapper ul {
+    list-style:none;
+    margin:0;
+    padding:0;
 }
-.ezcomments_wrapper li {
-  font-size:13px;
-  margin:1.5em 0;
-  position:relative;
+#ezc_comments .ezcomments_wrapper li.ezc_comment {
+    font-size:13px;
+    margin:1.5em 0;
+    position:relative;
 }
-.ezcomments_wrapper a {
-  color:#89c140;
-  text-decoration:none;
+#ezc_comments .ezcomments_wrapper a {
+    color:#5a7981;
+    text-decoration:none;
 }
-.ezcomments_wrapper a:hover {
-  color:#555;
+#ezc_comments .ezcomments_wrapper a:hover {
+    color:#555;
 }
-.ezcomments_wrapper .ezc_metadata li {
-  color:#777;
-  display:inline;
-  line-height:36px;
-  margin:0;
-  font-size:13px;
-  position:static;
+#ezc_comments .ezcomments_wrapper .ezc_metadata li {
+    color:#777;
+    display:inline;
+    margin:0;
+    font-size:12px;
+    position:static;
 }
-.ezcomments_wrapper .ezc_metadata .ezc_author {
-  background:url(images/02_ico_comments.gif) no-repeat 0 50%;
-  float:left;
-  font-weight:bold;
-  padding-left:35px;
+#ezc_comments .ezcomments_wrapper .ezc_metadata .ezc_author {
+    font-size:14px;
+    font-weight:bold;
 }
-.ezcomments_wrapper .ezc_metadata .ezc_options {
-  float:left;
-  padding-left:10px;
+#ezc_comments .ezcomments_wrapper .ezc_metadata .ezc_avatar img {
+    border:1px solid #bfd5da;
+    position:absolute;
+    left:20px;
+    top:68px;
+    z-index:100;
 }
-.ezcomments_wrapper .ezc_metadata .ezc_avatar {
-  display:none;
+#ezc_comments .ezcomments_wrapper .ezc_body {
+    padding:40px 20px 20px 120px;
+    min-height:58px;
 }
-.ezcomments_wrapper .ezc_metadata .ezc_date {
-  color:#999;
-  float:right;
-  font-style:italic;
-  font-size:11px;
+#ezc_comments .ezcomments_wrapper .ezc_tr {
+    background:url(images/01_bg_comments_tr.gif) top right no-repeat;
 }
-.ezcomments_wrapper .ezc_body {
-  background:#fff url(images/02_bg_comments.gif) repeat-x;
-  clear:both;
-  padding:20px 20px;
+#ezc_comments .ezcomments_wrapper .ezc_tl {
+    background:url(images/01_bg_comments_tl.gif) top left no-repeat;
+}
+#ezc_comments .ezcomments_wrapper .ezc_br {
+    background:url(images/01_bg_comments_br.gif) bottom right no-repeat;
+}
+#ezc_comments .ezcomments_wrapper .ezc_bl {
+    background:url(images/01_bg_comments_bl.gif) bottom left no-repeat;
 }
