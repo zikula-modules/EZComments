@@ -361,7 +361,7 @@ function EZComments_userapi_create($args = array())
 
     pnModCallHooks('item', 'create', $newcomment['id'], array('module' => 'EZComments'));
 
-    return $id;
+    return $newcomment['id'];
 }
 
 /**
@@ -742,7 +742,13 @@ function EZComments_userapi_checkPermission($args = array())
     }
 
     // parameter check
-    if (!isset($args['module']) || !isset($args['level']) || !isset($args['objectid']) || !isset($args['commentid'])) {
+    if (!isset($args['commentid'])) {
+        $args['commentid'] = '';
+    }
+    if (!isset($args['level'])) {
+        $args['level'] = ACCESS_COMMENT;
+    }
+    if (!isset($args['module']) || !isset($args['objectid'])) {
         return false;
     }
 
@@ -753,10 +759,12 @@ function EZComments_userapi_checkPermission($args = array())
         return true;
     }
 
-    // otherwise: get the comment, check the owneruid and return the result
-    $comment = DBUtil::selectObjectByID('EZComments', $args['commentid']);
-    if ($comment['owneruid'] == $uid || $comment['uid'] == $uid) {
-        return true;
+    if (!empty($args['commentid'])) {
+        // otherwise: get the comment, check the owneruid and return the result
+        $comment = DBUtil::selectObjectByID('EZComments', $args['commentid']);
+        if ($comment['owneruid'] == $uid || $comment['uid'] == $uid) {
+            return true;
+        }
     }
 
     // otherwise return false because no security check had a positive result

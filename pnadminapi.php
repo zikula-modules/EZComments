@@ -106,7 +106,8 @@ function EZComments_adminapi_deletebyitem($args)
     // Security check
     $res = pnModAPIFunc('EZComments', 'user', 'checkPermission',
                         array('module'   => $args['mod'],
-                              'objectid' => $args['objectid']));
+                              'objectid' => $args['objectid'],
+                              'level'    => ACCESS_DELETE));
 
     if (!$res) {
         return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));
