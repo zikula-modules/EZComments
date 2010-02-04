@@ -63,7 +63,7 @@ function EZComments_migrateapi_reviews()
                            'user',
                            'create',
                            array('mod'  => 'Reviews',
-                                 'objectid' => pnVarPrepForStore($rid),
+                                 'objectid' => DataUtil::formatForStore($rid),
                                  'url'      => 'index.php?name=Reviews&req=showcontent&id=' . $rid,
                                  'comment'  => $comment,
                                  'subject'  => '',

@@ -67,7 +67,7 @@ function EZComments_migrateapi_polls()
                            'user',
                            'create',
                            array('mod'  => 'Polls',
-                                   'objectid' => pnVarPrepForStore($sid),
+                                   'objectid' => DataUtil::formatForStore($sid),
                                    'url'        => 'name=Polls&req=results&pollID=' . $pollid,
                                    'comment'  => $comment,
                                  'subject'  => $subject,

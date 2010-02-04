@@ -67,7 +67,7 @@ function EZComments_migrateapi_news()
                            'user',
                            'create',
                            array('mod'  => 'News',
-                                 'objectid' => pnVarPrepForStore($sid),
+                                 'objectid' => DataUtil::formatForStore($sid),
                                  'url'      => 'index.php?module=News&func=display&sid=' . $sid,
                                  'comment'  => $comment,
                                  'subject'  => $subject,

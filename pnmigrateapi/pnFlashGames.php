@@ -61,7 +61,7 @@ function EZComments_migrateapi_pnFlashGames()
                            'user',
                            'create',
                            array('mod'  => 'pnFlashGames',
-                                 'objectid' => pnVarPrepForStore($gid),
+                                 'objectid' => DataUtil::formatForStore($gid),
                                  'url'        => 'index.php?module=pnFlashGames&func=display&id=' . $gid,
                                  'comment'  => $comment,
                                  'subject'  => '',
