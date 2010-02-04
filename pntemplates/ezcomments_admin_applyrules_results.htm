@@ -6,7 +6,7 @@
     <form id="ezcomments_view" action="<!--[pnmodurl modname=EZComments type=admin func=applyrules]-->" method="post">
         <div>
             <input type="hidden" name="confirmation" value="2" />
-            <input type="hidden" name="authid" value="<!--[pnsecgenauthkey modname=EZComments]-->" />
+            <input type="hidden" name="authid" value="<!--[insert name='generateauthkey' module='EZComments']-->" />
             <input type="hidden" name="allcomments" value="<!--[$allcomments|pnvarprepfordisplay]-->" />
             <input type="hidden" name="status" value="<!--[$status|pnvarprepfordisplay]-->" />
             <h3><!--[gt text="The following comments will become rejected"]--></h3>

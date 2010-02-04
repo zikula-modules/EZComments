@@ -25,7 +25,7 @@
 
     <form class="z-form" id="ezcomments_view" action="<!--[pnmodurl modname=EZComments type=admin func=processselected]-->" method="post">
         <div>
-            <input type="hidden" name="authid" value="<!--[pnsecgenauthkey module=EZComments]-->" />
+            <input type="hidden" name="authid" value="<!--[insert name='generateauthkey' module='EZComments']-->" />
             <table id="ezcomments_comments" class="z-admintable">
                 <thead>
                     <tr>
