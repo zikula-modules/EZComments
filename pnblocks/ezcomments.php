@@ -114,6 +114,8 @@ function EZComments_EZCommentsblock_modify($blockinfo)
         return false;
     } 
 
+    $dom = ZLanguage::getModuleDomain('EZComments');
+
     // Get current content
     $vars = pnBlockVarsFromContent($blockinfo['content']);
 
@@ -168,6 +170,8 @@ function EZComments_EZCommentsblock_modify($blockinfo)
  */
 function EZComments_EZCommentsblock_update($blockinfo)
 {
+    $dom = ZLanguage::getModuleDomain('EZComments');
+
     // Get current content
     $vars = pnBlockVarsFromContent($blockinfo['content']);
 
