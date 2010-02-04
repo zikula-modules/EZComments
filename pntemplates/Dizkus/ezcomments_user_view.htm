@@ -9,7 +9,7 @@
     <!--[/if]-->
 
     <!--[foreach from=$comments item="comment"]-->
-    <div class="ezc_comment z-clearfix <!--[cycle values='ezc_bg1,ezc_bg2']-->" >
+    <div id="comment<!--[$comment.id|pnvarprepfordisplay]-->" class="ezc_comment z-clearfix <!--[cycle values='ezc_bg1,ezc_bg2']-->" >
         <div class="ezc_author">
             <div class="ezc_avatar">
                 <!--[if $comment.anonname neq '' && $comment.anonwebsite neq '']-->

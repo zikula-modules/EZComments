@@ -2,7 +2,7 @@
 <div id="ezc_comments" class="ezcomments">
     <!--[if $comments]-->
 
-    <h3 class="ezcomments_title"><!--[gt text='Comments' domain='module_ezcomments']--></h3>
+    <h3 id="comments" class="ezcomments_title"><!--[gt text='Comments' domain='module_ezcomments']--></h3>
 
     <!--[if $mainscreen AND $allowadd]-->
     <a href="#commentform"><!--[gt text='Add a new comment' domain='module_ezcomments']--></a>
@@ -10,7 +10,7 @@
 
     <ol class="ezcomments_wrapper">
         <!--[foreach from=$comments item='comment']-->
-        <li class="ezc_comment z-clearfix <!--[cycle values='ezc_odd,ezc_even']-->" >
+        <li id="comment<!--[$comment.id|pnvarprepfordisplay]-->" class="ezc_comment z-clearfix <!--[cycle values='ezc_odd,ezc_even']-->" >
             <ul class="ezc_metadata">
                 <li class="ezc_author">
                     <!--[if $comment.uname neq '']-->
