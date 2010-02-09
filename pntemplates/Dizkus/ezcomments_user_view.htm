@@ -20,7 +20,7 @@
                 <strong><!--[$comment.pn_uname|userprofilelink]--></strong>
                 <!--[/if]-->
                 <br />
-                <!--[assign var='defaultavatar' value="`$baseurl``$avatarpath`/blank.gif"]-->
+                <!--[assign var='defaultavatar' value="`$baseurl`modules/EZComments/pnimages/gravatar_80.jpg"]-->
                 <!--[if $comment.anonname eq '']-->
                 <!--[if isset($comment._YOURAVATAR) && !empty($comment._YOURAVATAR) && $comment._YOURAVATAR neq 'blank.gif' && $comment._YOURAVATAR neq 'gravatar.gif']-->
                 <!--[assign var='defaultavatar' value="`$baseurl``$avatarpath`/`$comment._YOURAVATAR`"|default:$defaultavatar]-->
