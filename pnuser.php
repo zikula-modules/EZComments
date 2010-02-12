@@ -185,6 +185,9 @@ function EZComments_user_view($args)
     // assign all module vars (they may be useful...)
     $renderer->assign('modvars', pnModGetVar('EZComments'));
 
+    // just for backward compatibility - TODO: delete in 2.x
+    $renderer->assign('anonusersinfo', pnModGetVar('EZComments', 'anonusersinfo'));
+
     // flag to recognize the main call
     static $mainScreen = true;
     $renderer->assign('mainscreen',   $mainScreen);
