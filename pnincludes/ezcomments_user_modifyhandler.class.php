@@ -69,17 +69,17 @@ class EZComments_user_modifyhandler
             return LogUtil::registerPermissionError(pnModURL('EZComments', 'user', 'main'));
         }
 
+        $ok      = $renderer->pnFormIsValid();
+        $data    = $renderer->pnFormGetValues();
         $comment = pnModAPIFunc('EZComments', 'user', 'get', array('id' => $this->id));
 
-        if ($args['commandName'] == 'cancel') {
-            // nothing to do
+        switch ($args['commandName'])
+        {
+            case 'cancel':
+                // nothing to do
+                break;
 
-        } else if ($args['commandName'] == 'submit') {
-            $ok = $renderer->pnFormIsValid();
-
-            $data = $renderer->pnFormGetValues();
-
-            if ($data['ezcomments_delete'] == true) {
+            case 'delete':
                 // delete the comment
                 // The API function is called.
                 // note: the api call is a little different here since we'll really calling a hook function that will
@@ -89,13 +89,16 @@ class EZComments_user_modifyhandler
                     // Success
                     LogUtil::registerStatus(__('Done! Comment deleted.', $dom));
                 }
-            } else {
-                  // make a check if the comment's body and title was allowed to be changed.
-                  if ($this->nomodify == 1) {
+                break;
+
+            case 'submit':
+                // make a check if the comment's body and title was allowed to be changed.
+                if ($this->nomodify == 1) {
                     $comment_old = pnModAPIFunc('EZComments', 'user', 'get', array('id' => $this->id));
                     $data['ezcomments_comment'] = $comment_old['comment'];
                     $data['ezcomments_subject'] = $comment_old['subject'];
                 }
+
                 if (!empty($comment['anonname'])) {
                     // poster is anonymous
                     // check anon fields
@@ -144,13 +147,13 @@ class EZComments_user_modifyhandler
                     // Success
                     LogUtil::registerStatus(__('Done! Comment updated.', $dom));
                 }
-            }
+                break;
         }
 
         if ($data['ezcomments_sendmeback'] == true) {
             return pnRedirect($comment['url'] . '#comments');
-        } else {
-            return pnRedirect(pnModURL('EZComments', 'user', 'main'));
         }
+
+        return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
     }
 }

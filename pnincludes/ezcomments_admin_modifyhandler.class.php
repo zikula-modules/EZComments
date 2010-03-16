@@ -58,17 +58,17 @@ class EZComments_admin_modifyhandler
             return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));
         }
 
+        $ok      = $renderer->pnFormIsValid();
+        $data    = $renderer->pnFormGetValues();
         $comment = pnModAPIFunc('EZComments', 'user', 'get', array('id' => $this->id));
 
-        if ($args['commandName'] == 'cancel') {
-            // nothing to do
+        switch ($args['commandName'])
+        {
+            case 'cancel':
+                // nothing to do
+                break;
 
-        } else if ($args['commandName'] == 'submit') {
-            $ok = $renderer->pnFormIsValid();
-
-            $data = $renderer->pnFormGetValues();
-
-            if ($data['ezcomments_delete'] == true) {
+            case 'delete':
                 // delete the comment
                 // The API function is called.
                 // note: the api call is a little different here since we'll really calling a hook function that will
@@ -78,7 +78,9 @@ class EZComments_admin_modifyhandler
                     // Success
                     LogUtil::registerStatus(__('Done! Comment deleted.', $dom));
                 }
-            } else {
+                break;
+
+            case 'submit':
                 if (!empty($comment['anonname'])) {
                     // poster is anonymous
                     // check anon fields
@@ -127,13 +129,13 @@ class EZComments_admin_modifyhandler
                     // Success
                     LogUtil::registerStatus(__('Done! Comment updated.', $dom));
                 }
-            }
+                break;
         }
 
         if ($data['ezcomments_sendmeback'] == true) {
             return pnRedirect($comment['url'] . '#comments');
-        } else {
-            return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
         }
+
+        return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
     }
 }

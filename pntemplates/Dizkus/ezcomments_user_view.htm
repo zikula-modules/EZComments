@@ -63,7 +63,7 @@
     <!--[/foreach]-->
 
     <!--[if $enablepager]-->
-    <div class="z-center"><!--[pager show="page" rowcount=$pager.numitems limit=$pager.itemsperpage posvar=comments_startnum shift=1]--></div>
+    <div class="z-center"><!--[pager show="page" rowcount=$ezc_pager.numitems limit=$ezc_pager.itemsperpage posvar=comments_startnum shift=1]--></div>
     <!--[/if]-->
 
     <!--[/if]-->
@@ -109,8 +109,9 @@
     </form>
     <!--[elseif !$allowadd]-->
     <p class="z-warningmsg">
-        <!--[gt text="Only logged in users are allowed to comment." domain="module_ezcomments"]-->
-        <a href="<!--[pnmodurl modname='Users' func='loginscreen']-->"><!--[gt text='Register/log in.' domain='module_ezcomments']--></a>
+        <!--[capture assign='registerlink']--><a href="<!--[pnmodurl modname='Users' func='register']-->"><!--[gt text='Register' domain='module_ezcomments']--></a><!--[/capture]-->
+        <!--[capture assign='loginlink']--><a href="<!--[pnmodurl modname='Users' func='loginscreen' returnpage=$returnurl|rawurlencode|rawurlencode]-->"><!--[gt text='log in' domain='module_ezcomments']--></a><!--[/capture]-->
+        <!--[gt text='Only logged in users are allowed to comment. %1$s or %2$s.' tag1=$registerlink tag2=$loginlink domain='module_ezcomments']-->
     </p>
     <!--[/if]-->
 </div>
