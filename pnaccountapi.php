@@ -17,12 +17,15 @@ function EZComments_accountapi_getall($args)
 {
     $dom = ZLanguage::getModuleDomain('EZComments');
 
-    // Create an array of links to return
-    $items = array();
-    $items['1'] = array('url'   => pnModURL('EZComments', 'user', 'main'),
-                        'title' => __('Manage my comments', $dom),
-                        'icon'  => 'mycommentsbutton.gif',
-                        'set'   => null);
+    $useAccountPage = pnModGetVar('EZComments', 'useaccountpage', '1');
+    if ($useAccountPage) {
+        // Create an array of links to return
+        $items = array();
+        $items['1'] = array('url'   => pnModURL('EZComments', 'user', 'main'),
+                            'title' => __('Manage my comments', $dom),
+                            'icon'  => 'mycommentsbutton.gif',
+                            'set'   => null);
+    }
 
     // Return the items
     return $items;

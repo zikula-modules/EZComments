@@ -50,6 +50,7 @@ function EZComments_init()
     pnModSetVar('EZComments', 'enablepager', false);
     pnModSetVar('EZComments', 'commentsperpage', 25);
     pnModSetVar('EZComments', 'migrated', serialize(array('dummy')));
+    pnModSetVar('EZComments', 'useaccountpage', '1');
     // Notification
     pnModSetVar('EZComments', 'MailToAdmin', false);
     pnModSetVar('EZComments', 'moderationmail', false);
@@ -105,6 +106,7 @@ function EZComments_upgrade($oldversion)
             }
             pnModSetVar('EZComments', 'template', 'Standard');
             pnModSetVar('EZComments', 'modifyowntime', 6);
+            pnModSetVar('EZComments', 'useaccountpage', '1');
     }
 
     return true;
