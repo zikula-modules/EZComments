@@ -2,23 +2,35 @@
 <?xml version="1.0" encoding="<!--[charset]-->"?>
 <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/">
     <channel>
-        <title><!--[pnconfiggetvar name=sitename]--></title>
+        <title><!--[$sitename|pnvarprepfordisplay]-->- <!--[gt text="Comments"]--></title>
     <link><!--[pngetbaseurl]--></link>
-    <description><!--[pnconfiggetvar name=backend_title]--></description>
-    <language><!--[pnconfiggetvar name=backend_language]--></language>
+    <description><!--[$sitename|pnvarprepfordisplay]--> - <!--[$slogan|pnvarprepfordisplay]--></description>
+    <language><!--[$language]--></language>
+    <pubDate><!--[$current_date]--></pubDate>
     <image>
-        <title><!--[pnconfiggetvar name=sitename]--></title>
+        <title><!--[$sitename|pnvarprepfordisplay]--></title>
         <url><!--[pngetbaseurl]-->images/<!--[pnconfiggetvar name=site_logo]--></url>
-    <link><!--[pngetbaseurl]--></link>
-</image>
-<webMaster><!--[pnconfiggetvar name=adminmail]--></webMaster>
-<!--[foreach from=$comments item=comment]-->
-<item>
-    <title><!--[$comment.subject|pnvarprepfordisplay]--></title>
-<link><!--[pngetbaseurl]--><!--[$comment.url|pnvarprepfordisplay]-->#comment<!--[$comment.id|pnvarprepfordisplay]--></link>
-<pubDate><!--[$comment.date|strtotime|date_format:"%a, %d %b %Y %H:%M:%S %z"]--></pubDate>
-<guid><!--[pngetbaseurl]--><!--[$comment.url|pnvarprepfordisplay]-->#comment<!--[$comment.id|pnvarprepfordisplay]--></guid>
-<description><!--[$comment.comment|pnvarprepfordisplay]--></description>
+    </image>
+    <webMaster><!--[$adminmail|pnvarprepfordisplay]--> (<!--[$adminmail|pnvarprepfordisplay]-->)</webMaster>
+    <!--[foreach from=$comments item=comment]-->
+    <item>
+        <title>
+            <!--[$comment.modname|pnvarprepfordisplay]-->:
+            <!--[if $comment.subject]-->
+            <!--[$comment.subject|pnvarprepfordisplay]-->
+            <!--[else]-->
+            <!--[gt text="No subject"]-->
+            <!--[/if]-->
+            <!--[if $comment.uid > 0]-->
+            (<!--[pnusergetvar name=uname uid=$comment.uid]-->)
+            <!--[else]-->
+            (<!--[$comment.anonname|pnvarprepfordisplay]-->)
+            <!--[/if]-->
+        </title>
+    <link><!--[$comment.url|pnvarprepfordisplay]-->#comment<!--[$comment.id|pnvarprepfordisplay]--></link>
+    <pubDate><!--[$comment.date|strtotime|date_format:"%a, %d %b %Y %H:%M:%S %z"]--></pubDate>
+    <guid><!--[$comment.url|pnvarprepfordisplay]-->#comment<!--[$comment.id|pnvarprepfordisplay]--></guid>
+    <description><!--[$comment.comment|pnvarprepfordisplay]--></description>
 </item>
 <!--[/foreach]-->
 </channel>

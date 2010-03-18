@@ -558,7 +558,12 @@ function EZComments_user_feed($args)
     $renderer = & pnRender::getInstance('EZComments');
 
     // get the last x comments
-    $renderer->assign('comments', $comments);
+    $renderer->assign('comments'    , $comments);
+    $renderer->assign('language'    , ZLanguage::getLocale());
+    $renderer->assign('sitename'    , pnConfigGetVar('sitename'));
+    $renderer->assign('slogan'      , pnConfigGetVar('slogan'));
+    $renderer->assign('adminmail'   , pnConfigGetVar('adminmail'));
+    $renderer->assign('current_date', date(DATE_RSS));
 
     // grab the item url from one of the comments
     if (isset($comments[0]['url'])) {
