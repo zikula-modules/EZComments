@@ -44,7 +44,7 @@ function EZComments_pntables()
     $pntable['EZComments_column_def'] = array(
         'id'          => 'I AUTO PRIMARY',
         'modname'     => "C(64) NOTNULL DEFAULT ''",
-        'objectid'    => "X NOTNULL DEFAULT ''",
+        'objectid'    => "C(255) NOTNULL DEFAULT ''",
         'url'         => "X NOTNULL DEFAULT ''",
         'date'        => "T NOTNULL DEFAULT '1970-01-01 00:00:00'",
         'uid'         => "I NOTNULL DEFAULT '0'",
@@ -58,6 +58,13 @@ function EZComments_pntables()
         'ipaddr'      => "C(85) NOTNULL DEFAULT ''",
         'type'        => "C(64) NOTNULL DEFAULT ''",
         'anonwebsite' => "C(255) NOTNULL DEFAULT ''"
+    );
+    $pntable['EZComments_column_idx'] = array(
+        'modobj'      => array('modname', 'objectid'),
+        'modname'     => 'modname',
+        'objectid'    => 'objectid',
+        'uid'         => 'uid',
+        'ownerid'     => 'owneruid'
     );
 
     return $pntable;

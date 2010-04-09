@@ -86,6 +86,12 @@ function EZComments_init()
  */
 function EZComments_upgrade($oldversion)
 {
+    $dom = ZLanguage::getModuleDomain('EZComments');
+
+    if (!DBUtil::changeTable('EZComments')) {
+        return LogUtil::registerError(__('Error updating the table.', $dom));
+    }
+
     switch ($oldversion)
     {
         case '1.2':
