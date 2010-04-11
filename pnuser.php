@@ -210,11 +210,7 @@ function EZComments_user_view($args)
     // include stylesheet if there is a style sheet
     $css = isset($args['ezccss']) ? $args['ezccss'] : FormUtil::getPassedValue('ezccss');
     $css = $css ? "$css.css" : 'style.css';
-    // TODO Search in config/
-    $css = "modules/EZComments/pntemplates/$templateset/$css";
-    if (file_exists($css)) {
-        PageUtil::addVar('stylesheet',$css);
-    }
+    PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet('EZComments', "$templateset/$css"));
 
     return $renderer->fetch(DataUtil::formatForOS($templateset) . '/ezcomments_user_view.htm');
 }
@@ -327,11 +323,7 @@ function EZComments_user_comment($args)
 
     // include stylesheet if there is a style sheet
     $css = $stylesheet ? "$stylesheet.css" : 'style.css';
-    // TODO Search in config/
-    $css = "modules/EZComments/pntemplates/$templateset/$css";
-    if (file_exists($css)) {
-        PageUtil::addVar('stylesheet', $css);
-    }
+    PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet('EZComments', "$templateset/$css"));
 
     // FIXME comment template missing
     return $renderer->fetch(DataUtil::formatForOS($templateset) . '/ezcomments_user_view.htm');
