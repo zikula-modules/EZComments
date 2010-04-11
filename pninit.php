@@ -49,7 +49,7 @@ function EZComments_init()
     pnModSetVar('EZComments', 'itemsperpage', 25);
     pnModSetVar('EZComments', 'enablepager', false);
     pnModSetVar('EZComments', 'commentsperpage', 25);
-    pnModSetVar('EZComments', 'migrated', serialize(array('dummy')));
+    pnModSetVar('EZComments', 'migrated', array('dummy' => true));
     pnModSetVar('EZComments', 'useaccountpage', '1');
     // Notification
     pnModSetVar('EZComments', 'MailToAdmin', false);
@@ -113,6 +113,11 @@ function EZComments_upgrade($oldversion)
             pnModSetVar('EZComments', 'template', 'Standard');
             pnModSetVar('EZComments', 'modifyowntime', 6);
             pnModSetVar('EZComments', 'useaccountpage', '1');
+
+        case '1.6':
+        case '1.61':
+        case '1.62':
+            pnModSetVar('EZComments', 'migrated', array('dummy' => true));
     }
 
     return true;

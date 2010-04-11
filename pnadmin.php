@@ -245,7 +245,7 @@ function EZComments_admin_migrate()
         return LogUtil::registerPermissionError();
     }
 
-    $migrated  = unserialize(pnModGetVar('EZComments', 'migrated'));
+    $migrated  = pnModGetVar('EZComments', 'migrated');
     $available = FileUtil::getFiles('modules/EZComments/pnmigrateapi', false, true, 'php', 'f');
 
     $selectitems = array();
@@ -297,13 +297,11 @@ function EZComments_admin_migrate_go()
         return LogUtil::registerArgsError();
     }
 
-    // Eintrag in Datenbank
-    $migrated = unserialize(pnModGetVar('EZComments', 'migrated'));
-
     // call the migration function
     if (pnModAPIFunc('EZComments', 'migrate', $migrate)) {
+        $migrated = pnModGetVar('EZComments', 'migrated', array('dummy' => true));
         $migrated[$migrate] = true;
-        pnModSetVar('EZComments', 'migrated', serialize($migrated));
+        pnModSetVar('EZComments', 'migrated', $migrated);
     }
 
     return pnRedirect(pnModURL('EZComments', 'admin', 'migrate'));

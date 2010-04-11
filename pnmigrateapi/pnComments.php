@@ -18,15 +18,16 @@
 function EZComments_migrateapi_pnComments()
 {
     if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
-        return LogUtil::registerPermissionError('index.php');
+        return LogUtil::registerPermissionError();
     }
 
     if (!pnModAvailable('pnComments')) {
-          return LogUtil::RegisterError('pnComments not available');
+        return LogUtil::RegisterError('pnComments not available');
     }
     pnModDBInfoLoad('pnComments');
 
     $comments = DBUtil::SelectObjectArray('pncomments');
+
     $counter  = 0;
     foreach ($comments as $c) {
         $obj = array (
@@ -39,12 +40,12 @@ function EZComments_migrateapi_pnComments()
             'date'      => $c['date'].' 00:00:00'
         );
 
-        if (!DBUtil::insertObject($obj,'EZComments')) {
+        if (!DBUtil::insertObject($obj, 'EZComments')) {
             return LogUtil::registerError('error inserting comments in ezcomments table');
         }
 
         $counter++;
     }
 
-    return LogUtil::registerStatus('migrated: '.$counter.' comments');
+    return LogUtil::registerStatus("Migrated: $counter comments successfully.");
 }

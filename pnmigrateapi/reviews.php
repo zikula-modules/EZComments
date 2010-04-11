@@ -25,16 +25,23 @@ function EZComments_migrateapi_reviews()
 
     // Get datbase setup
     pnModDBInfoLoad('Reviews', 'EZComments/pnmigrateapi/Reviews', true);
-    $dbconn = pnDBGetConn(true);
+    $dbconn  = pnDBGetConn(true);
     $pntable = pnDBGetTables();
 
     $EZCommentstable  = $pntable['EZComments'];
     $EZCommentscolumn = &$pntable['EZComments_column']; 
 
-    $Commentstable = $pntable['reviews_comments'];
+    $Commentstable  = $pntable['reviews_comments'];
     $Commentscolumn = $pntable['reviews_comments_column'];
 
-    $Usertable = $pntable['users'];
+    if (version_compare(PN_VERSION_NUM, '1', '>=')) { 
+        EZComments_get76xcolumns_reviews($Commentstable, $Commentscolumn); 
+    } 
+    if (is_null($Commentstable) || is_null($Commentscolumn)) { 
+        return LogUtil::registerError('Reviews migration: Comments tables not found'); 
+    } 
+
+    $Usertable  = $pntable['users'];
     $Usercolumn = $pntable['users_column'];
 
     // note: there's nothing we can do with the score......
@@ -44,27 +51,24 @@ function EZComments_migrateapi_reviews()
                    $Usercolumn[uid], 
                    $Commentscolumn[comments],
                    $Commentscolumn[score]
-             FROM  $Commentstable LEFT JOIN $Usertable
-               ON $Commentscolumn[userid] = $Usercolumn[uname]";
+              FROM $Commentstable
+         LEFT JOIN $Usertable
+                ON $Commentscolumn[userid] = $Usercolumn[uname]";
 
     $result = $dbconn->Execute($sql); 
     if ($dbconn->ErrorNo() != 0) {
         return LogUtil::registerError('Reviews migration: DB Error');
-    } 
-
-    // array to rebuild the patents
-    $comments = array(0 => array('newid' => -1));
+    }
 
     // loop through the old comments and insert them one by one into the DB
-    for (; !$result->EOF; $result->MoveNext()) {
+    for (; !$result->EOF; $result->MoveNext())
+    {
         list($cid, $rid, $date, $uid, $comment, $score) = $result->fields;
 
-        $id = pnModAPIFunc('EZComments',
-                           'user',
-                           'create',
-                           array('mod'  => 'Reviews',
+        $id = pnModAPIFunc('EZComments', 'user', 'create',
+                           array('mod'      => 'Reviews',
                                  'objectid' => DataUtil::formatForStore($rid),
-                                 'url'      => 'index.php?name=Reviews&req=showcontent&id=' . $rid,
+                                 'url'      => pnModURL('Reviews', 'user', 'display', array('id' => $rid)),
                                  'comment'  => $comment,
                                  'subject'  => '',
                                  'uid'      => $uid,
@@ -74,12 +78,25 @@ function EZComments_migrateapi_reviews()
             return LogUtil::registerError('Reviews migration: Error creating comment');
         } 
     } 
-    $result->Close(); 
+    $result->Close();
 
-    // activate the ezcomments hook for the news module
+    // activate the ezcomments hook for the Reviews module
     pnModAPIFunc('Modules', 'admin', 'enablehooks',
                  array('callermodname' => 'Reviews',
-                       'hookmodname' => 'EZComments'));
+                       'hookmodname'   => 'EZComments'));
 
-    LogUtil::registerStatus('Reviews migration successful');
+    return LogUtil::registerStatus('Reviews migration successful');
+}
+
+function EZComments_get76xcolumns_reviews(&$Commentstable, &$Commentscolumn)
+{
+    $Commentstable  = DBUtil::getLimitedTablename('reviews_comments');
+    $Commentscolumn = array(
+        'cid'      => 'pn_cid',
+        'rid'      => 'pn_rid',
+        'userid'   => 'pn_userid',
+        'date'     => 'pn_date',
+        'comments' => 'pn_comments',
+        'score'    => 'pn_score'
+    );
 }

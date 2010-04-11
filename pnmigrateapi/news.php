@@ -21,41 +21,50 @@ function EZComments_migrateapi_news()
     // Security check
     if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
         return LogUtil::registerError('News migration: Not Admin');
-    } 
+    }
 
     // Get datbase setup
-    $dbconn = pnDBGetConn(true);
+    $dbconn  = pnDBGetConn(true);
     $pntable = pnDBGetTables();
 
     $EZCommentstable  = $pntable['EZComments'];
-    $EZCommentscolumn = &$pntable['EZComments_column']; 
+    $EZCommentscolumn = &$pntable['EZComments_column'];
 
-    $Commentstable = $pntable['comments'];
+    $Commentstable  = $pntable['comments'];
     $Commentscolumn = $pntable['comments_column'];
 
-    $Usertable = $pntable['users'];
+    if (version_compare(PN_VERSION_NUM, '1', '>=')) {
+        EZComments_get76xcolumns_news($Commentstable, $Commentscolumn);
+    }
+    if (is_null($Commentstable) || is_null($Commentscolumn)) {
+        return LogUtil::registerError('News migration: Comments tables not found');
+    }
+
+    $Usertable  = $pntable['users'];
     $Usercolumn = $pntable['users_column'];
 
-    $sql = "SELECT $Commentscolumn[tid], 
+    $sql = "SELECT $Commentscolumn[tid],
                    $Commentscolumn[sid],
                    $Commentscolumn[date], 
-                   $Usercolumn[uid], 
+                   $Usercolumn[uid],
                    $Commentscolumn[comment],
                    $Commentscolumn[subject],
                    $Commentscolumn[pid]
-             FROM  $Commentstable LEFT JOIN $Usertable
-               ON $Commentscolumn[name] = $Usercolumn[uname]";
+              FROM $Commentstable
+         LEFT JOIN $Usertable
+                ON $Commentscolumn[name] = $Usercolumn[uname]";
 
-    $result = $dbconn->Execute($sql); 
+    $result = $dbconn->Execute($sql);
     if ($dbconn->ErrorNo() != 0) {
         return LogUtil::registerError('News migration: DB Error');
-    } 
+    }
 
     // array to rebuild the patents
     $comments = array(0 => array('newid' => -1));
 
     // loop through the old comments and insert them one by one into the DB
-    for (; !$result->EOF; $result->MoveNext()) {
+    for (; !$result->EOF; $result->MoveNext())
+    {
         list($tid, $sid, $date, $uid, $comment, $subject, $replyto) = $result->fields;
 
         // set the correct user id for anonymous users
@@ -63,12 +72,10 @@ function EZComments_migrateapi_news()
             $uid = 1;
         }
 
-        $id = pnModAPIFunc('EZComments',
-                           'user',
-                           'create',
-                           array('mod'  => 'News',
+        $id = pnModAPIFunc('EZComments', 'user', 'create',
+                           array('mod'      => 'News',
                                  'objectid' => DataUtil::formatForStore($sid),
-                                 'url'      => 'index.php?module=News&func=display&sid=' . $sid,
+                                 'url'      => pnModURL('News', 'user', 'display', array('sid' => $sid)),
                                  'comment'  => $comment,
                                  'subject'  => $subject,
                                  'uid'      => $uid,
@@ -78,29 +85,47 @@ function EZComments_migrateapi_news()
             return LogUtil::registerError('News migration: Error creating comment');
         }
 
-        $comments[$tid] = array('newid' => $id, 
+        $comments[$tid] = array('newid' => $id,
                                 'pid'   => $replyto);
-        
-    } 
-    $result->Close(); 
+    }
+    $result->Close();
 
     // rebuild the links to the parents
     $tids = array_keys($comments);
     foreach ($tids as $tid) {
         if ($tid != 0) {
             $v = $comments[$tid];
-            $sql = "UPDATE $EZCommentstable 
-                       SET $EZCommentscolumn[replyto] = " . $comments[$v['pid']]['newid'] . "
-                     WHERE $EZCommentscolumn[id] = $v[newid]";
+            $sql = "UPDATE $EZCommentstable
+                       SET $EZCommentscolumn[replyto] = '" . $comments[$v['pid']]['newid'] . "'
+                     WHERE $EZCommentscolumn[id] = '$v[newid]'";
 
-            $result = $dbconn->Execute($sql); 
+            $result = $dbconn->Execute($sql);
         }
     }
 
     // activate the ezcomments hook for the news module
     pnModAPIFunc('Modules', 'admin', 'enablehooks',
                  array('callermodname' => 'News',
-                       'hookmodname' => 'EZComments'));
+                       'hookmodname'   => 'EZComments'));
 
-    LogUtil::registerStatus('News migration successful');
+ 	return LogUtil::registerStatus('News migration successful');
+}
+
+function EZComments_get76xcolumns_news(&$Commentstable, &$Commentscolumn)
+{
+    $Commentstable  = DBUtil::getLimitedTablename('comments');
+    $Commentscolumn = array(
+        'tid'       => 'pn_tid',
+        'pid'       => 'pn_pid',
+        'sid'       => 'pn_sid',
+        'date'      => 'pn_date',
+        'name'      => 'pn_name',
+        'email'     => 'pn_email',
+        'url'       => 'pn_url',
+        'host_name' => 'pn_host_name',
+        'subject'   => 'pn_subject',
+        'comment'   => 'pn_comment',
+        'score'     => 'pn_score',
+        'reason'    => 'pn_reason'
+    );
 }
