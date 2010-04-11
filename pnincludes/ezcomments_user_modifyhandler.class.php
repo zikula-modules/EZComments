@@ -30,7 +30,7 @@ class EZComments_user_modifyhandler
         }
 
         // check if user is allowed to modify this content
-        $modifyowntime = pnModGetVar('EZComments','modifyowntime');
+        $modifyowntime = pnModGetVar('EZComments', 'modifyowntime');
         $ts = strtotime($comment['date']);
         if ((pnUserGetVar('uid') == $comment['uid']) && ((int)$modifyowntime > 0) && ($ts+($modifyowntime*60*60) < time())) {
               // Admins of course should be allowed to modify every comment
