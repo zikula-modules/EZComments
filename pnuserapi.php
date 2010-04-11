@@ -770,3 +770,40 @@ function EZComments_userapi_checkPermission($args = array())
     // otherwise return false because no security check had a positive result
     return false;
 }
+
+/**
+ * get the templateset stylesheet from several possible sources
+ *
+ * @access public
+ * @param string $path    the templateset/css path
+ * @return string path of the stylesheet file, relative to PN root folder
+ */
+function EZComments_userapi_getStylesheet($args = array())
+{
+    // default for the style sheet
+    if (!isset($args['path']) || empty($args['path'])) {
+        $args['path'] = 'Standard/style.css';
+    }
+
+    $ospath = DataUtil::formatForOS($args['path']);
+
+    // config directory
+    $configpath = "config/templates/EZComments";
+
+    // theme directory
+    $theme = DataUtil::formatForOS(pnUserGetTheme());
+    $themepath = "themes/$theme/templates/modules/EZComments";
+
+    // module directory
+    $modpath = "modules/EZComments/pntemplates";
+
+    // search for the style sheet
+    $csssrc = '';
+    foreach (array($configpath, $themepath, $modpath) as $basepath) {
+        if (file_exists("$basepath/$ospath") && is_readable("$basepath/$ospath")) {
+            $csssrc = "$basepath/$ospath";
+            break;
+        }
+    }
+    return $csssrc;
+}
