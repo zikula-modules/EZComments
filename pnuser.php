@@ -162,7 +162,6 @@ function EZComments_user_view($args)
     $renderer->assign('ezcomment',    $ezcomment);
     $renderer->assign('order',        $sortorder);
     $renderer->assign('modinfo',      pnModGetInfo(pnModGetIDFromName($mod)));
-    $renderer->assign('avatarpath',   pnModGetVar('Users', 'avatarpath'));
     $renderer->assign('msgmodule',    pnConfigGetVar('messagemodule', ''));
     $renderer->assign('prfmodule',    pnConfigGetVar('profilemodule', ''));
     $renderer->assign('allowadd',     SecurityUtil::checkPermission('EZComments::', "$mod:$objectid:", ACCESS_COMMENT));

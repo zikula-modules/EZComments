@@ -24,15 +24,7 @@
                     <!--[/if]-->
                 </li>
                 <li class="ezc_avatar">
-                    <!--[assign var='defaultavatar' value="`$baseurl`modules/EZComments/pnimages/gravatar_80.jpg"]-->
-                    <!--[if $comment.anonname eq '']-->
-                    <!--[if isset($comment._YOURAVATAR) && !empty($comment._YOURAVATAR)]-->
-                    <!--[assign var='defaultavatar' value="`$baseurl``$avatarpath`/`$comment._YOURAVATAR`"]-->
-                    <!--[/if]-->
-                    <img src="<!--[gravatar email=$comment.email size='80' default=$defaultavatar]-->" alt="<!--[gt text="%s's Avatar" tag1=$comment.uname]-->" />
-                    <!--[else]-->
-                    <img src="<!--[gravatar email=$comment.anonmail size='80' default=$defaultavatar]-->" alt="<!--[gt text="%s's Avatar" tag1=$comment.anonname]-->" />
-                    <!--[/if]-->
+                    <!--[useravatar uid=$comment.uid]-->
                 </li>
                 <li class="ezc_date">
                     <span><!--[gt text='Posted on %s' tag1=$comment.date|pndate_format:'datetimelong' domain='module_ezcomments']--> </span>

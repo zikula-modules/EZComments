@@ -20,15 +20,7 @@
                 <strong><!--[$comment.uid|userprofilelink]--></strong>
                 <!--[/if]-->
                 <br />
-                <!--[assign var='defaultavatar' value="`$baseurl`modules/EZComments/pnimages/gravatar_80.jpg"]-->
-                <!--[if $comment.anonname eq '']-->
-                <!--[if isset($comment._YOURAVATAR) && !empty($comment._YOURAVATAR) && $comment._YOURAVATAR neq 'blank.gif' && $comment._YOURAVATAR neq 'gravatar.gif']-->
-                <!--[assign var='defaultavatar' value="`$baseurl``$avatarpath`/`$comment._YOURAVATAR`"|default:$defaultavatar]-->
-                <!--[/if]-->
-                <img src="<!--[gravatar email=$comment.pn_email size=80 default=$defaultavatar]-->" alt="<!--[$comment.pn_uname]-->'s Avatar" />
-                <!--[else]-->
-                <img src="<!--[gravatar email=$comment.anonmail size=80 default=$defaultavatar]-->" alt="<!--[$comment.anonname]-->'s Avatar" />
-                <!--[/if]-->
+                <!--[useravatar uid=$comment.uid]-->
             </div>
             <ul class="ezc_options">
                 <li><strong><!--[gt text="Posted on" domain="module_ezcomments"]--> </strong></li>
@@ -36,13 +28,13 @@
                 <!--[if $pncore.logged_in eq true]-->
                 <li>
                     <!--[if $prfmodule]-->
-                        <!--[$comment.uid|userprofilelink:'':"`$baseurl`images/icons/extrasmall/personal.gif"]-->
+                    <!--[$comment.uid|userprofilelink:'':"`$baseurl`images/icons/extrasmall/personal.gif"]-->
                     <!--[/if]-->
                     <!--[if $msgmodule]-->
-                        <a href="<!--[pnmodurl modname=$msgmodule func="inbox" func="newpm" uid=$comment.uid]-->"><!--[pnimg modname=core src=mail_generic.gif set='icons/extrasmall' __title="Send mail to user" __alt="Send mail to user"]--></a>
+                    <a href="<!--[pnmodurl modname=$msgmodule func="inbox" func="newpm" uid=$comment.uid]-->"><!--[pnimg modname=core src=mail_generic.gif set='icons/extrasmall' __title="Send mail to user" __alt="Send mail to user"]--></a>
                     <!--[/if]-->
                     <!--[if $comment.del]-->
-                        <a href="<!--[pnmodurl fqurl="true" modname=EZComments type=user func=modify id=$comment.id redirect=$redirect]-->"><!--[pnimg modname=core src=xedit.gif set='icons/extrasmall' __title="Modify comment" __alt="Modify comment"]--></a>
+                    <a href="<!--[pnmodurl fqurl="true" modname=EZComments type=user func=modify id=$comment.id redirect=$redirect]-->"><!--[pnimg modname=core src=xedit.gif set='icons/extrasmall' __title="Modify comment" __alt="Modify comment"]--></a>
                     <!--[/if]-->
                 </li>
                 <!--[/if]-->
