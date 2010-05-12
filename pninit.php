@@ -43,6 +43,7 @@ function EZComments_init()
 
     // Misc
     pnModSetVar('EZComments', 'template', 'Standard');
+    pnModSetVar('EZComments', 'css', 'style.css');
     pnModSetVar('EZComments', 'anonusersinfo', false);
     pnModSetVar('EZComments', 'anonusersrequirename', false);
     pnModSetVar('EZComments', 'logip', false);
@@ -118,6 +119,7 @@ function EZComments_upgrade($oldversion)
         case '1.61':
         case '1.62':
             pnModSetVar('EZComments', 'migrated', array('dummy' => true));
+            pnModSetVar('EZComments', 'css', 'style.css');
 
         case '2.0.0':
             // future upgrade routines

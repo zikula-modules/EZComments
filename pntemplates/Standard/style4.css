@@ -19,7 +19,8 @@
     overflow:hidden;
     position:relative;
 }
-#ezc_comments .ezcomments_wrapper a {
+#ezc_comments .ezcomments_wrapper a,
+#ezc_comments .ezcomments_wrapper .ezc_metadata .ezc_author strong {
     color:#edecd8;
     text-decoration:none;
 }

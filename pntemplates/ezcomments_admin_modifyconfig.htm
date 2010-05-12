@@ -12,6 +12,15 @@
             <!--[pnformdropdownlist id="ezcomments_template" items=$templates selectedValue=$pncore.EZComments.template]-->
         </div>
         <div class="z-formrow">
+            <!--[pnformlabel for="ezcomments_css" __text='Default stylesheet']-->
+            <!--[pnformtextinput id="ezcomments_css" text=$pncore.EZComments.css|pnvarprepfordisplay size="30" maxLength="30"]-->
+            <p class="z-informationmsg z-formnote">
+                <!--[gt text="By default, the following possibilities exists:"]--><br />
+                <strong>Standard:</strong> style1.css, style2.css, style3.css, style4.css<br />
+                <strong>Dizkus:</strong> style.css
+            </p>
+        </div>
+        <div class="z-formrow">
             <!--[pnformlabel for="ezcomments_anonusersinfo" __text='Allow unregistered users to set user information']-->
             <!--[pnformcheckbox id="ezcomments_anonusersinfo" checked=$pncore.EZComments.anonusersinfo]-->
         </div>

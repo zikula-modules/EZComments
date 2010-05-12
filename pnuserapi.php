@@ -780,7 +780,8 @@ function EZComments_userapi_getStylesheet($args = array())
 {
     // default for the style sheet
     if (!isset($args['path']) || empty($args['path'])) {
-        $args['path'] = 'Standard/style.css';
+        $defaultcss  = pnModGetVar('EZComments', 'css', 'style.css');
+        $args['path'] = 'Standard/'.$defaultcss;
     }
 
     $ospath = DataUtil::formatForOS($args['path']);

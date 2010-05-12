@@ -211,8 +211,10 @@ function EZComments_user_view($args)
     $renderer->assign('ezc_pager', array('numitems'     => $commentcount,
                                          'itemsperpage' => $numitems));
 
-    // find out which template to use
+    // find out which template and stylesheet to use
     $templateset = isset($args['template']) ? $args['template'] : FormUtil::getPassedValue('eztpl');
+    $css         = isset($args['ezccss'])   ? $args['ezccss']   : FormUtil::getPassedValue('ezccss');
+    $defaultcss  = pnModGetVar('EZComments', 'css', 'style.css');
 
     if (!$renderer->template_exists(DataUtil::formatForOS($templateset) . '/ezcomments_user_view.htm')) {
         $templateset = pnModGetVar('EZComments', 'template', 'Standard');
@@ -220,8 +222,7 @@ function EZComments_user_view($args)
     $renderer->assign('template', $templateset);
 
     // include stylesheet if there is a style sheet
-    $css = isset($args['ezccss']) ? $args['ezccss'] : FormUtil::getPassedValue('ezccss');
-    $css = $css ? "$css.css" : 'style.css';
+    $css = $css ? "$css.css" : $defaultcss;
     if ($css = pnModAPIFunc('EZComments', 'user', 'getStylesheet', array('path' => "$templateset/$css"))) {
         PageUtil::addVar('stylesheet', $css);
     }
@@ -330,13 +331,15 @@ function EZComments_user_comment($args)
 
     // find out which template to use
     $templateset = isset($args['template']) ? $args['template'] : $template;
+    $defaultcss  = pnModGetVar('EZComments', 'css', 'style.css');
+
     if (!$renderer->template_exists(DataUtil::formatForOS($templateset) . '/ezcomments_user_comment.htm')) {
         $templateset = pnModGetVar('EZComments', 'template', 'Standard');
     }
     $renderer->assign('template', $templateset);
 
     // include stylesheet if there is a style sheet
-    $css = $stylesheet ? "$stylesheet.css" : 'style.css';
+    $css = $stylesheet ? "$stylesheet.css" : $defaultcss;
     if ($css = pnModAPIFunc('EZComments', 'user', 'getStylesheet', array('path' => "$templateset/$css"))) {
         PageUtil::addVar('stylesheet', $css);
     }

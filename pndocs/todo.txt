@@ -13,6 +13,3 @@ Things left to be done:
 
  - Additional feature requests can be submitted to the project page
    at http://code.zikula.org/ezcomments/
-
- - Delete plugins: ezcommentsstylesheet and ezcommentsimg
- 
