@@ -65,6 +65,7 @@ class EZComments_user_modifyhandler
 
         $ok      = $renderer->pnFormIsValid();
         $data    = $renderer->pnFormGetValues();
+
         $comment = pnModAPIFunc('EZComments', 'user', 'get', array('id' => $this->id));
 
         switch ($args['commandName'])

@@ -65,9 +65,21 @@ function EZComments_user_main($args = array())
                            'image' => 'demo.gif',
                            'title' => __('View', $dom));
 
-        $options[] = array('url'   => pnModURL('EZComments', 'user', 'modify', array('id' => $item['id'])),
-                           'image' => 'xedit.gif',
-                           'title' => __('Edit', $dom));
+        $id = isset($args['id']) ? $args['id'] : FormUtil::getPassedValue('id', null, 'GETPOST');
+
+        // Security check
+        $securityCheck = pnModAPIFunc('EZComments', 'user', 'checkPermission',
+                                      array('module'    => '',
+                                            'objectid'  => '',
+                                            'commentid' => $item['id'],
+                                            'uid'       => $item['uid'],
+                                            'level'     => ACCESS_EDIT));
+
+        if ($securityCheck) {
+            $options[] = array('url'   => pnModURL('EZComments', 'user', 'modify', array('id' => $item['id'])),
+                               'image' => 'xedit.gif',
+                               'title' => __('Edit', $dom));
+        }
 
         $items[$k]['options'] = $options;
     }
@@ -140,7 +152,7 @@ function EZComments_user_view($args)
     }
 
     $items = pnModAPIFunc('EZComments', 'user', 'getall',
-                           compact('mod', 'objectid', 'sortorder', 'status', 'numitems', 'startnum'));
+    compact('mod', 'objectid', 'sortorder', 'status', 'numitems', 'startnum'));
 
     if ($items === false) {
         return LogUtil::registerError(__('Internal Error.', $dom), null, 'index.php');
@@ -276,7 +288,7 @@ function EZComments_user_comment($args)
     }
 
     $items = pnModAPIFunc('EZComments', 'user', 'getall',
-                           compact('mod', 'objectid', 'sortorder', 'status', 'numitems', 'startnum'));
+    compact('mod', 'objectid', 'sortorder', 'status', 'numitems', 'startnum'));
 
     if ($items === false) {
         return LogUtil::registerError(__('Internal Error.', $dom), null, 'index.php');;
@@ -415,7 +427,7 @@ function EZComments_user_create($args)
     $url = str_replace(pnGetBaseURI(), '', $useurl);
 
     $id = pnModAPIFunc('EZComments', 'user', 'create',
-                       array('mod'         => $mod,
+    array('mod'         => $mod,
                              'objectid'    => $objectid,
                              'url'         => $url,
                              'comment'     => $comment,
@@ -476,11 +488,11 @@ function EZComments_prepareCommentsForDisplay($items)
         }
 
         $items[$k]['del'] = pnModAPIFunc('EZComments', 'user', 'checkPermission',
-                                         array('module'    => $items[$k]['modname'],
-                                               'objectid'  => $items[$k]['objectid'],
-                                               'commentid' => $items[$k]['id'],
-                                               'uid'       => $items[$k]['uid'],
-                                               'level'     => ACCESS_DELETE));
+                                        array('module'    => $items[$k]['modname'],
+                                              'objectid'  => $items[$k]['objectid'],
+                                              'commentid' => $items[$k]['id'],
+                                              'uid'       => $items[$k]['uid'],
+                                              'level'     => ACCESS_DELETE));
     }
 
     return $items;
@@ -530,7 +542,7 @@ function EZComments_displayChildren($comments, $id, $level)
  * return an rss/atom feed of the last x comments
  *
  * @author Mark west
-*/
+ */
 function EZComments_user_feed($args)
 {
     $mod       = isset($args['mod'])       ? $args['mod']       : FormUtil::getPassedValue('mod',   null, 'POST');
@@ -553,7 +565,7 @@ function EZComments_user_feed($args)
     }
 
     $comments = pnModAPIFunc('EZComments', 'user', 'getall',
-                             array('mod'       => $mod,
+    array('mod'       => $mod,
                                    'objectid'  => $objectid,
                                    'numitems'  => $feedcount,
                                    'sortorder' => 'DESC',

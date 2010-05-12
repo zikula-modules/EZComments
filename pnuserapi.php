@@ -736,7 +736,6 @@ function EZComments_userapi_checkPermission($args = array())
     // own comments = ok
     $uid  = pnUserGetVar('uid');
     $auid = isset($args['uid']) ? $args['uid'] : 0;
-
     if ($uid == $auid) {
         return true;
     }
@@ -753,16 +752,15 @@ function EZComments_userapi_checkPermission($args = array())
     }
 
     $inst = "$args[module]:$args[objectid]:$args[commentid]";
-
     // regular securityUtil::checkPermission check. Return true on success
     if (SecurityUtil::checkPermission('EZComments::', $inst, $args['level'])) {
         return true;
     }
 
     if (!empty($args['commentid'])) {
-        // otherwise: get the comment, check the owneruid and return the result
+        // otherwise: get the comment, check the uid and return the result
         $comment = DBUtil::selectObjectByID('EZComments', $args['commentid']);
-        if ($comment['owneruid'] == $uid || $comment['uid'] == $uid) {
+        if ($comment['uid'] == $uid) {
             return true;
         }
     }
