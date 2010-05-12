@@ -317,7 +317,7 @@ function EZComments_userapi_create($args = array())
     }
 
     // Inform the content owner or the admin about a new comment
-    if (!$maxstatus && pnModGetVar('EZComments', 'MailToAdmin')) {
+    if (!$maxstatus && pnModGetVar('EZComments', 'MailToAdmin') && !in_array($args['uid'], array(2, $owneruid))) {
         $renderer = & pnRender::getInstance('EZComments', false);
 
         if ($args['uid'] > 0) {
@@ -338,7 +338,7 @@ function EZComments_userapi_create($args = array())
                            'body'        => $renderer->fetch('ezcomments_mail_newcomment.htm')));
     }
 
-    if ($maxstatus && pnModGetVar('EZComments', 'moderationmail')) {
+    if ($maxstatus && pnModGetVar('EZComments', 'moderationmail') && !in_array($args['uid'], array(2, $owneruid))) {
         $renderer = & pnRender::getInstance('EZComments', false);
 
         if ($args['uid'] > 0) {
