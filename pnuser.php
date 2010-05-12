@@ -584,24 +584,6 @@ function EZComments_user_feed($args)
 }
 
 /**
- * process multiple comments
- *
- * This function process the comments selected in the admin view page.
- * Multiple comments may have thier state changed or be deleted
- *
- * @author The EZComments Development Team
- * @param Comments the ids of the items to be deleted
- * @param confirmation confirmation that this item can be deleted
- * @param redirect the location to redirect to after the deletion attempt
- * @return bool true on sucess, false on failure
- */
-function EZComments_user_processselected($args)
-{
-    Loader::requireOnce('modules/EZComments/pnincludes/common.php');
-    return ezc_processSelected($args);
-}
-
-/**
  * modify a comment
  *
  * This is a standard function that is called whenever an comment owner

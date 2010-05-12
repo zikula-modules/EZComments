@@ -1,6 +1,8 @@
 <!--[*  $Id$  *]-->
 <!--[include file="ezcomments_admin_menu.htm"]-->
 <!--[pnpageaddvar name="javascript" value="modules/EZComments/pnjavascript/toggle.js"]-->
+<!--[gt text="unknown" assign=lblunknown]-->
+
 <div class="z-admincontainer">
     <div class="z-adminpageicon"><!--[pnimg modname='EZComments' src='admin.gif' alt='' ]--></div>
     <!--[if $showall neq 1]-->
@@ -31,9 +33,15 @@
                     <tr>
                         <th><input type="checkbox" onclick="checkAllFields(1);" id="checkAll" /></th>
                         <th><!--[gt text="Status"]--></th>
-                        <th><!--[gt text="User"]--></th>
-                        <th><!--[gt text="Content owner"]--></th>
-                        <th><!--[gt text="Module"]-->/<!--[gt text="Comment type"]--></th>
+                        <th><!--[gt text="Date"]--></th>
+                        <th>
+                            <span class="z-nowrap"><!--[gt text="User"]--></span><br />
+                            <span class="z-nowrap"><!--[gt text="Owner"]--></span>
+                        </th>
+                        <th>
+                            <span class="z-nowrap"><!--[gt text="Module"]--></span><br />
+                            <span class="z-nowrap"><!--[gt text="Comment type"]--></span>
+                        </th>
                         <th><!--[gt text="Comment"]--></th>
                         <th><!--[gt text="Options"]--></th>
                     </tr>
@@ -48,19 +56,25 @@
                             <!--[if $item.status eq 2]--><!--[pnimg modname="EZComments" src='red.gif'   __alt='Rejected' __title='Rejected']--><!--[/if]-->
                         </td>
                         <td>
-                            <!--[if $item.uid neq 0]-->
-                            <!--[$item.uid|userprofilelink]-->
-                            <!--[else]-->
-                            <!--[$item.anonname|pnvarprepfordisplay]-->
-                            <!--[/if]-->
-                            <br /><!--[$item.date|pndate_format]-->
+                            <span class="z-nowrap"><!--[$item.date|pndate_format:datebrief]--></span>
+                            <span class="z-nowrap"><!--[$item.date|pndate_format:timebrief]--></span>
                         </td>
                         <td>
-                            <!--[if $item.owneruid ne "0"]-->
-                            <!--[$item.owneruid|userprofilelink]-->
-                            <!--[else]-->
-                            <!--[gt text="unknown"]-->
-                            <!--[/if]-->
+                            <span class="z-nowrap">
+                                <!--[if $item.uid neq 0]-->
+                                <!--[$item.uid|userprofilelink|default:$lblunknown]-->
+                                <!--[else]-->
+                                <!--[$item.anonname|pnvarprepfordisplay|default:$lblunknown]-->
+                                <!--[/if]-->
+                            </span>
+                            <br />
+                            <span class="z-nowrap">
+                                <!--[if $item.owneruid ne "0"]-->
+                                <!--[$item.owneruid|userprofilelink|default:$lblunknown]-->
+                                <!--[else]-->
+                                <!--[$lblunknown]-->
+                                <!--[/if]-->
+                            </span>
                         </td>
                         <td>
                             <a href="<!--[$item.url|pnvarprepfordisplay]-->"><!--[$item.mod|pnvarprepfordisplay]--></a>
@@ -78,7 +92,7 @@
                         </td>
                     </tr>
                     <!--[foreachelse]-->
-                    <tr class="z-admintableempty"><td colspan="8"><!--[gt text="No items found"]--></td></tr>
+                    <tr class="z-admintableempty"><td colspan="7"><!--[gt text="No items found"]--></td></tr>
                     <!--[/foreach]-->
                 </tbody>
             </table>

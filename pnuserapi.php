@@ -807,3 +807,4 @@ function EZComments_userapi_getStylesheet($args = array())
     }
     return $csssrc;
 }
+

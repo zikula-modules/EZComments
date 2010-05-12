@@ -40,12 +40,6 @@ class EZComments_user_modifyhandler
             }
         }
 
-        // assign the status flags
-        $statuslevels = array( array('text' => __('Approved', $dom), 'value' => 0),
-                               array('text' => __('Pending', $dom),  'value' => 1),
-                               array('text' => __('Rejected', $dom), 'value' => 2));
-
-        $renderer->assign('statuslevels', $statuslevels);
         $renderer->assign('redirect', (isset($redirect) && !empty($redirect)) ? true : false);
 
         // finally asign the comment information
@@ -140,7 +134,6 @@ class EZComments_user_modifyhandler
                                 array('id'          => $this->id,
                                       'subject'     => $data['ezcomments_subject'],
                                       'comment'     => $data['ezcomments_comment'],
-                                      'status'      => (int)$data['ezcomments_status'],
                                       'anonname'    => $data['ezcomments_anonname'],
                                       'anonmail'    => $data['ezcomments_anonmail'],
                                       'anonwebsite' => $data['ezcomments_anonwebsite']))) {
@@ -154,6 +147,6 @@ class EZComments_user_modifyhandler
             return pnRedirect($comment['url'] . '#comments');
         }
 
-        return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
+        return pnRedirect(pnModURL('EZComments', 'user', 'main'));
     }
 }
