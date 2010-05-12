@@ -118,6 +118,10 @@ function EZComments_upgrade($oldversion)
         case '1.61':
         case '1.62':
             pnModSetVar('EZComments', 'migrated', array('dummy' => true));
+
+        case '2.0.0':
+            // future upgrade routines
+            break;
     }
 
     return true;
