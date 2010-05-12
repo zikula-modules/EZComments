@@ -42,39 +42,42 @@ function ezc_processSelected($args)
         return LogUtil::registerAuthidError(pnModURL('EZComments', 'admin', 'main'));
     }
 
-    // loop round each comment deleted them in turn
-    foreach ($comments as $comment)
-    {
-        switch (strtolower($action))
+    // SecurityCheck added by Thorkilt
+    if (SecurityUtil::checkPermission('EZComments::', '::', ACCESS_MODERATE)) {
+        // loop round each comment deleted them in turn
+        foreach ($comments as $comment)
         {
-            case 'delete':
-                // The API function is called.
-                if (pnModAPIFunc('EZComments', 'admin', 'delete', array('id' => $comment))) {
-                    // Success
-                    LogUtil::registerStatus(__('Done! Comment deleted.', $dom));
-                }
-                break;
-
-            case 'approve':
-                if (pnModAPIFunc('EZComments', 'admin', 'updatestatus', array('id' => $comment, 'status' => 0))) {
-                    // Success
-                    LogUtil::registerStatus(__('Done! Comment updated.', $dom));
-                }
-                break;
-
-            case 'hold':
-                if (pnModAPIFunc('EZComments', 'admin', 'updatestatus', array('id' => $comment, 'status' => 1))) {
-                    // Success
-                    LogUtil::registerStatus(__('Done! Comment updated.', $dom));
-                }
-                break;
-
-            case 'reject':
-                if (pnModAPIFunc('EZComments', 'admin', 'updatestatus', array('id' => $comment, 'status' => 2))) {
-                    // Success
-                    LogUtil::registerStatus(__('Done! Comment updated.', $dom));
-                }
-                break;
+            switch (strtolower($action))
+            {
+                case 'delete':
+                    // The API function is called.
+                    if (pnModAPIFunc('EZComments', 'admin', 'delete', array('id' => $comment))) {
+                        // Success
+                        LogUtil::registerStatus(__('Done! Comment deleted.', $dom));
+                    }
+                    break;
+    
+                case 'approve':
+                    if (pnModAPIFunc('EZComments', 'admin', 'updatestatus', array('id' => $comment, 'status' => 0))) {
+                        // Success
+                        LogUtil::registerStatus(__('Done! Comment updated.', $dom));
+                    }
+                    break;
+    
+                case 'hold':
+                    if (pnModAPIFunc('EZComments', 'admin', 'updatestatus', array('id' => $comment, 'status' => 1))) {
+                        // Success
+                        LogUtil::registerStatus(__('Done! Comment updated.', $dom));
+                    }
+                    break;
+    
+                case 'reject':
+                    if (pnModAPIFunc('EZComments', 'admin', 'updatestatus', array('id' => $comment, 'status' => 2))) {
+                        // Success
+                        LogUtil::registerStatus(__('Done! Comment updated.', $dom));
+                    }
+                    break;
+            }
         }
     }
 
@@ -82,9 +85,9 @@ function ezc_processSelected($args)
     // the user to an appropriate page for them to carry on their work
     if (isset($args['redirect']) && !empty($args['redirect'])) {
         return pnRedirect($args['redirect']);
-    } else {
-        return pnRedirect(pnModURL('EZComments', $type, 'main'));
     }
+
+    return pnRedirect(pnModURL('EZComments', $type, 'main'));
 }
 
 /**
