@@ -351,8 +351,8 @@ function EZComments_userapi_create($args = array())
         $mailsubject = __('New comment for your site', $dom);
 
         pnModAPIFunc('Mailer', 'user', 'sendmessage',
-                     array('toaddress'   => $toaddress,
-                           'toname'      => $toname,
+                     array('toaddress'   => pnConfigGetVar('adminmail'),
+                           'toname'      => pnConfigGetVar('sitename'),
                            'fromaddress' => pnConfigGetVar('adminmail'),
                            'fromname'    => pnConfigGetVar('sitename'),
                            'subject'     => $mailsubject,
