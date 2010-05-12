@@ -49,8 +49,7 @@
                         </td>
                         <td>
                             <!--[if $item.uid neq 0]-->
-                            <!--[pnusergetvar name=uname uid=$item.uid assign="uname"]-->
-                            <!--[$uname|userprofilelink]-->
+                            <!--[$item.uid|userprofilelink]-->
                             <!--[else]-->
                             <!--[$item.anonname|pnvarprepfordisplay]-->
                             <!--[/if]-->
@@ -58,8 +57,7 @@
                         </td>
                         <td>
                             <!--[if $item.owneruid ne "0"]-->
-                            <!--[pnusergetvar name=uname uid=$item.owneruid assign="owneruname"]-->
-                            <!--[$owneruname|userprofilelink]-->
+                            <!--[$item.owneruid|userprofilelink]-->
                             <!--[else]-->
                             <!--[gt text="unknown"]-->
                             <!--[/if]-->

@@ -17,7 +17,7 @@
                 <!--[elseif $comment.anonname neq '' && $comment.anonwebsite eq '']-->
                 <strong><!--[$comment.anonname]--></strong>
                 <!--[else]-->
-                <strong><!--[$comment.pn_uname|userprofilelink]--></strong>
+                <strong><!--[$comment.uid|userprofilelink]--></strong>
                 <!--[/if]-->
                 <br />
                 <!--[assign var='defaultavatar' value="`$baseurl`modules/EZComments/pnimages/gravatar_80.jpg"]-->
@@ -36,7 +36,7 @@
                 <!--[if $pncore.logged_in eq true]-->
                 <li>
                     <!--[if $prfmodule]-->
-                        <!--[$comment.pn_uname|userprofilelink:'':"`$baseurl`images/icons/extrasmall/personal.gif"]-->
+                        <!--[$comment.uid|userprofilelink:'':"`$baseurl`images/icons/extrasmall/personal.gif"]-->
                     <!--[/if]-->
                     <!--[if $msgmodule]-->
                         <a href="<!--[pnmodurl modname=$msgmodule func="inbox" func="newpm" uid=$comment.uid]-->"><!--[pnimg modname=core src=mail_generic.gif set='icons/extrasmall' __title="Send mail to user" __alt="Send mail to user"]--></a>
