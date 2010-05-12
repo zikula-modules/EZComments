@@ -118,6 +118,7 @@ function EZComments_user_view($args)
 
     // we may have a comment incoming
     $ezcomment = FormUtil::getPassedValue('ezcomment');
+    $ezcomment = isset($ezcomment[$mod][$objectid]) ? $ezcomment[$mod][$objectid] : null;
 
     // we may get some input in from the navigation bar
     $order = FormUtil::getPassedValue('order');
@@ -314,7 +315,7 @@ function EZComments_user_comment($args)
 
     // assign the values for the pager
     $renderer->assign('ezc_pager', array('numitems'     => $commentcount,
-                                     'itemsperpage' => $numitems));
+                                         'itemsperpage' => $numitems));
 
     // find out which template to use
     $templateset = isset($args['template']) ? $args['template'] : $template;
@@ -378,33 +379,37 @@ function EZComments_user_create($args)
     }
 
     $redirect = str_replace('&amp;', '&', base64_decode($redirect));
-    $redirect = !empty($redirect) ? $redirect : pnServerGetVar('HTTP_REFERER');
+    $redirect = $erroredir = !empty($redirect) ? $redirect : pnServerGetVar('HTTP_REFERER');
     $useurl   = base64_decode($useurl);
 
-    // Confirm authorisation code
-    // and check we've actually got a comment....
-    if (!SecurityUtil::confirmAuthKey() || empty($comment)) {
-        $redirect .= (strpos($redirect, '?') === false) ? '?' : '&';
-        $params = array(
-            'ezcomment[subject]'     => $subject,
-            'ezcomment[comment]'     => $comment
-        );
-        if (!empty($anonname)) {
-            $params['ezcomment[anonname]'] = $anonname;
-        }
-        if (!empty($anonmail)) {
-            $params['ezcomment[anonmail]'] = $anonmail;
-        }
-        if (!empty($anonwebsite)) {
-            $params['ezcomment[anonwebsite]'] = $anonwebsite;
-        }
-        $redirect .= http_build_query($params, null, '&').'#commentform';
+    // build the redirect URL if any error occurs
+    if (!empty($subject)) {
+        $params["ezcomment[$mod][$objectid][subject]"] = $subject;
+    }
+    if (!empty($subject)) {
+        $params["ezcomment[$mod][$objectid][comment]"] = $comment;
+    }
+    if (!empty($anonname)) {
+        $params["ezcomment[$mod][$objectid][anonname]"] = $anonname;
+    }
+    if (!empty($anonmail)) {
+        $params["ezcomment[$mod][$objectid][anonmail]"] = $anonmail;
+    }
+    if (!empty($anonwebsite)) {
+        $params["ezcomment[$mod][$objectid][anonwebsite]"] = $anonwebsite;
+    }
+    if (!empty($params)) {
+        $erroredir .= (strpos($redirect, '?') === false) ? '?' : '&';
+    }
+    $erroredir .= http_build_query($params, null, '&').'#commentform';
 
-        if (empty($comment)) {
-            return LogUtil::registerError(__('Error! The comment contains no text.', $dom), null, $redirect);
-        } else {
-            return LogUtil::registerAuthidError($redirect);
-        }
+    // Confirm authorisation code
+    if (!SecurityUtil::confirmAuthKey()) {
+        return LogUtil::registerAuthidError($erroredir);
+    }
+    // and check we've actually got a comment....
+    if (empty($comment)) {
+        return LogUtil::registerError(__('Error! The comment contains no text.', $dom), null, $erroredir);
     }
 
     // now parse out the hostname+subfolder from the url for storing in the DB
@@ -424,6 +429,11 @@ function EZComments_user_create($args)
                              'anonname'    => $anonname,
                              'anonmail'    => $anonmail,
                              'anonwebsite' => $anonwebsite));
+
+    // redirect to the error URL if it was not successful
+    if (!$id) {
+        pnRedirect($erroredir);
+    }
 
     return pnRedirect($redirect.'#comments');
 }
