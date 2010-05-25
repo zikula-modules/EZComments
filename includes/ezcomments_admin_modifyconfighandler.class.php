@@ -60,27 +60,27 @@ class EZComments_admin_modifyconfighandler
 
             // TODO reduce this to a loop
             if (empty($data['ezcomments_itemsperpage'])) {
-                $ifield = & $renderer->pnFormGetPluginById('ezcomments_itemsperpage');
+                $ifield = $renderer->pnFormGetPluginById('ezcomments_itemsperpage');
                 $ifield->setError(DataUtil::formatForDisplay(__('missing value', $dom)));
                 $ok = false;
             }
             if (empty($data['ezcomments_modlinkcount'])) {
-                $ifield = & $renderer->pnFormGetPluginById('ezcomments_modlinkcount');
+                $ifield = $renderer->pnFormGetPluginById('ezcomments_modlinkcount');
                 $ifield->setError(DataUtil::formatForDisplay(__('missing value', $dom)));
                 $ok = false;
             }
             if (empty($data['ezcomments_blacklinkcount'])) {
-                $ifield = & $renderer->pnFormGetPluginById('ezcomments_blacklinkcount');
+                $ifield = $renderer->pnFormGetPluginById('ezcomments_blacklinkcount');
                 $ifield->setError(DataUtil::formatForDisplay(__('missing value', $dom)));
                 $ok = false;
             }
             if (empty($data['ezcomments_feedcount'])) {
-                $ifield = & $renderer->pnFormGetPluginById('ezcomments_feedcount');
+                $ifield = $renderer->pnFormGetPluginById('ezcomments_feedcount');
                 $ifield->setError(DataUtil::formatForDisplay(__('missing value', $dom)));
                 $ok = false;
             }
             if (empty($data['ezcomments_commentsperpage'])) {
-                $ifield = & $renderer->pnFormGetPluginById('ezcomments_commentsperpage');
+                $ifield = $renderer->pnFormGetPluginById('ezcomments_commentsperpage');
                 $ifield->setError(DataUtil::formatForDisplay(__('missing value', $dom)));
                 $ok = false;
             }

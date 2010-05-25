@@ -54,7 +54,7 @@ class EZComments_myprofileapi extends AbstractApi
         }
 
         // generate output
-        $render = & pnRender::getInstance('EZComments');
+        $render = Renderer::getInstance('EZComments');
 
         $render->assign('uid', (int) $args['uid']);
         $render->assign('viewer_uid', pnUserGetVar('uid'));

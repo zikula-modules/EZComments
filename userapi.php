@@ -51,8 +51,8 @@ class EZComments_userapi extends AbstractApi
         }
 
         // Get database setup
-        $pntable = pnDBGetTables();
-        $columns = &$pntable['EZComments_column'];
+        $tables = pnDBGetTables();
+        $columns = $tables['EZComments_column'];
 
         // form where clause
         $whereclause = array();
@@ -318,7 +318,7 @@ class EZComments_userapi extends AbstractApi
 
         // Inform the content owner or the admin about a new comment
         if (!$maxstatus && ModUtil::getVar('EZComments', 'MailToAdmin') && !in_array($args['uid'], array(2, $owneruid))) {
-            $renderer = & pnRender::getInstance('EZComments', false);
+            $renderer = Renderer::getInstance('EZComments', false);
 
             if ($args['uid'] > 0) {
                 $newcomment['userline'] = pnUserGetVar('uname', $args['uid']);
@@ -339,7 +339,7 @@ class EZComments_userapi extends AbstractApi
         }
 
         if ($maxstatus && ModUtil::getVar('EZComments', 'moderationmail') && !in_array($args['uid'], array(2, $owneruid))) {
-            $renderer = & pnRender::getInstance('EZComments', false);
+            $renderer = Renderer::getInstance('EZComments', false);
 
             if ($args['uid'] > 0) {
                 $newcomment['userline'] = pnUserGetVar('uname', $args['uid']);
@@ -428,8 +428,8 @@ class EZComments_userapi extends AbstractApi
         $uid      = isset($args['uid'])      ? (int)$args['uid']      : 0;
 
         // Get database column names
-        $pntable = &pnDBGetTables();
-        $columns = $pntable['EZComments_column'];
+        $tables  = pnDBGetTables();
+        $columns = $tables['EZComments_column'];
 
         // build the where clause
         $queryargs = array();
@@ -498,7 +498,7 @@ class EZComments_userapi extends AbstractApi
         $modinfo  = ModUtil::getInfo(ModUtil::getIdFromName('EZComments'));
         $osmoddir = DataUtil::formatForOS($modinfo['directory']);
         $ostheme  = DataUtil::formatForOS(pnUserGetTheme());
-        $rootdirs = array("modules/$osmoddir/pntemplates/",
+        $rootdirs = array("modules/$osmoddir/templates/",
                           "config/templates/$osmoddir/",
                           "themes/$ostheme/templates/$osmoddir/");
 
@@ -641,8 +641,8 @@ class EZComments_userapi extends AbstractApi
         }
 
         // Get database columns
-        $pntable = &pnDBGetTables();
-        $columns = $pntable['EZComments_column'];
+        $tables  = pnDBGetTables();
+        $columns = $tables['EZComments_column'];
 
         $where = "$columns[status] = 0";
         $items = DBUtil::selectFieldArray('EZComments', 'uid', $where, '', true);
@@ -670,16 +670,15 @@ class EZComments_userapi extends AbstractApi
         $mod = DataUtil::formatForOS($args['mod']);
 
         // Get database setup
-        $pntable = &pnDBGetTables();
+        $tables  = pnDBGetTables();
+        $eztable = $tables['EZComments'];
+        $columns = $tables['EZComments_column'];
 
-        $eztable = $pntable['EZComments'];
-        $columns = $pntable['EZComments_column'];
-
-        $sql = "SELECT $columns[objectid],
-                       $columns[url],
-                       count(*)
-                FROM $eztable
-                WHERE $columns[modname] = '$mod'
+        $sql = "  SELECT $columns[objectid],
+                         $columns[url],
+                         count(*)
+                    FROM $eztable
+                   WHERE $columns[modname] = '$mod'
                 GROUP BY $columns[objectid]
                 ORDER BY $columns[objectid]";
 
@@ -769,7 +768,7 @@ class EZComments_userapi extends AbstractApi
      *
      * @access public
      * @param  string $path    the templateset/css path
-     * @return string path of the stylesheet file, relative to PN root folder
+     * @return string path of the stylesheet file, relative to Zikula root folder
      */
     public function getStylesheet($args = array())
     {
@@ -789,7 +788,7 @@ class EZComments_userapi extends AbstractApi
         $themepath = "themes/$theme/templates/modules/EZComments";
 
         // module directory
-        $modpath = "modules/EZComments/pntemplates";
+        $modpath = "modules/EZComments/templates";
 
         // search for the style sheet
         $csssrc = '';

@@ -91,7 +91,7 @@ function EZComments_EZCommentsblock_display($blockinfo)
     // augment the info
     $comments = ModUtil::apiFunc('EZComments', 'user', 'prepareCommentsForDisplay', $items);
     
-    $renderer = & pnRender::getInstance('EZComments');
+    $renderer = Renderer::getInstance('EZComments');
 
     $renderer->assign($vars);
     $renderer->assign('comments', $comments); 
@@ -151,7 +151,7 @@ function EZComments_EZCommentsblock_modify($blockinfo)
     $usermods = ModUtil::apiFunc('Modules', 'admin', 'gethookedmodules', array('hookmodname'=> 'EZComments'));
 
     // Create output object
-    $renderer = & pnRender::getInstance('EZComments', false);
+    $renderer = Renderer::getInstance('EZComments', false);
 
     // assign the block vars
     $renderer->assign($vars);
@@ -187,7 +187,7 @@ function EZComments_EZCommentsblock_update($blockinfo)
     $blockinfo['content'] = pnBlockVarsToContent($vars); 
 
     // clear the block cache
-    $renderer = & pnRender::getInstance('EZComments');
+    $renderer = Renderer::getInstance('EZComments');
     $renderer->clear_cache('ezcomments_block_ezcomments.htm');
 
     return $blockinfo;

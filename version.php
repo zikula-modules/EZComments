@@ -23,10 +23,10 @@ $modversion['admin']          = 1;
 $modversion['user']           = 1;
 
 // Information for the credits module
-$modversion['changelog']      = 'pndocs/changelog.txt';
-$modversion['credits']        = 'pndocs/credits.txt';
-$modversion['help']           = 'pndocs/install.txt';
-$modversion['license']        = 'pndocs/license.txt';
+$modversion['changelog']      = 'docs/changelog.txt';
+$modversion['credits']        = 'docs/credits.txt';
+$modversion['help']           = 'docs/install.txt';
+$modversion['license']        = 'docs/license.txt';
 $modversion['official']       = 0;
 $modversion['author']         = 'The EZComments Development Team';
 $modversion['contact']        = 'http://code.zikula.org/ezcomments/';

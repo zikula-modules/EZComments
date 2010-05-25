@@ -11,16 +11,16 @@
  */
 
 /**
- * reviews table information
+ * Reviews table information
 */
 function Reviews_pntables()
 {
     // Initialise table array
-    $pntable = array();
+    $tables = array();
 
     // legacy Reviews comments table
-    $pntable['reviews_comments'] = DBUtil::getLimitedTablename('reviews_comments');
-    $pntable['reviews_comments_column'] = array(
+    $tables['reviews_comments'] = DBUtil::getLimitedTablename('reviews_comments');
+    $tables['reviews_comments_column'] = array(
         'cid'       => 'pn_cid',
         'rid'       => 'pn_rid',
         'userid'    => 'pn_userid',
@@ -28,7 +28,7 @@ function Reviews_pntables()
         'comments'  => 'pn_comments',
         'score'     => 'pn_score'
     );
-    $pntable['reviews_comments_column_def'] = array(
+    $tables['reviews_comments_column_def'] = array(
         'cid'       => 'I(11) NOTNULL AUTOINCREMENT PRIMARY',
         'rid'       => "I(11) NOTNULL DEFAULT '0'",
         'userid'    => 'C(25) NOTNULL',
@@ -37,5 +37,5 @@ function Reviews_pntables()
         'score'     => "I(11) NOTNULL DEFAULT '0'"
     );
 
-    return $pntable;
+    return $tables;
 }

@@ -77,7 +77,7 @@ class EZComments_user extends AbstractController
         }
 
         // Create output object
-        $renderer = & pnRender::getInstance('EZComments', false);
+        $renderer = Renderer::getInstance('EZComments', false);
 
         // assign the module vars
         $renderer->assign(ModUtil::getVar('EZComments'));
@@ -161,8 +161,8 @@ class EZComments_user extends AbstractController
             $commentcount = count($items);
         }
 
-        // create the pnRender object
-        $renderer = & pnRender::getInstance('EZComments', false, null, true);
+        // create the output object
+        $renderer = Renderer::getInstance('EZComments', false, null, true);
 
         $renderer->assign('comments',     $items);
         $renderer->assign('commentcount', $commentcount);
@@ -297,7 +297,7 @@ class EZComments_user extends AbstractController
         }
 
         // don't use caching (for now...)
-        $renderer = & pnRender::getInstance('EZComments', false, null, true);
+        $renderer = Renderer::getInstance('EZComments', false, null, true);
 
         $renderer->assign('comments',     $items);
         $renderer->assign('commentcount', $commentcount);
@@ -533,8 +533,8 @@ class EZComments_user extends AbstractController
                                        'sortorder' => 'DESC',
                                        'status'    => 0));
 
-        // create the pnRender object
-        $renderer = & pnRender::getInstance('EZComments');
+        // create the output object
+        $renderer = Renderer::getInstance('EZComments');
 
         // get the last x comments
         $renderer->assign('comments'    , $comments);
@@ -568,7 +568,7 @@ class EZComments_user extends AbstractController
      */
     public function modify($args)
     {
-        Loader::requireOnce('modules/EZComments/pnincludes/common.php');
+        Loader::requireOnce('modules/EZComments/includes/common.php');
         return ezc_modify($args);
     }
 }

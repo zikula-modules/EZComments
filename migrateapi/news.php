@@ -24,13 +24,13 @@ function EZComments_migrateapi_news()
     }
 
     // Get datbase setup
-    $pntable = &pnDBGetTables();
+    $tables = pnDBGetTables();
 
-    $EZCommentstable  = $pntable['EZComments'];
-    $EZCommentscolumn = $pntable['EZComments_column'];
+    $EZCommentstable  = $tables['EZComments'];
+    $EZCommentscolumn = $tables['EZComments_column'];
 
-    $Commentstable  = $pntable['comments'];
-    $Commentscolumn = $pntable['comments_column'];
+    $Commentstable  = $tables['comments'];
+    $Commentscolumn = $tables['comments_column'];
 
     if (version_compare(PN_VERSION_NUM, '1', '>=')) {
         EZComments_get76xcolumns_news($Commentstable, $Commentscolumn);
@@ -39,8 +39,8 @@ function EZComments_migrateapi_news()
         return LogUtil::registerError('News migration: Comments tables not found');
     }
 
-    $Usertable  = $pntable['users'];
-    $Usercolumn = $pntable['users_column'];
+    $Usertable  = $tables['users'];
+    $Usercolumn = $tables['users_column'];
 
     $sql = "SELECT $Commentscolumn[tid],
                    $Commentscolumn[sid],

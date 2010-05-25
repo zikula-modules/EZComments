@@ -85,19 +85,19 @@ class EZComments_admin_modifyhandler
                     // poster is anonymous
                     // check anon fields
                     if (empty($data['ezcomments_anonname'])) {
-                        $ifield = & $renderer->pnFormGetPluginById('ezcomments_anonname');
+                        $ifield = $renderer->pnFormGetPluginById('ezcomments_anonname');
                         $ifield->setError(DataUtil::formatForDisplay(__('Name for anonymous user is missing.', $dom)));
                         $ok = false;
                     }
                     // anonmail must be valid - really necessary if an admin changes this?
                     if (empty($data['ezcomments_anonmail']) || !pnVarValidate($data['ezcomments_anonmail'], 'email') ) {
-                        $ifield = & $renderer->pnFormGetPluginById('ezcomments_anonmail');
+                        $ifield = $renderer->pnFormGetPluginById('ezcomments_anonmail');
                         $ifield->setError(DataUtil::formatForDisplay(__('Email address of anonymous user is missing or invalid.', $dom)));
                         $ok = false;
                     }
                     // anonwebsite must be valid
-                    if (!empty($data['ezcomments_anonwebsite'])  && !pnVarValidate($data['ezcomments_anonmail'], 'url')) {
-                        $ifield = & $renderer->pnFormGetPluginById('ezcomments_anonwebsite');
+                    if (!empty($data['ezcomments_anonwebsite']) && !pnVarValidate($data['ezcomments_anonmail'], 'url')) {
+                        $ifield = $renderer->pnFormGetPluginById('ezcomments_anonwebsite');
                         $ifield->setError(DataUtil::formatForDisplay(__('Website of anonymous user is invalid.', $dom)));
                         $ok = false;
                     }
@@ -108,7 +108,7 @@ class EZComments_admin_modifyhandler
                 // no check on ezcomments_subject as this may be empty
 
                 if (empty($data['ezcomments_comment'])) {
-                    $ifield = & $renderer->pnFormGetPluginById('ezcomments_comment');
+                    $ifield = $renderer->pnFormGetPluginById('ezcomments_comment');
                     $ifield->setError(DataUtil::formatForDisplay(__('Error! The comment contains no text.', $dom)));
                     $ok = false;
                 }

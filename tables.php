@@ -19,11 +19,11 @@
 function EZComments_pntables()
 {
     // Initialise table array
-    $pntable = array();
+    $tables = array();
 
     // Full table definition
-    $pntable['EZComments'] = DBUtil::getLimitedTablename('ezcomments');
-    $pntable['EZComments_column'] = array(
+    $tables['EZComments'] = DBUtil::getLimitedTablename('ezcomments');
+    $tables['EZComments_column'] = array(
         'id'          => 'id',
         'modname'     => 'modname',
         'objectid'    => 'objectid',
@@ -41,7 +41,7 @@ function EZComments_pntables()
         'type'        => 'type',
         'anonwebsite' => 'anonwebsite'
     );
-    $pntable['EZComments_column_def'] = array(
+    $tables['EZComments_column_def'] = array(
         'id'          => 'I AUTO PRIMARY',
         'modname'     => "C(64) NOTNULL DEFAULT ''",
         'objectid'    => "C(255) NOTNULL DEFAULT ''",
@@ -59,7 +59,7 @@ function EZComments_pntables()
         'type'        => "C(64) NOTNULL DEFAULT ''",
         'anonwebsite' => "C(255) NOTNULL DEFAULT ''"
     );
-    $pntable['EZComments_column_idx'] = array(
+    $tables['EZComments_column_idx'] = array(
         'modobj'      => array('modname', 'objectid'),
         'modname'     => 'modname',
         'objectid'    => 'objectid',
@@ -67,5 +67,5 @@ function EZComments_pntables()
         'ownerid'     => 'owneruid'
     );
 
-    return $pntable;
+    return $tables;
 }

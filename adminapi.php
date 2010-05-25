@@ -26,10 +26,10 @@ class EZComments_adminapi extends AbstractApi
             return LogUtil::registerPermissionError(ModUtil::url('EZComments', 'admin', 'main'));
         }
 
-        $pntable = &pnDBGetTables();
+        $tables = pnDBGetTables();
 
-        $table  = $pntable['EZComments'];
-        $column = $pntable['EZComments_column'];
+        $table  = $tables['EZComments'];
+        $column = $tables['EZComments_column'];
 
         // TODO Port to DBUtil
         $sql = "SELECT    $column[modname]
@@ -42,13 +42,7 @@ class EZComments_adminapi extends AbstractApi
             return false;
         }
 
-        $mods = array();
-        for (; !$result->EOF; $result->MoveNext()) {
-            list($mods[]) = $result->fields;
-        }
-        $result->Close();
-
-        return $mods;
+        return DBUtil::marshallFieldArray($result);
     }
 
     /**
@@ -71,8 +65,8 @@ class EZComments_adminapi extends AbstractApi
         }
 
         // get tables
-        $pntable = pnDBGetTables();
-        $column  = &$pntable['EZComments_column'];
+        $tables  = pnDBGetTables();
+        $column  = $tables['EZComments_column'];
         // construct where clause and delete...
         $where   = "WHERE $column[modname] = '$args[module]'";
 
@@ -113,8 +107,8 @@ class EZComments_adminapi extends AbstractApi
         }
 
         // get db table and column for where statement
-        $pntable = &pnDBGetTables();
-        $column  = $pntable['EZComments_column'];
+        $tables  = pnDBGetTables();
+        $column  = $tables['EZComments_column'];
 
         $mod      = DataUtil::formatForStore($args['mod']);
         $objectid = DataUtil::formatForStore($args['objectid']);
@@ -237,8 +231,8 @@ class EZComments_adminapi extends AbstractApi
         $mod = (isset($args['extrainfo']['module']) && !empty($args['extrainfo']['module'])) ? $args['extrainfo']['module'] : ModUtil::getName();
 
         // Database information
-        $pntable = pnDBGetTables();
-        $columns = &$pntable['EZComments_column'];
+        $tables  = pnDBGetTables();
+        $columns = $tables['EZComments_column'];
 
         // Get items
         $where = "WHERE $columns[modname] = '" . DataUtil::formatForStore($mod) . "'";
@@ -269,8 +263,8 @@ class EZComments_adminapi extends AbstractApi
         }
 
         // Get datbase setup
-        $pntable = pnDBGetTables();
-        $column  = &$pntable['EZComments_column'];
+        $tables  = pnDBGetTables();
+        $column  = $tables['EZComments_column'];
 
         if ((bool)$purgerejected) {
             $where = "WHERE $column[status] = '2'";
