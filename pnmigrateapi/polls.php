@@ -74,7 +74,7 @@ function EZComments_migrateapi_polls()
         $id = pnModAPIFunc('EZComments', 'user', 'create',
                            array('mod'      => 'Polls',
                                  'objectid' => DataUtil::formatForStore($item['pollid']),
-                                 'url'      => pnModURL('News', 'user', 'display', array('pollid' => $item['pollid'])),
+                                 'url'      => pnModURL('Polls', 'user', 'display', array('pollid' => $item['pollid'])),
                                  'comment'  => $item['comment'],
                                  'subject'  => $item['subject'],
                                  'uid'      => $item['uid'],
