@@ -25,6 +25,7 @@
 function smarty_modifier_commentstatus($string)
 {
     $dom = ZLanguage::getModuleDomain('EZComments');
+
     switch ($string) {
         case '0':
             return strtolower(__('Approved', $dom));
@@ -37,4 +38,3 @@ function smarty_modifier_commentstatus($string)
             return;
     }
 }
-

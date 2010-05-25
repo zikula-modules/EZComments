@@ -131,8 +131,6 @@ class EZComments_adminapi extends AbstractApi
      */
     public function delete($args)
     {
-        $dom = ZLanguage::getModuleDomain('EZComments');
-
         // Argument check
         if (!isset($args['id']) || !is_numeric($args['id'])) {
             return LogUtil::registerArgsError();
@@ -142,7 +140,7 @@ class EZComments_adminapi extends AbstractApi
         $item = pnModAPIFunc('EZComments', 'user', 'get', array('id' => $args['id']));
 
         if (!$item) {
-            return LogUtil::registerError(__('No such item found.', $dom));
+            return LogUtil::registerError($this->__('No such item found.'));
         }
 
         // Security check
@@ -157,7 +155,7 @@ class EZComments_adminapi extends AbstractApi
 
         // Check for an error with the database code
         if (!DBUtil::deleteObjectByID('EZComments', (int)$args['id'])) {
-            return LogUtil::registerError(__('Error! Deletion attempt failed.', $dom));
+            return LogUtil::registerError($this->__('Error! Deletion attempt failed.'));
         }
 
         // Let any hooks know that we have deleted an item.
@@ -177,8 +175,6 @@ class EZComments_adminapi extends AbstractApi
      */
     public function update($args)
     {
-        $dom = ZLanguage::getModuleDomain('EZComments');
-
         // Argument check
         if ((!isset($args['subject'])) ||
             (!isset($args['comment'])) ||
@@ -196,7 +192,7 @@ class EZComments_adminapi extends AbstractApi
         $item = pnModAPIFunc('EZComments', 'user', 'get', array('id' => $args['id']));
 
         if (!$item) {
-            return LogUtil::registerError(__('No such comment found.', $dom));
+            return LogUtil::registerError($this->__('No such comment found.'));
         }
 
         // Security check.
@@ -213,7 +209,7 @@ class EZComments_adminapi extends AbstractApi
         // Check for an error with the database code, and if so set an
         // appropriate error message and return
         if (!DBUtil::updateObject($args, 'EZComments')) {
-            return LogUtil::registerError(__('Error! Update attempt failed.', $dom));
+            return LogUtil::registerError($this->__('Error! Update attempt failed.'));
         }
 
         // Let any hooks know that we have updated an item.
@@ -259,8 +255,6 @@ class EZComments_adminapi extends AbstractApi
      */
     public function purge($args)
     {
-        $dom = ZLanguage::getModuleDomain('EZComments');
-
         // Get arguments from argument array
         extract($args);
 
@@ -281,14 +275,14 @@ class EZComments_adminapi extends AbstractApi
         if ((bool)$purgerejected) {
             $where = "WHERE $column[status] = '2'";
             if (!DBUtil::deleteWhere('EZComments', $where)) {
-                return LogUtil::registerError(__('Error! Deletion attempt failed.', $dom));
+                return LogUtil::registerError($this->__('Error! Deletion attempt failed.'));
             }
         }
 
         if ((bool)$purgepending) {
             $where = "WHERE $column[status] = '1'";
             if (!DBUtil::deleteWhere('EZComments', $where)) {
-                return LogUtil::registerError(__('Error! Deletion attempt failed.', $dom));
+                return LogUtil::registerError($this->__('Error! Deletion attempt failed.'));
             }
         }
 
@@ -305,8 +299,6 @@ class EZComments_adminapi extends AbstractApi
      */
     public function updatestatus($args)
     {
-        $dom = ZLanguage::getModuleDomain('EZComments');
-
         // get arguments
         $id      = $args['id'];
         $status  = $args['status'];
@@ -320,7 +312,7 @@ class EZComments_adminapi extends AbstractApi
         $item = pnModAPIFunc('EZComments', 'user', 'get', array('id' => $id));
 
         if (!$item) {
-            return LogUtil::registerError(__('No such item found.', $dom));
+            return LogUtil::registerError($this->__('No such item found.'));
         }
 
         // Security check.
@@ -364,18 +356,16 @@ class EZComments_adminapi extends AbstractApi
      */
     public function getlinks()
     {
-        $dom = ZLanguage::getModuleDomain('EZComments');
-
         $links = array();
 
         if (SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => pnModURL('EZComments', 'admin'),                 'text' => __('View comments', $dom));
-            $links[] = array('url' => pnModURL('EZComments', 'admin', 'cleanup'),      'text' => __('Delete orphaned comments', $dom));
-            $links[] = array('url' => pnModURL('EZComments', 'admin', 'migrate'),      'text' => __('Migrate comments', $dom));
-            $links[] = array('url' => pnModURL('EZComments', 'admin', 'purge'),        'text' => __('Purge comments', $dom), 'linebreak' => true);
-            $links[] = array('url' => pnModURL('EZComments', 'admin', 'stats'),        'text' => __('Comment statistics', $dom));
-            $links[] = array('url' => pnModURL('EZComments', 'admin', 'applyrules'),   'text' => __('Re-apply moderation rules', $dom));
-            $links[] = array('url' => pnModURL('EZComments', 'admin', 'modifyconfig'), 'text' => __('Settings', $dom));
+            $links[] = array('url' => pnModURL('EZComments', 'admin'),                 'text' => $this->__('View comments'));
+            $links[] = array('url' => pnModURL('EZComments', 'admin', 'cleanup'),      'text' => $this->__('Delete orphaned comments'));
+            $links[] = array('url' => pnModURL('EZComments', 'admin', 'migrate'),      'text' => $this->__('Migrate comments'));
+            $links[] = array('url' => pnModURL('EZComments', 'admin', 'purge'),        'text' => $this->__('Purge comments'), 'linebreak' => true);
+            $links[] = array('url' => pnModURL('EZComments', 'admin', 'stats'),        'text' => $this->__('Comment statistics'));
+            $links[] = array('url' => pnModURL('EZComments', 'admin', 'applyrules'),   'text' => $this->__('Re-apply moderation rules'));
+            $links[] = array('url' => pnModURL('EZComments', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'));
         }
 
         return $links;

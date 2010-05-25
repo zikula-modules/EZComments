@@ -20,8 +20,6 @@ class EZComments_admin extends AbstractController
      */
     public function main()
     {
-        $dom = ZLanguage::getModuleDomain('EZComments');
-
         // Security check
         if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
@@ -57,7 +55,7 @@ class EZComments_admin extends AbstractController
                                     'admin'    => 1));
 
         if ($items === false) {
-            return LogUtil::registerError(__('Internal Error.', $dom));
+            return LogUtil::registerError($this->__('Internal Error.'));
         }
 
         // loop through each item adding the relevant links
@@ -66,11 +64,11 @@ class EZComments_admin extends AbstractController
         {
             $options = array(array('url' => $item['url'] . '#comment' . $item['id'],
                                    'image' => 'demo.gif',
-                                   'title' => __('View', $dom)));
+                                   'title' => $this->__('View')));
 
             $options[] = array('url'   => pnModURL('EZComments', 'admin', 'modify', array('id' => $item['id'])),
                                'image' => 'xedit.gif',
-                               'title' => __('Edit', $dom));
+                               'title' => $this->__('Edit'));
 
             $item['options'] = $options;
             $comments[] = $item;
@@ -151,8 +149,6 @@ class EZComments_admin extends AbstractController
             return LogUtil::registerAuthidError(pnModURL('EZComments', 'admin', 'main'));
         }
 
-        $dom = ZLanguage::getModuleDomain('EZComments');
-
         // Get parameters from whatever input we need.
         $comments = isset($args['comments']) ? $args['comments'] : FormUtil::getPassedValue('comments', null, 'POST');
         $action   = isset($args['action'])   ? $args['action']   : FormUtil::getPassedValue('action', null, 'POST');
@@ -166,28 +162,28 @@ class EZComments_admin extends AbstractController
                     // The API function is called.
                     if (pnModAPIFunc('EZComments', 'admin', 'delete', array('id' => $comment))) {
                         // Success
-                        LogUtil::registerStatus(__('Done! Item deleted.', $dom));
+                        LogUtil::registerStatus($this->__('Done! Item deleted.'));
                     }
                     break;
 
                 case 'approve':
                     if (pnModAPIFunc('EZComments', 'admin', 'updatestatus', array('id' => $comment, 'status' => 0))) {
                         // Success
-                        LogUtil::registerStatus(__('Done! Item updated.', $dom));
+                        LogUtil::registerStatus($this->__('Done! Item updated.'));
                     }
                     break;
 
                 case 'hold':
                     if (pnModAPIFunc('EZComments', 'admin', 'updatestatus', array('id' => $comment, 'status' => 1))) {
                         // Success
-                        LogUtil::registerStatus(__('Done! Item updated.', $dom));
+                        LogUtil::registerStatus($this->__('Done! Item updated.'));
                     }
                     break;
 
                 case 'reject':
                     if (pnModAPIFunc('EZComments', 'admin', 'updatestatus', array('id' => $comment, 'status' => 2))) {
                         // Success
-                        LogUtil::registerStatus(__('Done! Item updated.', $dom));
+                        LogUtil::registerStatus($this->__('Done! Item updated.'));
                     }
                     break;
             }
@@ -238,8 +234,6 @@ class EZComments_admin extends AbstractController
      */
     public function migrate()
     {
-        $dom = ZLanguage::getModuleDomain('EZComments');
-
         if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
@@ -256,7 +250,7 @@ class EZComments_admin extends AbstractController
         }
 
         if (!$selectitems) {
-            LogUtil::registerStatus(__('No migration plugins available.', $dom));
+            LogUtil::registerStatus($this->__('No migration plugins available.'));
             return pnRedirect(pnModURL('EZComments', 'admin'));
         }
 
@@ -322,8 +316,6 @@ class EZComments_admin extends AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        $dom = ZLanguage::getModuleDomain('EZComments');
-
         // build a simple array of all available modules
         $mods = pnModGetAllMods();
         $allmods = array();
@@ -336,7 +328,7 @@ class EZComments_admin extends AbstractController
         $orphanedmods = array_diff($usedmods, $allmods);
 
         if (!$orphanedmods) {
-            LogUtil::registerStatus(__('No orphaned comments.', $dom));
+            LogUtil::registerStatus($this->__('No orphaned comments.'));
             return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
         }
 
@@ -361,8 +353,6 @@ class EZComments_admin extends AbstractController
      */
     public function cleanup_go()
     {
-        $dom = ZLanguage::getModuleDomain('EZComments');
-
         // Permissions
         if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
@@ -379,10 +369,10 @@ class EZComments_admin extends AbstractController
         }
 
         if (!pnModAPIFunc('EZComments', 'admin', 'deleteall', compact('module'))) {
-            return LogUtil::registerError(__('Error! A general failure occurs.', $dom));
+            return LogUtil::registerError($this->__('Error! A general failure occurs.'));
         }
 
-        LogUtil::registerStatus(__('Done! All orphaned comments for this module deleted.', $dom));
+        LogUtil::registerStatus($this->__('Done! All orphaned comments for this module deleted.'));
 
         return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
     }
@@ -396,8 +386,6 @@ class EZComments_admin extends AbstractController
      */
     public function purge($args)
     {
-        $dom = ZLanguage::getModuleDomain('EZComments');
-
         // Get parameters from whatever input we need.
         $purgepending  = isset($args['purgepending'])  ? $args['purgepending']  : FormUtil::getPassedValue('purgepending', null, 'POST');
         $purgerejected = isset($args['purgerejected']) ? $args['purgerejected'] : FormUtil::getPassedValue('purgerejected', null, 'POST');
@@ -431,7 +419,7 @@ class EZComments_admin extends AbstractController
         if (pnModAPIFunc('EZComments', 'admin', 'purge',
             array('purgepending' => $purgepending, 'purgerejected' => $purgerejected))) {
             // Success
-            LogUtil::registerStatus(__('Done! Comment deleted.', $dom));
+            LogUtil::registerStatus($this->__('Done! Comment deleted.'));
         }
 
         // This function generated no output, and so now it is complete we redirect
@@ -536,8 +524,6 @@ class EZComments_admin extends AbstractController
      */
     public function deletemodule($args)
     {
-        $dom = ZLanguage::getModuleDomain('EZComments');
-
         // Get parameters from whatever input we need.
         $modid        = isset($args['modid']) ? $args['modid'] : FormUtil::getPassedValue('modid', null, 'GETPOST');
         $confirmation = isset($args['confirmation']) ? $args['confirmation'] : FormUtil::getPassedValue('confirmation', null, 'GETPOST');
@@ -577,7 +563,7 @@ class EZComments_admin extends AbstractController
         // array reflects this
         if (pnModAPIFunc('EZComments', 'admin', 'deletemodule', array('extrainfo' => array('module' => $modinfo['name'])))) {
             // Success
-            LogUtil::registerStatus(__('Done! Comment deleted.', $dom));
+            LogUtil::registerStatus($this->__('Done! Comment deleted.'));
         }
 
         // This function generated no output, and so now it is complete we redirect
@@ -595,8 +581,6 @@ class EZComments_admin extends AbstractController
      */
     public function deleteitem($args)
     {
-        $dom = ZLanguage::getModuleDomain('EZComments');
-
         // Get parameters from whatever input we need.
         $mod          = isset($args['mod']) ? $args['mod'] : FormUtil::getPassedValue('mod', null, 'GETPOST');
         $objectid     = isset($args['objectid']) ? $args['objectid'] : FormUtil::getPassedValue('objectid', null, 'GETPOST');
@@ -644,7 +628,7 @@ class EZComments_admin extends AbstractController
         // array reflects this
         if (pnModAPIFunc('EZComments', 'admin', 'deletebyitem', array('mod' => $modinfo['name'], 'objectid' => $objectid))) {
             // Success
-            LogUtil::registerStatus(__('Done! Comment deleted.', $dom));
+            LogUtil::registerStatus($this->__('Done! Comment deleted.'));
         }
 
         return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
@@ -662,8 +646,6 @@ class EZComments_admin extends AbstractController
      */
     public function applyrules($args)
     {
-        $dom = ZLanguage::getModuleDomain('EZComments');
-
         // Get parameters from whatever input we need.
         $mod          = isset($args['mod']) ? $args['mod'] : FormUtil::getPassedValue('mod', null, 'GETPOST');
         $confirmation = isset($args['confirmation']) ? $args['confirmation'] : FormUtil::getPassedValue('confirmation', null, 'GETPOST');
@@ -683,9 +665,9 @@ class EZComments_admin extends AbstractController
             // No confirmation yet
 
             // assign the status flags
-            $renderer->assign('statuslevels', array('1' => __('Pending', $dom),
-                                                    '2' => __('Rejected', $dom),
-                                                    '0' => __('Approved', $dom)));
+            $renderer->assign('statuslevels', array('1' => $this->__('Pending'),
+                                                    '2' => $this->__('Rejected'),
+                                                    '0' => $this->__('Approved')));
 
             // Return the output that has been generated by this function
             return $renderer->fetch('ezcomments_admin_applyrules_form.htm');
@@ -732,11 +714,11 @@ class EZComments_admin extends AbstractController
 
             // defines the available options
             $options = array(array('url' => $comment['url'] . '#comment' . $comment['id'],
-                                   'title' => __('View', $dom)));
+                                   'title' => $this->__('View')));
 
             if (SecurityUtil::checkPermission('EZComments::', "$comment[mod]:$comment[objectid]:$comment[id]", ACCESS_EDIT)) {
                 $options[] = array('url'   => pnModURL('EZComments', 'admin', 'modify', array('id' => $comment['id'])),
-                                   'title' => __('Edit', $dom));
+                                   'title' => $this->__('Edit'));
             }
             $comment['options'] = $options;
 
@@ -772,7 +754,7 @@ class EZComments_admin extends AbstractController
                 pnModAPIFunc('EZComments', 'admin', 'update', $comment);
             }
 
-            LogUtil::registerStatus(__('New comment rules applied', $dom));
+            LogUtil::registerStatus($this->__('New comment rules applied'));
             return pnRedirect(pnModURL('EZComments', 'admin'));
         }
     }

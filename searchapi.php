@@ -52,10 +52,8 @@ class EZComments_searchapi extends AbstractApi
             return true;
         }
 
-        $dom = ZLanguage::getModuleDomain('EZComments');
-
         if (strlen($args['q']) < 3 || strlen($args['q']) > 30) {
-            return LogUtil::registerStatus(__f('The comments can only be searched for words that are longer than %1$s and less than %2$s characters!', array($minlen, $maxlen), $dom));
+            return LogUtil::registerStatus($this->__f('The comments can only be searched for words that are longer than %1$s and less than %2$s characters!', array($minlen, $maxlen)));
         }
 
         pnModDBInfoLoad('Search');
@@ -88,7 +86,7 @@ class EZComments_searchapi extends AbstractApi
             $sql = $insertSql . '(' . '\'' . DataUtil::formatForStore($comment['subject']) . '\', ' . '\'' . DataUtil::formatForStore($comment['comment']) . '\', ' . '\'' . DataUtil::formatForStore($comment['url']) . '\', ' . '\'' . 'EZComments' . '\', ' . '\'' . DataUtil::formatForStore($comment['date']) . '\', ' . '\'' . DataUtil::formatForStore($sessionId) . '\')';
             $insertResult = DBUtil::executeSQL($sql);
             if (!$insertResult) {
-                return LogUtil::registerError(__('Error! Could not load items.', $dom));
+                return LogUtil::registerError($this->__('Error! Could not load items.'));
             }
         }
 

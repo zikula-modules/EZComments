@@ -25,8 +25,6 @@ class EZComments_user extends AbstractController
             return pnRedirect(pnGetHomepageURL);
         }
 
-        $dom = ZLanguage::getModuleDomain('EZComments');
-
         // the following code was taken from the admin interface first and modified
         // that only own comments are shown on the overview page.
 
@@ -50,7 +48,7 @@ class EZComments_user extends AbstractController
         $items = pnModAPIFunc('EZComments', 'user', 'getall', $params);
 
         if ($items === false) {
-            return LogUtil::registerError(__('Internal Error.', $dom));
+            return LogUtil::registerError($this->__('Internal Error.'));
         }
 
         // loop through each item adding the relevant links
@@ -59,7 +57,7 @@ class EZComments_user extends AbstractController
             $options   = array();
             $options[] = array('url'   => $item['url'] . '#comment' . $item['id'],
                                'image' => 'demo.gif',
-                               'title' => __('View', $dom));
+                               'title' => $this->__('View'));
 
             // Security check
             $securityCheck = pnModAPIFunc('EZComments', 'user', 'checkPermission',
@@ -72,7 +70,7 @@ class EZComments_user extends AbstractController
             if ($securityCheck) {
                 $options[] = array('url'   => pnModURL('EZComments', 'user', 'modify', array('id' => $item['id'])),
                                    'image' => 'xedit.gif',
-                                   'title' => __('Edit', $dom));
+                                   'title' => $this->__('Edit'));
             }
 
             $items[$k]['options'] = $options;
@@ -94,7 +92,6 @@ class EZComments_user extends AbstractController
 
         // Return the output
         return $renderer->fetch('ezcomments_user_main.htm');
-
     }
 
     /**
@@ -122,8 +119,6 @@ class EZComments_user extends AbstractController
         if (!SecurityUtil::checkPermission('EZComments::', "$mod:$objectid:", ACCESS_OVERVIEW)) {
             return LogUtil::registerPermissionError();
         }
-
-        $dom = ZLanguage::getModuleDomain('EZComments');
 
         $owneruid = (int)$args['extrainfo']['owneruid'];
         $useurl   = isset($args['extrainfo']['useurl']) ? $args['extrainfo']['useurl'] : null;
@@ -155,7 +150,7 @@ class EZComments_user extends AbstractController
         compact('mod', 'objectid', 'sortorder', 'status', 'numitems', 'startnum'));
 
         if ($items === false) {
-            return LogUtil::registerError(__('Internal Error.', $dom), null, 'index.php');
+            return LogUtil::registerError($this->__('Internal Error.'), null, 'index.php');
         }
 
         $items = ModUtil::apiFunc('EZComments', 'user', 'prepareCommentsForDisplay', $items);
@@ -248,8 +243,6 @@ class EZComments_user extends AbstractController
      */
     public function comment($args)
     {
-        $dom = ZLanguage::getModuleDomain('EZComments');
-
         $mod         = isset($args['mod'])      ? $args['mod']      : FormUtil::getPassedValue('mod',      null, 'POST');
         $objectid    = isset($args['objectid']) ? $args['objectid'] : FormUtil::getPassedValue('objectid', null, 'POST');
         $redirect    = isset($args['redirect']) ? $args['redirect'] : FormUtil::getPassedValue('redirect', null, 'POST');
@@ -292,7 +285,7 @@ class EZComments_user extends AbstractController
         compact('mod', 'objectid', 'sortorder', 'status', 'numitems', 'startnum'));
 
         if ($items === false) {
-            return LogUtil::registerError(__('Internal Error.', $dom), null, 'index.php');;
+            return LogUtil::registerError($this->__('Internal Error.'), null, 'index.php');;
         }
 
         $items = ModUtil::apiFunc('EZComments', 'user', 'prepareCommentsForDisplay', $items);
@@ -364,8 +357,6 @@ class EZComments_user extends AbstractController
      */
     public function create($args)
     {
-        $dom = ZLanguage::getModuleDomain('EZComments');
-
         $mod      = isset($args['mod'])      ? $args['mod']      : FormUtil::getPassedValue('mod',      null, 'POST');
         $objectid = isset($args['objectid']) ? $args['objectid'] : FormUtil::getPassedValue('objectid', null, 'POST');
         $comment  = isset($args['comment'])  ? $args['comment']  : FormUtil::getPassedValue('comment',  null, 'POST');
@@ -425,7 +416,7 @@ class EZComments_user extends AbstractController
         // and check we've actually got a comment....
         if (empty($comment)) {
             SessionUtil::setVar('ezcomment', serialize($ezcomment));
-            return LogUtil::registerError(__('Error! The comment contains no text.', $dom), null,
+            return LogUtil::registerError($this->__('Error! The comment contains no text.'), null,
                                           $redirect."#commentform_{$mod}_{$objectid}");
         }
 
@@ -536,7 +527,7 @@ class EZComments_user extends AbstractController
         }
 
         $comments = pnModAPIFunc('EZComments', 'user', 'getall',
-        array('mod'       => $mod,
+                                 array('mod'       => $mod,
                                        'objectid'  => $objectid,
                                        'numitems'  => $feedcount,
                                        'sortorder' => 'DESC',

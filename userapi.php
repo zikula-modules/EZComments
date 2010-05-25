@@ -180,8 +180,6 @@ class EZComments_userapi extends AbstractApi
             return LogUtil::registerPermissionError();
         }
 
-        $dom = ZLanguage::getModuleDomain('EZComments');
-
         $owneruid = (int)$args['owneruid'];
 
         // Sometimes the displayurl for the redirect is another url then the url,
@@ -198,7 +196,7 @@ class EZComments_userapi extends AbstractApi
         // ContactList ignore check. If the user is ignored by the
         // content owner the user will not be able to post any comment...
         if ($loggedin && $owneruid > 0 && pnModAvailable('ContactList') && pnModAPIFunc('ContactList', 'user', 'isIgnored', array('iuid' => pnUserGetVar('uid'), 'uid' => $owneruid))) {
-            return LogUtil::registerError(__('Error! The user ignores you.', $dom));
+            return LogUtil::registerError($this->__('Error! The user ignores you.'));
         }
 
         // check unregistered user included name (if required)
@@ -206,7 +204,7 @@ class EZComments_userapi extends AbstractApi
         if (!$loggedin) {
             $args['uid'] = 0;
             if (pnModGetVar('EZComments', 'anonusersrequirename') && empty($args['anonname'])) {
-                return LogUtil::registerError(__('Error! The name field is required. Comment rejected.', $dom));
+                return LogUtil::registerError($this->__('Error! The name field is required. Comment rejected.'));
             }
         }
         if (!isset($args['replyto']) || empty($args['replyto'])) {
@@ -262,7 +260,7 @@ class EZComments_userapi extends AbstractApi
 
         // check for a blacklisted return
         if (in_array(2, $status)) {
-            return LogUtil::registerError(__('Error! Your comment contains unacceptable content and has been rejected.', $dom));
+            return LogUtil::registerError($this->__('Error! Your comment contains unacceptable content and has been rejected.'));
         }
 
         // check for a moderated return
@@ -288,18 +286,18 @@ class EZComments_userapi extends AbstractApi
         );
 
         if (!($newcomment = DBUtil::insertObject($newcomment, 'EZComments'))) {
-            return LogUtil::registerError(__('Error! Creation attempt failed.', $dom));
+            return LogUtil::registerError($this->__('Error! Creation attempt failed.'));
         }
 
         // set an approriate status/errormsg
         switch ($maxstatus)
         {
             case 0:
-                LogUtil::registerStatus(__('Done! Comment added.', $dom));
+                LogUtil::registerStatus($this->__('Done! Comment added.'));
                 break;
 
             case 1:
-                LogUtil::registerStatus(__('Done! Your comment was held for moderation and will be reviewed shortly.', $dom));
+                LogUtil::registerStatus($this->__('Done! Your comment was held for moderation and will be reviewed shortly.'));
                 break;
         }
 
@@ -329,7 +327,7 @@ class EZComments_userapi extends AbstractApi
             }
             $renderer->assign('comment', $newcomment);
 
-            $mailsubject = __('A new comment was entered', $dom);
+            $mailsubject = $this->__('A new comment was entered');
 
             pnModAPIFunc('Mailer', 'user', 'sendmessage',
                          array('toaddress'   => $toaddress,
@@ -350,7 +348,7 @@ class EZComments_userapi extends AbstractApi
             }
             $renderer->assign('comment', $newcomment);
 
-            $mailsubject = __('New comment for your site', $dom);
+            $mailsubject = $this->__('New comment for your site');
 
             pnModAPIFunc('Mailer', 'user', 'sendmessage',
                          array('toaddress'   => pnConfigGetVar('adminmail'),
@@ -665,8 +663,6 @@ class EZComments_userapi extends AbstractApi
             return false;
         }
 
-        $dom = ZLanguage::getModuleDomain('EZComments');
-
         // check for a valid module
         if (!isset($args['mod']) || !is_string($args['mod'])) {
             return false;
@@ -692,7 +688,7 @@ class EZComments_userapi extends AbstractApi
         // Check for an error with the database code, and if so set an appropriate
         // error message and return
         if ($result == false) {
-            return LogUtil::registerError(__('Error! Could not load items.', $dom));
+            return LogUtil::registerError($this->__('Error! Could not load items.'));
         }
 
         // Put items into result array.  Note that each item is checked

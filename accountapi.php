@@ -15,16 +15,14 @@ class EZComments_accountapi extends AbstractApi
     *
     * @return   array
     */
-    public function getall($args)
+    public function getall()
     {
-        $dom = ZLanguage::getModuleDomain('EZComments');
-
         $useAccountPage = pnModGetVar('EZComments', 'useaccountpage', '1');
         if ($useAccountPage) {
             // Create an array of links to return
             $items = array();
             $items['1'] = array('url'   => pnModURL('EZComments', 'user', 'main'),
-                                'title' => __('Manage my comments', $dom),
+                                'title' => $this->__('Manage my comments'),
                                 'icon'  => 'mycommentsbutton.gif',
                                 'set'   => null);
         }

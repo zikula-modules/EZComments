@@ -17,7 +17,6 @@ class EZComments_myprofileapi extends AbstractApi
      */
     public function getTitle()
     {
-        $dom = ZLanguage::getModuleDomain('EZComments');
         $uid = (int) FormUtil::getPassedValue('uid');
 
         $settings = pnModAPIFunc('MyProfile', 'user', 'getSettings', array('uid' => $uid));
@@ -25,7 +24,7 @@ class EZComments_myprofileapi extends AbstractApi
             // Show no tab header
             return false;
         } else {
-            return __("User's pinboard", $dom);
+            return $this->__("User's pinboard");
         }
     }
 
@@ -47,12 +46,10 @@ class EZComments_myprofileapi extends AbstractApi
     public function tab($args)
     {
         // is ezcomment hook activated for myprofile module?
-        $dom = ZLanguage::getModuleDomain('EZComments');
-
         $result = pnModIsHooked('EZComments', 'MyProfile');
         if (!$result) {
             if (!pnModAPIFunc('Modules', 'admin', 'enablehooks', array('callermodname' => 'MyProfile', 'hookmodname' => 'EZComments'))) {
-                return LogUtil::registerError(__('Registering EZComments hook for MyProfile module failed', $dom));
+                return LogUtil::registerError($this->__('Registering EZComments hook for MyProfile module failed'));
             }
         }
 
