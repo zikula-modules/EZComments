@@ -61,7 +61,7 @@ function EZComments_user_main($args = array())
     foreach ($items as $k => $item)
     {
         $options   = array();
-        $options[] = array('url'   => $item['url'] . '#comments',
+        $options[] = array('url'   => $item['url'] . '#comment' . $comment['id'],
                            'image' => 'demo.gif',
                            'title' => __('View', $dom));
 
@@ -172,7 +172,7 @@ function EZComments_user_view($args)
     $renderer->assign('comments',     $items);
     $renderer->assign('commentcount', $commentcount);
     $renderer->assign('ezcomment',    $ezcomment);
-    $renderer->assign('order',        $sortorder);
+    $renderer->assign('ezc_info',     compact('mod', 'objectid', 'sortorder', 'status'));
     $renderer->assign('modinfo',      pnModGetInfo(pnModGetIDFromName($mod)));
     $renderer->assign('msgmodule',    pnConfigGetVar('messagemodule', ''));
     $renderer->assign('prfmodule',    pnConfigGetVar('profilemodule', ''));
@@ -420,19 +420,20 @@ function EZComments_user_create($args)
     // Confirm authorisation code
     if (!SecurityUtil::confirmAuthKey()) {
         SessionUtil::setVar('ezcomment', serialize($ezcomment));
-        return LogUtil::registerAuthidError($redirect);
+        return LogUtil::registerAuthidError($redirect."#commentform_{$mod}_{$objectid}");
     }
     // and check we've actually got a comment....
     if (empty($comment)) {
         SessionUtil::setVar('ezcomment', serialize($ezcomment));
-        return LogUtil::registerError(__('Error! The comment contains no text.', $dom), null, $redirect);
+        return LogUtil::registerError(__('Error! The comment contains no text.', $dom), null,
+                                      $redirect."#commentform_{$mod}_{$objectid}");
     }
 
     // now parse out the hostname+subfolder from the url for storing in the DB
     $url = str_replace(pnGetBaseURI(), '', $useurl);
 
     $id = pnModAPIFunc('EZComments', 'user', 'create',
-    array('mod'         => $mod,
+                       array('mod'         => $mod,
                              'objectid'    => $objectid,
                              'url'         => $url,
                              'comment'     => $comment,
@@ -449,7 +450,7 @@ function EZComments_user_create($args)
     // redirect if it was not successful
     if (!$id) {
         SessionUtil::setVar('ezcomment', $ezcomment);
-        pnRedirect($redirect);
+        pnRedirect($redirect."#commentform_{$mod}_{$objectid}");
     }
 
     // clean/set the session data 
@@ -465,7 +466,7 @@ function EZComments_user_create($args)
         SessionUtil::setVar('ezcomment', serialize($ezcomment));
     }
 
-    return pnRedirect($redirect.'#comments');
+    return pnRedirect($redirect.'#comment'.$id);
 }
 
 /**

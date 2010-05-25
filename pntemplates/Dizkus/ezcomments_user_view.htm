@@ -1,11 +1,12 @@
 <!--[*  $Id$ *]-->
-<div id="ezcomments">
+
+<div id="ezcomments_<!--[$ezc_info.mod]-->_<!--[$ezc_info.objectid]-->" class="ezcomments ezcomments_<!--[$ezc_info.mod]-->">
     <!--[if $comments eq true]-->
 
-    <h3 id="comments"><!--[gt text="Comments" domain="module_ezcomments"]--></h3>
+    <h3 id="comments_<!--[$ezc_info.mod]-->_<!--[$ezc_info.objectid]-->"><!--[gt text="Comments" domain="module_ezcomments"]--></h3>
 
     <!--[if $mainscreen AND $allowadd]-->
-    <a href="#commentform"><!--[gt text="Add a new comment" domain="module_ezcomments"]--></a>
+    <a href="#commentform_<!--[$ezc_info.mod]-->_<!--[$ezc_info.objectid]-->"><!--[gt text="Add a new comment" domain="module_ezcomments"]--></a>
     <!--[/if]-->
 
     <!--[foreach from=$comments item="comment"]-->
@@ -61,7 +62,7 @@
     <!--[/if]-->
 
     <!--[if $mainscreen AND $allowadd]-->
-    <form class="z-form z-linear" id="commentform" action="<!--[pnmodurl modname=EZComments func=create]-->" method="post">
+    <form class="z-form z-linear" id="commentform_<!--[$ezc_info.mod]-->_<!--[$ezc_info.objectid]-->" action="<!--[pnmodurl modname=EZComments func=create]-->" method="post">
         <div>
             <input type="hidden" name="authid" id="authid" value="<!--[insert name='generateauthkey' module='EZComments']-->" />
             <input type="hidden" name="redirect" id="EZComments_redirect" value="<!--[$redirect|pnvarprepfordisplay]-->" />

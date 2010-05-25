@@ -62,7 +62,7 @@ function EZComments_admin_main()
     $comments = array();
     foreach ($items as $item)
     {
-        $options = array(array('url' => $item['url'] . '#comments',
+        $options = array(array('url' => $item['url'] . '#comment' . $item['id'],
                                'image' => 'demo.gif',
                                'title' => __('View', $dom)));
 
@@ -733,7 +733,7 @@ function EZComments_admin_applyrules($args)
         }
 
         // defines the available options
-        $options = array(array('url' => $comment['url'] . '#comments',
+        $options = array(array('url' => $comment['url'] . '#comment' . $comment['id'],
                                'title' => __('View', $dom)));
 
         if (SecurityUtil::checkPermission('EZComments::', "$comment[mod]:$comment[objectid]:$comment[id]", ACCESS_EDIT)) {

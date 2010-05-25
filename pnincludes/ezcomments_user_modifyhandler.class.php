@@ -145,7 +145,7 @@ class EZComments_user_modifyhandler
         }
 
         if ($data['ezcomments_sendmeback'] == true) {
-            return pnRedirect($comment['url'] . '#comments');
+            return pnRedirect($comment['url'] . "#comments_{$comment['modname']}_{$comment['objectid']}");
         }
 
         return pnRedirect(pnModURL('EZComments', 'user', 'main'));
