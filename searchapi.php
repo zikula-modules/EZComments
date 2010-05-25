@@ -56,7 +56,7 @@ class EZComments_searchapi extends AbstractApi
             return LogUtil::registerStatus($this->__f('The comments can only be searched for words that are longer than %1$s and less than %2$s characters!', array($minlen, $maxlen)));
         }
 
-        pnModDBInfoLoad('Search');
+        ModUtil::dbInfoLoad('Search');
 
         $pntable = pnDBGetTables();
         // ezcomments tables

@@ -71,10 +71,10 @@ function EZComments_migrateapi_news()
             $item['uid'] = 1;
         }
 
-        $id = pnModAPIFunc('EZComments', 'user', 'create',
+        $id = ModUtil::apiFunc('EZComments', 'user', 'create',
                            array('mod'      => 'News',
                                  'objectid' => DataUtil::formatForStore($item['sid']),
-                                 'url'      => pnModURL('News', 'user', 'display', array('sid' => $item['sid'])),
+                                 'url'      => ModUtil::url('News', 'user', 'display', array('sid' => $item['sid'])),
                                  'comment'  => $item['comment'],
                                  'subject'  => $item['subject'],
                                  'uid'      => $item['uid'],
@@ -102,9 +102,9 @@ function EZComments_migrateapi_news()
     }
 
     // activate the ezcomments hook for the news module
-    pnModAPIFunc('Modules', 'admin', 'enablehooks',
-                 array('callermodname' => 'News',
-                       'hookmodname'   => 'EZComments'));
+    ModUtil::apiFunc('Modules', 'admin', 'enablehooks',
+                     array('callermodname' => 'News',
+                           'hookmodname'   => 'EZComments'));
 
  	return LogUtil::registerStatus('News migration successful');
 }

@@ -24,13 +24,13 @@ function EZComments_migrateapi_polls()
     }
 
     // Get datbase setup
-    $pntable = &pnDBGetTables();
+    $tables = pnDBGetTables();
 
-    $EZCommentstable  = $pntable['EZComments'];
-    $EZCommentscolumn = $pntable['EZComments_column'];
+    $EZCommentstable  = $tables['EZComments'];
+    $EZCommentscolumn = $tables['EZComments_column'];
 
-    $Commentstable  = $pntable['pollcomments'];
-    $Commentscolumn = $pntable['pollcomments_column'];
+    $Commentstable  = $tables['pollcomments'];
+    $Commentscolumn = $tables['pollcomments_column'];
 
     if (version_compare(PN_VERSION_NUM, '1', '>=')) {
         EZComments_get76xcolumns_polls($Commentstable, $Commentscolumn);
@@ -39,8 +39,8 @@ function EZComments_migrateapi_polls()
         return LogUtil::registerError('Polls migration: Comments tables not found');
     }
 
-    $Usertable  = $pntable['users'];
-    $Usercolumn = $pntable['users_column'];
+    $Usertable  = $tables['users'];
+    $Usercolumn = $tables['users_column'];
 
     $sql = "SELECT $Commentscolumn[tid],
                    $Commentscolumn[pollid],
@@ -74,7 +74,7 @@ function EZComments_migrateapi_polls()
         $id = pnModAPIFunc('EZComments', 'user', 'create',
                            array('mod'      => 'Polls',
                                  'objectid' => DataUtil::formatForStore($item['pollid']),
-                                 'url'      => pnModURL('Polls', 'user', 'display', array('pollid' => $item['pollid'])),
+                                 'url'      => ModUtil::url('Polls', 'user', 'display', array('pollid' => $item['pollid'])),
                                  'comment'  => $item['comment'],
                                  'subject'  => $item['subject'],
                                  'uid'      => $item['uid'],
@@ -102,9 +102,9 @@ function EZComments_migrateapi_polls()
     }
 
     // activate the ezcomments hook for the Polls module
-    pnModAPIFunc('Modules', 'admin', 'enablehooks',
-                 array('callermodname' => 'Polls',
-                       'hookmodname'   => 'EZComments'));
+    ModUtil::apiFunc('Modules', 'admin', 'enablehooks',
+                     array('callermodname' => 'Polls',
+                           'hookmodname'   => 'EZComments'));
 
     return LogUtil::registerStatus('Polls migration successful');
 }

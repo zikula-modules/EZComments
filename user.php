@@ -36,7 +36,7 @@ class EZComments_user extends AbstractController
 
         // presentation values
         $startnum = isset($args['startnum']) ? $args['startnum'] : FormUtil::getPassedValue('startnum', null, 'GETPOST');
-        $itemsperpage = pnModGetVar('EZComments', 'itemsperpage');
+        $itemsperpage = ModUtil::getVar('EZComments', 'itemsperpage');
 
         // call the api to get all current comments that are from the user or the user's content
         $params = array('startnum' => $startnum,
@@ -45,7 +45,7 @@ class EZComments_user extends AbstractController
                         'owneruid' => pnUserGetVar('uid'),
                         'uid'      => pnUserGetVar('uid'));
 
-        $items = pnModAPIFunc('EZComments', 'user', 'getall', $params);
+        $items = ModUtil::apiFunc('EZComments', 'user', 'getall', $params);
 
         if ($items === false) {
             return LogUtil::registerError($this->__('Internal Error.'));
@@ -60,7 +60,7 @@ class EZComments_user extends AbstractController
                                'title' => $this->__('View'));
 
             // Security check
-            $securityCheck = pnModAPIFunc('EZComments', 'user', 'checkPermission',
+            $securityCheck = ModUtil::apiFunc('EZComments', 'user', 'checkPermission',
                                           array('module'    => '',
                                                 'objectid'  => '',
                                                 'commentid' => $item['id'],
@@ -68,7 +68,7 @@ class EZComments_user extends AbstractController
                                                 'level'     => ACCESS_EDIT));
 
             if ($securityCheck) {
-                $options[] = array('url'   => pnModURL('EZComments', 'user', 'modify', array('id' => $item['id'])),
+                $options[] = array('url'   => ModUtil::url('EZComments', 'user', 'modify', array('id' => $item['id'])),
                                    'image' => 'xedit.gif',
                                    'title' => $this->__('Edit'));
             }
@@ -80,14 +80,14 @@ class EZComments_user extends AbstractController
         $renderer = & pnRender::getInstance('EZComments', false);
 
         // assign the module vars
-        $renderer->assign(pnModGetVar('EZComments'));
+        $renderer->assign(ModUtil::getVar('EZComments'));
 
         // assign the items to the template, values for the filters
         $renderer->assign('items',  $items);
         $renderer->assign('status', $status);
 
         // values for the smarty plugin to produce a pager
-        $renderer->assign('ezc_pager', array('numitems'     => pnModAPIFunc('EZComments', 'user', 'countitems', $params),
+        $renderer->assign('ezc_pager', array('numitems'     => ModUtil::apiFunc('EZComments', 'user', 'countitems', $params),
                                              'itemsperpage' => $itemsperpage));
 
         // Return the output
@@ -112,7 +112,7 @@ class EZComments_user extends AbstractController
     public function view($args)
     {
         // work out the input from the hook
-        $mod      = isset($args['mod']) ? $args['mod'] : pnModGetName();
+        $mod      = isset($args['mod']) ? $args['mod'] : ModUtil::getName();
         $objectid = isset($args['objectid']) ? $args['objectid'] : '';
 
         // security check
@@ -134,9 +134,9 @@ class EZComments_user extends AbstractController
         $status = 0;
 
         // check if we're using the pager
-        $enablepager = pnModGetVar('EZComments', 'enablepager');
+        $enablepager = ModUtil::getVar('EZComments', 'enablepager');
         if ($enablepager) {
-            $numitems = pnModGetVar('EZComments', 'commentsperpage');
+            $numitems = ModUtil::getVar('EZComments', 'commentsperpage');
             $startnum = FormUtil::getPassedValue('comments_startnum');
             if (!isset($startnum) && !is_numeric($startnum)) {
                 $startnum = -1;
@@ -146,7 +146,7 @@ class EZComments_user extends AbstractController
             $numitems = -1;
         }
 
-        $items = pnModAPIFunc('EZComments', 'user', 'getall',
+        $items = ModUtil::apiFunc('EZComments', 'user', 'getall',
         compact('mod', 'objectid', 'sortorder', 'status', 'numitems', 'startnum'));
 
         if ($items === false) {
@@ -156,7 +156,7 @@ class EZComments_user extends AbstractController
         $items = ModUtil::apiFunc('EZComments', 'user', 'prepareCommentsForDisplay', $items);
 
         if ($enablepager) {
-            $commentcount = pnModAPIFunc('EZComments', 'user', 'countitems', compact('mod', 'objectid', 'status'));
+            $commentcount = ModUtil::apiFunc('EZComments', 'user', 'countitems', compact('mod', 'objectid', 'status'));
         } else {
             $commentcount = count($items);
         }
@@ -168,7 +168,7 @@ class EZComments_user extends AbstractController
         $renderer->assign('commentcount', $commentcount);
         $renderer->assign('ezcomment',    $ezcomment);
         $renderer->assign('ezc_info',     compact('mod', 'objectid', 'sortorder', 'status'));
-        $renderer->assign('modinfo',      pnModGetInfo(pnModGetIDFromName($mod)));
+        $renderer->assign('modinfo',      ModUtil::getInfo(ModUtil::getIdFromName($mod)));
         $renderer->assign('msgmodule',    pnConfigGetVar('messagemodule', ''));
         $renderer->assign('prfmodule',    pnConfigGetVar('profilemodule', ''));
         $renderer->assign('allowadd',     SecurityUtil::checkPermission('EZComments::', "$mod:$objectid:", ACCESS_COMMENT));
@@ -192,10 +192,10 @@ class EZComments_user extends AbstractController
         $renderer->assign('useurl',       $useurl);
 
         // assign all module vars (they may be useful...)
-        $renderer->assign('modvars', pnModGetVar('EZComments'));
+        $renderer->assign('modvars', ModUtil::getVar('EZComments'));
 
         // just for backward compatibility - TODO: delete in 2.x
-        $renderer->assign('anonusersinfo', pnModGetVar('EZComments', 'anonusersinfo'));
+        $renderer->assign('anonusersinfo', ModUtil::getVar('EZComments', 'anonusersinfo'));
 
         // flag to recognize the main call
         static $mainScreen = true;
@@ -209,16 +209,16 @@ class EZComments_user extends AbstractController
         // find out which template and stylesheet to use
         $templateset = isset($args['template']) ? $args['template'] : FormUtil::getPassedValue('eztpl');
         $css         = isset($args['ezccss'])   ? $args['ezccss']   : FormUtil::getPassedValue('ezccss');
-        $defaultcss  = pnModGetVar('EZComments', 'css', 'style.css');
+        $defaultcss  = ModUtil::getVar('EZComments', 'css', 'style.css');
 
         if (!$renderer->template_exists(DataUtil::formatForOS($templateset) . '/ezcomments_user_view.htm')) {
-            $templateset = pnModGetVar('EZComments', 'template', 'Standard');
+            $templateset = ModUtil::getVar('EZComments', 'template', 'Standard');
         }
         $renderer->assign('template', $templateset);
 
         // include stylesheet if there is a style sheet
         $css = $css ? "$css.css" : $defaultcss;
-        if ($css = pnModAPIFunc('EZComments', 'user', 'getStylesheet', array('path' => "$templateset/$css"))) {
+        if ($css = ModUtil::apiFunc('EZComments', 'user', 'getStylesheet', array('path' => "$templateset/$css"))) {
             PageUtil::addVar('stylesheet', $css);
         }
 
@@ -264,14 +264,14 @@ class EZComments_user extends AbstractController
         $status = 0;
 
         // check if commenting is setup for the input module
-        if (!pnModAvailable($mod) || !pnModIsHooked('EZComments', $mod)) {
+        if (!ModUtil::available($mod) || !ModUtil::isHooked('EZComments', $mod)) {
             return LogUtil::registerPermissionError();
         }
 
         // check if we're using the pager
-        $enablepager = pnModGetVar('EZComments', 'enablepager');
+        $enablepager = ModUtil::getVar('EZComments', 'enablepager');
         if ($enablepager) {
-            $numitems = pnModGetVar('EZComments', 'commentsperpage');
+            $numitems = ModUtil::getVar('EZComments', 'commentsperpage');
             $startnum = FormUtil::getPassedValue('comments_startnum');
             if (!isset($startnum) && !is_numeric($startnum)) {
                 $startnum = -1;
@@ -281,7 +281,7 @@ class EZComments_user extends AbstractController
             $numitems = -1;
         }
 
-        $items = pnModAPIFunc('EZComments', 'user', 'getall',
+        $items = ModUtil::apiFunc('EZComments', 'user', 'getall',
         compact('mod', 'objectid', 'sortorder', 'status', 'numitems', 'startnum'));
 
         if ($items === false) {
@@ -291,7 +291,7 @@ class EZComments_user extends AbstractController
         $items = ModUtil::apiFunc('EZComments', 'user', 'prepareCommentsForDisplay', $items);
 
         if ($enablepager) {
-            $commentcount = pnModAPIFunc('EZComments', 'user', 'countitems', compact('mod', 'objectid'));
+            $commentcount = ModUtil::apiFunc('EZComments', 'user', 'countitems', compact('mod', 'objectid'));
         } else {
             $commentcount = count($items);
         }
@@ -316,7 +316,7 @@ class EZComments_user extends AbstractController
         $renderer->assign('useurl',       $useurl);
 
         // assign all module vars (they may be useful...)
-        $renderer->assign(pnModGetVar('EZComments'));
+        $renderer->assign(ModUtil::getVar('EZComments'));
 
         // assign the values for the pager
         $renderer->assign('ezc_pager', array('numitems'     => $commentcount,
@@ -324,16 +324,16 @@ class EZComments_user extends AbstractController
 
         // find out which template to use
         $templateset = isset($args['template']) ? $args['template'] : $template;
-        $defaultcss  = pnModGetVar('EZComments', 'css', 'style.css');
+        $defaultcss  = ModUtil::getVar('EZComments', 'css', 'style.css');
 
         if (!$renderer->template_exists(DataUtil::formatForOS($templateset) . '/ezcomments_user_comment.htm')) {
-            $templateset = pnModGetVar('EZComments', 'template', 'Standard');
+            $templateset = ModUtil::getVar('EZComments', 'template', 'Standard');
         }
         $renderer->assign('template', $templateset);
 
         // include stylesheet if there is a style sheet
         $css = $stylesheet ? "$stylesheet.css" : $defaultcss;
-        if ($css = pnModAPIFunc('EZComments', 'user', 'getStylesheet', array('path' => "$templateset/$css"))) {
+        if ($css = ModUtil::apiFunc('EZComments', 'user', 'getStylesheet', array('path' => "$templateset/$css"))) {
             PageUtil::addVar('stylesheet', $css);
         }
 
@@ -423,7 +423,7 @@ class EZComments_user extends AbstractController
         // now parse out the hostname+subfolder from the url for storing in the DB
         $url = str_replace(pnGetBaseURI(), '', $useurl);
 
-        $id = pnModAPIFunc('EZComments', 'user', 'create',
+        $id = ModUtil::apiFunc('EZComments', 'user', 'create',
                            array('mod'         => $mod,
                                  'objectid'    => $objectid,
                                  'url'         => $url,
@@ -514,19 +514,19 @@ class EZComments_user extends AbstractController
 
         // check our input
         if (!isset($feedcount) || !is_numeric($feedcount) || $feedcount < 1 || $feedcount > 999) {
-            $feedcount = pnModGetVar('EZcomments', 'feedcount');
+            $feedcount = ModUtil::getVar('EZcomments', 'feedcount');
         }
         if (!isset($feedtype) || !is_string($feedtype) || ($feedtype !== 'rss' && $feedtype !== 'atom')) {
-            $feedtype = pnModGetVar('EZComments', 'feedtype');
+            $feedtype = ModUtil::getVar('EZComments', 'feedtype');
         }
-        if (!isset($mod) || !is_string($mod) || !pnModAvailable($mod)) {
+        if (!isset($mod) || !is_string($mod) || !ModUtil::available($mod)) {
             $mod = null;
         }
         if (!isset($objectid) || !is_string($objectid)) {
             $objectid = null;
         }
 
-        $comments = pnModAPIFunc('EZComments', 'user', 'getall',
+        $comments = ModUtil::apiFunc('EZComments', 'user', 'getall',
                                  array('mod'       => $mod,
                                        'objectid'  => $objectid,
                                        'numitems'  => $feedcount,
@@ -549,7 +549,7 @@ class EZComments_user extends AbstractController
             $renderer->assign('itemurl', $comments[0]['url']);
         } else {
             // attempt to guess the url (api compliant mods only....)
-            $renderer->assign('itemurl', pnModURL($mod, 'user', 'display', array('objectid' => $objectid)));
+            $renderer->assign('itemurl', ModUtil::url($mod, 'user', 'display', array('objectid' => $objectid)));
         }
 
         // display the feed and notify the core that we're done

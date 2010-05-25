@@ -23,7 +23,7 @@ class EZComments_adminapi extends AbstractApi
     public function getUsedModules()
     {
         if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));
+            return LogUtil::registerPermissionError(ModUtil::url('EZComments', 'admin', 'main'));
         }
 
         $pntable = &pnDBGetTables();
@@ -63,7 +63,7 @@ class EZComments_adminapi extends AbstractApi
     {
         // Security and argument check
         if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));
+            return LogUtil::registerPermissionError(ModUtil::url('EZComments', 'admin', 'main'));
         }
 
         if (!isset($args['module'])) {
@@ -100,16 +100,16 @@ class EZComments_adminapi extends AbstractApi
             return false;
         }
 
-        $args['mod'] = isset($args['mod']) ? $args['mod'] : pnModGetName();
+        $args['mod'] = isset($args['mod']) ? $args['mod'] : ModUtil::getName();
 
         // Security check
-        $res = pnModAPIFunc('EZComments', 'user', 'checkPermission',
+        $res = ModUtil::apiFunc('EZComments', 'user', 'checkPermission',
                             array('module'   => $args['mod'],
                                   'objectid' => $args['objectid'],
                                   'level'    => ACCESS_DELETE));
 
         if (!$res) {
-            return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));
+            return LogUtil::registerPermissionError(ModUtil::url('EZComments', 'admin', 'main'));
         }
 
         // get db table and column for where statement
@@ -137,20 +137,20 @@ class EZComments_adminapi extends AbstractApi
         }
 
         // The user API function is called.
-        $item = pnModAPIFunc('EZComments', 'user', 'get', array('id' => $args['id']));
+        $item = ModUtil::apiFunc('EZComments', 'user', 'get', array('id' => $args['id']));
 
         if (!$item) {
             return LogUtil::registerError($this->__('No such item found.'));
         }
 
         // Security check
-        $securityCheck = pnModAPIFunc('EZComments', 'user', 'checkPermission',
+        $securityCheck = ModUtil::apiFunc('EZComments', 'user', 'checkPermission',
                                       array('module'    => '',
                                             'objectid'  => '',
                                             'commentid' => $args['id'],
                                             'level'     => ACCESS_DELETE));
         if (!$securityCheck) {
-            return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));
+            return LogUtil::registerPermissionError(ModUtil::url('EZComments', 'admin', 'main'));
         }
 
         // Check for an error with the database code
@@ -159,7 +159,7 @@ class EZComments_adminapi extends AbstractApi
         }
 
         // Let any hooks know that we have deleted an item.
-        pnModCallHooks('item', 'delete', $args['id'], array('module' => 'EZComments'));
+        ModUtil::callHooks('item', 'delete', $args['id'], array('module' => 'EZComments'));
 
         // Let the calling process know that we have finished successfully
         return true;
@@ -189,21 +189,21 @@ class EZComments_adminapi extends AbstractApi
         if (!isset($args['anonwebsite'])) $args['anonwebsite'] = '';
 
         // Get the item
-        $item = pnModAPIFunc('EZComments', 'user', 'get', array('id' => $args['id']));
+        $item = ModUtil::apiFunc('EZComments', 'user', 'get', array('id' => $args['id']));
 
         if (!$item) {
             return LogUtil::registerError($this->__('No such comment found.'));
         }
 
         // Security check.
-        $securityCheck = pnModAPIFunc('EZComments', 'user', 'checkPermission',
+        $securityCheck = ModUtil::apiFunc('EZComments', 'user', 'checkPermission',
                                       array('module'    => '',
                                             'objectid'  => '',
                                             'commentid' => (int)$args['id'],
                                             'level'     => ACCESS_EDIT));
 
         if (!$securityCheck) {
-            return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));
+            return LogUtil::registerPermissionError(ModUtil::url('EZComments', 'admin', 'main'));
         }
 
         // Check for an error with the database code, and if so set an
@@ -213,7 +213,7 @@ class EZComments_adminapi extends AbstractApi
         }
 
         // Let any hooks know that we have updated an item.
-        pnModCallHooks('item', 'update', $args['id'], array('module' => 'EZComments'));
+        ModUtil::callHooks('item', 'update', $args['id'], array('module' => 'EZComments'));
 
         // Let the calling process know that we have finished successfully
         return true;
@@ -234,7 +234,7 @@ class EZComments_adminapi extends AbstractApi
 
         // When called via hooks, the module name may be empty, so we get it from
         // the current module
-        $mod = (isset($args['extrainfo']['module']) && !empty($args['extrainfo']['module'])) ? $args['extrainfo']['module'] : pnModGetName();
+        $mod = (isset($args['extrainfo']['module']) && !empty($args['extrainfo']['module'])) ? $args['extrainfo']['module'] : ModUtil::getName();
 
         // Database information
         $pntable = pnDBGetTables();
@@ -265,7 +265,7 @@ class EZComments_adminapi extends AbstractApi
 
         // Security check
         if (!SecurityUtil::checkPermission('EZComments::', "::", ACCESS_DELETE)) {
-            return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));
+            return LogUtil::registerPermissionError(ModUtil::url('EZComments', 'admin', 'main'));
         }
 
         // Get datbase setup
@@ -309,28 +309,28 @@ class EZComments_adminapi extends AbstractApi
         }
 
         // Get the comment
-        $item = pnModAPIFunc('EZComments', 'user', 'get', array('id' => $id));
+        $item = ModUtil::apiFunc('EZComments', 'user', 'get', array('id' => $id));
 
         if (!$item) {
             return LogUtil::registerError($this->__('No such item found.'));
         }
 
         // Security check.
-        $securityCheck = pnModAPIFunc('EZComments', 'user', 'checkPermission',
+        $securityCheck = ModUtil::apiFunc('EZComments', 'user', 'checkPermission',
                                       array('module'    => '',
                                             'objectid'  => '',
                                             'commentid' => $id,
                                             'level'     => ACCESS_EDIT));
 
         if (!$securityCheck) {
-            return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));
+            return LogUtil::registerPermissionError(ModUtil::url('EZComments', 'admin', 'main'));
         }
 
         // Update item and store item
         $item['status'] = $args['status'];
         if (DBUtil::updateObject($item, 'EZComments')) {
             // Let any hooks know that we have updated an item.
-            pnModCallHooks('item', 'update', $id, array('module' => 'EZComments'));
+            ModUtil::callHooks('item', 'update', $id, array('module' => 'EZComments'));
             return true;
         }
 
@@ -345,7 +345,7 @@ class EZComments_adminapi extends AbstractApi
      */
     public function countitems($args)
     {
-        return pnModAPIFunc('EZComments', 'user', 'countitems', $args);
+        return ModUtil::apiFunc('EZComments', 'user', 'countitems', $args);
     }
 
     /**
@@ -359,13 +359,13 @@ class EZComments_adminapi extends AbstractApi
         $links = array();
 
         if (SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => pnModURL('EZComments', 'admin'),                 'text' => $this->__('View comments'));
-            $links[] = array('url' => pnModURL('EZComments', 'admin', 'cleanup'),      'text' => $this->__('Delete orphaned comments'));
-            $links[] = array('url' => pnModURL('EZComments', 'admin', 'migrate'),      'text' => $this->__('Migrate comments'));
-            $links[] = array('url' => pnModURL('EZComments', 'admin', 'purge'),        'text' => $this->__('Purge comments'), 'linebreak' => true);
-            $links[] = array('url' => pnModURL('EZComments', 'admin', 'stats'),        'text' => $this->__('Comment statistics'));
-            $links[] = array('url' => pnModURL('EZComments', 'admin', 'applyrules'),   'text' => $this->__('Re-apply moderation rules'));
-            $links[] = array('url' => pnModURL('EZComments', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'));
+            $links[] = array('url' => ModUtil::url('EZComments', 'admin'),                 'text' => $this->__('View comments'));
+            $links[] = array('url' => ModUtil::url('EZComments', 'admin', 'cleanup'),      'text' => $this->__('Delete orphaned comments'));
+            $links[] = array('url' => ModUtil::url('EZComments', 'admin', 'migrate'),      'text' => $this->__('Migrate comments'));
+            $links[] = array('url' => ModUtil::url('EZComments', 'admin', 'purge'),        'text' => $this->__('Purge comments'), 'linebreak' => true);
+            $links[] = array('url' => ModUtil::url('EZComments', 'admin', 'stats'),        'text' => $this->__('Comment statistics'));
+            $links[] = array('url' => ModUtil::url('EZComments', 'admin', 'applyrules'),   'text' => $this->__('Re-apply moderation rules'));
+            $links[] = array('url' => ModUtil::url('EZComments', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'));
         }
 
         return $links;

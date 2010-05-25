@@ -95,7 +95,7 @@ class EZComments_userapi extends AbstractApi
         $admin = isset($args['admin']) ? (bool)$args['admin'] : false;
         if ($admin) {
             // get list of modules
-            $modlist = pnModGetAllMods();
+            $modlist = ModUtil::getAllMods();
             $permclause = array();
             foreach ($modlist as $module) {
                 // simple permission check
@@ -195,7 +195,7 @@ class EZComments_userapi extends AbstractApi
 
         // ContactList ignore check. If the user is ignored by the
         // content owner the user will not be able to post any comment...
-        if ($loggedin && $owneruid > 0 && pnModAvailable('ContactList') && pnModAPIFunc('ContactList', 'user', 'isIgnored', array('iuid' => pnUserGetVar('uid'), 'uid' => $owneruid))) {
+        if ($loggedin && $owneruid > 0 && ModUtil::available('ContactList') && ModUtil::apiFunc('ContactList', 'user', 'isIgnored', array('iuid' => pnUserGetVar('uid'), 'uid' => $owneruid))) {
             return LogUtil::registerError($this->__('Error! The user ignores you.'));
         }
 
@@ -203,7 +203,7 @@ class EZComments_userapi extends AbstractApi
         $args['anonname'] = isset($args['anonname']) ? trim($args['anonname']) : '';
         if (!$loggedin) {
             $args['uid'] = 0;
-            if (pnModGetVar('EZComments', 'anonusersrequirename') && empty($args['anonname'])) {
+            if (ModUtil::getVar('EZComments', 'anonusersrequirename') && empty($args['anonname'])) {
                 return LogUtil::registerError($this->__('Error! The name field is required. Comment rejected.'));
             }
         }
@@ -222,7 +222,7 @@ class EZComments_userapi extends AbstractApi
 
         // get the users ip
         $ipaddr = '';
-        if (pnModGetVar('EZComments', 'logip')) {
+        if (ModUtil::getVar('EZComments', 'logip')) {
             $ipaddr = pnServerGetVar('REMOTE_ADDR');
         }
 
@@ -233,9 +233,9 @@ class EZComments_userapi extends AbstractApi
         if (in_array($args['type'], array('trackback', 'pingback'))) {
             $status[] = 1;
 
-        } elseif (pnModGetVar('EZComments', 'moderation')) {
+        } elseif (ModUtil::getVar('EZComments', 'moderation')) {
             // check if we should moderate all comments
-            if (pnModGetVar('EZComments', 'alwaysmoderate')) {
+            if (ModUtil::getVar('EZComments', 'alwaysmoderate')) {
                 $status[] = 1;
             } else {
                 $checkvars = array('subject', 'comment', 'anonname', 'anonmail', 'anonwebsite');
@@ -247,14 +247,14 @@ class EZComments_userapi extends AbstractApi
         }
 
         // akismet
-        if (pnModAvailable('akismet') && pnModGetVar('EZComments', 'akismet')) {
-            if (pnModAPIFunc('akismet', 'user', 'isspam',
+        if (ModUtil::available('akismet') && ModUtil::getVar('EZComments', 'akismet')) {
+            if (ModUtil::apiFunc('akismet', 'user', 'isspam',
                              array('author'      => $loggedin ? pnUserGetVar('uname') : $args['anonname'],
                                    'authoremail' => $loggedin ? pnUserGetVar('email') : (isset($args['anonmail']) ? $args['anonmail'] : ''),
                                    'authorurl'   => $loggedin ? pnUserGetVar('url')   : (isset($args['anonwebsite']) ? $args['anonwebsite'] : ''),
                                    'content'     => $args['comment'],
                                    'permalink'   => $url))) {
-                $status[] = pnModGetVar('EZComments', 'akismetstatus');
+                $status[] = ModUtil::getVar('EZComments', 'akismetstatus');
             }
         }
 
@@ -317,7 +317,7 @@ class EZComments_userapi extends AbstractApi
         }
 
         // Inform the content owner or the admin about a new comment
-        if (!$maxstatus && pnModGetVar('EZComments', 'MailToAdmin') && !in_array($args['uid'], array(2, $owneruid))) {
+        if (!$maxstatus && ModUtil::getVar('EZComments', 'MailToAdmin') && !in_array($args['uid'], array(2, $owneruid))) {
             $renderer = & pnRender::getInstance('EZComments', false);
 
             if ($args['uid'] > 0) {
@@ -329,7 +329,7 @@ class EZComments_userapi extends AbstractApi
 
             $mailsubject = $this->__('A new comment was entered');
 
-            pnModAPIFunc('Mailer', 'user', 'sendmessage',
+            ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
                          array('toaddress'   => $toaddress,
                                'toname'      => $toname,
                                'fromaddress' => pnConfigGetVar('adminmail'),
@@ -338,7 +338,7 @@ class EZComments_userapi extends AbstractApi
                                'body'        => $renderer->fetch('ezcomments_mail_newcomment.htm')));
         }
 
-        if ($maxstatus && pnModGetVar('EZComments', 'moderationmail') && !in_array($args['uid'], array(2, $owneruid))) {
+        if ($maxstatus && ModUtil::getVar('EZComments', 'moderationmail') && !in_array($args['uid'], array(2, $owneruid))) {
             $renderer = & pnRender::getInstance('EZComments', false);
 
             if ($args['uid'] > 0) {
@@ -350,7 +350,7 @@ class EZComments_userapi extends AbstractApi
 
             $mailsubject = $this->__('New comment for your site');
 
-            pnModAPIFunc('Mailer', 'user', 'sendmessage',
+            ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
                          array('toaddress'   => pnConfigGetVar('adminmail'),
                                'toname'      => pnConfigGetVar('sitename'),
                                'fromaddress' => pnConfigGetVar('adminmail'),
@@ -359,7 +359,7 @@ class EZComments_userapi extends AbstractApi
                                'body'        => $renderer->fetch('ezcomments_mail_modcomment.htm')));
         }
 
-        pnModCallHooks('item', 'create', $newcomment['id'], array('module' => 'EZComments'));
+        ModUtil::callHooks('item', 'create', $newcomment['id'], array('module' => 'EZComments'));
 
         return $newcomment['id'];
     }
@@ -462,7 +462,7 @@ class EZComments_userapi extends AbstractApi
         $admin = isset($args['admin']) ? (bool)$args['admin'] : false;
         if ($admin) {
             // get list of modules
-            $modlist = pnModGetAllMods();
+            $modlist = ModUtil::getAllMods();
             $permclause = array();
             foreach ($modlist as $module)
             {
@@ -495,7 +495,7 @@ class EZComments_userapi extends AbstractApi
             return false;
         }
 
-        $modinfo  = pnModGetInfo(pnModGetIDFromName('EZComments'));
+        $modinfo  = ModUtil::getInfo(ModUtil::getIdFromName('EZComments'));
         $osmoddir = DataUtil::formatForOS($modinfo['directory']);
         $ostheme  = DataUtil::formatForOS(pnUserGetTheme());
         $rootdirs = array("modules/$osmoddir/pntemplates/",
@@ -541,7 +541,7 @@ class EZComments_userapi extends AbstractApi
         $var = $args['var'];
 
         // check blacklisted words - exit silently if found
-        $blacklistedwords = explode("\n", pnModGetVar('EZComments', 'blacklist'));
+        $blacklistedwords = explode("\n", ModUtil::getVar('EZComments', 'blacklist'));
         foreach ($blacklistedwords as $blacklistedword)
         {
             $blacklistedword = trim($blacklistedword);
@@ -557,12 +557,12 @@ class EZComments_userapi extends AbstractApi
         $linkcount = count(explode('http:', $var));
 
         // check link count for blacklisting
-        if ($linkcount-1 >= pnModGetVar('EZComments', 'blacklinkcount')) {
+        if ($linkcount-1 >= ModUtil::getVar('EZComments', 'blacklinkcount')) {
             return 2;
         }
 
         // check words to trigger a moderated comment
-        $modlistedwords = explode("\n", pnModGetVar('EZComments', 'modlist'));
+        $modlistedwords = explode("\n", ModUtil::getVar('EZComments', 'modlist'));
         foreach ($modlistedwords as $modlistedword)
         {
             $modlistedword = trim($modlistedword);
@@ -575,7 +575,7 @@ class EZComments_userapi extends AbstractApi
         }
 
         // check link count for moderation
-        if ($linkcount-1 >= pnModGetVar('EZComments', 'modlinkcount')) {
+        if ($linkcount-1 >= ModUtil::getVar('EZComments', 'modlinkcount')) {
             return 1;
         }
 
@@ -604,7 +604,7 @@ class EZComments_userapi extends AbstractApi
             $uid = pnUserGetVar('uid');
         }
 
-        if (pnModGetVar('EZComments', 'proxyblacklist') && !empty($ipnum)) {
+        if (ModUtil::getVar('EZComments', 'proxyblacklist') && !empty($ipnum)) {
             $rev_ip = implode('.', array_reverse(explode('.', $ipnum)));
             // opm.blitzed.org is appended to use thier proxy lookup service
             // results of gethostbyname are cached
@@ -616,8 +616,8 @@ class EZComments_userapi extends AbstractApi
 
         // check if the comment comes from user that we trust
         // i.e. one who has an approved comment already
-        if (pnUserLoggedIn() && pnModGetVar('EZComments', 'dontmoderateifcommented')) {
-            $commentedlist = pnModAPIFunc('EZcomments', 'user', 'getcommentingusers');
+        if (pnUserLoggedIn() && ModUtil::getVar('EZComments', 'dontmoderateifcommented')) {
+            $commentedlist = ModUtil::apiFunc('EZcomments', 'user', 'getcommentingusers');
             if (is_array($commentedlist) && in_array($uid, $commentedlist)) {
                 return 0;
             }
@@ -775,7 +775,7 @@ class EZComments_userapi extends AbstractApi
     {
         // default for the style sheet
         if (!isset($args['path']) || empty($args['path'])) {
-            $defaultcss  = pnModGetVar('EZComments', 'css', 'style.css');
+            $defaultcss  = ModUtil::getVar('EZComments', 'css', 'style.css');
             $args['path'] = 'Standard/'.$defaultcss;
         }
 
@@ -826,8 +826,8 @@ class EZComments_userapi extends AbstractApi
 
                 // work out if the user is online
                 $userinfo['online'] = false;
-                if (pnModAvailable('Profile')) {
-                    if (pnModAPIFunc('Profile', 'memberslist', 'isonline', array('userid' => $userinfo['pn_uid']))) {
+                if (ModUtil::available('Profile')) {
+                    if (ModUtil::apiFunc('Profile', 'memberslist', 'isonline', array('userid' => $userinfo['pn_uid']))) {
                         $userinfo['online'] = true;
                     }
                 }
@@ -840,7 +840,7 @@ class EZComments_userapi extends AbstractApi
                 $items[$k]['anonname'] = !empty($items[$k]['anonname']) ? $items[$k]['anonname'] : pnConfigGetVar('anonymous');
             }
 
-            $items[$k]['del'] = pnModAPIFunc('EZComments', 'user', 'checkPermission',
+            $items[$k]['del'] = ModUtil::apiFunc('EZComments', 'user', 'checkPermission',
                                             array('module'    => $items[$k]['modname'],
                                                   'objectid'  => $items[$k]['objectid'],
                                                   'commentid' => $items[$k]['id'],

@@ -23,9 +23,9 @@ class EZComments_admin_modifyhandler
         $renderer->caching = false;
         $renderer->add_core_data();
 
-        $comment = pnModAPIFunc('EZComments', 'user', 'get', array('id' => $this->id));
+        $comment = ModUtil::apiFunc('EZComments', 'user', 'get', array('id' => $this->id));
         if ($comment == false || !is_array($comment)) {
-            return LogUtil::registerError(__('No such comment found.', $dom), pnModURL('EZComments', 'admin', 'main'));
+            return LogUtil::registerError(__('No such comment found.', $dom), ModUtil::url('EZComments', 'admin', 'main'));
         }
 
         // assign the status flags
@@ -49,18 +49,18 @@ class EZComments_admin_modifyhandler
         $dom = ZLanguage::getModuleDomain('EZComments');
 
         // Security check
-        $securityCheck = pnModAPIFunc('EZComments', 'user', 'checkPermission',
+        $securityCheck = ModUtil::apiFunc('EZComments', 'user', 'checkPermission',
                                       array('module'    => '',
                                             'objectid'  => '',
                                             'commentid' => $this->id,
                                             'level'     => ACCESS_EDIT));
         if (!$securityCheck) {
-            return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));
+            return LogUtil::registerPermissionError(ModUtil::url('EZComments', 'admin', 'main'));
         }
 
         $ok      = $renderer->pnFormIsValid();
         $data    = $renderer->pnFormGetValues();
-        $comment = pnModAPIFunc('EZComments', 'user', 'get', array('id' => $this->id));
+        $comment = ModUtil::apiFunc('EZComments', 'user', 'get', array('id' => $this->id));
 
         switch ($args['commandName'])
         {
@@ -74,7 +74,7 @@ class EZComments_admin_modifyhandler
                 // note: the api call is a little different here since we'll really calling a hook function that will
                 // normally be executed when a module is deleted. The extra nesting of the modname inside an extrainfo
                 // array reflects this
-                if (pnModAPIFunc('EZComments', 'admin', 'delete', array('id' => $this->id))) {
+                if (ModUtil::apiFunc('EZComments', 'admin', 'delete', array('id' => $this->id))) {
                     // Success
                     LogUtil::registerStatus(__('Done! Comment deleted.', $dom));
                 }
@@ -118,7 +118,7 @@ class EZComments_admin_modifyhandler
                 }
 
                 // Call the API to update the item.
-                if (pnModAPIFunc('EZComments', 'admin', 'update',
+                if (ModUtil::apiFunc('EZComments', 'admin', 'update',
                                 array('id'          => $this->id,
                                       'subject'     => $data['ezcomments_subject'],
                                       'comment'     => $data['ezcomments_comment'],
@@ -136,6 +136,6 @@ class EZComments_admin_modifyhandler
             return pnRedirect($comment['url'] . "#comments_{$comment['modname']}_{$comment['objectid']}");
         }
 
-        return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
+        return pnRedirect(ModUtil::url('EZComments', 'admin', 'main'));
     }
 }

@@ -50,7 +50,7 @@ function EZComments_EZCommentsblock_display($blockinfo)
         return false;
     } 
 
-    if (!pnModLoad('EZComments')) {
+    if (!ModUtil::load('EZComments')) {
         return false;
     }
 
@@ -86,7 +86,7 @@ function EZComments_EZCommentsblock_display($blockinfo)
     }
 
     // get the comments
-    $items = pnModAPIFunc('EZComments', 'user', 'getall', $options);
+    $items = ModUtil::apiFunc('EZComments', 'user', 'getall', $options);
 
     // augment the info
     $comments = ModUtil::apiFunc('EZComments', 'user', 'prepareCommentsForDisplay', $items);
@@ -148,7 +148,7 @@ function EZComments_EZCommentsblock_modify($blockinfo)
     }
 
     // get all modules with EZComments active
-    $usermods = pnModAPIFunc('Modules', 'admin', 'gethookedmodules', array('hookmodname'=> 'EZComments'));
+    $usermods = ModUtil::apiFunc('Modules', 'admin', 'gethookedmodules', array('hookmodname'=> 'EZComments'));
 
     // Create output object
     $renderer = & pnRender::getInstance('EZComments', false);

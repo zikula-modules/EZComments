@@ -30,7 +30,7 @@ function ezc_modify($args)
     $id = isset($args['id']) ? $args['id'] : FormUtil::getPassedValue('id', null, 'GETPOST');
 
     // Security check
-    $securityCheck = pnModAPIFunc('EZComments', 'user', 'checkPermission',
+    $securityCheck = ModUtil::apiFunc('EZComments', 'user', 'checkPermission',
                                   array('module'    => '',
                                         'objectid'  => '',
                                         'commentid' => $id,

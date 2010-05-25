@@ -17,11 +17,11 @@ class EZComments_accountapi extends AbstractApi
     */
     public function getall()
     {
-        $useAccountPage = pnModGetVar('EZComments', 'useaccountpage', '1');
+        $useAccountPage = ModUtil::getVar('EZComments', 'useaccountpage', '1');
         if ($useAccountPage) {
             // Create an array of links to return
             $items = array();
-            $items['1'] = array('url'   => pnModURL('EZComments', 'user', 'main'),
+            $items['1'] = array('url'   => ModUtil::url('EZComments', 'user', 'main'),
                                 'title' => $this->__('Manage my comments'),
                                 'icon'  => 'mycommentsbutton.gif',
                                 'set'   => null);

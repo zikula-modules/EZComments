@@ -47,7 +47,7 @@
                 <strong class="ezc_title">{$comment.subject|default:''|pnvarprepfordisplay}</strong>
             </div>
             <div class="ezc_content">
-                {$comment.comment|pnvarprepfordisplay|nl2br|pnmodcallhooks}
+                {$comment.comment|pnvarprepfordisplay|nl2br|ModUtil::callHooks}
             </div>
         </div>
     </div>

@@ -33,10 +33,10 @@ function smarty_function_useravatar($params, &$smarty)
     $email           = pnUserGetVar('email', $params['uid']);
     $avatar          = pnUserGetVar('avatar', $params['uid']);
     $uname           = pnUserGetVar('uname', $params['uid']);
-    $avatarpath      = pnModGetVar('Users', 'avatarpath', 'images/avatar');
+    $avatarpath      = ModUtil::getVar('Users', 'avatarpath', 'images/avatar');
     //  The following two modvars will be introduced into the Users module with Zikula 1.3
-    $allowgravatars  = pnModGetVar('Users', 'allowgravatars', 1);
-    $gravatarimage   = pnModGetVar('Users', 'gravatarimage', 'gravatar.gif');
+    $allowgravatars  = ModUtil::getVar('Users', 'allowgravatars', 1);
+    $gravatarimage   = ModUtil::getVar('Users', 'gravatarimage', 'gravatar.gif');
 
     if (isset($avatar) && !empty($avatar) && $avatar != $gravatarimage && $avatar != 'blank.gif') {
         $avatarURL = pnGetBaseURL() . $avatarpath . '/' . $avatar;

@@ -21,10 +21,10 @@ function EZComments_migrateapi_pnComments()
         return LogUtil::registerPermissionError();
     }
 
-    if (!pnModAvailable('pnComments')) {
+    if (!ModUtil::available('pnComments')) {
         return LogUtil::RegisterError('pnComments not available');
     }
-    pnModDBInfoLoad('pnComments');
+    ModUtil::dbInfoLoad('pnComments');
 
     $comments = DBUtil::SelectObjectArray('pncomments');
 

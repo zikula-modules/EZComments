@@ -18,7 +18,7 @@ class EZComments_admin_modifyconfighandler
         $renderer->add_core_data();
 
         $templates = array();
-        $rawtemplates = pnModAPIFunc('EZComments', 'user', 'gettemplates');
+        $rawtemplates = ModUtil::apiFunc('EZComments', 'user', 'gettemplates');
         if (is_array($rawtemplates) && count($rawtemplates) <> 0) {
             foreach ($rawtemplates as $rawtemplate)
             {
@@ -28,7 +28,7 @@ class EZComments_admin_modifyconfighandler
         $renderer->assign('templates', $templates);
 
         // is the akismet module available
-        $renderer->assign('akismetavailable', pnModAvailable('akismet'));
+        $renderer->assign('akismetavailable', ModUtil::available('akismet'));
 
         $statuslevels = array( array('text' => __('Approved', $dom), 'value' => 0),
                                array('text' => __('Pending', $dom),  'value' => 1),
@@ -88,31 +88,31 @@ class EZComments_admin_modifyconfighandler
                 return false;
             }
 
-            pnModSetVar('EZComments', 'MailToAdmin',             $data['ezcomments_MailToAdmin']);
-            pnModSetVar('EZComments', 'moderationmail',          $data['ezcomments_moderationmail']);
-            pnModSetVar('EZComments', 'template',                $data['ezcomments_template']);
-            pnModSetVar('EZComments', 'css',                     $data['ezcomments_css']);
-            pnModSetVar('EZComments', 'itemsperpage',            $data['ezcomments_itemsperpage']);
-            pnModSetVar('EZComments', 'anonusersinfo',           $data['ezcomments_anonusersinfo']);
-            pnModSetVar('EZComments', 'moderation',              $data['ezcomments_moderation']);
-            pnModSetVar('EZComments', 'enablepager',             $data['ezcomments_enablepager']);
-            pnModSetVar('EZComments', 'dontmoderateifcommented', $data['ezcomments_dontmoderateifcommented']);
-            pnModSetVar('EZComments', 'modlinkcount',            $data['ezcomments_modlinkcount']);
-            pnModSetVar('EZComments', 'modlist',                 $data['ezcomments_modlist']);
-            pnModSetVar('EZComments', 'blacklinkcount',          $data['ezcomments_blacklinkcount']);
-            pnModSetVar('EZComments', 'blacklist',               $data['ezcomments_blacklist']);
-            pnModSetVar('EZComments', 'alwaysmoderate',          $data['ezcomments_alwaysmoderate']);
-            pnModSetVar('EZComments', 'proxyblacklist',          $data['ezcomments_proxyblacklist']);
-            pnModSetVar('EZComments', 'logip',                   $data['ezcomments_logip']);
-            pnModSetVar('EZComments', 'feedtype',                $data['ezcomments_feedtype']);
-            pnModSetVar('EZComments', 'feedcount',               $data['ezcomments_feedcount']);
-            pnModSetVar('EZComments', 'commentsperpage',         $data['ezcomments_commentsperpage']);
-            pnModSetVar('EZComments', 'enablepager',             $data['ezcomments_enablepager']);
-            pnModSetVar('EZComments', 'akismet',                 $data['ezcomments_akismet']);
-            pnModSetVar('EZComments', 'akismetstatus',           $data['ezcomments_akismetstatus']);
-            pnModSetVar('EZComments', 'anonusersrequirename',    $data['ezcomments_anonusersrequirename']);
-            pnModSetVar('EZComments', 'modifyowntime',           $data['ezcomments_modifyowntime']);
-            pnModSetVar('EZComments', 'useaccountpage',          $data['ezcomments_useaccountpage']);
+            ModUtil::setVar('EZComments', 'MailToAdmin',             $data['ezcomments_MailToAdmin']);
+            ModUtil::setVar('EZComments', 'moderationmail',          $data['ezcomments_moderationmail']);
+            ModUtil::setVar('EZComments', 'template',                $data['ezcomments_template']);
+            ModUtil::setVar('EZComments', 'css',                     $data['ezcomments_css']);
+            ModUtil::setVar('EZComments', 'itemsperpage',            $data['ezcomments_itemsperpage']);
+            ModUtil::setVar('EZComments', 'anonusersinfo',           $data['ezcomments_anonusersinfo']);
+            ModUtil::setVar('EZComments', 'moderation',              $data['ezcomments_moderation']);
+            ModUtil::setVar('EZComments', 'enablepager',             $data['ezcomments_enablepager']);
+            ModUtil::setVar('EZComments', 'dontmoderateifcommented', $data['ezcomments_dontmoderateifcommented']);
+            ModUtil::setVar('EZComments', 'modlinkcount',            $data['ezcomments_modlinkcount']);
+            ModUtil::setVar('EZComments', 'modlist',                 $data['ezcomments_modlist']);
+            ModUtil::setVar('EZComments', 'blacklinkcount',          $data['ezcomments_blacklinkcount']);
+            ModUtil::setVar('EZComments', 'blacklist',               $data['ezcomments_blacklist']);
+            ModUtil::setVar('EZComments', 'alwaysmoderate',          $data['ezcomments_alwaysmoderate']);
+            ModUtil::setVar('EZComments', 'proxyblacklist',          $data['ezcomments_proxyblacklist']);
+            ModUtil::setVar('EZComments', 'logip',                   $data['ezcomments_logip']);
+            ModUtil::setVar('EZComments', 'feedtype',                $data['ezcomments_feedtype']);
+            ModUtil::setVar('EZComments', 'feedcount',               $data['ezcomments_feedcount']);
+            ModUtil::setVar('EZComments', 'commentsperpage',         $data['ezcomments_commentsperpage']);
+            ModUtil::setVar('EZComments', 'enablepager',             $data['ezcomments_enablepager']);
+            ModUtil::setVar('EZComments', 'akismet',                 $data['ezcomments_akismet']);
+            ModUtil::setVar('EZComments', 'akismetstatus',           $data['ezcomments_akismetstatus']);
+            ModUtil::setVar('EZComments', 'anonusersrequirename',    $data['ezcomments_anonusersrequirename']);
+            ModUtil::setVar('EZComments', 'modifyowntime',           $data['ezcomments_modifyowntime']);
+            ModUtil::setVar('EZComments', 'useaccountpage',          $data['ezcomments_useaccountpage']);
 
             LogUtil::registerStatus(__('Done! Module configuration updated.', $dom));
         }

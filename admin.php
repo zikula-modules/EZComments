@@ -36,7 +36,7 @@ class EZComments_admin extends AbstractController
         if ($showall) {
             $itemsperpage = -1;
         } else {
-            $itemsperpage = pnModGetVar('EZComments', 'itemsperpage');
+            $itemsperpage = ModUtil::getVar('EZComments', 'itemsperpage');
         }
 
         $startnum = FormUtil::getPassedValue('startnum', null, 'GETPOST');
@@ -45,10 +45,10 @@ class EZComments_admin extends AbstractController
         $renderer = & pnRender::getInstance('EZComments', false);
 
         // assign the module vars
-        $renderer->assign(pnModGetVar('EZComments'));
+        $renderer->assign(ModUtil::getVar('EZComments'));
 
         // call the api to get all current comments
-        $items = pnModAPIFunc('EZComments', 'user', 'getall',
+        $items = ModUtil::apiFunc('EZComments', 'user', 'getall',
                               array('startnum' => $showall == true ? true : $startnum,
                                     'numitems' => $itemsperpage,
                                     'status'   => $status,
@@ -66,7 +66,7 @@ class EZComments_admin extends AbstractController
                                    'image' => 'demo.gif',
                                    'title' => $this->__('View')));
 
-            $options[] = array('url'   => pnModURL('EZComments', 'admin', 'modify', array('id' => $item['id'])),
+            $options[] = array('url'   => ModUtil::url('EZComments', 'admin', 'modify', array('id' => $item['id'])),
                                'image' => 'xedit.gif',
                                'title' => $this->__('Edit'));
 
@@ -82,7 +82,7 @@ class EZComments_admin extends AbstractController
         $renderer->assign('showall', $showall);
 
         // assign the values for the smarty plugin to produce a pager
-        $renderer->assign('pager', array('numitems'     => pnModAPIFunc('EZComments', 'user', 'countitems', array('status' => $status, 'admin' => 1)),
+        $renderer->assign('pager', array('numitems'     => ModUtil::apiFunc('EZComments', 'user', 'countitems', array('status' => $status, 'admin' => 1)),
                                          'itemsperpage' => $itemsperpage));
 
         // Return the output
@@ -125,7 +125,7 @@ class EZComments_admin extends AbstractController
         $objectid = isset($args['objectid']) ? $args['objectid'] : FormUtil::getPassedValue('objectid', null, 'GETPOST');
         $redirect = isset($args['redirect']) ? $args['redirect'] : FormUtil::getPassedValue('redirect', '', 'GETPOST');
 
-        return pnRedirect(pnModURL('EZComments', 'admin', 'modify',
+        return pnRedirect(ModUtil::url('EZComments', 'admin', 'modify',
                                    array('id'       => $id,
                                          'objectid' => $objectid,
                                          'redirect' => $redirect)));
@@ -146,7 +146,7 @@ class EZComments_admin extends AbstractController
     {
         // Confirm authorisation code.
         if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(pnModURL('EZComments', 'admin', 'main'));
+            return LogUtil::registerAuthidError(ModUtil::url('EZComments', 'admin', 'main'));
         }
 
         // Get parameters from whatever input we need.
@@ -160,28 +160,28 @@ class EZComments_admin extends AbstractController
             {
                 case 'delete':
                     // The API function is called.
-                    if (pnModAPIFunc('EZComments', 'admin', 'delete', array('id' => $comment))) {
+                    if (ModUtil::apiFunc('EZComments', 'admin', 'delete', array('id' => $comment))) {
                         // Success
                         LogUtil::registerStatus($this->__('Done! Item deleted.'));
                     }
                     break;
 
                 case 'approve':
-                    if (pnModAPIFunc('EZComments', 'admin', 'updatestatus', array('id' => $comment, 'status' => 0))) {
+                    if (ModUtil::apiFunc('EZComments', 'admin', 'updatestatus', array('id' => $comment, 'status' => 0))) {
                         // Success
                         LogUtil::registerStatus($this->__('Done! Item updated.'));
                     }
                     break;
 
                 case 'hold':
-                    if (pnModAPIFunc('EZComments', 'admin', 'updatestatus', array('id' => $comment, 'status' => 1))) {
+                    if (ModUtil::apiFunc('EZComments', 'admin', 'updatestatus', array('id' => $comment, 'status' => 1))) {
                         // Success
                         LogUtil::registerStatus($this->__('Done! Item updated.'));
                     }
                     break;
 
                 case 'reject':
-                    if (pnModAPIFunc('EZComments', 'admin', 'updatestatus', array('id' => $comment, 'status' => 2))) {
+                    if (ModUtil::apiFunc('EZComments', 'admin', 'updatestatus', array('id' => $comment, 'status' => 2))) {
                         // Success
                         LogUtil::registerStatus($this->__('Done! Item updated.'));
                     }
@@ -194,7 +194,7 @@ class EZComments_admin extends AbstractController
         if (!empty($redirect)) {
             return pnRedirect($redirect);
         } else {
-            return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
+            return pnRedirect(ModUtil::url('EZComments', 'admin', 'main'));
         }
     }
 
@@ -238,7 +238,7 @@ class EZComments_admin extends AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        $migrated  = pnModGetVar('EZComments', 'migrated');
+        $migrated  = ModUtil::getVar('EZComments', 'migrated');
         $available = FileUtil::getFiles('modules/EZComments/pnmigrateapi', false, true, 'php', 'f');
 
         $selectitems = array();
@@ -251,7 +251,7 @@ class EZComments_admin extends AbstractController
 
         if (!$selectitems) {
             LogUtil::registerStatus($this->__('No migration plugins available.'));
-            return pnRedirect(pnModURL('EZComments', 'admin'));
+            return pnRedirect(ModUtil::url('EZComments', 'admin'));
         }
 
         // Create output object
@@ -281,7 +281,7 @@ class EZComments_admin extends AbstractController
 
         // Authentication key
         if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(pnModURL('EZComments', 'admin', 'main'));
+            return LogUtil::registerAuthidError(ModUtil::url('EZComments', 'admin', 'main'));
         }
 
         // Parameter
@@ -291,13 +291,13 @@ class EZComments_admin extends AbstractController
         }
 
         // call the migration function
-        if (pnModAPIFunc('EZComments', 'migrate', $migrate)) {
-            $migrated = pnModGetVar('EZComments', 'migrated', array('dummy' => true));
+        if (ModUtil::apiFunc('EZComments', 'migrate', $migrate)) {
+            $migrated = ModUtil::getVar('EZComments', 'migrated', array('dummy' => true));
             $migrated[$migrate] = true;
-            pnModSetVar('EZComments', 'migrated', $migrated);
+            ModUtil::setVar('EZComments', 'migrated', $migrated);
         }
 
-        return pnRedirect(pnModURL('EZComments', 'admin', 'migrate'));
+        return pnRedirect(ModUtil::url('EZComments', 'admin', 'migrate'));
     }
 
     /**
@@ -317,19 +317,19 @@ class EZComments_admin extends AbstractController
         }
 
         // build a simple array of all available modules
-        $mods = pnModGetAllMods();
+        $mods = ModUtil::getAllMods();
         $allmods = array();
         foreach ($mods as $mod) {
             $allmods[] = $mod['name'];
         }
 
-        $usedmods = pnModAPIFunc('EZComments', 'admin', 'getUsedModules');
+        $usedmods = ModUtil::apiFunc('EZComments', 'admin', 'getUsedModules');
 
         $orphanedmods = array_diff($usedmods, $allmods);
 
         if (!$orphanedmods) {
             LogUtil::registerStatus($this->__('No orphaned comments.'));
-            return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
+            return pnRedirect(ModUtil::url('EZComments', 'admin', 'main'));
         }
 
         $selectitems = array();
@@ -360,7 +360,7 @@ class EZComments_admin extends AbstractController
 
         // Authentication key
         if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(pnModURL('EZComments', 'admin', 'main'));
+            return LogUtil::registerAuthidError(ModUtil::url('EZComments', 'admin', 'main'));
         }
 
         $module = FormUtil::getPassedValue('ezcomments_module');
@@ -368,13 +368,13 @@ class EZComments_admin extends AbstractController
             return LogUtil::registerArgsError();
         }
 
-        if (!pnModAPIFunc('EZComments', 'admin', 'deleteall', compact('module'))) {
+        if (!ModUtil::apiFunc('EZComments', 'admin', 'deleteall', compact('module'))) {
             return LogUtil::registerError($this->__('Error! A general failure occurs.'));
         }
 
         LogUtil::registerStatus($this->__('Done! All orphaned comments for this module deleted.'));
 
-        return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
+        return pnRedirect(ModUtil::url('EZComments', 'admin', 'main'));
     }
 
     /**
@@ -412,11 +412,11 @@ class EZComments_admin extends AbstractController
         // If we get here it means that the user has confirmed the action
         // Confirm authorisation code.
         if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(pnModURL('EZComments', 'admin', 'main'));
+            return LogUtil::registerAuthidError(ModUtil::url('EZComments', 'admin', 'main'));
         }
 
         // The API function is called.
-        if (pnModAPIFunc('EZComments', 'admin', 'purge',
+        if (ModUtil::apiFunc('EZComments', 'admin', 'purge',
             array('purgepending' => $purgepending, 'purgerejected' => $purgerejected))) {
             // Success
             LogUtil::registerStatus($this->__('Done! Comment deleted.'));
@@ -424,7 +424,7 @@ class EZComments_admin extends AbstractController
 
         // This function generated no output, and so now it is complete we redirect
         // the user to an appropriate page for them to carry on their work
-        return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
+        return pnRedirect(ModUtil::url('EZComments', 'admin', 'main'));
     }
 
     /**
@@ -444,20 +444,20 @@ class EZComments_admin extends AbstractController
         $renderer = & pnRender::getInstance('EZComments', false);
 
         // assign the module vars
-        $renderer->assign(pnModGetVar('EZComments'));
+        $renderer->assign(ModUtil::getVar('EZComments'));
 
         // get a list of the hooked modules
-        $hookedmodules = pnModAPIFunc('Modules', 'admin', 'gethookedmodules', array('hookmodname'=> 'EZComments'));
+        $hookedmodules = ModUtil::apiFunc('Modules', 'admin', 'gethookedmodules', array('hookmodname'=> 'EZComments'));
 
         // get a list of comment stats by module
         $commentstats = array();
         foreach (array_keys($hookedmodules) as $mod)
         {
-            $data = pnModGetInfo(pnModGetIDFromName($mod));
+            $data = ModUtil::getInfo(ModUtil::getIdFromName($mod));
             $data['modid'] = $data['id'];
-            $data['approvedcomments'] = pnModAPIFunc('EZComments', 'user', 'countitems', array('status' => 0, 'mod' => $data['name']));
-            $data['pendingcomments']  = pnModAPIFunc('EZComments', 'user', 'countitems', array('status' => 1, 'mod' => $data['name']));
-            $data['rejectedcomments'] = pnModAPIFunc('EZComments', 'user', 'countitems', array('status' => 2, 'mod' => $data['name']));
+            $data['approvedcomments'] = ModUtil::apiFunc('EZComments', 'user', 'countitems', array('status' => 0, 'mod' => $data['name']));
+            $data['pendingcomments']  = ModUtil::apiFunc('EZComments', 'user', 'countitems', array('status' => 1, 'mod' => $data['name']));
+            $data['rejectedcomments'] = ModUtil::apiFunc('EZComments', 'user', 'countitems', array('status' => 2, 'mod' => $data['name']));
             $data['totalcomments']    = $data['approvedcomments'] + $data['pendingcomments'] + $data['rejectedcomments'];
 
             $commentstats[] = $data;
@@ -488,23 +488,23 @@ class EZComments_admin extends AbstractController
         $renderer = & pnRender::getInstance('EZComments', false);
 
         // assign the module vars
-        $renderer->assign(pnModGetVar('EZComments'));
+        $renderer->assign(ModUtil::getVar('EZComments'));
 
         // get a list of comments
-        $modulecomments = pnModAPIFunc('EZComments', 'user', 'getallbymodule', array('mod' => $mod));
+        $modulecomments = ModUtil::apiFunc('EZComments', 'user', 'getallbymodule', array('mod' => $mod));
 
         // assign the module info
-        $modid = pnModGetIDFromName($mod);
+        $modid = ModUtil::getIdFromName($mod);
         $renderer->assign('modid', $modid);
-        $renderer->assign(pnModGetInfo($modid));
+        $renderer->assign(ModUtil::getInfo($modid));
 
         // get a list of comment stats by module
         $commentstats = array();
         foreach ($modulecomments as $data)
         {
-            $data['approvedcomments'] = pnModAPIFunc('EZComments', 'user', 'countitems', array('status' => 0, 'mod' => $mod, 'objectid' => $data['objectid']));
-            $data['pendingcomments']  = pnModAPIFunc('EZComments', 'user', 'countitems', array('status' => 1, 'mod' => $mod, 'objectid' => $data['objectid']));
-            $data['rejectedcomments'] = pnModAPIFunc('EZComments', 'user', 'countitems', array('status' => 2, 'mod' => $mod, 'objectid' => $data['objectid']));
+            $data['approvedcomments'] = ModUtil::apiFunc('EZComments', 'user', 'countitems', array('status' => 0, 'mod' => $mod, 'objectid' => $data['objectid']));
+            $data['pendingcomments']  = ModUtil::apiFunc('EZComments', 'user', 'countitems', array('status' => 1, 'mod' => $mod, 'objectid' => $data['objectid']));
+            $data['rejectedcomments'] = ModUtil::apiFunc('EZComments', 'user', 'countitems', array('status' => 2, 'mod' => $mod, 'objectid' => $data['objectid']));
             $data['totalcomments']    = $data['count'];
             $commentstats[] = $data;
         }
@@ -529,7 +529,7 @@ class EZComments_admin extends AbstractController
         $confirmation = isset($args['confirmation']) ? $args['confirmation'] : FormUtil::getPassedValue('confirmation', null, 'GETPOST');
 
         // get our module info
-        $modinfo = pnModGetInfo($modid);
+        $modinfo = ModUtil::getInfo($modid);
 
         // Security check
         if (!$modinfo || $modinfo['name'] == 'zikula' || !SecurityUtil::checkPermission('EZComments::', "$modinfo[name]::", ACCESS_DELETE)) {
@@ -554,21 +554,21 @@ class EZComments_admin extends AbstractController
         // If we get here it means that the user has confirmed the action
         // Confirm authorisation code.
         if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(pnModURL('EZComments', 'admin', 'main'));
+            return LogUtil::registerAuthidError(ModUtil::url('EZComments', 'admin', 'main'));
         }
 
         // The API function is called.
         // note: the api call is a little different here since we'll really calling a hook function that will
         // normally be executed when a module is deleted. The extra nesting of the modname inside an extrainfo
         // array reflects this
-        if (pnModAPIFunc('EZComments', 'admin', 'deletemodule', array('extrainfo' => array('module' => $modinfo['name'])))) {
+        if (ModUtil::apiFunc('EZComments', 'admin', 'deletemodule', array('extrainfo' => array('module' => $modinfo['name'])))) {
             // Success
             LogUtil::registerStatus($this->__('Done! Comment deleted.'));
         }
 
         // This function generated no output, and so now it is complete we redirect
         // the user to an appropriate page for them to carry on their work
-        return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
+        return pnRedirect(ModUtil::url('EZComments', 'admin', 'main'));
     }
 
     /**
@@ -588,7 +588,7 @@ class EZComments_admin extends AbstractController
 
         // input check
         if (!isset($mod) || !is_string($mod) || !isset($objectid) || !is_numeric($objectid)) {
-            return LogUtil::registerArgsError(pnModURL('EZComments', 'admin', 'main'));
+            return LogUtil::registerArgsError(ModUtil::url('EZComments', 'admin', 'main'));
         }
 
         // Security check
@@ -598,7 +598,7 @@ class EZComments_admin extends AbstractController
 
         // get our module info
         if (!empty($mod)) {
-            $modinfo =  pnModGetInfo(pnModGetIDFromName($mod));
+            $modinfo =  ModUtil::getInfo(ModUtil::getIdFromName($mod));
         }
 
         // Check for confirmation.
@@ -619,19 +619,19 @@ class EZComments_admin extends AbstractController
         // If we get here it means that the user has confirmed the action
         // Confirm authorisation code.
         if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(pnModURL('EZComments', 'admin', 'main'));
+            return LogUtil::registerAuthidError(ModUtil::url('EZComments', 'admin', 'main'));
         }
 
         // The API function is called.
         // note: the api call is a little different here since we'll really calling a hook function that will
         // normally be executed when a module is deleted. The extra nesting of the modname inside an extrainfo
         // array reflects this
-        if (pnModAPIFunc('EZComments', 'admin', 'deletebyitem', array('mod' => $modinfo['name'], 'objectid' => $objectid))) {
+        if (ModUtil::apiFunc('EZComments', 'admin', 'deletebyitem', array('mod' => $modinfo['name'], 'objectid' => $objectid))) {
             // Success
             LogUtil::registerStatus($this->__('Done! Comment deleted.'));
         }
 
-        return pnRedirect(pnModURL('EZComments', 'admin', 'main'));
+        return pnRedirect(ModUtil::url('EZComments', 'admin', 'main'));
     }
 
     /**
@@ -676,7 +676,7 @@ class EZComments_admin extends AbstractController
         // If we get here it means that the user has confirmed the action
         // Confirm authorisation code.
         if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(pnModURL('EZComments', 'admin', 'main'));
+            return LogUtil::registerAuthidError(ModUtil::url('EZComments', 'admin', 'main'));
         }
 
         // get the matching comments
@@ -684,7 +684,7 @@ class EZComments_admin extends AbstractController
         if (!$allcomments) {
             $args['status'] = $status;
         }
-        $comments = pnModAPIFunc('EZComments', 'user', 'getall', $args);
+        $comments = ModUtil::apiFunc('EZComments', 'user', 'getall', $args);
 
         // these processes could take some time
         set_time_limit(0);
@@ -697,14 +697,14 @@ class EZComments_admin extends AbstractController
             $subjectstatus = ModUtil::apiFunc('EZComments', 'user', 'checkcomment', array('var' => $comment['subject']));
             $commentstatus = ModUtil::apiFunc('EZComments', 'user', 'checkcomment', array('var' => $comment['comment']));
             // akismet
-            if (pnModAvailable('akismet') && pnModGetVar('EZComments', 'akismet')
-                && pnModAPIFunc('akismet', 'user', 'isspam',
+            if (ModUtil::available('akismet') && ModUtil::getVar('EZComments', 'akismet')
+                && ModUtil::apiFunc('akismet', 'user', 'isspam',
                                 array('author'      => ($comment['uid'] > 0) ? pnUserGetVar('uname', $comment['uid']) : $comment['anonname'],
                                       'authoremail' => ($comment['uid'] > 0) ? pnUserGetVar('email', $comment['uid']) : $comment['anonmail'],
                                       'authorurl'   => ($comment['uid'] > 0) ? pnUserGetVar('url', $comment['uid']) : $comment['anonwebsite'],
                                       'content'     => $comment['comment'],
                                       'permalink'   => $comment['url']))) {
-                $akismetstatus = pnModGetVar('EZComments', 'akismetstatus');
+                $akismetstatus = ModUtil::getVar('EZComments', 'akismetstatus');
             } else {
                 $akismetstatus = $commentstatus;
             }
@@ -717,7 +717,7 @@ class EZComments_admin extends AbstractController
                                    'title' => $this->__('View')));
 
             if (SecurityUtil::checkPermission('EZComments::', "$comment[mod]:$comment[objectid]:$comment[id]", ACCESS_EDIT)) {
-                $options[] = array('url'   => pnModURL('EZComments', 'admin', 'modify', array('id' => $comment['id'])),
+                $options[] = array('url'   => ModUtil::url('EZComments', 'admin', 'modify', array('id' => $comment['id'])),
                                    'title' => $this->__('Edit'));
             }
             $comment['options'] = $options;
@@ -745,17 +745,17 @@ class EZComments_admin extends AbstractController
         if (!empty($confirmation) && $confirmation == 2) {
             foreach ($moderatedcomments as $comment) {
                 $comment['status'] = 1;
-                pnModAPIFunc('EZComments', 'admin', 'update', $comment);
+                ModUtil::apiFunc('EZComments', 'admin', 'update', $comment);
             }
 
             foreach ($blacklistedcomments as $comment)
             {
                 $comment['status'] = 2;
-                pnModAPIFunc('EZComments', 'admin', 'update', $comment);
+                ModUtil::apiFunc('EZComments', 'admin', 'update', $comment);
             }
 
             LogUtil::registerStatus($this->__('New comment rules applied'));
-            return pnRedirect(pnModURL('EZComments', 'admin'));
+            return pnRedirect(ModUtil::url('EZComments', 'admin'));
         }
     }
 }

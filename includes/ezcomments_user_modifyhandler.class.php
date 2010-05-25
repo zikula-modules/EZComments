@@ -24,13 +24,13 @@ class EZComments_user_modifyhandler
         $renderer->caching = false;
         $renderer->add_core_data();
 
-        $comment = pnModAPIFunc('EZComments', 'user', 'get', array('id' => $this->id));
+        $comment = ModUtil::apiFunc('EZComments', 'user', 'get', array('id' => $this->id));
         if ($comment == false || !is_array($comment)) {
-            return LogUtil::registerError(__('No such comment found.', $dom), pnModURL('EZComments', 'user', 'main'));
+            return LogUtil::registerError(__('No such comment found.', $dom), ModUtil::url('EZComments', 'user', 'main'));
         }
 
         // check if user is allowed to modify this content
-        $modifyowntime = pnModGetVar('EZComments', 'modifyowntime');
+        $modifyowntime = ModUtil::getVar('EZComments', 'modifyowntime');
         $ts = strtotime($comment['date']);
         if ((pnUserGetVar('uid') == $comment['uid']) && ((int)$modifyowntime > 0) && ($ts+($modifyowntime*60*60) < time())) {
               // Admins of course should be allowed to modify every comment
@@ -54,19 +54,19 @@ class EZComments_user_modifyhandler
         $dom = ZLanguage::getModuleDomain('EZComments');
 
         // Security check
-        $securityCheck = pnModAPIFunc('EZComments', 'user', 'checkPermission',
+        $securityCheck = ModUtil::apiFunc('EZComments', 'user', 'checkPermission',
                                       array('module'    => '',
                                             'objectid'  => '',
                                             'commentid' => $this->id,
                                             'level'      => ACCESS_EDIT));
         if (!$securityCheck) {
-            return LogUtil::registerPermissionError(pnModURL('EZComments', 'user', 'main'));
+            return LogUtil::registerPermissionError(ModUtil::url('EZComments', 'user', 'main'));
         }
 
         $ok      = $renderer->pnFormIsValid();
         $data    = $renderer->pnFormGetValues();
 
-        $comment = pnModAPIFunc('EZComments', 'user', 'get', array('id' => $this->id));
+        $comment = ModUtil::apiFunc('EZComments', 'user', 'get', array('id' => $this->id));
 
         switch ($args['commandName'])
         {
@@ -80,7 +80,7 @@ class EZComments_user_modifyhandler
                 // note: the api call is a little different here since we'll really calling a hook function that will
                 // normally be executed when a module is deleted. The extra nesting of the modname inside an extrainfo
                 // array reflects this
-                if (pnModAPIFunc('EZComments', 'admin', 'delete', array('id' => $this->id))) {
+                if (ModUtil::apiFunc('EZComments', 'admin', 'delete', array('id' => $this->id))) {
                     // Success
                     LogUtil::registerStatus(__('Done! Comment deleted.', $dom));
                 }
@@ -89,7 +89,7 @@ class EZComments_user_modifyhandler
             case 'submit':
                 // make a check if the comment's body and title was allowed to be changed.
                 if ($this->nomodify == 1) {
-                    $comment_old = pnModAPIFunc('EZComments', 'user', 'get', array('id' => $this->id));
+                    $comment_old = ModUtil::apiFunc('EZComments', 'user', 'get', array('id' => $this->id));
                     $data['ezcomments_comment'] = $comment_old['comment'];
                     $data['ezcomments_subject'] = $comment_old['subject'];
                 }
@@ -131,7 +131,7 @@ class EZComments_user_modifyhandler
                 }
 
                 // Call the API to update the item.
-                if (pnModAPIFunc('EZComments', 'admin', 'update',
+                if (ModUtil::apiFunc('EZComments', 'admin', 'update',
                                 array('id'          => $this->id,
                                       'subject'     => $data['ezcomments_subject'],
                                       'comment'     => $data['ezcomments_comment'],
@@ -148,6 +148,6 @@ class EZComments_user_modifyhandler
             return pnRedirect($comment['url'] . "#comments_{$comment['modname']}_{$comment['objectid']}");
         }
 
-        return pnRedirect(pnModURL('EZComments', 'user', 'main'));
+        return pnRedirect(ModUtil::url('EZComments', 'user', 'main'));
     }
 }

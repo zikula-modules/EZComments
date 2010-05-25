@@ -24,16 +24,13 @@ function EZComments_migrateapi_pnFlashGames()
     } 
 
     // Get datbase setup
-    $pntable = &pnDBGetTables();
+    $tables = pnDBGetTables();
 
-    $Commentstable  = $pntable['pnFlashGames_comments'];
-    $Commentscolumn = $pntable['pnFlashGames_comments_column'];
+    $Commentstable  = $tables['pnFlashGames_comments'];
+    $Commentscolumn = $tables['pnFlashGames_comments_column'];
 
-    $EZCommentstable  = $pntable['EZComments'];
-    $EZCommentscolumn = $pntable['EZComments_column']; 
-
-    $Usertable  = $pntable['users'];
-    $Usercolumn = $pntable['users_column'];
+    $Usertable  = $tables['users'];
+    $Usercolumn = $tables['users_column'];
 
     $sql = "SELECT $Commentscolumn[gid],
                    $Commentscolumn[uname],
@@ -59,10 +56,10 @@ function EZComments_migrateapi_pnFlashGames()
             $item['uid'] = 1;
         }
 
-        $id = pnModAPIFunc('EZComments', 'user', 'create',
+        $id = ModUtil::apiFunc('EZComments', 'user', 'create',
                            array('mod'      => 'pnFlashGames',
                                  'objectid' => DataUtil::formatForStore($item['gid']),
-                                 'url'      => pnModURL('pnFlashGames', 'user', 'display', array('id' => $item['gid'])),
+                                 'url'      => ModUtil::url('pnFlashGames', 'user', 'display', array('id' => $item['gid'])),
                                  'comment'  => $item['comment'],
                                  'subject'  => '',
                                  'uid'      => $item['uid'],

@@ -19,7 +19,7 @@ class EZComments_myprofileapi extends AbstractApi
     {
         $uid = (int) FormUtil::getPassedValue('uid');
 
-        $settings = pnModAPIFunc('MyProfile', 'user', 'getSettings', array('uid' => $uid));
+        $settings = ModUtil::apiFunc('MyProfile', 'user', 'getSettings', array('uid' => $uid));
         if ($settings['nocomments'] == 1) {
             // Show no tab header
             return false;
@@ -46,9 +46,9 @@ class EZComments_myprofileapi extends AbstractApi
     public function tab($args)
     {
         // is ezcomment hook activated for myprofile module?
-        $result = pnModIsHooked('EZComments', 'MyProfile');
+        $result = ModUtil::isHooked('EZComments', 'MyProfile');
         if (!$result) {
-            if (!pnModAPIFunc('Modules', 'admin', 'enablehooks', array('callermodname' => 'MyProfile', 'hookmodname' => 'EZComments'))) {
+            if (!ModUtil::apiFunc('Modules', 'admin', 'enablehooks', array('callermodname' => 'MyProfile', 'hookmodname' => 'EZComments'))) {
                 return LogUtil::registerError($this->__('Registering EZComments hook for MyProfile module failed'));
             }
         }
@@ -59,7 +59,7 @@ class EZComments_myprofileapi extends AbstractApi
         $render->assign('uid', (int) $args['uid']);
         $render->assign('viewer_uid', pnUserGetVar('uid'));
         $render->assign('uname', pnUserGetVar('uname', (int) $args['uid']));
-        $render->assign('settings', pnModAPIFunc('MyProfile', 'user', 'getSettings', array('uid' => $args['uid'])));
+        $render->assign('settings', ModUtil::apiFunc('MyProfile', 'user', 'getSettings', array('uid' => $args['uid'])));
 
         return $render->fetch('ezcomments_myprofile_tab.htm');
     }

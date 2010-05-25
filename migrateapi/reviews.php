@@ -24,15 +24,12 @@ function EZComments_migrateapi_reviews()
     } 
 
     // Get datbase setup
-    pnModDBInfoLoad('Reviews', 'EZComments/pnmigrateapi/Reviews', true);
+    ModUtil::dbInfoLoad('Reviews', 'EZComments/migrateapi/Reviews', true);
 
-    $pntable = &pnDBGetTables();
+    $tables = pnDBGetTables();
 
-    $EZCommentstable  = $pntable['EZComments'];
-    $EZCommentscolumn = $pntable['EZComments_column']; 
-
-    $Commentstable  = $pntable['reviews_comments'];
-    $Commentscolumn = $pntable['reviews_comments_column'];
+    $Commentstable  = $tables['reviews_comments'];
+    $Commentscolumn = $tables['reviews_comments_column'];
 
     if (version_compare(PN_VERSION_NUM, '1', '>=')) {
         EZComments_get76xcolumns_reviews($Commentstable, $Commentscolumn);
@@ -41,8 +38,8 @@ function EZComments_migrateapi_reviews()
         return LogUtil::registerError('Reviews migration: Comments tables not found');
     }
 
-    $Usertable  = $pntable['users'];
-    $Usercolumn = $pntable['users_column'];
+    $Usertable  = $tables['users'];
+    $Usercolumn = $tables['users_column'];
 
     // note: there's nothing we can do with the score......
     $sql = "SELECT $Commentscolumn[cid],
@@ -70,10 +67,10 @@ function EZComments_migrateapi_reviews()
             $item['uid'] = 1;
         }
 
-        $id = pnModAPIFunc('EZComments', 'user', 'create',
+        $id = ModUtil::apiFunc('EZComments', 'user', 'create',
                            array('mod'      => 'Reviews',
                                  'objectid' => DataUtil::formatForStore($item['rid']),
-                                 'url'      => pnModURL('Reviews', 'user', 'display', array('id' => $item['rid'])),
+                                 'url'      => ModUtil::url('Reviews', 'user', 'display', array('id' => $item['rid'])),
                                  'comment'  => $item['comment'],
                                  'subject'  => '',
                                  'uid'      => $item['uid'],
@@ -85,9 +82,9 @@ function EZComments_migrateapi_reviews()
     } 
 
     // activate the ezcomments hook for the Reviews module
-    pnModAPIFunc('Modules', 'admin', 'enablehooks',
-                 array('callermodname' => 'Reviews',
-                       'hookmodname'   => 'EZComments'));
+    ModUtil::apiFunc('Modules', 'admin', 'enablehooks',
+                     array('callermodname' => 'Reviews',
+                           'hookmodname'   => 'EZComments'));
 
     return LogUtil::registerStatus('Reviews migration successful');
 }

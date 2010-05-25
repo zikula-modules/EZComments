@@ -28,7 +28,7 @@ function EZComments_migrateapi_pnProfile()
     foreach ($comments as $comment) {
         if ($comment['modname'] == 'pnProfile') {
             $comment['modname']  = 'MyProfile';
-            $comment['url']      = pnModURL('MyProfile', 'user', 'display', array('uid' => $comment['objectid']));
+            $comment['url']      = ModUtil::url('MyProfile', 'user', 'display', array('uid' => $comment['objectid']));
             $comment['owneruid'] = $comment['objectid'];
             if (DBUtil::updateObject($comment, 'EZComments')) {
                 $counter++;
