@@ -2,35 +2,35 @@
 <?xml version="1.0" encoding="{charset}"?>
 <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/">
     <channel>
-        <title>{$sitename|pnvarprepfordisplay}- {gt text="Comments"}</title>
+        <title>{$sitename|varprepfordisplay}- {gt text="Comments"}</title>
         <link>{getbaseurl}</link>
-        <description>{$sitename|pnvarprepfordisplay} - {$slogan|pnvarprepfordisplay}</description>
+        <description>{$sitename|varprepfordisplay} - {$slogan|varprepfordisplay}</description>
         <language>{$language}</language>
         <pubDate>{$current_date}</pubDate>
         <image>
-            <title>{$sitename|pnvarprepfordisplay}</title>
+            <title>{$sitename|varprepfordisplay}</title>
             <url>{getbaseurl}images/{configgetvar name=site_logo}</url>
         </image>
-        <webMaster>{$adminmail|pnvarprepfordisplay} ({$adminmail|pnvarprepfordisplay})</webMaster>
+        <webMaster>{$adminmail|varprepfordisplay} ({$adminmail|varprepfordisplay})</webMaster>
         {foreach from=$comments item=comment}
         <item>
             <title>
-                {$comment.modname|pnvarprepfordisplay}:
+                {$comment.modname|varprepfordisplay}:
                 {if $comment.subject}
-                {$comment.subject|pnvarprepfordisplay}
+                {$comment.subject|varprepfordisplay}
                 {else}
                 {gt text="No subject"}
                 {/if}
                 {if $comment.uid > 0}
                 ({usergetvar name=uname uid=$comment.uid})
                 {else}
-                ({$comment.anonname|pnvarprepfordisplay})
+                ({$comment.anonname|varprepfordisplay})
                 {/if}
             </title>
-        <link>{$comment.url|pnvarprepfordisplay}#comment{$comment.id|pnvarprepfordisplay}</link>
+        <link>{$comment.url|varprepfordisplay}#comment{$comment.id|varprepfordisplay}</link>
         <pubDate>{$comment.date|strtotime|date_format:"%a, %d %b %Y %H:%M:%S %z"}</pubDate>
-        <guid>{$comment.url|pnvarprepfordisplay}#comment{$comment.id|pnvarprepfordisplay}</guid>
-        <description>{$comment.comment|pnvarprepfordisplay}</description>
+        <guid>{$comment.url|varprepfordisplay}#comment{$comment.id|varprepfordisplay}</guid>
+        <description>{$comment.comment|varprepfordisplay}</description>
         </item>
         {/foreach}
     </channel>

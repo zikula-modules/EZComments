@@ -40,15 +40,15 @@
                 {if $item.status eq 2}{img modname="EZComments" src='red.gif' __alt='Rejected' __title='Rejected'}{/if}
             </td>
             <td>
-                <span class="z-nowrap">{$item.date|pndate_format:datebrief}</span>
-                <span class="z-nowrap">{$item.date|pndate_format:timebrief}</span>
+                <span class="z-nowrap">{$item.date|date_format:datebrief}</span>
+                <span class="z-nowrap">{$item.date|date_format:timebrief}</span>
             </td>
             <td>
                 <span class="z-nowrap">
                     {if $item.uid neq 0}
                     {$item.uid|userprofilelink|default:$lblunknown}
                     {else}
-                    {$item.anonname|pnvarprepfordisplay|default:$lblunknown}
+                    {$item.anonname|varprepfordisplay|default:$lblunknown}
                     {/if}
                 </span>
                 <br />
@@ -67,7 +67,7 @@
             <td class="z-nowrap">
                 {assign var="options" value=$item.options}
                 {section name=options loop=$options}
-                <a href="{$options[options].url|pnvarprepfordisplay}">{img modname='core' set='icons/extrasmall' src=$options[options].image title=$options[options].title alt=$options[options].title}</a>
+                <a href="{$options[options].url|varprepfordisplay}">{img modname='core' set='icons/extrasmall' src=$options[options].image title=$options[options].title alt=$options[options].title}</a>
                 {/section}
             </td>
         </tr>

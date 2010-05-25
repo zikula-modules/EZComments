@@ -31,7 +31,7 @@
     <div class="z-formrow">
         {if $nomodify == 1}
         <label>{gt text="Subject"}</label>
-        <span>{$subject|pnvarprepfordisplay}</span>
+        <span>{$subject|varprepfordisplay}</span>
         {else}
         {formlabel for="ezcomments_subject" __text='Subject'}
         {formtextinput id="ezcomments_subject" text=$subject size="32" maxLength="255"}
@@ -40,7 +40,7 @@
     <div class="z-formrow">
         {if $nomodify == 1}
         <label>{gt text="Comment"}</label>
-        {$comment|pnvarprepfordisplay|nl2br|ModUtil::callHooks}
+        {$comment|varprepfordisplay|nl2br|ModUtil::callHooks}
         {else}
         {formlabel for="ezcomments_comment" __text='Comment'}
         {formtextinput id="ezcomments_comment" textMode="multiline" rows="10" cols="50" text=$comment size="32"}

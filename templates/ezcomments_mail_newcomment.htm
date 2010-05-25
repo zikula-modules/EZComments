@@ -1,8 +1,8 @@
 {gt text='A new comment was entered'}
-{gt text='Username:'} {$comment.userline|htmlentities|pnvarprepfordisplay}
-{gt text='Date:'} {$comment.date|pndate_format|pnvarprepfordisplay}
-{gt text='Subject:'} {$comment.subject|pnvarprepfordisplay}
-{$comment.comment|pnvarprepfordisplay}
+{gt text='Username:'} {$comment.userline|htmlentities|varprepfordisplay}
+{gt text='Date:'} {$comment.date|date_format|varprepfordisplay}
+{gt text='Subject:'} {$comment.subject|varprepfordisplay}
+{$comment.comment|varprepfordisplay}
 
 {gt text='Show:'} {$comment.url}#comment{$comment.id}
 {gt text='Moderate:'} {modurl modname='EZComments' type='user' func='modify' id=$comment.id fqurl=true}

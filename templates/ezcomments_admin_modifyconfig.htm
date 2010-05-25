@@ -13,7 +13,7 @@
         </div>
         <div class="z-formrow">
             {formlabel for="ezcomments_css" __text='Default stylesheet'}
-            {formtextinput id="ezcomments_css" text=$pncore.EZComments.css|pnvarprepfordisplay size="30" maxLength="30"}
+            {formtextinput id="ezcomments_css" text=$pncore.EZComments.css|varprepfordisplay size="30" maxLength="30"}
             <p class="z-informationmsg z-formnote">
                 {gt text="By default, the following possibilities exists:"}<br />
                 <strong>Standard:</strong> style1.css, style2.css, style3.css, style4.css<br />
@@ -34,7 +34,7 @@
         </div>
         <div class="z-formrow">
             {formlabel for="ezcomments_itemsperpage" __text='Comments per page in admin view'}
-            {formtextinput id="ezcomments_itemsperpage" text=$pncore.EZComments.itemsperpage|pnvarprepfordisplay size="5" maxLength="5"}
+            {formtextinput id="ezcomments_itemsperpage" text=$pncore.EZComments.itemsperpage|varprepfordisplay size="5" maxLength="5"}
         </div>
         <div class="z-formrow">
             {formlabel for="ezcomments_enablepager" __text='Enable pager in user view'}
@@ -42,7 +42,7 @@
         </div>
         <div class="z-formrow">
             {formlabel for="ezcomments_commentsperpage" __text='Comments per page in user view'}
-            {formtextinput id="ezcomments_commentsperpage" text=$pncore.EZComments.commentsperpage|pnvarprepfordisplay size="5" maxLength="5"}
+            {formtextinput id="ezcomments_commentsperpage" text=$pncore.EZComments.commentsperpage|varprepfordisplay size="5" maxLength="5"}
         </div>
         <div class="z-formrow">
             {formlabel for="ezcomments_useaccountpage" __text='Activate account page in user section'}
@@ -77,22 +77,22 @@
         </div>
         <div class="z-formrow">
             {formlabel for="ezcomments_modlinkcount" __text='Number of links in comment before moderation'}
-            {formtextinput id="ezcomments_modlinkcount" text=$pncore.EZComments.modlinkcount|pnvarprepfordisplay size="5" maxLength="5"}
+            {formtextinput id="ezcomments_modlinkcount" text=$pncore.EZComments.modlinkcount|varprepfordisplay size="5" maxLength="5"}
         </div>
         <div class="z-formrow">
             {formlabel for="ezcomments_modlist" __text='Words to trigger moderation'}
-            {formtextinput id="ezcomments_modlist" textMode="multiline" rows="5" cols="50" text=$pncore.EZComments.modlist|pnvarprepfordisplay}
+            {formtextinput id="ezcomments_modlist" textMode="multiline" rows="5" cols="50" text=$pncore.EZComments.modlist|varprepfordisplay}
         </div>
     </fieldset>
     <fieldset>
         <legend>{gt text="Blacklisting"}</legend>
         <div class="z-formrow">
             {formlabel for="ezcomments_blacklinkcount" __text='Number of links in comment before blacklisting'}
-            {formtextinput id="ezcomments_blacklinkcount" text=$pncore.EZComments.blacklinkcount|pnvarprepfordisplay size="5" maxLength="5"}
+            {formtextinput id="ezcomments_blacklinkcount" text=$pncore.EZComments.blacklinkcount|varprepfordisplay size="5" maxLength="5"}
         </div>
         <div class="z-formrow">
             {formlabel for="ezcomments_blacklist" __text='Words to blacklist from comments'}
-            {formtextinput id="ezcomments_blacklist" textMode="multiline" rows="5" cols="50" text=$pncore.EZComments.blacklist|pnvarprepfordisplay}
+            {formtextinput id="ezcomments_blacklist" textMode="multiline" rows="5" cols="50" text=$pncore.EZComments.blacklist|varprepfordisplay}
             <em class="z-formnote z-sub">{gt text="Notice: Comments containing words listed here will be completely ignored by the comments module"}</em>
         </div>
         <div class="z-formrow">
@@ -128,7 +128,7 @@
         </div>
         <div class="z-formrow">
             {formlabel for="ezcomments_feedcount" __text='Number of items to display in feed'}
-            {formtextinput id="ezcomments_feedcount" text=$pncore.EZComments.feedcount|pnvarprepfordisplay size="5" maxLength="5"}
+            {formtextinput id="ezcomments_feedcount" text=$pncore.EZComments.feedcount|varprepfordisplay size="5" maxLength="5"}
         </div>
     </fieldset>
     {modcallhooks hookobject="module" hookaction="modifyconfig" hookid="EZComments" module="EZComments"}
