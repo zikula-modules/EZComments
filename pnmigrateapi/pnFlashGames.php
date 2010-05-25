@@ -24,8 +24,7 @@ function EZComments_migrateapi_pnFlashGames()
     } 
 
     // Get datbase setup
-    $dbconn  = pnDBGetConn(true);
-    $pntable = pnDBGetTables();
+    $pntable = &pnDBGetTables();
 
     $Commentstable  = $pntable['pnFlashGames_comments'];
     $Commentscolumn = $pntable['pnFlashGames_comments_column'];
@@ -45,8 +44,9 @@ function EZComments_migrateapi_pnFlashGames()
          LEFT JOIN $Usertable
                 ON $Commentscolumn[uname] = $Usercolumn[uname]";
 
-    $result = $dbconn->Execute($sql);
-    if ($dbconn->ErrorNo() != 0) {
+    $result = DBUtil::executeSQL($sql);
+
+    if ($result == false) {
         return LogUtil::registerError('pnFlashGames migration: DB Error: ' . $sql . ' -- ' . mysql_error());
     }
 
@@ -54,38 +54,25 @@ function EZComments_migrateapi_pnFlashGames()
     $comments = array(0 => array('newid' => -1));
 
     // loop through the old comments and insert them one by one into the DB
-    for (; !$result->EOF; $result->MoveNext())
-    {
-        list($gid, $uname, $date, $comment, $uid) = $result->fields;
+    $items = DBUtil::marshalObjects($result, array('gid', 'uname', 'date', 'comment', 'uid'));
+
+    foreach ($items as $item) {
+        // set the correct user id for anonymous users
+        if (empty($item['uid'])) {
+            $item['uid'] = 1;
+        }
 
         $id = pnModAPIFunc('EZComments', 'user', 'create',
                            array('mod'      => 'pnFlashGames',
-                                 'objectid' => DataUtil::formatForStore($gid),
-                                 'url'      => pnModURL('pnFlashGames', 'user', 'display', array('id' => $gid)),
-                                 'comment'  => $comment,
+                                 'objectid' => DataUtil::formatForStore($item['gid']),
+                                 'url'      => pnModURL('pnFlashGames', 'user', 'display', array('id' => $item['gid'])),
+                                 'comment'  => $item['comment'],
                                  'subject'  => '',
-                                 'uid'      => $uid,
-                                 'date'     => $date));
+                                 'uid'      => $item['uid'],
+                                 'date'     => $item['date']));
 
         if (!$id) {
-            return LogUtil::registerError('pnFlashGames comments migration: Error creating comment');
-        }
-
-        $comments[$tid] = array('newid' => $id,
-                                'pid'   => $replyto);
-    }
-    $result->Close(); 
-
-    // rebuild the links to the parents
-    $tids = array_keys($comments);
-    foreach ($tids as $tid) {
-        if ($tid != 0) {
-            $v = $comments[$tid];
-            $sql = "UPDATE $EZCommentstable 
-                       SET $EZCommentscolumn[replyto] = '" . $comments[$v['pid']]['newid'] . "'
-                     WHERE $EZCommentscolumn[id] = '$v[newid]'";
-
-            $result = $dbconn->Execute($sql);
+            return LogUtil::registerError('pnFlashGames migration: Error creating comment');
         }
     }
 
