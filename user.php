@@ -568,7 +568,7 @@ class EZComments_user extends AbstractController
      */
     public function modify($args)
     {
-        Loader::requireOnce('modules/EZComments/includes/common.php');
+        include_once 'modules/EZComments/includes/common.php';
         return ezc_modify($args);
     }
 }

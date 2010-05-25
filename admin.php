@@ -100,7 +100,7 @@ class EZComments_admin extends AbstractController
      */
     public function modify($args)
     {
-        Loader::requireOnce('modules/EZComments/includes/common.php');
+        include_once 'modules/EZComments/includes/common.php';
         return ezc_modify($args);
     }
 
@@ -214,7 +214,7 @@ class EZComments_admin extends AbstractController
         }
 
         // load edithandler class from file
-        Loader::requireOnce('modules/EZComments/includes/ezcomments_admin_modifyconfighandler.class.php');
+        include_once 'modules/EZComments/includes/ezcomments_admin_modifyconfighandler.php';
 
         // Create Form output object
         $zform = FormUtil::newpnForm('EZComments');
