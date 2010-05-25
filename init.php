@@ -122,6 +122,7 @@ function EZComments_upgrade($oldversion)
             ModUtil::setVar('EZComments', 'css', 'style.css');
 
         case '2.0.0':
+        case '2.1.0':
             // future upgrade routines
             break;
     }
