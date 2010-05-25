@@ -21,8 +21,8 @@ class EZComments_user extends AbstractController
      */
     public function main($args = array())
     {
-        if (!pnUserLoggedIn()) {
-            return pnRedirect(pnGetHomepageURL);
+        if (!UserUtil::isLoggedIn()) {
+            return System::redirect(System::getHomepageUrl);
         }
 
         // the following code was taken from the admin interface first and modified
@@ -42,8 +42,8 @@ class EZComments_user extends AbstractController
         $params = array('startnum' => $startnum,
                         'numitems' => $itemsperpage,
                         'status'   => $status,
-                        'owneruid' => pnUserGetVar('uid'),
-                        'uid'      => pnUserGetVar('uid'));
+                        'owneruid' => UserUtil::getVar('uid'),
+                        'uid'      => UserUtil::getVar('uid'));
 
         $items = ModUtil::apiFunc('EZComments', 'user', 'getall', $params);
 
@@ -169,10 +169,10 @@ class EZComments_user extends AbstractController
         $renderer->assign('ezcomment',    $ezcomment);
         $renderer->assign('ezc_info',     compact('mod', 'objectid', 'sortorder', 'status'));
         $renderer->assign('modinfo',      ModUtil::getInfo(ModUtil::getIdFromName($mod)));
-        $renderer->assign('msgmodule',    pnConfigGetVar('messagemodule', ''));
-        $renderer->assign('prfmodule',    pnConfigGetVar('profilemodule', ''));
+        $renderer->assign('msgmodule',    System::getVar('messagemodule', ''));
+        $renderer->assign('prfmodule',    System::getVar('profilemodule', ''));
         $renderer->assign('allowadd',     SecurityUtil::checkPermission('EZComments::', "$mod:$objectid:", ACCESS_COMMENT));
-        $renderer->assign('loggedin',     pnUserLoggedIn());
+        $renderer->assign('loggedin',     UserUtil::isLoggedIn());
 
         if (!is_array($args['extrainfo'])) {
             $redirect = $args['extrainfo'];
@@ -369,7 +369,7 @@ class EZComments_user extends AbstractController
 
         // check if the user logged in and if we're allowing anon users to
         // set a name and e-mail address
-        if (!pnUserLoggedIn()) {
+        if (!UserUtil::isLoggedIn()) {
             $anonname    = isset($args['anonname'])    ? $args['anonname']    : FormUtil::getPassedValue('anonname',    null, 'POST');
             $anonmail    = isset($args['anonmail'])    ? $args['anonmail']    : FormUtil::getPassedValue('anonmail',    null, 'POST');
             $anonwebsite = isset($args['anonwebsite']) ? $args['anonwebsite'] : FormUtil::getPassedValue('anonwebsite', null, 'POST');
@@ -384,7 +384,7 @@ class EZComments_user extends AbstractController
         }
 
         $redirect = str_replace('&amp;', '&', base64_decode($redirect));
-        $redirect = !empty($redirect) ? $redirect : pnServerGetVar('HTTP_REFERER');
+        $redirect = !empty($redirect) ? $redirect : System::serverGetVar('HTTP_REFERER');
         $useurl   = base64_decode($useurl);
 
         // save the submitted data if any error occurs
@@ -421,7 +421,7 @@ class EZComments_user extends AbstractController
         }
 
         // now parse out the hostname+subfolder from the url for storing in the DB
-        $url = str_replace(pnGetBaseURI(), '', $useurl);
+        $url = str_replace(System::getBaseUri(), '', $useurl);
 
         $id = ModUtil::apiFunc('EZComments', 'user', 'create',
                            array('mod'         => $mod,
@@ -430,7 +430,7 @@ class EZComments_user extends AbstractController
                                  'comment'     => $comment,
                                  'subject'     => $subject,
                                  'replyto'     => $replyto,
-                                 'uid'         => pnUserGetVar('uid'),
+                                 'uid'         => UserUtil::getVar('uid'),
                                  'owneruid'    => $owneruid,
                                  'useurl'      => $useurl,
                                  'redirect'    => $redirect,
@@ -441,7 +441,7 @@ class EZComments_user extends AbstractController
         // redirect if it was not successful
         if (!$id) {
             SessionUtil::setVar('ezcomment', $ezcomment);
-            pnRedirect($redirect."#commentform_{$mod}_{$objectid}");
+            System::redirect($redirect."#commentform_{$mod}_{$objectid}");
         }
 
         // clean/set the session data 
@@ -457,7 +457,7 @@ class EZComments_user extends AbstractController
             SessionUtil::setVar('ezcomment', serialize($ezcomment));
         }
 
-        return pnRedirect($redirect.'#comment'.$id);
+        return System::redirect($redirect.'#comment'.$id);
     }
 
     /**
@@ -539,9 +539,9 @@ class EZComments_user extends AbstractController
         // get the last x comments
         $renderer->assign('comments'    , $comments);
         $renderer->assign('language'    , ZLanguage::getLocale());
-        $renderer->assign('sitename'    , pnConfigGetVar('sitename'));
-        $renderer->assign('slogan'      , pnConfigGetVar('slogan'));
-        $renderer->assign('adminmail'   , pnConfigGetVar('adminmail'));
+        $renderer->assign('sitename'    , System::getVar('sitename'));
+        $renderer->assign('slogan'      , System::getVar('slogan'));
+        $renderer->assign('adminmail'   , System::getVar('adminmail'));
         $renderer->assign('current_date', date(DATE_RSS));
 
         // grab the item url from one of the comments

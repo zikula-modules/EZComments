@@ -58,7 +58,7 @@ class EZComments_searchapi extends AbstractApi
 
         ModUtil::dbInfoLoad('Search');
 
-        $tables = pnDBGetTables();
+        $tables = System::dbGetTables();
         // ezcomments tables
         $ezcommentstable  = $tables['EZComments'];
         $ezcommentscolumn = $tables['EZComments_column'];

@@ -57,8 +57,8 @@ class EZComments_myprofileapi extends AbstractApi
         $render = Renderer::getInstance('EZComments');
 
         $render->assign('uid', (int) $args['uid']);
-        $render->assign('viewer_uid', pnUserGetVar('uid'));
-        $render->assign('uname', pnUserGetVar('uname', (int) $args['uid']));
+        $render->assign('viewer_uid', UserUtil::getVar('uid'));
+        $render->assign('uname', UserUtil::getVar('uname', (int) $args['uid']));
         $render->assign('settings', ModUtil::apiFunc('MyProfile', 'user', 'getSettings', array('uid' => $args['uid'])));
 
         return $render->fetch('ezcomments_myprofile_tab.htm');

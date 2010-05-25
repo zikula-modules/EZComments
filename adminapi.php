@@ -26,7 +26,7 @@ class EZComments_adminapi extends AbstractApi
             return LogUtil::registerPermissionError(ModUtil::url('EZComments', 'admin', 'main'));
         }
 
-        $tables = pnDBGetTables();
+        $tables = System::dbGetTables();
 
         $table  = $tables['EZComments'];
         $column = $tables['EZComments_column'];
@@ -65,7 +65,7 @@ class EZComments_adminapi extends AbstractApi
         }
 
         // get tables
-        $tables  = pnDBGetTables();
+        $tables  = System::dbGetTables();
         $column  = $tables['EZComments_column'];
         // construct where clause and delete...
         $where   = "WHERE $column[modname] = '$args[module]'";
@@ -107,7 +107,7 @@ class EZComments_adminapi extends AbstractApi
         }
 
         // get db table and column for where statement
-        $tables  = pnDBGetTables();
+        $tables  = System::dbGetTables();
         $column  = $tables['EZComments_column'];
 
         $mod      = DataUtil::formatForStore($args['mod']);
@@ -231,7 +231,7 @@ class EZComments_adminapi extends AbstractApi
         $mod = (isset($args['extrainfo']['module']) && !empty($args['extrainfo']['module'])) ? $args['extrainfo']['module'] : ModUtil::getName();
 
         // Database information
-        $tables  = pnDBGetTables();
+        $tables  = System::dbGetTables();
         $columns = $tables['EZComments_column'];
 
         // Get items
@@ -263,7 +263,7 @@ class EZComments_adminapi extends AbstractApi
         }
 
         // Get datbase setup
-        $tables  = pnDBGetTables();
+        $tables  = System::dbGetTables();
         $column  = $tables['EZComments_column'];
 
         if ((bool)$purgerejected) {

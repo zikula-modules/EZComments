@@ -51,7 +51,7 @@ class EZComments_userapi extends AbstractApi
         }
 
         // Get database setup
-        $tables = pnDBGetTables();
+        $tables = System::dbGetTables();
         $columns = $tables['EZComments_column'];
 
         // form where clause
@@ -187,15 +187,15 @@ class EZComments_userapi extends AbstractApi
         if (isset($args['useurl']) && !empty($args['useurl'])) {
             $url = $args['useurl'] = str_replace('&amp;', '&', $args['useurl']);
         } else {
-            $baseURL = pnGetBaseURL();
-            $url = isset($args['redirect']) ? $baseURL . str_replace($baseURL, '', $args['redirect']) : pnServerGetVar('HTTP_REFERER');
+            $baseURL = System::getBaseUrl();
+            $url = isset($args['redirect']) ? $baseURL . str_replace($baseURL, '', $args['redirect']) : System::serverGetVar('HTTP_REFERER');
         }
 
-        $loggedin = pnUserLoggedIn();
+        $loggedin = UserUtil::isLoggedIn();
 
         // ContactList ignore check. If the user is ignored by the
         // content owner the user will not be able to post any comment...
-        if ($loggedin && $owneruid > 0 && ModUtil::available('ContactList') && ModUtil::apiFunc('ContactList', 'user', 'isIgnored', array('iuid' => pnUserGetVar('uid'), 'uid' => $owneruid))) {
+        if ($loggedin && $owneruid > 0 && ModUtil::available('ContactList') && ModUtil::apiFunc('ContactList', 'user', 'isIgnored', array('iuid' => UserUtil::getVar('uid'), 'uid' => $owneruid))) {
             return LogUtil::registerError($this->__('Error! The user ignores you.'));
         }
 
@@ -211,7 +211,7 @@ class EZComments_userapi extends AbstractApi
             $args['replyto'] = -1;
         }
         if (!isset($args['uid']) || !is_numeric($args['uid'])) {
-            $args['uid'] = pnUserGetVar('uid');
+            $args['uid'] = UserUtil::getVar('uid');
         }
 
         if (!isset($args['date'])) {
@@ -223,7 +223,7 @@ class EZComments_userapi extends AbstractApi
         // get the users ip
         $ipaddr = '';
         if (ModUtil::getVar('EZComments', 'logip')) {
-            $ipaddr = pnServerGetVar('REMOTE_ADDR');
+            $ipaddr = System::serverGetVar('REMOTE_ADDR');
         }
 
         // check we should moderate the comments
@@ -249,9 +249,9 @@ class EZComments_userapi extends AbstractApi
         // akismet
         if (ModUtil::available('akismet') && ModUtil::getVar('EZComments', 'akismet')) {
             if (ModUtil::apiFunc('akismet', 'user', 'isspam',
-                             array('author'      => $loggedin ? pnUserGetVar('uname') : $args['anonname'],
-                                   'authoremail' => $loggedin ? pnUserGetVar('email') : (isset($args['anonmail']) ? $args['anonmail'] : ''),
-                                   'authorurl'   => $loggedin ? pnUserGetVar('url')   : (isset($args['anonwebsite']) ? $args['anonwebsite'] : ''),
+                             array('author'      => $loggedin ? UserUtil::getVar('uname') : $args['anonname'],
+                                   'authoremail' => $loggedin ? UserUtil::getVar('email') : (isset($args['anonmail']) ? $args['anonmail'] : ''),
+                                   'authorurl'   => $loggedin ? UserUtil::getVar('url')   : (isset($args['anonwebsite']) ? $args['anonwebsite'] : ''),
                                    'content'     => $args['comment'],
                                    'permalink'   => $url))) {
                 $status[] = ModUtil::getVar('EZComments', 'akismetstatus');
@@ -302,18 +302,18 @@ class EZComments_userapi extends AbstractApi
         }
 
         if ($owneruid > 1) {
-            $owner['email'] = pnUserGetVar('email', $owneruid);
-            $owner['uname'] = pnUserGetVar('uname', $owneruid);
+            $owner['email'] = UserUtil::getVar('email', $owneruid);
+            $owner['uname'] = UserUtil::getVar('uname', $owneruid);
             if (!empty($owner['email']) && !empty($owner['uname'])) {
                 $toaddress = $owner['email'];
                 $toname    = $owner['uname'];
             } else {
-                $toaddress = pnConfigGetVar('adminmail');
-                $toname    = pnConfigGetVar('sitename');
+                $toaddress = System::getVar('adminmail');
+                $toname    = System::getVar('sitename');
             }
         } else {
-            $toaddress = pnConfigGetVar('adminmail');
-            $toname    = pnConfigGetVar('sitename');
+            $toaddress = System::getVar('adminmail');
+            $toname    = System::getVar('sitename');
         }
 
         // Inform the content owner or the admin about a new comment
@@ -321,7 +321,7 @@ class EZComments_userapi extends AbstractApi
             $renderer = Renderer::getInstance('EZComments', false);
 
             if ($args['uid'] > 0) {
-                $newcomment['userline'] = pnUserGetVar('uname', $args['uid']);
+                $newcomment['userline'] = UserUtil::getVar('uname', $args['uid']);
             } else {
                 $newcomment['userline'] = "$args[anonname] $args[anonmail]";
             }
@@ -332,8 +332,8 @@ class EZComments_userapi extends AbstractApi
             ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
                          array('toaddress'   => $toaddress,
                                'toname'      => $toname,
-                               'fromaddress' => pnConfigGetVar('adminmail'),
-                               'fromname'    => pnConfigGetVar('sitename'),
+                               'fromaddress' => System::getVar('adminmail'),
+                               'fromname'    => System::getVar('sitename'),
                                'subject'     => $mailsubject,
                                'body'        => $renderer->fetch('ezcomments_mail_newcomment.htm')));
         }
@@ -342,7 +342,7 @@ class EZComments_userapi extends AbstractApi
             $renderer = Renderer::getInstance('EZComments', false);
 
             if ($args['uid'] > 0) {
-                $newcomment['userline'] = pnUserGetVar('uname', $args['uid']);
+                $newcomment['userline'] = UserUtil::getVar('uname', $args['uid']);
             } else {
                 $newcomment['userline'] = "$args[anonname] $args[anonmail]";
             }
@@ -351,10 +351,10 @@ class EZComments_userapi extends AbstractApi
             $mailsubject = $this->__('New comment for your site');
 
             ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
-                         array('toaddress'   => pnConfigGetVar('adminmail'),
-                               'toname'      => pnConfigGetVar('sitename'),
-                               'fromaddress' => pnConfigGetVar('adminmail'),
-                               'fromname'    => pnConfigGetVar('sitename'),
+                         array('toaddress'   => System::getVar('adminmail'),
+                               'toname'      => System::getVar('sitename'),
+                               'fromaddress' => System::getVar('adminmail'),
+                               'fromname'    => System::getVar('sitename'),
                                'subject'     => $mailsubject,
                                'body'        => $renderer->fetch('ezcomments_mail_modcomment.htm')));
         }
@@ -428,7 +428,7 @@ class EZComments_userapi extends AbstractApi
         $uid      = isset($args['uid'])      ? (int)$args['uid']      : 0;
 
         // Get database column names
-        $tables  = pnDBGetTables();
+        $tables  = System::dbGetTables();
         $columns = $tables['EZComments_column'];
 
         // build the where clause
@@ -497,7 +497,7 @@ class EZComments_userapi extends AbstractApi
 
         $modinfo  = ModUtil::getInfo(ModUtil::getIdFromName('EZComments'));
         $osmoddir = DataUtil::formatForOS($modinfo['directory']);
-        $ostheme  = DataUtil::formatForOS(pnUserGetTheme());
+        $ostheme  = DataUtil::formatForOS(UserUtil::getTheme());
         $rootdirs = array("modules/$osmoddir/templates/",
                           "config/templates/$osmoddir/",
                           "themes/$ostheme/templates/$osmoddir/");
@@ -597,11 +597,11 @@ class EZComments_userapi extends AbstractApi
     {
         // check for open proxies
         // credit to wordpress for this logic function wp_proxy_check()
-        $ipnum = pnServerGetVar('REMOTE_ADDR');
+        $ipnum = System::serverGetVar('REMOTE_ADDR');
 
         // set the current uid if not present
         if (!isset($uid)) {
-            $uid = pnUserGetVar('uid');
+            $uid = UserUtil::getVar('uid');
         }
 
         if (ModUtil::getVar('EZComments', 'proxyblacklist') && !empty($ipnum)) {
@@ -616,7 +616,7 @@ class EZComments_userapi extends AbstractApi
 
         // check if the comment comes from user that we trust
         // i.e. one who has an approved comment already
-        if (pnUserLoggedIn() && ModUtil::getVar('EZComments', 'dontmoderateifcommented')) {
+        if (UserUtil::isLoggedIn() && ModUtil::getVar('EZComments', 'dontmoderateifcommented')) {
             $commentedlist = ModUtil::apiFunc('EZcomments', 'user', 'getcommentingusers');
             if (is_array($commentedlist) && in_array($uid, $commentedlist)) {
                 return 0;
@@ -641,7 +641,7 @@ class EZComments_userapi extends AbstractApi
         }
 
         // Get database columns
-        $tables  = pnDBGetTables();
+        $tables  = System::dbGetTables();
         $columns = $tables['EZComments_column'];
 
         $where = "$columns[status] = 0";
@@ -670,7 +670,7 @@ class EZComments_userapi extends AbstractApi
         $mod = DataUtil::formatForOS($args['mod']);
 
         // Get database setup
-        $tables  = pnDBGetTables();
+        $tables  = System::dbGetTables();
         $eztable = $tables['EZComments'];
         $columns = $tables['EZComments_column'];
 
@@ -723,12 +723,12 @@ class EZComments_userapi extends AbstractApi
     public function checkPermission($args = array())
     {
         // A guest will have no permission
-        if (!pnUserLoggedIn()) {
+        if (!UserUtil::isLoggedIn()) {
             return false;
         }
 
         // own comments = ok
-        $uid  = pnUserGetVar('uid');
+        $uid  = UserUtil::getVar('uid');
         $auid = isset($args['uid']) ? $args['uid'] : 0;
         if ($uid == $auid) {
             return true;
@@ -784,7 +784,7 @@ class EZComments_userapi extends AbstractApi
         $configpath = "config/templates/EZComments";
 
         // theme directory
-        $theme = DataUtil::formatForOS(pnUserGetTheme());
+        $theme = DataUtil::formatForOS(UserUtil::getTheme());
         $themepath = "themes/$theme/templates/modules/EZComments";
 
         // module directory
@@ -819,7 +819,7 @@ class EZComments_userapi extends AbstractApi
         {
             if ($items[$k]['uid'] > 0) {
                 // get the user vars and merge into the comment array
-                $userinfo = pnUserGetVars($items[$k]['uid']);
+                $userinfo = UserUtil::getVars($items[$k]['uid']);
                 // the users url will clash with the comment url so lets move it out of the way
                 $userinfo['website']   = isset($userinfo['__ATTRIBUTES__']['url']) ? $userinfo['__ATTRIBUTES__']['url'] : '';
 
@@ -836,7 +836,7 @@ class EZComments_userapi extends AbstractApi
             } else {
                 // put the generic name if anonymous, uname is empty
                 $items[$k]['uname'] = '';
-                $items[$k]['anonname'] = !empty($items[$k]['anonname']) ? $items[$k]['anonname'] : pnConfigGetVar('anonymous');
+                $items[$k]['anonname'] = !empty($items[$k]['anonname']) ? $items[$k]['anonname'] : System::getVar('anonymous');
             }
 
             $items[$k]['del'] = ModUtil::apiFunc('EZComments', 'user', 'checkPermission',

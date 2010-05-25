@@ -125,7 +125,7 @@ class EZComments_admin extends AbstractController
         $objectid = isset($args['objectid']) ? $args['objectid'] : FormUtil::getPassedValue('objectid', null, 'GETPOST');
         $redirect = isset($args['redirect']) ? $args['redirect'] : FormUtil::getPassedValue('redirect', '', 'GETPOST');
 
-        return pnRedirect(ModUtil::url('EZComments', 'admin', 'modify',
+        return System::redirect(ModUtil::url('EZComments', 'admin', 'modify',
                                    array('id'       => $id,
                                          'objectid' => $objectid,
                                          'redirect' => $redirect)));
@@ -192,9 +192,9 @@ class EZComments_admin extends AbstractController
         // This function generated no output, and so now it is complete we redirect
         // the user to an appropriate page for them to carry on their work
         if (!empty($redirect)) {
-            return pnRedirect($redirect);
+            return System::redirect($redirect);
         } else {
-            return pnRedirect(ModUtil::url('EZComments', 'admin', 'main'));
+            return System::redirect(ModUtil::url('EZComments', 'admin', 'main'));
         }
     }
 
@@ -251,7 +251,7 @@ class EZComments_admin extends AbstractController
 
         if (!$selectitems) {
             LogUtil::registerStatus($this->__('No migration plugins available.'));
-            return pnRedirect(ModUtil::url('EZComments', 'admin'));
+            return System::redirect(ModUtil::url('EZComments', 'admin'));
         }
 
         // Create output object
@@ -297,7 +297,7 @@ class EZComments_admin extends AbstractController
             ModUtil::setVar('EZComments', 'migrated', $migrated);
         }
 
-        return pnRedirect(ModUtil::url('EZComments', 'admin', 'migrate'));
+        return System::redirect(ModUtil::url('EZComments', 'admin', 'migrate'));
     }
 
     /**
@@ -329,7 +329,7 @@ class EZComments_admin extends AbstractController
 
         if (!$orphanedmods) {
             LogUtil::registerStatus($this->__('No orphaned comments.'));
-            return pnRedirect(ModUtil::url('EZComments', 'admin', 'main'));
+            return System::redirect(ModUtil::url('EZComments', 'admin', 'main'));
         }
 
         $selectitems = array();
@@ -374,7 +374,7 @@ class EZComments_admin extends AbstractController
 
         LogUtil::registerStatus($this->__('Done! All orphaned comments for this module deleted.'));
 
-        return pnRedirect(ModUtil::url('EZComments', 'admin', 'main'));
+        return System::redirect(ModUtil::url('EZComments', 'admin', 'main'));
     }
 
     /**
@@ -424,7 +424,7 @@ class EZComments_admin extends AbstractController
 
         // This function generated no output, and so now it is complete we redirect
         // the user to an appropriate page for them to carry on their work
-        return pnRedirect(ModUtil::url('EZComments', 'admin', 'main'));
+        return System::redirect(ModUtil::url('EZComments', 'admin', 'main'));
     }
 
     /**
@@ -568,7 +568,7 @@ class EZComments_admin extends AbstractController
 
         // This function generated no output, and so now it is complete we redirect
         // the user to an appropriate page for them to carry on their work
-        return pnRedirect(ModUtil::url('EZComments', 'admin', 'main'));
+        return System::redirect(ModUtil::url('EZComments', 'admin', 'main'));
     }
 
     /**
@@ -631,7 +631,7 @@ class EZComments_admin extends AbstractController
             LogUtil::registerStatus($this->__('Done! Comment deleted.'));
         }
 
-        return pnRedirect(ModUtil::url('EZComments', 'admin', 'main'));
+        return System::redirect(ModUtil::url('EZComments', 'admin', 'main'));
     }
 
     /**
@@ -699,9 +699,9 @@ class EZComments_admin extends AbstractController
             // akismet
             if (ModUtil::available('akismet') && ModUtil::getVar('EZComments', 'akismet')
                 && ModUtil::apiFunc('akismet', 'user', 'isspam',
-                                array('author'      => ($comment['uid'] > 0) ? pnUserGetVar('uname', $comment['uid']) : $comment['anonname'],
-                                      'authoremail' => ($comment['uid'] > 0) ? pnUserGetVar('email', $comment['uid']) : $comment['anonmail'],
-                                      'authorurl'   => ($comment['uid'] > 0) ? pnUserGetVar('url', $comment['uid']) : $comment['anonwebsite'],
+                                array('author'      => ($comment['uid'] > 0) ? UserUtil::getVar('uname', $comment['uid']) : $comment['anonname'],
+                                      'authoremail' => ($comment['uid'] > 0) ? UserUtil::getVar('email', $comment['uid']) : $comment['anonmail'],
+                                      'authorurl'   => ($comment['uid'] > 0) ? UserUtil::getVar('url', $comment['uid']) : $comment['anonwebsite'],
                                       'content'     => $comment['comment'],
                                       'permalink'   => $comment['url']))) {
                 $akismetstatus = ModUtil::getVar('EZComments', 'akismetstatus');
@@ -755,7 +755,7 @@ class EZComments_admin extends AbstractController
             }
 
             LogUtil::registerStatus($this->__('New comment rules applied'));
-            return pnRedirect(ModUtil::url('EZComments', 'admin'));
+            return System::redirect(ModUtil::url('EZComments', 'admin'));
         }
     }
 }

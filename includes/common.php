@@ -38,7 +38,7 @@ function ezc_modify($args)
     if (!$securityCheck) {
         $redirect = base64_decode(FormUtil::getPassedValue('redirect'));
         if (!isset($redirect)) {
-            $redirect = pnGetHomepageURL();
+            $redirect = System::getHomepageUrl();
         }
         return LogUtil::registerPermissionError($redirect);
     }

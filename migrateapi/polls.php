@@ -24,7 +24,7 @@ function EZComments_migrateapi_polls()
     }
 
     // Get datbase setup
-    $tables = pnDBGetTables();
+    $tables = System::dbGetTables();
 
     $EZCommentstable  = $tables['EZComments'];
     $EZCommentscolumn = $tables['EZComments_column'];
@@ -71,7 +71,7 @@ function EZComments_migrateapi_polls()
             $item['uid'] = 1;
         }
 
-        $id = pnModAPIFunc('EZComments', 'user', 'create',
+        $id = ModUtil::apiFunc('EZComments', 'user', 'create',
                            array('mod'      => 'Polls',
                                  'objectid' => DataUtil::formatForStore($item['pollid']),
                                  'url'      => ModUtil::url('Polls', 'user', 'display', array('pollid' => $item['pollid'])),

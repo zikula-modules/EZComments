@@ -90,13 +90,13 @@ class EZComments_admin_modifyhandler
                         $ok = false;
                     }
                     // anonmail must be valid - really necessary if an admin changes this?
-                    if (empty($data['ezcomments_anonmail']) || !pnVarValidate($data['ezcomments_anonmail'], 'email') ) {
+                    if (empty($data['ezcomments_anonmail']) || !System::varValidate($data['ezcomments_anonmail'], 'email') ) {
                         $ifield = $renderer->pnFormGetPluginById('ezcomments_anonmail');
                         $ifield->setError(DataUtil::formatForDisplay(__('Email address of anonymous user is missing or invalid.', $dom)));
                         $ok = false;
                     }
                     // anonwebsite must be valid
-                    if (!empty($data['ezcomments_anonwebsite']) && !pnVarValidate($data['ezcomments_anonmail'], 'url')) {
+                    if (!empty($data['ezcomments_anonwebsite']) && !System::varValidate($data['ezcomments_anonmail'], 'url')) {
                         $ifield = $renderer->pnFormGetPluginById('ezcomments_anonwebsite');
                         $ifield->setError(DataUtil::formatForDisplay(__('Website of anonymous user is invalid.', $dom)));
                         $ok = false;
@@ -133,9 +133,9 @@ class EZComments_admin_modifyhandler
         }
 
         if ($data['ezcomments_sendmeback'] == true) {
-            return pnRedirect($comment['url'] . "#comments_{$comment['modname']}_{$comment['objectid']}");
+            return System::redirect($comment['url'] . "#comments_{$comment['modname']}_{$comment['objectid']}");
         }
 
-        return pnRedirect(ModUtil::url('EZComments', 'admin', 'main'));
+        return System::redirect(ModUtil::url('EZComments', 'admin', 'main'));
     }
 }
