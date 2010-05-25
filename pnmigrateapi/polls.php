@@ -24,11 +24,10 @@ function EZComments_migrateapi_polls()
     }
 
     // Get datbase setup
-    $dbconn  = pnDBGetConn(true);
-    $pntable = pnDBGetTables();
+    $pntable = &pnDBGetTables();
 
     $EZCommentstable  = $pntable['EZComments'];
-    $EZCommentscolumn = &$pntable['EZComments_column'];
+    $EZCommentscolumn = $pntable['EZComments_column'];
 
     $Commentstable  = $pntable['pollcomments'];
     $Commentscolumn = $pntable['pollcomments_column'];
@@ -54,8 +53,9 @@ function EZComments_migrateapi_polls()
          LEFT JOIN $Usertable
                 ON $Commentscolumn[name] = $Usercolumn[uname]";
 
-    $result = $dbconn->Execute($sql);
-    if ($dbconn->ErrorNo() != 0) {
+    $result = DBUtil::executeSQL($sql);
+
+    if ($result == false) {
         return LogUtil::registerError('Polls migration: DB Error');
     }
 
@@ -63,31 +63,30 @@ function EZComments_migrateapi_polls()
     $comments = array(0 => array('newid' => -1));
 
     // loop through the old comments and insert them one by one into the DB
-    for (; !$result->EOF; $result->MoveNext()) {
-        list($tid, $pollid, $date, $uid, $comment, $subject, $replyto) = $result->fields;
+    $items = DBUtil::marshalObjects($result, array('tid', 'pollid', 'date', 'uid', 'comment', 'subject', 'replyto'));
 
+    foreach ($items as $item) {
         // set the correct user id for anonymous users
-        if (empty($uid)) {
-            $uid = 1;
+        if (empty($item['uid'])) {
+            $item['uid'] = 1;
         }
 
         $id = pnModAPIFunc('EZComments', 'user', 'create',
-                           array('mod'  => 'Polls',
-                                 'objectid' => DataUtil::formatForStore($pollid),
-                                 'url'      => pnModURL('Polls', 'user', 'display', array('pollid' => $pollid)),
-                                 'comment'  => $comment,
-                                 'subject'  => $subject,
-                                 'uid'      => $uid,
-                                 'date'     => $date));
+                           array('mod'      => 'Polls',
+                                 'objectid' => DataUtil::formatForStore($item['pollid']),
+                                 'url'      => pnModURL('News', 'user', 'display', array('pollid' => $item['pollid'])),
+                                 'comment'  => $item['comment'],
+                                 'subject'  => $item['subject'],
+                                 'uid'      => $item['uid'],
+                                 'date'     => $item['date']));
 
         if (!$id) {
             return LogUtil::registerError('Polls migration: Error creating comment');
         }
 
-        $comments[$tid] = array('newid' => $id,
-                                'pid'   => $replyto);
+        $comments[$item['tid']] = array('newid' => $id,
+                                        'pid'   => $item['replyto']);
     }
-    $result->Close();
 
     // rebuild the links to the parents
     $tids = array_keys($comments);
@@ -98,7 +97,7 @@ function EZComments_migrateapi_polls()
                        SET $EZCommentscolumn[replyto] = '". $comments[$v['pid']]['newid'] . "'
                      WHERE $EZCommentscolumn[id] = '$v[newid]'";
 
-            $result = $dbconn->Execute($sql); 
+            $result = DBUtil::executeSQL($sql);
         }
     }
 

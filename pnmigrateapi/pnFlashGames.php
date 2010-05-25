@@ -50,9 +50,6 @@ function EZComments_migrateapi_pnFlashGames()
         return LogUtil::registerError('pnFlashGames migration: DB Error: ' . $sql . ' -- ' . mysql_error());
     }
 
-    // array to rebuild the parents
-    $comments = array(0 => array('newid' => -1));
-
     // loop through the old comments and insert them one by one into the DB
     $items = DBUtil::marshalObjects($result, array('gid', 'uname', 'date', 'comment', 'uid'));
 
