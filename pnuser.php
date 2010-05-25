@@ -61,11 +61,9 @@ function EZComments_user_main($args = array())
     foreach ($items as $k => $item)
     {
         $options   = array();
-        $options[] = array('url'   => $item['url'] . '#comment' . $comment['id'],
+        $options[] = array('url'   => $item['url'] . '#comment' . $item['id'],
                            'image' => 'demo.gif',
                            'title' => __('View', $dom));
-
-        $id = isset($args['id']) ? $args['id'] : FormUtil::getPassedValue('id', null, 'GETPOST');
 
         // Security check
         $securityCheck = pnModAPIFunc('EZComments', 'user', 'checkPermission',
