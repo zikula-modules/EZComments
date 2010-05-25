@@ -14,7 +14,7 @@
  * 
  * Example
  * 
- *   <!--[$MyVar|commentstatus]-->
+ *   {$MyVar|commentstatus}
  * 
  * 
  * @author  Mark West

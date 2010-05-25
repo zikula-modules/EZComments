@@ -13,7 +13,7 @@
  * 
  * Example
  * 
- *   <!--[$MyVar|issued]-->
+ *   {$MyVar|issued}
  * 
  * 
  * @author  Mark West

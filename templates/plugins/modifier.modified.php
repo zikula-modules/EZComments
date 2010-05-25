@@ -13,7 +13,7 @@
  * 
  * Example
  * 
- *   <!--[$MyVar|modified]-->
+ *   {$MyVar|modified}
  * 
  * 
  * @author  Mark West

@@ -19,7 +19,7 @@
  *
  * Example
  * 
- *   <!--[$comment|formatezcomment]-->
+ *   {$comment|formatezcomment}
  * 
  * 
  * @author  Mark West
