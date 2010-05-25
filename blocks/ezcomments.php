@@ -89,7 +89,7 @@ function EZComments_EZCommentsblock_display($blockinfo)
     $items = pnModAPIFunc('EZComments', 'user', 'getall', $options);
 
     // augment the info
-    $comments = EZComments_prepareCommentsForDisplay($items);
+    $comments = ModUtil::apiFunc('EZComments', 'user', 'prepareCommentsForDisplay', $items);
     
     $renderer = & pnRender::getInstance('EZComments');
 

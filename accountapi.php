@@ -8,25 +8,28 @@
  * @license See license.txt
  */
 
-/**
-* Return an array of items to show in the your account panel
-*
-* @return   array
-*/
-function EZComments_accountapi_getall($args)
+class EZComments_accountapi extends AbstractApi
 {
-    $dom = ZLanguage::getModuleDomain('EZComments');
+    /**
+    * Return an array of items to show in the your account panel
+    *
+    * @return   array
+    */
+    public function getall($args)
+    {
+        $dom = ZLanguage::getModuleDomain('EZComments');
 
-    $useAccountPage = pnModGetVar('EZComments', 'useaccountpage', '1');
-    if ($useAccountPage) {
-        // Create an array of links to return
-        $items = array();
-        $items['1'] = array('url'   => pnModURL('EZComments', 'user', 'main'),
-                            'title' => __('Manage my comments', $dom),
-                            'icon'  => 'mycommentsbutton.gif',
-                            'set'   => null);
+        $useAccountPage = pnModGetVar('EZComments', 'useaccountpage', '1');
+        if ($useAccountPage) {
+            // Create an array of links to return
+            $items = array();
+            $items['1'] = array('url'   => pnModURL('EZComments', 'user', 'main'),
+                                'title' => __('Manage my comments', $dom),
+                                'icon'  => 'mycommentsbutton.gif',
+                                'set'   => null);
+        }
+
+        // return the items
+        return $items;
     }
-
-    // Return the items
-    return $items;
 }
