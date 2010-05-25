@@ -24,20 +24,19 @@ function EZComments_adminapi_getUsedModules()
         return LogUtil::registerPermissionError(pnModURL('EZComments', 'admin', 'main'));
     }
 
-    $dbconn  = pnDBGetConn(true);
-    $pntable = pnDBGetTables();
+    $pntable = &pnDBGetTables();
 
     $table  = $pntable['EZComments'];
-    $column = &$pntable['EZComments_column'];
+    $column = $pntable['EZComments_column'];
 
     // TODO Port to DBUtil
     $sql = "SELECT    $column[modname]
             FROM      $table
             GROUP BY  $column[modname]";
 
-    $result = $dbconn->Execute($sql);
+    $result = DBUtil::executeSQL($sql);
 
-    if ($dbconn->ErrorNo() != 0) {
+    if ($result == false) {
         return false;
     }
 

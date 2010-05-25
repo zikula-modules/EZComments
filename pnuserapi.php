@@ -670,7 +670,6 @@ function EZComments_userapi_getallbymodule($args = array())
     $mod = DataUtil::formatForOS($args['mod']);
 
     // Get database setup
-    $dbconn  = pnDBGetConn(true);
     $pntable = &pnDBGetTables();
 
     $eztable = $pntable['EZComments'];
@@ -684,22 +683,18 @@ function EZComments_userapi_getallbymodule($args = array())
             GROUP BY $columns[objectid]
             ORDER BY $columns[objectid]";
 
-    $result = $dbconn->Execute($sql);
+    $result = DBUtil::executeSQL($sql);
 
     // Check for an error with the database code, and if so set an appropriate
     // error message and return
-    if ($dbconn->ErrorNo() != 0) {
+    if ($result == false) {
         return LogUtil::registerError(__('Error! Could not load items.', $dom));
     }
 
     // Put items into result array.  Note that each item is checked
     // individually to ensure that the user is allowed access to it before it
     // is added to the results array
-    for (; !$result->EOF; $result->MoveNext()) {
-        list ($objectid, $url, $count) = $result->fields;
-        $items[] = compact('objectid', 'url', 'count');
-    }
-    $result->Close();
+    $items = DBUtil::marshallObjects($result, array('objectid', 'url', 'count'));
 
     // Return the items
     return $items;
