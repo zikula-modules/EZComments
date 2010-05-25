@@ -55,7 +55,7 @@ function EZComments_EZCommentsblock_display($blockinfo)
     }
 
     // Get variables from content block
-    $vars = pnBlockVarsFromContent($blockinfo['content']);
+    $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
     // Defaults
     if (!isset($vars['numentries'])) {
@@ -117,7 +117,7 @@ function EZComments_EZCommentsblock_modify($blockinfo)
     $dom = ZLanguage::getModuleDomain('EZComments');
 
     // Get current content
-    $vars = pnBlockVarsFromContent($blockinfo['content']);
+    $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
     // Defaults
     if (!isset($vars['numentries'])) {
@@ -173,7 +173,7 @@ function EZComments_EZCommentsblock_update($blockinfo)
     $dom = ZLanguage::getModuleDomain('EZComments');
 
     // Get current content
-    $vars = pnBlockVarsFromContent($blockinfo['content']);
+    $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
     // alter the corresponding variable
     $vars['mod']          = (string)FormUtil::getPassedValue('mod', '', 'POST');
@@ -184,7 +184,7 @@ function EZComments_EZCommentsblock_update($blockinfo)
     $vars['showpending']  =   (bool)FormUtil::getPassedValue('showpending', false, 'POST');
 
     // write back the new contents
-    $blockinfo['content'] = pnBlockVarsToContent($vars); 
+    $blockinfo['content'] = BlockUtil::varsToContent($vars); 
 
     // clear the block cache
     $renderer = Renderer::getInstance('EZComments');
