@@ -35,7 +35,7 @@
                             {else}
                             {$item.anonname|varprepfordisplay}
                             {/if}
-                            <br />{$item.date|date_format}
+                            <br />{$item.date|dateformat}
                         </td>
                         <td><a href="{$item.url}">{$item.mod}</a></td>
                         <td>{$item.type|varprepfordisplay|default:'&nbsp;'}</td>
@@ -83,7 +83,7 @@
                             {else}
                             {$item.anonname|varprepfordisplay}
                             {/if}
-                            <br />{$item.date|date_format}
+                            <br />{$item.date|dateformat}
                         </td>
                         <td><a href="{$item.url}">{$item.mod}</a></td>
                         <td>{$item.type|varprepfordisplay|default:'&nbsp;'}</td>

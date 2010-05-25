@@ -1,6 +1,6 @@
 {gt text='A new comment was submitted to your site that requires moderation'}:
 {gt text='Username:'} {$comment.userline|htmlentities|varprepfordisplay}
-{gt text='Date:'} {$comment.date|date_format|varprepfordisplay}
+{gt text='Date:'} {$comment.date|dateformat|varprepfordisplay}
 {gt text='Subject:'} {$comment.subject|varprepfordisplay}
 {$comment.comment|varprepfordisplay}
 

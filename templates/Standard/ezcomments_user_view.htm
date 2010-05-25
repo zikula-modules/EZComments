@@ -28,7 +28,7 @@
                     {useravatar uid=$comment.uid}
                 </li>
                 <li class="ezc_date">
-                    <span>{gt text='Posted on %s' tag1=$comment.date|date_format:'datetimebrief' domain='module_ezcomments'} </span>
+                    <span>{gt text='Posted on %s' tag1=$comment.date|dateformat:'datetimebrief' domain='module_ezcomments'} </span>
                 </li>
                 {if $pncore.logged_in eq true}
                 <li class="ezc_options">

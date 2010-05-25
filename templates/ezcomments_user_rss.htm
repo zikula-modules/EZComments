@@ -28,7 +28,7 @@
                 {/if}
             </title>
         <link>{$comment.url|varprepfordisplay}#comment{$comment.id|varprepfordisplay}</link>
-        <pubDate>{$comment.date|strtotime|date_format:"%a, %d %b %Y %H:%M:%S %z"}</pubDate>
+        <pubDate>{$comment.date|strtotime|dateformat:"%a, %d %b %Y %H:%M:%S %z"}</pubDate>
         <guid>{$comment.url|varprepfordisplay}#comment{$comment.id|varprepfordisplay}</guid>
         <description>{$comment.comment|varprepfordisplay}</description>
         </item>

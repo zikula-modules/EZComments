@@ -40,8 +40,8 @@
                 {if $item.status eq 2}{img modname="EZComments" src='red.gif' __alt='Rejected' __title='Rejected'}{/if}
             </td>
             <td>
-                <span class="z-nowrap">{$item.date|date_format:datebrief}</span>
-                <span class="z-nowrap">{$item.date|date_format:timebrief}</span>
+                <span class="z-nowrap">{$item.date|dateformat:datebrief}</span>
+                <span class="z-nowrap">{$item.date|dateformat:timebrief}</span>
             </td>
             <td>
                 <span class="z-nowrap">
