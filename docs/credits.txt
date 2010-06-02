@@ -1,46 +1,19 @@
-$Id$
+EZComments Development Team (current status):
+----------------------------------------------------------
+Mateo Tibaquirá (aka mateo)
+  <mateo@zikula.org>
 
-EZComments Development Team
+Carsten Volmer (aka herr.vorragend)
+  <carsten@zikula.org>
+  http://carsten-volmer.de/
 
-Jörg Napp (Founder)
-Mark West
-Frank Schummertz
+
+Contributors for pre 2.0.0 versions:
+----------------------------------------------------------
+Jörg Napp (aka jn)
+Mark West (aka markwest)
+Frank Schummertz (aka Landseer)
+Steffen Voss (aka kaffeeringe.de)
+Florian Schießl (aka quan)
+Carsten Volmer (aka herr.vorragend)
 Jean-Michel Vedrine
-Steffen Voss
-Florian Schießl
-Carsten Volmer
-
-Credits to:
-
-Everybody who uses this module and gave feedback, especially to the following kind persons:
-
-Wordpress
-  -- all of the comment moderation features are inspired by Wordpress (http://www.wordpress.org)
-
-Akismet
-  -- For, hopefully, making EZComments spam free!
-
-Mark West
-  -- for looking through the code and providing a lot of bugfixes
-
-Andreas Stratmann
-  -- for pointing me to the php function class_exists -- good for Smarty
-
-Øivind Skau
-  -- for providing norwegian translations
-
-Stefano Garuti
-  -- for providing italian translations
-
-David Mach
-  -- for providing czech translations
-
-Steffen Voss 
-  -- for doing the first beta tests on the module
-  -- for small additions to the code and new default templates (pnForum look&feel)
-
-Imoq 
-  -- for providing the spanish translation
-
-My wife and my daughter
-  -- I love you!

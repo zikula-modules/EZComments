@@ -1,9 +1,49 @@
-$Id$
+EZComments changelog
+==========================================================================
 
 
-Changelog
-1.6  - New parameter "useurl" can be passed as parameter whenever
-       the hook is called. This parameter might be important for
+v2.0.0  -  June 2010
+Mateo Tibaquir· (aka mateo) -  <mateo@zikula.org>
+Carsten Volmer (aka herr.vorragend) - <carsten@zikula.org> - http://carsten-volmer.de/
+--------------------------------------------------------------------------
+       Gettext conversion (Zikula 1.2.x)
+#62    missing mail encoding in emailToGravatarURL-plugin
+#63    Security Problem! Guests are able to modify comments!
+#66    AuthId and existing input
+#68    editing comments could put status from "Pending" to "Approved"
+#70    Current stylesheet chooser hack doesn't work with theme combine
+#74    User can modify other comments
+#42    Missing permission-check in EZComments_user_modify
+#43    $comment.del always true
+#2     delete-hook somebody
+#21    Patch for bug in EZComments_user_view()
+#39    Pager problem if EZComments is hooked to an other module
+#44    Migration error when upgrading from Comments (76x) to EZComments (Zikula)
+#48    register link should be a choice of register or login
+#49    Incorrect english langauge string
+#51    $args[date] missing in create function in userapi
+#52    Can only post one comment if pnRender caching is enabled
+#54    Change objectid data type to varchar 255
+#57    Blogging-Template: pnRender plugin gravatar is missing!
+#58    Delete-button (user-templates)
+#64    Blacklist menu doesn't store words
+#67    EZComments-block: endless loop (white screen) and language
+#71    Comment notification (owneruid)
+#73    UID as a parameter for the userprofilelink modifier
+#77    DBUtil conversion needed
+#37    Streamline and fixing templates
+#45    link to comment ID
+#46    news comments and migration in zikula
+#47    user account panel icon
+#55    hardcoded search string limitations/requirements
+#76    Use new avatar plugin
+#53    blacklist entries not displayed in administration/config
+
+v1.6  -  Feb 2009
+Florian Schieﬂl (aka quan)
+--------------------------------------------------------------------------
+     - New parameter "useurl" can be passed as parameter whenever the hook
+       is called. This parameter might be important for
        some modules who have a different redirect url where the user
        should be redirected after adding a comment and another url that
        should be used in the email notification (Important for the
@@ -23,7 +63,11 @@ Changelog
      - added stylesheet and language file support for own comment templates
      - added time in hours how long users are able to edit their own comments
 
-1.5  - Migrated akismet support to seperate module
+
+Several developers (siehe credits.txt)
+--------------------------------------------------------------------------
+1.5
+     - Migrated akismet support to seperate module
      - Added option to require anonymous commenters to provide a 'name'
      - Added better support for Zikula 1.0
 
