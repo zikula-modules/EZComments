@@ -568,7 +568,7 @@ class EZComments_User extends AbstractController
      */
     public function modify($args)
     {
-        include_once 'modules/EZComments/includes/common.php';
+        include_once $this->baseDir . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'common.php';
         return ezc_modify($args);
     }
 }
