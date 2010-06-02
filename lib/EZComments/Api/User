@@ -8,7 +8,7 @@
  * @license See license.txt
  */
 
-class EZComments_userapi extends AbstractApi
+class User extends AbstractApi
 {
     /**
      * Get comments for a specific item inside a module

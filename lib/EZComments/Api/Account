@@ -8,7 +8,7 @@
  * @license See license.txt
  */
 
-class EZComments_accountapi extends AbstractApi
+class Account extends AbstractApi
 {
     /**
     * Return an array of items to show in the your account panel

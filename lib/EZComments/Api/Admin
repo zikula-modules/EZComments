@@ -8,7 +8,7 @@
  * @license See license.txt
  */
 
-class EZComments_adminapi extends AbstractApi
+class Admin extends AbstractApi
 {
     /**
      * get Used Modules

@@ -8,7 +8,7 @@
  * @license See license.txt
  */
 
-class EZComments_user extends AbstractController
+class User extends AbstractController
 {
     /**
      * Return to index page

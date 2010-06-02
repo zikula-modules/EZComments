@@ -8,7 +8,7 @@
  * @license See license.txt
  */
 
-class EZComments_searchapi extends AbstractApi
+class Search extends AbstractApi
 {
     /**
      * Plugin info
