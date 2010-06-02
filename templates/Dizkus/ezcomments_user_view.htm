@@ -47,7 +47,7 @@
                 <strong class="ezc_title">{$comment.subject|default:''|varprepfordisplay}</strong>
             </div>
             <div class="ezc_content">
-                {$comment.comment|varprepfordisplay|nl2br|ModUtil::callHooks}
+                {$comment.comment|varprepfordisplay|paragraph|modcallhooks}
             </div>
         </div>
     </div>
