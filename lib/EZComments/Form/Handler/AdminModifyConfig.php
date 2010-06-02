@@ -8,7 +8,7 @@
  * @license See license.txt
  */
 
-class EZComments_admin_modifyconfighandler
+class EZComments_Form_Handler_Admin_ModifyConfig extends Form_Handler
 {
     function initialize(&$renderer)
     {

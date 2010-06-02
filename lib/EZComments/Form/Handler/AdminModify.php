@@ -8,10 +8,9 @@
  * @license See license.txt
  */
 
-class EZComments_user_modifyhandler
+class EZComments_Form_Handler_Admin_Modify extends Form_Handler
 {
     var $id;
-    var $nomodify;
 
     function initialize(&$renderer)
     {
@@ -26,19 +25,15 @@ class EZComments_user_modifyhandler
 
         $comment = ModUtil::apiFunc('EZComments', 'user', 'get', array('id' => $this->id));
         if ($comment == false || !is_array($comment)) {
-            return LogUtil::registerError(__('No such comment found.', $dom), ModUtil::url('EZComments', 'user', 'main'));
+            return LogUtil::registerError(__('No such comment found.', $dom), ModUtil::url('EZComments', 'admin', 'main'));
         }
 
-        // check if user is allowed to modify this content
-        $modifyowntime = ModUtil::getVar('EZComments', 'modifyowntime');
-        $ts = strtotime($comment['date']);
-        if ((UserUtil::getVar('uid') == $comment['uid']) && ((int)$modifyowntime > 0) && ($ts+($modifyowntime*60*60) < time())) {
-              // Admins of course should be allowed to modify every comment
-            if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
-                $renderer->assign('nomodify', 1);
-                $this->nomodify = 1;
-            }
-        }
+        // assign the status flags
+        $statuslevels = array( array('text' => __('Approved', $dom), 'value' => 0),
+                               array('text' => __('Pending', $dom),  'value' => 1),
+                               array('text' => __('Rejected', $dom), 'value' => 2));
+
+        $renderer->assign('statuslevels', $statuslevels);
 
         $renderer->assign('redirect', (isset($redirect) && !empty($redirect)) ? true : false);
 
@@ -58,14 +53,13 @@ class EZComments_user_modifyhandler
                                       array('module'    => '',
                                             'objectid'  => '',
                                             'commentid' => $this->id,
-                                            'level'      => ACCESS_EDIT));
+                                            'level'     => ACCESS_EDIT));
         if (!$securityCheck) {
-            return LogUtil::registerPermissionError(ModUtil::url('EZComments', 'user', 'main'));
+            return LogUtil::registerPermissionError(ModUtil::url('EZComments', 'admin', 'main'));
         }
 
         $ok      = $renderer->pnFormIsValid();
         $data    = $renderer->pnFormGetValues();
-
         $comment = ModUtil::apiFunc('EZComments', 'user', 'get', array('id' => $this->id));
 
         switch ($args['commandName'])
@@ -87,13 +81,6 @@ class EZComments_user_modifyhandler
                 break;
 
             case 'submit':
-                // make a check if the comment's body and title was allowed to be changed.
-                if ($this->nomodify == 1) {
-                    $comment_old = ModUtil::apiFunc('EZComments', 'user', 'get', array('id' => $this->id));
-                    $data['ezcomments_comment'] = $comment_old['comment'];
-                    $data['ezcomments_subject'] = $comment_old['subject'];
-                }
-
                 if (!empty($comment['anonname'])) {
                     // poster is anonymous
                     // check anon fields
@@ -109,7 +96,7 @@ class EZComments_user_modifyhandler
                         $ok = false;
                     }
                     // anonwebsite must be valid
-                    if (!empty($data['ezcomments_anonwebsite'])  && !System::varValidate($data['ezcomments_anonmail'], 'url')) {
+                    if (!empty($data['ezcomments_anonwebsite']) && !System::varValidate($data['ezcomments_anonmail'], 'url')) {
                         $ifield = $renderer->pnFormGetPluginById('ezcomments_anonwebsite');
                         $ifield->setError(DataUtil::formatForDisplay(__('Website of anonymous user is invalid.', $dom)));
                         $ok = false;
@@ -135,6 +122,7 @@ class EZComments_user_modifyhandler
                                 array('id'          => $this->id,
                                       'subject'     => $data['ezcomments_subject'],
                                       'comment'     => $data['ezcomments_comment'],
+                                      'status'      => (int)$data['ezcomments_status'],
                                       'anonname'    => $data['ezcomments_anonname'],
                                       'anonmail'    => $data['ezcomments_anonmail'],
                                       'anonwebsite' => $data['ezcomments_anonwebsite']))) {
@@ -148,6 +136,6 @@ class EZComments_user_modifyhandler
             return System::redirect($comment['url'] . "#comments_{$comment['modname']}_{$comment['objectid']}");
         }
 
-        return System::redirect(ModUtil::url('EZComments', 'user', 'main'));
+        return System::redirect(ModUtil::url('EZComments', 'admin', 'main'));
     }
 }

@@ -8,7 +8,7 @@
  * @license See license.txt
  */
 
-class Myprofile extends AbstractApi
+class EZComments_Api_Myprofile extends AbstractApi
 {
     /**
      * This function returns the name of the tab

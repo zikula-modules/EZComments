@@ -8,7 +8,7 @@
  * @license See license.txt
  */
 
-class Admin extends AbstractController
+class EZComments_Admin extends AbstractController
 {
     /**
      * Main administration function
