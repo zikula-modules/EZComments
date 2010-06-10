@@ -8,7 +8,7 @@
  * @license See license.txt
  */
 
-class EZComments_Block_EZComments extends AbstractBlock
+class EZComments_Block_EZComments extends Zikula_Block
 {
     /**
      * initialise block

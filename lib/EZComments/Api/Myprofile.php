@@ -8,7 +8,7 @@
  * @license See license.txt
  */
 
-class EZComments_Api_Myprofile extends AbstractApi
+class EZComments_Api_Myprofile extends Zikula_Api
 {
     /**
      * This function returns the name of the tab

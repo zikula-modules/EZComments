@@ -8,7 +8,7 @@
  * @license See license.txt
  */
 
-class EZComments_Api_Search extends AbstractApi
+class EZComments_Api_Search extends Zikula_Api
 {
     /**
      * Plugin info

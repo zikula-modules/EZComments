@@ -8,7 +8,7 @@
  * @license See license.txt
  */
 
-class EZComments_Api_User extends AbstractApi
+class EZComments_Api_User extends Zikula_Api
 {
     /**
      * Get comments for a specific item inside a module

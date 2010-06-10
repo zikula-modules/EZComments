@@ -8,7 +8,7 @@
  * @license See license.txt
  */
 
-class EZComments_User extends AbstractController
+class EZComments_User extends Zikula_Controller
 {
     /**
      * Return to index page
@@ -444,7 +444,7 @@ class EZComments_User extends AbstractController
             System::redirect($redirect."#commentform_{$mod}_{$objectid}");
         }
 
-        // clean/set the session data 
+        // clean/set the session data
         if (isset($ezcomment[$mod][$objectid])) {
             unset($ezcomment[$mod][$objectid]);
             if (empty($ezcomment[$mod])) {
