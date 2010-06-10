@@ -44,8 +44,7 @@ function ezc_modify($args)
     }
 
     // load edithandler class from file
-    $handler = "EZComments_{$type}_modifyhandler";
-    include_once 'modules/EZComments/includes/'.strtolower($handler).'.php';
+    $handler = "EZComments_Form_Handler_" . ucwords($type) . "_Modify";
 
     // Create Form output object
     $zform = FormUtil::newpnForm('EZComments');
