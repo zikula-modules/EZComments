@@ -99,7 +99,7 @@ class EZComments_Block_EZComments extends Zikula_Block
         // Populate block info and pass to theme
         $blockinfo['content'] = $renderer->fetch('ezcomments_block_ezcomments.htm');
 
-        return themesideblock($blockinfo);
+        return BlockUtil::themesideblock($blockinfo);
     }
 
     /**
