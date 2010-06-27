@@ -18,7 +18,7 @@ class EZComments_Installer extends Zikula_Installer
      *
      * @return boolean true on success, false otherwise.
      */
-    public function init()
+    public function install()
     {
         // create main table
         if (!DBUtil::createTable('EZComments')) {
@@ -136,7 +136,7 @@ class EZComments_Installer extends Zikula_Installer
      *
      * @return boolean true on success, false otherwise.
      */
-    public function delete()
+    public function uninstall()
     {
         $dom = ZLanguage::getModuleDomain('EZComments');
 
