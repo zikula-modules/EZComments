@@ -7,8 +7,8 @@
         <div>
             <input type="hidden" name="confirmation" value="2" />
             <input type="hidden" name="authid" value="{insert name='generateauthkey' module='EZComments'}" />
-            <input type="hidden" name="allcomments" value="{$allcomments|varprepfordisplay}" />
-            <input type="hidden" name="status" value="{$status|varprepfordisplay}" />
+            <input type="hidden" name="allcomments" value="{$allcomments|safetext}" />
+            <input type="hidden" name="status" value="{$status|safetext}" />
             <h3>{gt text="The following comments will become rejected"}</h3>
             <table class="z-admintable">
                 <thead>
@@ -33,18 +33,18 @@
                             {if $item.uid neq 0}
                             {usergetvar name=uname uid=$item.uid}
                             {else}
-                            {$item.anonname|varprepfordisplay}
+                            {$item.anonname|safetext}
                             {/if}
                             <br />{$item.date|dateformat}
                         </td>
                         <td><a href="{$item.url}">{$item.mod}</a></td>
-                        <td>{$item.type|varprepfordisplay|default:'&nbsp;'}</td>
+                        <td>{$item.type|safetext|default:'&nbsp;'}</td>
                         <td>{$item.comment|strip_tags|truncate:20}</td>
                         <td>
                             {assign var="options" value=$item.options}
                             {strip}
                             [{section name=options loop=$options}
-                            <a href="{$options[options].url|varprepfordisplay}">{$options[options].title}</a>
+                            <a href="{$options[options].url|safetext}">{$options[options].title}</a>
                             {if !$smarty.section.options.last} | {/if}
                             {/section}]
                             {/strip}
@@ -81,18 +81,18 @@
                             {if $item.uid neq 0}
                             {usergetvar name=uname uid=$item.uid}
                             {else}
-                            {$item.anonname|varprepfordisplay}
+                            {$item.anonname|safetext}
                             {/if}
                             <br />{$item.date|dateformat}
                         </td>
                         <td><a href="{$item.url}">{$item.mod}</a></td>
-                        <td>{$item.type|varprepfordisplay|default:'&nbsp;'}</td>
+                        <td>{$item.type|safetext|default:'&nbsp;'}</td>
                         <td>{$item.comment|strip_tags|truncate:20}</td>
                         <td>
                             {assign var="options" value=$item.options}
                             {strip}
                             [{section name=options loop=$options}
-                            <a href="{$options[options].url|varprepfordisplay}">{$options[options].title}</a>
+                            <a href="{$options[options].url|safetext}">{$options[options].title}</a>
                             {if !$smarty.section.options.last} | {/if}
                             {/section}]
                             {/strip}

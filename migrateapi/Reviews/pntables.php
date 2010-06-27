@@ -13,7 +13,7 @@
 /**
  * Reviews table information
 */
-function Reviews_pntables()
+function Reviews_tables()
 {
     // Initialise table array
     $tables = array();

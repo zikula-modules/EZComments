@@ -24,7 +24,7 @@ function EZComments_migrateapi_news()
     }
 
     // Get datbase setup
-    $tables = System::dbGetTables();
+    $tables = DBUtil::getTables();
 
     $EZCommentstable  = $tables['EZComments'];
     $EZCommentscolumn = $tables['EZComments_column'];

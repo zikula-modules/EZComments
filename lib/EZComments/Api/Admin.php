@@ -26,7 +26,7 @@ class EZComments_Api_Admin extends Zikula_Api
             return LogUtil::registerPermissionError(ModUtil::url('EZComments', 'admin', 'main'));
         }
 
-        $tables = System::dbGetTables();
+        $tables = DBUtil::getTables();
 
         $table  = $tables['EZComments'];
         $column = $tables['EZComments_column'];
@@ -65,7 +65,7 @@ class EZComments_Api_Admin extends Zikula_Api
         }
 
         // get tables
-        $tables  = System::dbGetTables();
+        $tables  = DBUtil::getTables();
         $column  = $tables['EZComments_column'];
         // construct where clause and delete...
         $where   = "WHERE $column[modname] = '$args[module]'";
@@ -107,7 +107,7 @@ class EZComments_Api_Admin extends Zikula_Api
         }
 
         // get db table and column for where statement
-        $tables  = System::dbGetTables();
+        $tables  = DBUtil::getTables();
         $column  = $tables['EZComments_column'];
 
         $mod      = DataUtil::formatForStore($args['mod']);
@@ -231,7 +231,7 @@ class EZComments_Api_Admin extends Zikula_Api
         $mod = (isset($args['extrainfo']['module']) && !empty($args['extrainfo']['module'])) ? $args['extrainfo']['module'] : ModUtil::getName();
 
         // Database information
-        $tables  = System::dbGetTables();
+        $tables  = DBUtil::getTables();
         $columns = $tables['EZComments_column'];
 
         // Get items
@@ -263,7 +263,7 @@ class EZComments_Api_Admin extends Zikula_Api
         }
 
         // Get datbase setup
-        $tables  = System::dbGetTables();
+        $tables  = DBUtil::getTables();
         $column  = $tables['EZComments_column'];
 
         if ((bool)$purgerejected) {

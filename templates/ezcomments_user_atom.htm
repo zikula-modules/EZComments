@@ -12,15 +12,15 @@
     <info>{configgetvar name=backend_title}</info>
     {foreach from=$comments item=comment}
     <entry>
-        <title>{$comment.subject|varprepfordisplay}</title>
-        <link rel="alternate" type="text/html" href="{getbaseurl}{$comment.url|varprepfordisplay}#comment{$comment.id|varprepfordisplay}" />
+        <title>{$comment.subject|safetext}</title>
+        <link rel="alternate" type="text/html" href="{getbaseurl}{$comment.url|safetext}#comment{$comment.id|safetext}" />
         <author>
             <name>{usergetvar name=uname uid=$comment.uid}</name>
         </author>
-        <id>{getbaseurl}{$comment.url|varprepfordisplay}#comment{$comment.id|varprepfordisplay}</id>
+        <id>{getbaseurl}{$comment.url|safetext}#comment{$comment.id|safetext}</id>
         <issued>{$comment.date|issued}</issued>
         <modified>{$comment.date|modified}</modified>
-        <summary type="text/html" mode="escaped">{$comment.comment|strip_tags|varprepfordisplay}</summary>
+        <summary type="text/html" mode="escaped">{$comment.comment|strip_tags|safetext}</summary>
     </entry>
     {if $comment.date gt $modified}
     {assign var=modified value=$info.time}

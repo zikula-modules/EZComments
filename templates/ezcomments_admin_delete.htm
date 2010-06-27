@@ -7,14 +7,14 @@
         <div>
             <input type="hidden" name="authid" value="{insert name='generateauthkey' module='EZComments'}" />
             <input type="hidden" name="confirmation" value="1" />
-            <input type="hidden" name="id" value="{$id|varprepfordisplay}" />
-            <input type="hidden" name="redirect" value="{$redirect|varprepfordisplay}" />
+            <input type="hidden" name="id" value="{$id|safetext}" />
+            <input type="hidden" name="redirect" value="{$redirect|safetext}" />
             <fieldset>
                 <legend>{gt text="Confirmation prompt"}</legend>
                 <div class="z-formbuttons">
                     {button src='button_ok.gif' set='icons/small' __alt='Delete' __title='Delete'}
                     {if $redirect neq ''}
-                    <a href="{$redirect|varprepfordisplay}">{img modname='core' src='button_cancel.gif' set='icons/small' __alt='Cancel' __title='Cancel'}</a>
+                    <a href="{$redirect|safetext}">{img modname='core' src='button_cancel.gif' set='icons/small' __alt='Cancel' __title='Cancel'}</a>
                     {else}
                     <a href="{modurl modname='EZComments' type='admin' func='main'}">{img modname='core' src='button_cancel.gif' set='icons/small' __alt='Cancel' __title='Cancel'}</a>
                     {/if}

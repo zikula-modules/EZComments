@@ -31,7 +31,7 @@
         <div class="z-formrow">
             {formlabel for="ezcomments_ipaddr" __text='IP address'}
             {gt text="not logged" assign=notloggedstring}
-            <span id="ezcomments_ipaddr">{$ipaddr|default:$notloggedstring|varprepfordisplay}</span>
+            <span id="ezcomments_ipaddr">{$ipaddr|default:$notloggedstring|safetext}</span>
         </div>
         <div class="z-formrow">
             {formlabel for="ezcomments_subject" __text='Subject'}

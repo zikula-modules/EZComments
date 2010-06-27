@@ -51,7 +51,7 @@ class EZComments_Api_User extends Zikula_Api
         }
 
         // Get database setup
-        $tables = System::dbGetTables();
+        $tables = DBUtil::getTables();
         $columns = $tables['EZComments_column'];
 
         // form where clause
@@ -428,7 +428,7 @@ class EZComments_Api_User extends Zikula_Api
         $uid      = isset($args['uid'])      ? (int)$args['uid']      : 0;
 
         // Get database column names
-        $tables  = System::dbGetTables();
+        $tables  = DBUtil::getTables();
         $columns = $tables['EZComments_column'];
 
         // build the where clause
@@ -641,7 +641,7 @@ class EZComments_Api_User extends Zikula_Api
         }
 
         // Get database columns
-        $tables  = System::dbGetTables();
+        $tables  = DBUtil::getTables();
         $columns = $tables['EZComments_column'];
 
         $where = "$columns[status] = 0";
@@ -670,7 +670,7 @@ class EZComments_Api_User extends Zikula_Api
         $mod = DataUtil::formatForOS($args['mod']);
 
         // Get database setup
-        $tables  = System::dbGetTables();
+        $tables  = DBUtil::getTables();
         $eztable = $tables['EZComments'];
         $columns = $tables['EZComments_column'];
 

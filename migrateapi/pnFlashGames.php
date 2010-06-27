@@ -24,7 +24,7 @@ function EZComments_migrateapi_pnFlashGames()
     } 
 
     // Get datbase setup
-    $tables = System::dbGetTables();
+    $tables = DBUtil::getTables();
 
     $Commentstable  = $tables['pnFlashGames_comments'];
     $Commentscolumn = $tables['pnFlashGames_comments_column'];

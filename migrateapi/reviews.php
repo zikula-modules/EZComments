@@ -26,7 +26,7 @@ function EZComments_migrateapi_reviews()
     // Get datbase setup
     ModUtil::dbInfoLoad('Reviews', 'EZComments/migrateapi/Reviews', true);
 
-    $tables = System::dbGetTables();
+    $tables = DBUtil::getTables();
 
     $Commentstable  = $tables['reviews_comments'];
     $Commentscolumn = $tables['reviews_comments_column'];

@@ -64,7 +64,7 @@
                                 {if $item.uid neq 0}
                                 {$item.uid|userprofilelink|default:$lblunknown}
                                 {else}
-                                {$item.anonname|varprepfordisplay|default:$lblunknown}
+                                {$item.anonname|safetext|default:$lblunknown}
                                 {/if}
                             </span>
                             <br />
@@ -77,8 +77,8 @@
                             </span>
                         </td>
                         <td>
-                            <a href="{$item.url|varprepfordisplay}">{$item.mod|varprepfordisplay}</a>
-                            {if $item.type}{$item.type|varprepfordisplay}{/if}
+                            <a href="{$item.url|safetext}">{$item.mod|safetext}</a>
+                            {if $item.type}{$item.type|safetext}{/if}
                         </td>
                         <td>
                             {if $item.subject}<em>{$item.subject|strip_tags}: </em>{/if}
@@ -87,7 +87,7 @@
                         <td>
                             {assign var="options" value=$item.options}
                             {section name=options loop=$options}
-                            <a href="{$options[options].url|varprepfordisplay}">{img modname='core' set='icons/extrasmall' src=$options[options].image title=$options[options].title alt=$options[options].title}</a>
+                            <a href="{$options[options].url|safetext}">{img modname='core' set='icons/extrasmall' src=$options[options].image title=$options[options].title alt=$options[options].title}</a>
                             {/section}
                         </td>
                     </tr>

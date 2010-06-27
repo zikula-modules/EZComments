@@ -8,8 +8,8 @@
         <div>
             <input type="hidden" name="authid" value="{insert name='generateauthkey' module='EZComments'}" />
             <input type="hidden" name="confirmation" value="1" />
-            <input type="hidden" name="mod" value="{$name|varprepfordisplay}" />
-            <input type="hidden" name="objectid" value="{$objectid|varprepfordisplay}" />
+            <input type="hidden" name="mod" value="{$name|safetext}" />
+            <input type="hidden" name="objectid" value="{$objectid|safetext}" />
             <fieldset>
                 <legend>{gt text="Confirmation prompt"}</legend>
                 <div class="z-formbuttons">

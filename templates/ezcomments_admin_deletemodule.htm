@@ -8,7 +8,7 @@
         <div>
             <input type="hidden" name="authid" value="{insert name='generateauthkey' module='EZComments'}" />
             <input type="hidden" name="confirmation" value="1" />
-            <input type="hidden" name="modid" value="{$modid|varprepfordisplay}" />
+            <input type="hidden" name="modid" value="{$modid|safetext}" />
             <fieldset>
                 <legend>{gt text="Confirmation prompt"}</legend>
                 <div class="z-formbuttons">

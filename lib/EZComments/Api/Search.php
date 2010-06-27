@@ -58,7 +58,7 @@ class EZComments_Api_Search extends Zikula_Api
 
         ModUtil::dbInfoLoad('Search');
 
-        $tables = System::dbGetTables();
+        $tables = DBUtil::getTables();
         // ezcomments tables
         $ezcommentstable  = $tables['EZComments'];
         $ezcommentscolumn = $tables['EZComments_column'];

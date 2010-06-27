@@ -2,7 +2,7 @@
 {include file="ezcomments_admin_menu.htm"}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname='EZComments' src='admin.gif' alt='' }</div>
-    <h2>{gt text="Comment statistics"} - {gt text="Module"}: {$name|varprepfordisplay}</h2>
+    <h2>{gt text="Comment statistics"} - {gt text="Module"}: {$name|safetext}</h2>
     <table class="z-admintable">
         <thead>
             <tr>
@@ -17,11 +17,11 @@
         <tbody>
             {foreach from=$commentstats item=commentstat}
             <tr class="{cycle values=z-odd,z-even}">
-                <td><a href="{$commentstat.url|urldecode|varprepfordisplay}">{$commentstat.objectid|varprepfordisplay}</a></td>
-                <td>{$commentstat.totalcomments|varprepfordisplay}</td>
-                <td>{$commentstat.approvedcomments|varprepfordisplay}</td>
-                <td>{$commentstat.pendingcomments|varprepfordisplay}</td>
-                <td>{$commentstat.rejectedcomments|varprepfordisplay}</td>
+                <td><a href="{$commentstat.url|urldecode|safetext}">{$commentstat.objectid|safetext}</a></td>
+                <td>{$commentstat.totalcomments|safetext}</td>
+                <td>{$commentstat.approvedcomments|safetext}</td>
+                <td>{$commentstat.pendingcomments|safetext}</td>
+                <td>{$commentstat.rejectedcomments|safetext}</td>
                 <td>
                     <a href="{modurl modname=EZComments type=admin func=deleteitem mod=$name objectid=$commentstat.objectid}">{img modname='core' set='icons/extrasmall' src='14_layer_deletelayer.gif' __title='Delete' __alt='Delete'}</a>
                 </td>

@@ -48,7 +48,7 @@
                     {if $item.uid neq 0}
                     {$item.uid|userprofilelink|default:$lblunknown}
                     {else}
-                    {$item.anonname|varprepfordisplay|default:$lblunknown}
+                    {$item.anonname|safetext|default:$lblunknown}
                     {/if}
                 </span>
                 <br />
@@ -67,7 +67,7 @@
             <td class="z-nowrap">
                 {assign var="options" value=$item.options}
                 {section name=options loop=$options}
-                <a href="{$options[options].url|varprepfordisplay}">{img modname='core' set='icons/extrasmall' src=$options[options].image title=$options[options].title alt=$options[options].title}</a>
+                <a href="{$options[options].url|safetext}">{img modname='core' set='icons/extrasmall' src=$options[options].image title=$options[options].title alt=$options[options].title}</a>
                 {/section}
             </td>
         </tr>

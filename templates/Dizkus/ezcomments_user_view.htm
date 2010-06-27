@@ -10,7 +10,7 @@
     {/if}
 
     {foreach from=$comments item="comment"}
-    <div id="comment{$comment.id|varprepfordisplay}" class="ezc_comment z-clearfix {cycle values='ezc_bg1,ezc_bg2'}" >
+    <div id="comment{$comment.id|safetext}" class="ezc_comment z-clearfix {cycle values='ezc_bg1,ezc_bg2'}" >
         <div class="ezc_author">
             <div class="ezc_avatar">
                 {if $comment.anonname neq '' && $comment.anonwebsite neq ''}
@@ -44,10 +44,10 @@
 
         <div class="ezc_body">
             <div class="ezc_info">
-                <strong class="ezc_title">{$comment.subject|default:''|varprepfordisplay}</strong>
+                <strong class="ezc_title">{$comment.subject|default:''|safetext}</strong>
             </div>
             <div class="ezc_content">
-                {$comment.comment|varprepfordisplay|paragraph|modcallhooks}
+                {$comment.comment|safetext|paragraph|modcallhooks}
             </div>
         </div>
     </div>
@@ -65,11 +65,11 @@
     <form class="z-form z-linear" id="commentform_{$ezc_info.mod}_{$ezc_info.objectid}" action="{modurl modname=EZComments func=create}" method="post">
         <div>
             <input type="hidden" name="authid" id="authid" value="{insert name='generateauthkey' module='EZComments'}" />
-            <input type="hidden" name="redirect" id="EZComments_redirect" value="{$redirect|varprepfordisplay}" />
+            <input type="hidden" name="redirect" id="EZComments_redirect" value="{$redirect|safetext}" />
             <input type="hidden" name="mod" id="EZComments_modname" value="{modgetname}" />
-            <input type="hidden" name="owneruid" id="EZComments_owneruid" value="{$owneruid|varprepfordisplay}" />
-            <input type="hidden" name="useurl" id="EZComments_useurl" value="{$useurl|varprepfordisplay}" />
-            <input type="hidden" name="objectid" id="EZComments_objectid" value="{$objectid|varprepfordisplay}" />
+            <input type="hidden" name="owneruid" id="EZComments_owneruid" value="{$owneruid|safetext}" />
+            <input type="hidden" name="useurl" id="EZComments_useurl" value="{$useurl|safetext}" />
+            <input type="hidden" name="objectid" id="EZComments_objectid" value="{$objectid|safetext}" />
             <fieldset>
                 <legend>{gt text="Add a new comment" domain="module_ezcomments"}</legend>
                 <div class="z-formrow">

@@ -16,7 +16,7 @@
  * 
  * @return    array    an array with the table infomation
  */
-function EZComments_pntables()
+function EZComments_tables()
 {
     // Initialise table array
     $tables = array();
