@@ -91,7 +91,7 @@ class EZComments_Block_EZComments extends Zikula_Block
         // augment the info
         $comments = ModUtil::apiFunc('EZComments', 'user', 'prepareCommentsForDisplay', $items);
 
-        $renderer = Renderer::getInstance('EZComments');
+        $renderer = Zikula_View::getInstance('EZComments');
 
         $renderer->assign($vars);
         $renderer->assign('comments', $comments);
@@ -99,7 +99,7 @@ class EZComments_Block_EZComments extends Zikula_Block
         // Populate block info and pass to theme
         $blockinfo['content'] = $renderer->fetch('ezcomments_block_ezcomments.htm');
 
-        return BlockUtil::themesideblock($blockinfo);
+        return BlockUtil::BlockUtil::themesideblock($blockinfo);
     }
 
     /**
@@ -149,7 +149,7 @@ class EZComments_Block_EZComments extends Zikula_Block
         $usermods = ModUtil::apiFunc('Modules', 'admin', 'gethookedmodules', array('hookmodname'=> 'EZComments'));
 
         // Create output object
-        $renderer = Renderer::getInstance('EZComments', false);
+        $renderer = Zikula_View::getInstance('EZComments', false);
 
         // assign the block vars
         $renderer->assign($vars);
@@ -183,7 +183,7 @@ class EZComments_Block_EZComments extends Zikula_Block
         $blockinfo['content'] = BlockUtil::varsToContent($vars);
 
         // clear the block cache
-        $renderer = Renderer::getInstance('EZComments');
+        $renderer = Zikula_View::getInstance('EZComments');
         $renderer->clear_cache('ezcomments_block_ezcomments.htm');
 
         return $blockinfo;

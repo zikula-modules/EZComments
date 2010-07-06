@@ -54,7 +54,7 @@ class EZComments_Api_Myprofile extends Zikula_Api
         }
 
         // generate output
-        $render = Renderer::getInstance('EZComments');
+        $render = Zikula_View::getInstance('EZComments');
 
         $render->assign('uid', (int) $args['uid']);
         $render->assign('viewer_uid', UserUtil::getVar('uid'));

@@ -31,7 +31,7 @@ class EZComments_Api_Search extends Zikula_Api
         if (SecurityUtil::checkPermission('EZComments::', '::', ACCESS_READ)) {
             // Create output object - this object will store all of our output so that
             // we can return it easily when required
-            $render = Renderer::getInstance('EZComments');
+            $render = Zikula_View::getInstance('EZComments');
             $render->assign('active', !isset($args['active']) || isset($args['active']['EZComments']));
             return $render->fetch('ezcomments_search_form.htm');
         }

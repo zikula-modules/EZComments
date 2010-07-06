@@ -77,7 +77,7 @@ class EZComments_Controller_User extends Zikula_Controller
         }
 
         // Create output object
-        $renderer = Renderer::getInstance('EZComments', false);
+        $renderer = Zikula_View::getInstance('EZComments', false);
 
         // assign the module vars
         $renderer->assign(ModUtil::getVar('EZComments'));
@@ -162,7 +162,7 @@ class EZComments_Controller_User extends Zikula_Controller
         }
 
         // create the output object
-        $renderer = Renderer::getInstance('EZComments', false, null, true);
+        $renderer = Zikula_View::getInstance('EZComments', false, null, true);
 
         $renderer->assign('comments',     $items);
         $renderer->assign('commentcount', $commentcount);
@@ -297,7 +297,7 @@ class EZComments_Controller_User extends Zikula_Controller
         }
 
         // don't use caching (for now...)
-        $renderer = Renderer::getInstance('EZComments', false, null, true);
+        $renderer = Zikula_View::getInstance('EZComments', false, null, true);
 
         $renderer->assign('comments',     $items);
         $renderer->assign('commentcount', $commentcount);
@@ -534,7 +534,7 @@ class EZComments_Controller_User extends Zikula_Controller
                                        'status'    => 0));
 
         // create the output object
-        $renderer = Renderer::getInstance('EZComments');
+        $renderer = Zikula_View::getInstance('EZComments');
 
         // get the last x comments
         $renderer->assign('comments'    , $comments);

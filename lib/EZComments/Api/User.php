@@ -318,7 +318,7 @@ class EZComments_Api_User extends Zikula_Api
 
         // Inform the content owner or the admin about a new comment
         if (!$maxstatus && ModUtil::getVar('EZComments', 'MailToAdmin') && !in_array($args['uid'], array(2, $owneruid))) {
-            $renderer = Renderer::getInstance('EZComments', false);
+            $renderer = Zikula_View::getInstance('EZComments', false);
 
             if ($args['uid'] > 0) {
                 $newcomment['userline'] = UserUtil::getVar('uname', $args['uid']);
@@ -339,7 +339,7 @@ class EZComments_Api_User extends Zikula_Api
         }
 
         if ($maxstatus && ModUtil::getVar('EZComments', 'moderationmail') && !in_array($args['uid'], array(2, $owneruid))) {
-            $renderer = Renderer::getInstance('EZComments', false);
+            $renderer = Zikula_View::getInstance('EZComments', false);
 
             if ($args['uid'] > 0) {
                 $newcomment['userline'] = UserUtil::getVar('uname', $args['uid']);

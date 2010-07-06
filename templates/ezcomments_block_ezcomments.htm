@@ -15,7 +15,7 @@
         {/if}
         {/if}
         {if $showdate}
-        {gt text="on" domain="module_ezcomments"}&nbsp;{$comment.date|dateformat|varprephtmldisplay}
+        {gt text="on" domain="module_ezcomments"}&nbsp;{$comment.date|dateformat|safehtml}
         {/if}
     </li>
     {/foreach}
