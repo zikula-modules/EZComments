@@ -8,7 +8,7 @@
  * @license See license.txt
  */
 
-class EZComments_User extends Zikula_Controller
+class EZComments_Controller_User extends Zikula_Controller
 {
     /**
      * Return to index page
