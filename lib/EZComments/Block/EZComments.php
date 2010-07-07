@@ -27,8 +27,8 @@ class EZComments_Block_EZComments extends Zikula_Block
     public function info()
     {
         return array('module'          => 'EZComments',
-                'text_type'       => $this->__('Comments', $dom),
-                'text_type_long'  => $this->__('Show latest comments', $dom),
+                'text_type'       => $this->__('Comments'),
+                'text_type_long'  => $this->__('Show latest comments'),
                 'allow_multiple'  => true,
                 'form_content'    => false,
                 'form_refresh'    => false,
@@ -99,7 +99,7 @@ class EZComments_Block_EZComments extends Zikula_Block
         // Populate block info and pass to theme
         $blockinfo['content'] = $renderer->fetch('ezcomments_block_ezcomments.htm');
 
-        return BlockUtil::BlockUtil::themesideblock($blockinfo);
+        return BlockUtil::themesideblock($blockinfo);
     }
 
     /**
