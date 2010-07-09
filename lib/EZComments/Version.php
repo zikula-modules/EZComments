@@ -13,10 +13,10 @@ class EZComments_Version extends Zikula_Version
     {
         $meta = array();
         // Information for the modules admin
-        $meta['displayname']    = __('Comments');
-        $meta['description']    = __('Attach comments to every kind of content using hooks');
+        $meta['displayname']    = $this->__('Comments');
+        $meta['description']    = $this->__('Attach comments to every kind of content using hooks');
         //! module url in lowercase and different to displayname
-        $meta['url']            = __('comments', $dom);
+        $meta['url']            = $this->__('comments');
         $meta['version']        = '2.1.0';
         $meta['contact']        = 'http://code.zikula.org/ezcomments/';
         $meta['securityschema'] = array(
