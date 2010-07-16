@@ -120,7 +120,7 @@ class EZComments_Installer extends Zikula_Installer
                 $this->setVar('css', 'style.css');
 
             case '2.0.0':
-            case '2.1.0':
+            case '3.0.0':
             // future upgrade routines
                 break;
         }
