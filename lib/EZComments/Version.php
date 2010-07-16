@@ -18,7 +18,6 @@ class EZComments_Version extends Zikula_Version
         //! module url in lowercase and different to displayname
         $meta['url']            = $this->__('comments');
         $meta['version']        = '2.1.0';
-        $meta['contact']        = 'http://code.zikula.org/ezcomments/';
         $meta['securityschema'] = array(
                 'EZComments::'          => 'Module:Item ID:Comment ID',
                 'EZComments::trackback' => 'Module:Item ID:',
