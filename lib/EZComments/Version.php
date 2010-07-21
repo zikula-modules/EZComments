@@ -32,11 +32,8 @@ class EZComments_Version extends Zikula_Version
                 array('modname'    => 'ContactList',
                         'minversion' => '1.0', 'maxversion' => '',
                         'status'     => ModUtil::DEPENDENCY_RECOMMENDED),
-                array('modname'    => 'MyProfile',
-                        'minversion' => '1.2', 'maxversion' => '',
-                        'status'     => ModUtil::DEPENDENCY_RECOMMENDED),
                 array('modname'    => 'InterCom',
-                        'minversion' => '2.1', 'maxversion' => '',
+                        'minversion' => '2.3.0', 'maxversion' => '',
                         'status'     => ModUtil::DEPENDENCY_RECOMMENDED)
         );
         return $meta;
