@@ -28,12 +28,6 @@ class EZComments_Version extends Zikula_Version
         $meta['dependencies'] = array(
                 array('modname'    => 'akismet',
                         'minversion' => '1.0', 'maxversion' => '',
-                        'status'     => ModUtil::DEPENDENCY_RECOMMENDED),
-                array('modname'    => 'ContactList',
-                        'minversion' => '1.0', 'maxversion' => '',
-                        'status'     => ModUtil::DEPENDENCY_RECOMMENDED),
-                array('modname'    => 'InterCom',
-                        'minversion' => '2.3.0', 'maxversion' => '',
                         'status'     => ModUtil::DEPENDENCY_RECOMMENDED)
         );
         return $meta;
