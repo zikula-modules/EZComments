@@ -1,0 +1,257 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Zikula component\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-05-25 17:07-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: includes/ezcomments_user_modifyhandler.class.php:29
+#: includes/ezcomments_admin_modifyhandler.class.php:28 adminapi.php:189
+msgid "No such comment found."
+msgstr ""
+
+#: includes/ezcomments_user_modifyhandler.class.php:85
+#: includes/ezcomments_admin_modifyhandler.class.php:79 admin.php:422
+#: admin.php:566 admin.php:631
+msgid "Done! Comment deleted."
+msgstr ""
+
+#: includes/ezcomments_user_modifyhandler.class.php:102
+#: includes/ezcomments_admin_modifyhandler.class.php:89
+msgid "Name for anonymous user is missing."
+msgstr ""
+
+#: includes/ezcomments_user_modifyhandler.class.php:108
+#: includes/ezcomments_admin_modifyhandler.class.php:95
+msgid "Email address of anonymous user is missing or invalid."
+msgstr ""
+
+#: includes/ezcomments_user_modifyhandler.class.php:114
+#: includes/ezcomments_admin_modifyhandler.class.php:101
+msgid "Website of anonymous user is invalid."
+msgstr ""
+
+#: includes/ezcomments_user_modifyhandler.class.php:125
+#: includes/ezcomments_admin_modifyhandler.class.php:112 user.php:419
+msgid "Error! The comment contains no text."
+msgstr ""
+
+#: includes/ezcomments_user_modifyhandler.class.php:142
+#: includes/ezcomments_admin_modifyhandler.class.php:130
+msgid "Done! Comment updated."
+msgstr ""
+
+#: includes/ezcomments_admin_modifyhandler.class.php:32
+#: includes/ezcomments_admin_modifyconfighandler.class.php:33
+#: templates/plugins/modifier.commentstatus.php:31 admin.php:670
+msgid "Approved"
+msgstr ""
+
+#: includes/ezcomments_admin_modifyhandler.class.php:33
+#: includes/ezcomments_admin_modifyconfighandler.class.php:34
+#: templates/plugins/modifier.commentstatus.php:33 admin.php:668
+msgid "Pending"
+msgstr ""
+
+#: includes/ezcomments_admin_modifyhandler.class.php:34
+#: includes/ezcomments_admin_modifyconfighandler.class.php:35
+#: templates/plugins/modifier.commentstatus.php:35 admin.php:669
+msgid "Rejected"
+msgstr ""
+
+#: includes/ezcomments_admin_modifyconfighandler.class.php:39
+msgid "Atom 0.3"
+msgstr ""
+
+#: includes/ezcomments_admin_modifyconfighandler.class.php:40
+msgid "RSS 2.0"
+msgstr ""
+
+#: includes/ezcomments_admin_modifyconfighandler.class.php:64
+#: includes/ezcomments_admin_modifyconfighandler.class.php:69
+#: includes/ezcomments_admin_modifyconfighandler.class.php:74
+#: includes/ezcomments_admin_modifyconfighandler.class.php:79
+#: includes/ezcomments_admin_modifyconfighandler.class.php:84
+msgid "missing value"
+msgstr ""
+
+#: includes/ezcomments_admin_modifyconfighandler.class.php:117
+msgid "Done! Module configuration updated."
+msgstr ""
+
+#: admin.php:58 user.php:51 user.php:153 user.php:288
+msgid "Internal Error."
+msgstr ""
+
+#: admin.php:67 admin.php:717 user.php:60
+msgid "View"
+msgstr ""
+
+#: admin.php:71 admin.php:721 user.php:73
+msgid "Edit"
+msgstr ""
+
+#: admin.php:165
+msgid "Done! Item deleted."
+msgstr ""
+
+#: admin.php:172 admin.php:179 admin.php:186
+msgid "Done! Item updated."
+msgstr ""
+
+#: admin.php:253
+msgid "No migration plugins available."
+msgstr ""
+
+#: admin.php:331
+msgid "No orphaned comments."
+msgstr ""
+
+#: admin.php:372
+msgid "Error! A general failure occurs."
+msgstr ""
+
+#: admin.php:375
+msgid "Done! All orphaned comments for this module deleted."
+msgstr ""
+
+#: admin.php:757
+msgid "New comment rules applied"
+msgstr ""
+
+#: searchapi.php:56
+#, php-format
+msgid ""
+"The comments can only be searched for words that are longer than %1$s and "
+"less than %2$s characters!"
+msgstr ""
+
+#: searchapi.php:89 userapi.php:690
+msgid "Error! Could not load items."
+msgstr ""
+
+#: version.php:15 blocks/ezcomments.php:30
+msgid "Comments"
+msgstr ""
+
+#: version.php:16
+msgid "Attach comments to every kind of content using hooks"
+msgstr ""
+
+#. ! module url in lowercase and different to displayname
+#: version.php:18
+msgid "comments"
+msgstr ""
+
+#: adminapi.php:137 adminapi.php:309
+msgid "No such item found."
+msgstr ""
+
+#: adminapi.php:152 adminapi.php:272 adminapi.php:279
+msgid "Error! Deletion attempt failed."
+msgstr ""
+
+#: adminapi.php:206
+msgid "Error! Update attempt failed."
+msgstr ""
+
+#: adminapi.php:356
+msgid "View comments"
+msgstr ""
+
+#: adminapi.php:357
+msgid "Delete orphaned comments"
+msgstr ""
+
+#: adminapi.php:358
+msgid "Migrate comments"
+msgstr ""
+
+#: adminapi.php:359
+msgid "Purge comments"
+msgstr ""
+
+#: adminapi.php:360
+msgid "Comment statistics"
+msgstr ""
+
+#: adminapi.php:361
+msgid "Re-apply moderation rules"
+msgstr ""
+
+#: adminapi.php:362
+msgid "Settings"
+msgstr ""
+
+#: blocks/ezcomments.php:31
+msgid "Show latest comments"
+msgstr ""
+
+#: userapi.php:199
+msgid "Error! The user ignores you."
+msgstr ""
+
+#: userapi.php:207
+msgid "Error! The name field is required. Comment rejected."
+msgstr ""
+
+#: userapi.php:263
+msgid ""
+"Error! Your comment contains unacceptable content and has been rejected."
+msgstr ""
+
+#: userapi.php:289
+msgid "Error! Creation attempt failed."
+msgstr ""
+
+#: userapi.php:296
+msgid "Done! Comment added."
+msgstr ""
+
+#: userapi.php:300
+msgid ""
+"Done! Your comment was held for moderation and will be reviewed shortly."
+msgstr ""
+
+#: userapi.php:330
+msgid "A new comment was entered"
+msgstr ""
+
+#: userapi.php:351
+msgid "New comment for your site"
+msgstr ""
+
+#: accountapi.php:25
+msgid "Manage my comments"
+msgstr ""
+
+#: init.php:30 init.php:36 init.php:41
+msgid "Error creating hook."
+msgstr ""
+
+#: init.php:93
+msgid "Error updating the table."
+msgstr ""
+
+#: init.php:146 init.php:150 init.php:154
+msgid "Error deleting hook."
+msgstr ""
+
+#: myprofileapi.php:27
+msgid "User's pinboard"
+msgstr ""
+
+#: myprofileapi.php:52
+msgid "Registering EZComments hook for MyProfile module failed"
+msgstr ""
