@@ -30,11 +30,15 @@ class EZComments_user_modifyhandler
         }
 
         // check if user is allowed to modify this content
-        $modifyowntime = pnModGetVar('EZComments', 'modifyowntime');
+        $modifyowntime = (int) pnModGetVar('EZComments', 'modifyowntime');
         $ts = strtotime($comment['date']);
-        if ((pnUserGetVar('uid') == $comment['uid']) && ((int)$modifyowntime > 0) && ($ts+($modifyowntime*60*60) < time())) {
-              // Admins of course should be allowed to modify every comment
-            if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
+        
+        if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
+            // user has no admin permissions. Only commenting user should be able to modify
+            if ($comment['uid'] != pnUserGetVar('uid')) {    // foreign content and no admin permissions
+                $renderer->assign('nomodify', 1);
+                $this->nomodify = 1;
+            } else if (($modifyowntime > 0) && ($ts+($modifyowntime*60*60) < time())) {
                 $renderer->assign('nomodify', 1);
                 $this->nomodify = 1;
             }

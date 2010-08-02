@@ -16,7 +16,7 @@ $modversion['displayname']    = __('Comments', $dom);
 $modversion['description']    = __('Attach comments to every kind of content using hooks', $dom);
 //! module url in lowercase and different to displayname
 $modversion['url']            = __('comments', $dom);
-$modversion['version']        = '2.0.0';
+$modversion['version']        = '2.0.1';
 
 // I suspect these are not respected as the should
 $modversion['admin']          = 1;

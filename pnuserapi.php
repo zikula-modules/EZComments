@@ -711,7 +711,7 @@ function EZComments_userapi_getallbymodule($args = array())
  * This function first does the regular Zikula checkPermission call and if
  * this function call is "false", we'll do some more checks
  *
- * @author Florian Schieï¿½l
+ * @author Florian Schießl
  * @param $args['module'] string module's name
  * @param $args['objectid'] int object's id
  * @param $args['commentid'] int id of comment
@@ -720,7 +720,7 @@ function EZComments_userapi_getallbymodule($args = array())
  *
  * @return boolean
  */
-// FIXME check where this is called and with which params
+// FIXME check where this is called and with which params ?????
 function EZComments_userapi_checkPermission($args = array())
 {
     // A guest will have no permission
@@ -751,11 +751,12 @@ function EZComments_userapi_checkPermission($args = array())
     if (SecurityUtil::checkPermission('EZComments::', $inst, $args['level'])) {
         return true;
     }
+    if (($args['owneruid'] == $uid) && ($args['owneruid'] > 1)) return true;
 
     if (!empty($args['commentid'])) {
         // otherwise: get the comment, check the uid and return the result
         $comment = DBUtil::selectObjectByID('EZComments', $args['commentid']);
-        if ($comment['uid'] == $uid) {
+        if (($comment['owneruid'] == $uid) || ($comment['uid'] == $uid)) {
             return true;
         }
     }

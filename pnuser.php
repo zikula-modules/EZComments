@@ -20,7 +20,7 @@
 function EZComments_user_main($args = array())
 {
     if (!pnUserLoggedIn()) {
-        return pnRedirect(pnGetHomepageURL);
+        return pnRedirect(pnGetHomepageURL());
     }
 
     $dom = ZLanguage::getModuleDomain('EZComments');
@@ -53,7 +53,7 @@ function EZComments_user_main($args = array())
 
     $items = pnModAPIFunc('EZComments', 'user', 'getall', $params);
 
-    if ($items === false) {
+        if ($items === false) {
         return LogUtil::registerError(__('Internal Error.', $dom));
     }
 
@@ -71,6 +71,7 @@ function EZComments_user_main($args = array())
                                             'objectid'  => '',
                                             'commentid' => $item['id'],
                                             'uid'       => $item['uid'],
+                                            'owneruid'  => $item['owneruid'],
                                             'level'     => ACCESS_EDIT));
 
         if ($securityCheck) {
