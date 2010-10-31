@@ -22,7 +22,7 @@ class EZComments_Controller_User extends Zikula_Controller
     public function main($args = array())
     {
         if (!UserUtil::isLoggedIn()) {
-            return System::redirect(System::getHomepageUrl);
+            return System::redirect(System::getHomepageUrl());
         }
 
         // the following code was taken from the admin interface first and modified
@@ -65,6 +65,7 @@ class EZComments_Controller_User extends Zikula_Controller
                                                 'objectid'  => '',
                                                 'commentid' => $item['id'],
                                                 'uid'       => $item['uid'],
+                                                'owneruid'  => $item['owneruid'],
                                                 'level'     => ACCESS_EDIT));
 
             if ($securityCheck) {
