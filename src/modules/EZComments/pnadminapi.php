@@ -120,7 +120,8 @@ function EZComments_adminapi_deletebyitem($args)
     $objectid = DataUtil::formatForStore($args['objectid']);
     $where    = "$column[modname] = '$mod' AND $column[objectid] = '$objectid'";
 
-    return DBUtil::deleteWhere('EZComments', $where);
+    $args['extrainfo']['EZComments'] = DBUtil::deleteWhere('EZComments', $where);
+    return $args['extrainfo'];
 }
 
 /**
@@ -247,7 +248,8 @@ function EZComments_adminapi_deletemodule($args)
     // Get items
     $where = "WHERE $columns[modname] = '" . DataUtil::formatForStore($mod) . "'";
 
-    return DBUtil::deleteWhere('EZComments', $where);
+    $args['extrainfo']['EZComments'] = DBUtil::deleteWhere('EZComments', $where);
+    return $args['extrainfo'];
 }
 
 /**

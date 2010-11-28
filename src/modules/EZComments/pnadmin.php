@@ -577,7 +577,8 @@ function EZComments_admin_deletemodule($args)
     // note: the api call is a little different here since we'll really calling a hook function that will
     // normally be executed when a module is deleted. The extra nesting of the modname inside an extrainfo
     // array reflects this
-    if (pnModAPIFunc('EZComments', 'admin', 'deletemodule', array('extrainfo' => array('module' => $modinfo['name'])))) {
+    $xtra = pnModAPIFunc('EZComments', 'admin', 'deletemodule', array('extrainfo' => array('module' => $modinfo['name'])));
+    if ($xtra['EZComments']) {
         // Success
         LogUtil::registerStatus(__('Done! Comment deleted.', $dom));
     }
@@ -644,7 +645,8 @@ function EZComments_admin_deleteitem($args)
     // note: the api call is a little different here since we'll really calling a hook function that will
     // normally be executed when a module is deleted. The extra nesting of the modname inside an extrainfo
     // array reflects this
-    if (pnModAPIFunc('EZComments', 'admin', 'deletebyitem', array('mod' => $modinfo['name'], 'objectid' => $objectid))) {
+    $xtra = pnModAPIFunc('EZComments', 'admin', 'deletebyitem', array('mod' => $modinfo['name'], 'objectid' => $objectid));
+    if ($xtra['EZComments']) {
         // Success
         LogUtil::registerStatus(__('Done! Comment deleted.', $dom));
     }
