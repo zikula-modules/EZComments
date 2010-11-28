@@ -32,9 +32,6 @@
                 </li>
                 <!--[if $pncore.logged_in eq true]-->
                 <li class="ezc_options">
-                    <!--[if $prfmodule]-->
-                    <!--[$comment.uid|userprofilelink:'':"`$baseurl`images/icons/extrasmall/personal.gif"]-->
-                    <!--[/if]-->
                     <!--[if $msgmodule]-->
                     <a href="<!--[pnmodurl modname=$msgmodule func='inbox' func='newpm' uid=$comment.uid]-->"><!--[pnimg modname='core' src='mail_generic.gif' set='icons/extrasmall' __title='Send mail to user' __alt='Send mail to user']--></a>
                     <!--[/if]-->
