@@ -53,7 +53,7 @@ function EZComments_user_main($args = array())
 
     $items = pnModAPIFunc('EZComments', 'user', 'getall', $params);
 
-        if ($items === false) {
+    if ($items === false) {
         return LogUtil::registerError(__('Internal Error.', $dom));
     }
 
