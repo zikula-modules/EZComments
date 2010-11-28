@@ -52,6 +52,7 @@
 }
 #ezc_comments .ezcomments_wrapper .ezc_tl {
     background:url(images/01_bg_comments_tl.gif) top left no-repeat;
+    position:relative;
 }
 #ezc_comments .ezcomments_wrapper .ezc_br {
     background:url(images/01_bg_comments_br.gif) bottom right no-repeat;
