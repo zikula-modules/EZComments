@@ -117,9 +117,9 @@ function EZComments_user_view($args)
     $mod      = isset($args['mod']) ? $args['mod'] : pnModGetName();
     $objectid = isset($args['objectid']) ? $args['objectid'] : '';
 
-    // security check
+    // first check if the user is allowed to do any comments for this module/objectid
     if (!SecurityUtil::checkPermission('EZComments::', "$mod:$objectid:", ACCESS_OVERVIEW)) {
-        return LogUtil::registerPermissionError();
+        return;
     }
 
     $dom = ZLanguage::getModuleDomain('EZComments');
