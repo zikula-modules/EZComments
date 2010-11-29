@@ -114,7 +114,8 @@ class EZComments_Api_Admin extends Zikula_Api
         $objectid = DataUtil::formatForStore($args['objectid']);
         $where    = "$column[modname] = '$mod' AND $column[objectid] = '$objectid'";
 
-        return DBUtil::deleteWhere('EZComments', $where);
+        $args['extrainfo']['EZComments'] = DBUtil::deleteWhere('EZComments', $where);
+        return $args['extrainfo'];
     }
 
     /**
@@ -237,7 +238,8 @@ class EZComments_Api_Admin extends Zikula_Api
         // Get items
         $where = "WHERE $columns[modname] = '" . DataUtil::formatForStore($mod) . "'";
 
-        return DBUtil::deleteWhere('EZComments', $where);
+        $args['extrainfo']['EZComments'] = DBUtil::deleteWhere('EZComments', $where);
+        return $args['extrainfo'];
     }
 
     /**
