@@ -116,9 +116,9 @@ class EZComments_Controller_User extends Zikula_Controller
         $mod      = isset($args['mod']) ? $args['mod'] : ModUtil::getName();
         $objectid = isset($args['objectid']) ? $args['objectid'] : '';
 
-        // security check
+        // first check if the user is allowed to do any comments for this module/objectid
         if (!SecurityUtil::checkPermission('EZComments::', "$mod:$objectid:", ACCESS_OVERVIEW)) {
-            return LogUtil::registerPermissionError();
+            return;
         }
 
         $owneruid = (int)$args['extrainfo']['owneruid'];
