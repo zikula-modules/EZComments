@@ -39,8 +39,9 @@ class EZComments_HookHandlers extends Zikula_HookHandler
             return;
         }
 
-        $owneruid = (int)$args['extrainfo']['owneruid'];
-        $useurl = isset($args['extrainfo']['useurl']) ? $args['extrainfo']['useurl'] : null;
+        $subject = $event->getSubject();
+        $owneruid = (int)$subject['cr_uid'];
+        $useurl = isset($subject['useurl']) ? $subject['useurl'] : null;
 
         // we may have a comment incoming
         $ezcomment = unserialize(SessionUtil::getVar('ezcomment', 'a:0:{}'));
@@ -93,11 +94,8 @@ class EZComments_HookHandlers extends Zikula_HookHandler
         $view->assign('allowadd', SecurityUtil::checkPermission('EZComments::', "$mod:$objectid:", ACCESS_COMMENT));
         $view->assign('loggedin', UserUtil::isLoggedIn());
 
-        if (!is_array($args['extrainfo'])) {
-            $redirect = $args['extrainfo'];
-        } else {
-            $redirect = $args['extrainfo']['returnurl'];
-        }
+        $redirect = $event['returnurl'];
+        
         // encode the url - otherwise we can get some problems out there....
         $redirect = base64_encode($redirect);
         $view->assign('redirect', $redirect);
@@ -109,9 +107,6 @@ class EZComments_HookHandlers extends Zikula_HookHandler
         // assign url that should be stored in db and sent in email if it
         // differs from the redirect url
         $view->assign('useurl', $useurl);
-
-        // assign all module vars (they may be useful...)
-        $view->assign('modvars', ModUtil::getVar('EZComments'));
 
         // just for backward compatibility - TODO: delete in 2.x
         $view->assign('anonusersinfo', ModUtil::getVar('EZComments', 'anonusersinfo'));
