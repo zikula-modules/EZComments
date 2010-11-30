@@ -25,21 +25,11 @@ class EZComments_Installer extends Zikula_Installer
             return false;
         }
 
-        // register Hook
-        if (!ModUtil::registerHook('item', 'display', 'GUI', 'EZComments', 'user', 'view')) {
-            return LogUtil::registerError($this->__('Error creating hook.'));
-        }
-
-        // register  delete Hook (Timo)
-        // TODO: Check the Hook's name!
-        if (!ModUtil::registerHook('item', 'delete', 'API', 'EZComments', 'admin', 'deletebyitem')) {
-            return LogUtil::registerError($this->__('Error creating hook.'));
-        }
+        // register hooks
+        HookUtil::registerHookProviderBundles($this->version);
 
         // register the module delete hook
-        if (!ModUtil::registerHook('module', 'remove', 'API', 'EZComments', 'admin', 'deletemodule')) {
-            return LogUtil::registerError($this->__('Error creating hook.'));
-        }
+        EventUtil::registerPersistentModuleHandler('EZComments', 'installer.module.uninstalled', array('EZComments_EventHandlers', 'moduleDelete'));
 
         // Misc
         $this->setVar('template', 'Standard');
@@ -121,7 +111,13 @@ class EZComments_Installer extends Zikula_Installer
 
             case '2.0.0':
             case '3.0.0':
-            // future upgrade routines
+                // register hooks
+                HookUtil::registerHookProviderBundles($this->version);
+
+                // register the module delete hook
+                EventUtil::registerPersistentModuleHandler('EZComments', 'installer.module.uninstalled', array('EZComments_EventHandlers', 'moduleDelete'));
+            case '3.0.1':
+                // future upgrade routines
                 break;
         }
 
@@ -159,6 +155,9 @@ class EZComments_Installer extends Zikula_Installer
 
         // delete all module vars for the ezcomments module
         $this->delVars();
+
+        HookUtil::unregisterHookProviderBundles($this->version);
+        EventUtil::unregisterPersistentModuleHandler('EZComments', 'installer.module.uninstalled', array('EZComments_EventHandlers', 'moduleDelete'));
 
         // Deletion successful
         return true;
