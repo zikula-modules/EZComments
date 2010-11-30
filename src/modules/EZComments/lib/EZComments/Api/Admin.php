@@ -282,15 +282,28 @@ class EZComments_Api_Admin extends Zikula_Api
         $links = array();
 
         if (SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => ModUtil::url('EZComments', 'admin'),                 'text' => $this->__('View comments'));
-            $links[] = array('url' => ModUtil::url('EZComments', 'admin', 'cleanup'),      'text' => $this->__('Delete orphaned comments'));
-            $links[] = array('url' => ModUtil::url('EZComments', 'admin', 'migrate'),      'text' => $this->__('Migrate comments'));
-            $links[] = array('url' => ModUtil::url('EZComments', 'admin', 'purge'),        'text' => $this->__('Purge comments'), 'linebreak' => true);
-            $links[] = array('url' => ModUtil::url('EZComments', 'admin', 'stats'),        'text' => $this->__('Comment statistics'));
-            $links[] = array('url' => ModUtil::url('EZComments', 'admin', 'applyrules'),   'text' => $this->__('Re-apply moderation rules'));
-            $links[] = array('url' => ModUtil::url('EZComments', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'));
-        }
-
+            $links[] = array('url' => ModUtil::url('EZComments', 'admin'),
+                             'text' => $this->__('View comments'),
+                             'class' => 'z-icon-es-list');
+            $links[] = array('url' => ModUtil::url('EZComments', 'admin', 'stats'),
+                             'text' => $this->__('Comment statistics'),
+                             'class' => 'z-icon-es-cubes');
+            $links[] = array('url' => ModUtil::url('EZComments', 'admin', 'modifyconfig'),
+                             'text' => $this->__('Settings'),
+                             'class' => 'z-icon-es-config',
+                             'links' => array(
+                                             array('url' => ModUtil::url('EZComments', 'admin', 'modifyconfig'),
+                                                   'text' => $this->__('Settings')),
+                                             array('url' => ModUtil::url('EZComments', 'admin', 'cleanup'),
+                                                   'text' => $this->__('Delete orphaned comments')),
+                                             array('url' => ModUtil::url('EZComments', 'admin', 'migrate'),
+                                                   'text' => $this->__('Migrate comments')),
+                                             array('url' => ModUtil::url('EZComments', 'admin', 'purge'),
+                                                   'text' => $this->__('Purge comments')),
+                                             array('url' => ModUtil::url('EZComments', 'admin', 'applyrules'),
+                                                   'text' => $this->__('Re-apply moderation rules'))
+                                               ));
+         }
         return $links;
     }
 }
