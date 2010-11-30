@@ -26,10 +26,17 @@ class EZComments_EventHandlers
      */
     public static function moduleDelete(Zikula_Event $event)
     {
-        if (!$event['modname'] == 'EZComments') {
+        if (!$event['name'] == 'EZComments') {
             return;
         }
 
-        // do stuff here...
+        // Database information
+        $tables  = DBUtil::getTables();
+        $columns = $tables['EZComments_column'];
+
+        // Get items
+        $where = "WHERE $columns[modname] = '" . DataUtil::formatForStore($mod) . "'";
+
+        DBUtil::deleteWhere('EZComments', $where);
     }
 }
