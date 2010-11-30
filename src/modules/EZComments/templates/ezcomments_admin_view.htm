@@ -1,6 +1,5 @@
-{*  $Id$  *}
 {include file="ezcomments_admin_menu.htm"}
-{pageaddvar name="javascript" value="modules/EZComments/javascript/toggle.js"}
+{ajaxheader ui=true}
 {gt text="unknown" assign=lblunknown}
 
 <div class="z-admincontainer">
@@ -31,7 +30,7 @@
             <table id="ezcomments_comments" class="z-admintable">
                 <thead>
                     <tr>
-                        <th><input type="checkbox" onclick="CheckAll('comments');" id="toggle_comments" /></th>
+                        <th><input type="checkbox" id="toggle_comments" /></th>
                         <th>{gt text="Status"}</th>
                         <th>{gt text="Date"}</th>
                         <th>
@@ -49,7 +48,7 @@
                 <tbody>
                     {foreach from=$items item=item}
                     <tr class="{cycle values=z-odd,z-even}">
-                        <td><input type="checkbox" name="comments[]" value="{$item.id}" class="comments_checkbox" onclick="CheckCheckAll('comments');" /></td>
+                        <td><input type="checkbox" name="comments[]" value="{$item.id}" class="comments_checkbox" /></td>
                         <td>
                             {if $item.status eq 0}{img modname="EZComments" src='green.gif'   __alt='Approved' __title='Approved'}{/if}
                             {if $item.status eq 1}{img modname="EZComments" src='yellow.gif'   __alt='Pending' __title='Pending'}{/if}
@@ -96,6 +95,13 @@
                     {/foreach}
                 </tbody>
             </table>
+
+            <script type="text/javascript">
+                $('toggle_comments').observe('click', function(e){
+                    Zikula.toggleInput('ezcomments_view');
+                    e.stop()
+                });
+            </script>
 
             {pager show="page" rowcount=$pager.numitems limit=$pager.itemsperpage posvar=startnum shift=1}
 
