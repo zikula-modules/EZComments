@@ -74,51 +74,6 @@ class EZComments_Api_Admin extends Zikula_Api
     }
 
     /**
-     * Delete all comments for a given item
-     * 
-     * Used to clean up orphaned comments.
-     *
-     * @author Timo (Numerobis)
-     * @since  0.3
-     * @param  $args['mod']             string    the module for which to delete for
-     * @param  $args['objectid']     int        the module for which to delete for
-     * @return boolean sucess status
-     */
-    public function deletebyitem($args)
-    {
-        if (!isset($args['objectid'])) {
-            return false;
-        }
-
-        if ($args['objectid'] <= 0) {
-            return false;
-        }
-
-        $args['mod'] = isset($args['mod']) ? $args['mod'] : ModUtil::getName();
-
-        // Security check
-        $res = ModUtil::apiFunc('EZComments', 'user', 'checkPermission',
-                            array('module'   => $args['mod'],
-                                  'objectid' => $args['objectid'],
-                                  'level'    => ACCESS_DELETE));
-
-        if (!$res) {
-            return LogUtil::registerPermissionError(ModUtil::url('EZComments', 'admin', 'main'));
-        }
-
-        // get db table and column for where statement
-        $tables  = DBUtil::getTables();
-        $column  = $tables['EZComments_column'];
-
-        $mod      = DataUtil::formatForStore($args['mod']);
-        $objectid = DataUtil::formatForStore($args['objectid']);
-        $where    = "$column[modname] = '$mod' AND $column[objectid] = '$objectid'";
-
-        $args['extrainfo']['EZComments'] = DBUtil::deleteWhere('EZComments', $where);
-        return $args['extrainfo'];
-    }
-
-    /**
      * Delete an item
      *
      * @param  $args['id']  ID of the item
@@ -212,34 +167,6 @@ class EZComments_Api_Admin extends Zikula_Api
 
         // Let the calling process know that we have finished successfully
         return true;
-    }
-
-    /**
-     * Clean up comments for a removed module
-     *
-     * @param $args['extrainfo']   array extrainfo array
-     * @return array extrainfo array
-     */
-    public function deletemodule($args)
-    {
-        // optional arguments
-        if (!isset($args['extrainfo'])) {
-            $args['extrainfo'] = array();
-        }
-
-        // When called via hooks, the module name may be empty, so we get it from
-        // the current module
-        $mod = (isset($args['extrainfo']['module']) && !empty($args['extrainfo']['module'])) ? $args['extrainfo']['module'] : ModUtil::getName();
-
-        // Database information
-        $tables  = DBUtil::getTables();
-        $columns = $tables['EZComments_column'];
-
-        // Get items
-        $where = "WHERE $columns[modname] = '" . DataUtil::formatForStore($mod) . "'";
-
-        $args['extrainfo']['EZComments'] = DBUtil::deleteWhere('EZComments', $where);
-        return $args['extrainfo'];
     }
 
     /**
