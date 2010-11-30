@@ -28,7 +28,7 @@ class EZComments_Form_Handler_Admin_ModifyConfig extends Form_Handler
         $renderer->assign('templates', $templates);
 
         // is the akismet module available
-        $renderer->assign('akismetavailable', ModUtil::available('akismet'));
+        $renderer->assign('akismetavailable', ModUtil::available('Akismet'));
 
         $statuslevels = array( array('text' => __('Approved', $dom), 'value' => 0),
                                array('text' => __('Pending', $dom),  'value' => 1),

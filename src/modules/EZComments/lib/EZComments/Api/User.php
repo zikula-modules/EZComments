@@ -246,9 +246,9 @@ class EZComments_Api_User extends Zikula_Api
             $status[] = $this->checksubmitter();
         }
 
-        // akismet
-        if (ModUtil::available('akismet') && ModUtil::getVar('EZComments', 'akismet')) {
-            if (ModUtil::apiFunc('akismet', 'user', 'isspam',
+        // Akismet
+        if (ModUtil::available('Akismet') && ModUtil::getVar('EZComments', 'Akismet')) {
+            if (ModUtil::apiFunc('Akismet', 'user', 'isspam',
                              array('author'      => $loggedin ? UserUtil::getVar('uname') : $args['anonname'],
                                    'authoremail' => $loggedin ? UserUtil::getVar('email') : (isset($args['anonmail']) ? $args['anonmail'] : ''),
                                    'authorurl'   => $loggedin ? UserUtil::getVar('url')   : (isset($args['anonwebsite']) ? $args['anonwebsite'] : ''),

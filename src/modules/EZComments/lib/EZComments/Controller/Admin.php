@@ -695,9 +695,9 @@ class EZComments_Controller_Admin extends Zikula_Controller
         {
             $subjectstatus = ModUtil::apiFunc('EZComments', 'user', 'checkcomment', array('var' => $comment['subject']));
             $commentstatus = ModUtil::apiFunc('EZComments', 'user', 'checkcomment', array('var' => $comment['comment']));
-            // akismet
-            if (ModUtil::available('akismet') && ModUtil::getVar('EZComments', 'akismet')
-                && ModUtil::apiFunc('akismet', 'user', 'isspam',
+            // Akismet
+            if (ModUtil::available('Akismet') && ModUtil::getVar('EZComments', 'Akismet')
+                && ModUtil::apiFunc('Akismet', 'user', 'isspam',
                                 array('author'      => ($comment['uid'] > 0) ? UserUtil::getVar('uname', $comment['uid']) : $comment['anonname'],
                                       'authoremail' => ($comment['uid'] > 0) ? UserUtil::getVar('email', $comment['uid']) : $comment['anonmail'],
                                       'authorurl'   => ($comment['uid'] > 0) ? UserUtil::getVar('url', $comment['uid']) : $comment['anonwebsite'],
