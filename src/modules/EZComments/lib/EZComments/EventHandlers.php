@@ -31,6 +31,7 @@ class EZComments_EventHandlers
         }
 
         // Database information
+        ModUtil::dbInfoLoad('EZComments');
         $tables  = DBUtil::getTables();
         $columns = $tables['EZComments_column'];
 
