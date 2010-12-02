@@ -49,7 +49,7 @@
                                     <strong>{$comment.subject|default:''|safetext}</strong>
                                 </div>
                                 <div class="ezc_content">
-                                    {$comment.comment|safetext|paragraph|modcallhooks}
+                                    {$comment.comment|safetext|paragraph|notifyfilters:'ezcomments.hook.commentsfilter'}
                                 </div>
                             </div>
                         </div>
