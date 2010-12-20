@@ -26,9 +26,7 @@ class EZComments_EventHandlers
      */
     public static function moduleDelete(Zikula_Event $event)
     {
-        if (!$event['name'] == 'EZComments') {
-            return;
-        }
+        $mod = $event['name'];
 
         // Database information
         ModUtil::dbInfoLoad('EZComments');
