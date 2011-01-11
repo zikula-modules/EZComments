@@ -822,13 +822,14 @@ class EZComments_Api_User extends Zikula_Api
             if ($items[$k]['uid'] > 0) {
                 // get the user vars and merge into the comment array
                 $userinfo = UserUtil::getVars($items[$k]['uid']);
+
                 // the users url will clash with the comment url so lets move it out of the way
                 $userinfo['website']   = isset($userinfo['__ATTRIBUTES__']['url']) ? $userinfo['__ATTRIBUTES__']['url'] : '';
 
                 // work out if the user is online
                 $userinfo['online'] = false;
                 if (ModUtil::available('Profile')) {
-                    if (ModUtil::apiFunc('Profile', 'memberslist', 'isonline', array('userid' => $userinfo['pn_uid']))) {
+                    if (ModUtil::apiFunc('Profile', 'memberslist', 'isonline', array('userid' => $userinfo['uid']))) {
                         $userinfo['online'] = true;
                     }
                 }
