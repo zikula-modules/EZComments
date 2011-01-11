@@ -53,7 +53,7 @@
     <p class="z-informationmsg">{gt text="No comments posted yet." domain="module_ezcomments"}</p>
     {/foreach}
 
-    {if $enablepager}
+    {if $modvars.EZComments.enablepager}
     <div class="z-center">{pager show="page" rowcount=$ezc_pager.numitems limit=$ezc_pager.itemsperpage posvar=comments_startnum shift=1}</div>
     {/if}
 

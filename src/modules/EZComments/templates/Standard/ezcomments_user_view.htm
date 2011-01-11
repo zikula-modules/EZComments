@@ -60,7 +60,7 @@
         {/foreach}
     </ol>
 
-    {if $enablepager}
+    {if $modvars.EZComments.enablepager}
     <div class="z-center">{pager show='page' rowcount=$ezc_pager.numitems limit=$ezc_pager.itemsperpage posvar='comments_startnum' shift=1}</div>
     {/if}
 
@@ -115,3 +115,4 @@
     </p>
     {/if}
 </div>
+
