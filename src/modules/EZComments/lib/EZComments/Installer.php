@@ -27,6 +27,7 @@ class EZComments_Installer extends Zikula_Installer
 
         // register hooks
         HookUtil::registerHookProviderBundles($this->version);
+		HookUtil::registerHookSubscriberBundles($this->version);
 
         // register the module delete hook
         EventUtil::registerPersistentModuleHandler('EZComments', 'installer.module.uninstalled', array('EZComments_EventHandlers', 'moduleDelete'));
@@ -113,6 +114,7 @@ class EZComments_Installer extends Zikula_Installer
             case '3.0.0':
                 // register hooks
                 HookUtil::registerHookProviderBundles($this->version);
+				HookUtil::registerHookSubscriberBundles($this->version);
 
                 // register the module delete hook
                 EventUtil::registerPersistentModuleHandler('EZComments', 'installer.module.uninstalled', array('EZComments_EventHandlers', 'moduleDelete'));
@@ -157,6 +159,7 @@ class EZComments_Installer extends Zikula_Installer
         $this->delVars();
 
         HookUtil::unregisterHookProviderBundles($this->version);
+		HookUtil::unregisterHookSubscriberBundles($this->version);
         EventUtil::unregisterPersistentModuleHandler('EZComments', 'installer.module.uninstalled', array('EZComments_EventHandlers', 'moduleDelete'));
 
         // Deletion successful
