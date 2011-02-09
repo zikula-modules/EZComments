@@ -7,7 +7,7 @@
  * @license See license.txt
  */
 
-class EZComments_Block_MostComments extends Zikula_Block
+class EZComments_Block_MostComments extends Zikula_Controller_Block
 {
     /**
      * initialise block
