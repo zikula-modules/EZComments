@@ -77,22 +77,19 @@ class EZComments_Controller_User extends Zikula_Controller
             $items[$k]['options'] = $options;
         }
 
-        // Create output object
-        $renderer = Zikula_View::getInstance('EZComments', false);
-
         // assign the module vars
-        $renderer->assign(ModUtil::getVar('EZComments'));
+        $this->view->assign(ModUtil::getVar('EZComments'));
 
         // assign the items to the template, values for the filters
-        $renderer->assign('items',  $items);
-        $renderer->assign('status', $status);
+        $this->view->assign('items',  $items);
+        $this->view->assign('status', $status);
 
         // values for the smarty plugin to produce a pager
-        $renderer->assign('ezc_pager', array('numitems'     => ModUtil::apiFunc('EZComments', 'user', 'countitems', $params),
+        $this->view->assign('ezc_pager', array('numitems'     => ModUtil::apiFunc('EZComments', 'user', 'countitems', $params),
                                              'itemsperpage' => $itemsperpage));
 
         // Return the output
-        return $renderer->fetch('ezcomments_user_main.tpl');
+        return $this->view->fetch('ezcomments_user_main.tpl');
     }
 
     /**
@@ -167,39 +164,39 @@ class EZComments_Controller_User extends Zikula_Controller
         }
 
         // don't use caching (for now...)
-        $renderer = Zikula_View::getInstance('EZComments', false, null, true);
+        $this->view->setCaching(false);
 
-        $renderer->assign('comments',     $items);
-        $renderer->assign('commentcount', $commentcount);
-        $renderer->assign('order',        $sortorder);
-        $renderer->assign('redirect',     $redirect);
-        $renderer->assign('allowadd',     SecurityUtil::checkPermission('EZComments::', "$mod:$objectid: ", ACCESS_COMMENT));
-        $renderer->assign('mod',          DataUtil::formatForDisplay($mod));
-        $renderer->assign('objectid',     DataUtil::formatForDisplay($objectid));
-        $renderer->assign('subject',      DataUtil::formatForDisplay($subject));
-        $renderer->assign('replyto',      DataUtil::formatForDisplay($replyto));
+        $this->view->assign('comments',     $items);
+        $this->view->assign('commentcount', $commentcount);
+        $this->view->assign('order',        $sortorder);
+        $this->view->assign('redirect',     $redirect);
+        $this->view->assign('allowadd',     SecurityUtil::checkPermission('EZComments::', "$mod:$objectid: ", ACCESS_COMMENT));
+        $this->view->assign('mod',          DataUtil::formatForDisplay($mod));
+        $this->view->assign('objectid',     DataUtil::formatForDisplay($objectid));
+        $this->view->assign('subject',      DataUtil::formatForDisplay($subject));
+        $this->view->assign('replyto',      DataUtil::formatForDisplay($replyto));
 
         // assign the user is of the content owner
-        $renderer->assign('owneruid',     $owneruid);
+        $this->view->assign('owneruid',     $owneruid);
 
         // assign useurl if there was another url for email and storing submitted
-        $renderer->assign('useurl',       $useurl);
+        $this->view->assign('useurl',       $useurl);
 
         // assign all module vars (they may be useful...)
-        $renderer->assign(ModUtil::getVar('EZComments'));
+        $this->view->assign(ModUtil::getVar('EZComments'));
 
         // assign the values for the pager
-        $renderer->assign('ezc_pager', array('numitems'     => $commentcount,
+        $this->view->assign('ezc_pager', array('numitems'     => $commentcount,
                                              'itemsperpage' => $numitems));
 
         // find out which template to use
         $templateset = isset($args['template']) ? $args['template'] : $template;
         $defaultcss  = ModUtil::getVar('EZComments', 'css', 'style.css');
 
-        if (!$renderer->template_exists(DataUtil::formatForOS($templateset) . '/ezcomments_user_comment.tpl')) {
+        if (!$this->view->template_exists(DataUtil::formatForOS($templateset) . '/ezcomments_user_comment.tpl')) {
             $templateset = ModUtil::getVar('EZComments', 'template', 'Standard');
         }
-        $renderer->assign('template', $templateset);
+        $this->view->assign('template', $templateset);
 
         // include stylesheet if there is a style sheet
         $css = $stylesheet ? "$stylesheet.css" : $defaultcss;
@@ -208,7 +205,7 @@ class EZComments_Controller_User extends Zikula_Controller
         }
 
         // FIXME comment template missing
-        return $renderer->fetch(DataUtil::formatForOS($templateset) . '/ezcomments_user_view.tpl');
+        return $this->view->fetch(DataUtil::formatForOS($templateset) . '/ezcomments_user_view.tpl');
     }
 
     /**
@@ -403,27 +400,24 @@ class EZComments_Controller_User extends Zikula_Controller
                                        'sortorder' => 'DESC',
                                        'status'    => 0));
 
-        // create the output object
-        $renderer = Zikula_View::getInstance('EZComments');
-
         // get the last x comments
-        $renderer->assign('comments'    , $comments);
-        $renderer->assign('language'    , ZLanguage::getLocale());
-        $renderer->assign('sitename'    , System::getVar('sitename'));
-        $renderer->assign('slogan'      , System::getVar('slogan'));
-        $renderer->assign('adminmail'   , System::getVar('adminmail'));
-        $renderer->assign('current_date', date(DATE_RSS));
+        $this->view->assign('comments'    , $comments);
+        $this->view->assign('language'    , ZLanguage::getLocale());
+        $this->view->assign('sitename'    , System::getVar('sitename'));
+        $this->view->assign('slogan'      , System::getVar('slogan'));
+        $this->view->assign('adminmail'   , System::getVar('adminmail'));
+        $this->view->assign('current_date', date(DATE_RSS));
 
         // grab the item url from one of the comments
         if (isset($comments[0]['url'])) {
-            $renderer->assign('itemurl', $comments[0]['url']);
+            $this->view->assign('itemurl', $comments[0]['url']);
         } else {
             // attempt to guess the url (api compliant mods only....)
-            $renderer->assign('itemurl', ModUtil::url($mod, 'user', 'display', array('objectid' => $objectid)));
+            $this->view->assign('itemurl', ModUtil::url($mod, 'user', 'display', array('objectid' => $objectid)));
         }
 
         // display the feed and notify the core that we're done
-        $renderer->display("ezcomments_user_$feedtype.tpl.tpl");
+        $this->view->display("ezcomments_user_$feedtype.tpl.tpl");
         return true;
     }
 
