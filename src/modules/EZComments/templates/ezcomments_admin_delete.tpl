@@ -10,7 +10,7 @@
             <input type="hidden" name="redirect" value="{$redirect|safetext}" />
             <fieldset>
                 <legend>{gt text="Confirmation prompt"}</legend>
-                <div class="z-formbuttons">
+                <div class="z-buttons z-formbuttons">
                     {button src='button_ok.png' set='icons/small' __alt='Delete' __title='Delete'}
                     {if $redirect neq ''}
                     <a href="{$redirect|safetext}">{img modname='core' src='button_cancel.png' set='icons/small' __alt='Cancel' __title='Cancel'}</a>

@@ -51,7 +51,7 @@
 
     </fieldset>
 
-    <div class="z-formbuttons">
+    <div class="z-buttons z-formbuttons">
         {formbutton id="submit" commandName="submit" __text="Update"}
         {formbutton id="delete" commandName="delete" __text="Delete"}
         {formbutton id="cancel" commandName="cancel" __text="Cancel"}

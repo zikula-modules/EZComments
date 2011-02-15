@@ -131,7 +131,7 @@
         </div>
     </fieldset>
     
-    <div class="z-formbuttons">
+    <div class="z-buttons z-formbuttons">
         {formbutton id="submit" commandName="submit" __text="Submit"}
     </div>
     {/form}

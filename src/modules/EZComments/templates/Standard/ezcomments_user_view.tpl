@@ -102,7 +102,7 @@
                     <textarea name="comment" id="message" cols="60" rows="10">{$ezcomment.comment|default:''}</textarea>
                 </div>
             </fieldset>
-            <div class="z-formbuttons">
+            <div class="z-buttons z-formbuttons">
                 <input type="submit" value="{gt text='Submit'}" />
             </div>
         </div>

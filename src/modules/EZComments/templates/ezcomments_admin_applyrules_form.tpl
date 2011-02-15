@@ -23,7 +23,7 @@
                     </select>
                 </div>
             </fieldset>
-            <div class="z-formbuttons">
+            <div class="z-buttons z-formbuttons">
                 {button src='button_ok.png' set='icons/small' __alt='Submit' __title='Submit'}
                 <a href="{modurl modname='EZComments' type='admin' func='main'}">{img modname='core' src='button_cancel.png' set='icons/small' __alt='Cancel' __title='Cancel'}</a>
             </div>
