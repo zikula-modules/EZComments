@@ -13,8 +13,6 @@ class EZComments_Form_Handler_Admin_ModifyConfig extends Zikula_Form_Handler
 
     function initialize($view)
     {
-        $dom = ZLanguage::getModuleDomain('EZComments');
-
         $view->caching = false;
         $view->add_core_data();
 
@@ -31,14 +29,14 @@ class EZComments_Form_Handler_Admin_ModifyConfig extends Zikula_Form_Handler
         // is the akismet module available
         $view->assign('akismetavailable', ModUtil::available('Akismet'));
 
-        $statuslevels = array(array('text' => __('Approved', $dom), 'value' => 0),
-            array('text' => __('Pending', $dom), 'value' => 1),
-            array('text' => __('Rejected', $dom), 'value' => 2));
+        $statuslevels = array(array('text' => $this->__('Approved'), 'value' => 0),
+            array('text' => $this->__('Pending'), 'value' => 1),
+            array('text' => $this->__('Rejected'), 'value' => 2));
 
         $view->assign('statuslevels', $statuslevels);
 
-        $feeds = array(array('text' => __('Atom 0.3', $dom), 'value' => 'atom'),
-            array('text' => __('RSS 2.0', $dom), 'value' => 'rss'));
+        $feeds = array(array('text' => $this->__('Atom 0.3'), 'value' => 'atom'),
+            array('text' => $this->__('RSS 2.0'), 'value' => 'rss'));
 
         $view->assign('feeds', $feeds);
 
@@ -47,8 +45,6 @@ class EZComments_Form_Handler_Admin_ModifyConfig extends Zikula_Form_Handler
 
     function handleCommand($view, &$args)
     {
-        $dom = ZLanguage::getModuleDomain('EZComments');
-
         // Security check
         if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
@@ -61,27 +57,27 @@ class EZComments_Form_Handler_Admin_ModifyConfig extends Zikula_Form_Handler
             // TODO reduce this to a loop
             if (empty($data['ezcomments_itemsperpage'])) {
                 $ifield = $view->pnFormGetPluginById('ezcomments_itemsperpage');
-                $ifield->setError(DataUtil::formatForDisplay(__('missing value', $dom)));
+                $ifield->setError(DataUtil::formatForDisplay($this->__('missing value')));
                 $ok = false;
             }
             if (empty($data['ezcomments_modlinkcount'])) {
                 $ifield = $view->pnFormGetPluginById('ezcomments_modlinkcount');
-                $ifield->setError(DataUtil::formatForDisplay(__('missing value', $dom)));
+                $ifield->setError(DataUtil::formatForDisplay($this->__('missing value')));
                 $ok = false;
             }
             if (empty($data['ezcomments_blacklinkcount'])) {
                 $ifield = $view->pnFormGetPluginById('ezcomments_blacklinkcount');
-                $ifield->setError(DataUtil::formatForDisplay(__('missing value', $dom)));
+                $ifield->setError(DataUtil::formatForDisplay($this->__('missing value')));
                 $ok = false;
             }
             if (empty($data['ezcomments_feedcount'])) {
                 $ifield = $view->pnFormGetPluginById('ezcomments_feedcount');
-                $ifield->setError(DataUtil::formatForDisplay(__('missing value', $dom)));
+                $ifield->setError(DataUtil::formatForDisplay($this->__('missing value')));
                 $ok = false;
             }
             if (empty($data['ezcomments_commentsperpage'])) {
                 $ifield = $view->pnFormGetPluginById('ezcomments_commentsperpage');
-                $ifield->setError(DataUtil::formatForDisplay(__('missing value', $dom)));
+                $ifield->setError(DataUtil::formatForDisplay($this->__('missing value')));
                 $ok = false;
             }
             if (!$ok) {
@@ -114,7 +110,7 @@ class EZComments_Form_Handler_Admin_ModifyConfig extends Zikula_Form_Handler
             ModUtil::setVar('EZComments', 'modifyowntime', $data['ezcomments_modifyowntime']);
             ModUtil::setVar('EZComments', 'useaccountpage', $data['ezcomments_useaccountpage']);
 
-            LogUtil::registerStatus(__('Done! Module configuration updated.', $dom));
+            LogUtil::registerStatus($this->__('Done! Module configuration updated.'));
         }
 
         return true;

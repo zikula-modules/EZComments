@@ -15,8 +15,6 @@ class EZComments_Form_Handler_Admin_Modify extends Zikula_Form_Handler
 
     function initialize($view)
     {
-        $dom = ZLanguage::getModuleDomain('EZComments');
-
         $this->id = (int) FormUtil::getPassedValue('id', -1, 'GETPOST');
         $objectid = FormUtil::getPassedValue('objectid', '', 'GETPOST');
         $redirect = base64_decode(FormUtil::getPassedValue('redirect', '', 'GETPOST'));
@@ -26,13 +24,13 @@ class EZComments_Form_Handler_Admin_Modify extends Zikula_Form_Handler
 
         $comment = ModUtil::apiFunc('EZComments', 'user', 'get', array('id' => $this->id));
         if ($comment == false || !is_array($comment)) {
-            return LogUtil::registerError(__('No such comment found.', $dom), ModUtil::url('EZComments', 'admin', 'main'));
+            return LogUtil::registerError($this->__('No such comment found.'), ModUtil::url('EZComments', 'admin', 'main'));
         }
 
         // assign the status flags
-        $statuslevels = array(array('text' => __('Approved', $dom), 'value' => 0),
-            array('text' => __('Pending', $dom), 'value' => 1),
-            array('text' => __('Rejected', $dom), 'value' => 2));
+        $statuslevels = array(array('text' => $this->__('Approved'), 'value' => 0),
+            array('text' => $this->__('Pending'), 'value' => 1),
+            array('text' => $this->__('Rejected'), 'value' => 2));
 
         $view->assign('statuslevels', $statuslevels);
 
@@ -46,8 +44,6 @@ class EZComments_Form_Handler_Admin_Modify extends Zikula_Form_Handler
 
     function handleCommand($view, &$args)
     {
-        $dom = ZLanguage::getModuleDomain('EZComments');
-
         // Security check
         $securityCheck = ModUtil::apiFunc('EZComments', 'user', 'checkPermission',
                         array('module' => '',
@@ -76,7 +72,7 @@ class EZComments_Form_Handler_Admin_Modify extends Zikula_Form_Handler
                 // array reflects this
                 if (ModUtil::apiFunc('EZComments', 'admin', 'delete', array('id' => $this->id))) {
                     // Success
-                    LogUtil::registerStatus(__('Done! Comment deleted.', $dom));
+                    LogUtil::registerStatus($this->__('Done! Comment deleted.'));
                 }
                 break;
 
@@ -86,19 +82,19 @@ class EZComments_Form_Handler_Admin_Modify extends Zikula_Form_Handler
                     // check anon fields
                     if (empty($data['ezcomments_anonname'])) {
                         $ifield = $view->pnFormGetPluginById('ezcomments_anonname');
-                        $ifield->setError(DataUtil::formatForDisplay(__('Name for anonymous user is missing.', $dom)));
+                        $ifield->setError(DataUtil::formatForDisplay($this->__('Name for anonymous user is missing.')));
                         $ok = false;
                     }
                     // anonmail must be valid - really necessary if an admin changes this?
                     if (empty($data['ezcomments_anonmail']) || !System::varValidate($data['ezcomments_anonmail'], 'email')) {
                         $ifield = $view->pnFormGetPluginById('ezcomments_anonmail');
-                        $ifield->setError(DataUtil::formatForDisplay(__('Email address of anonymous user is missing or invalid.', $dom)));
+                        $ifield->setError(DataUtil::formatForDisplay($this->__('Email address of anonymous user is missing or invalid.')));
                         $ok = false;
                     }
                     // anonwebsite must be valid
                     if (!empty($data['ezcomments_anonwebsite']) && !System::varValidate($data['ezcomments_anonmail'], 'url')) {
                         $ifield = $view->pnFormGetPluginById('ezcomments_anonwebsite');
-                        $ifield->setError(DataUtil::formatForDisplay(__('Website of anonymous user is invalid.', $dom)));
+                        $ifield->setError(DataUtil::formatForDisplay($this->__('Website of anonymous user is invalid.')));
                         $ok = false;
                     }
                 } else {
@@ -109,7 +105,7 @@ class EZComments_Form_Handler_Admin_Modify extends Zikula_Form_Handler
 
                 if (empty($data['ezcomments_comment'])) {
                     $ifield = $view->pnFormGetPluginById('ezcomments_comment');
-                    $ifield->setError(DataUtil::formatForDisplay(__('Error! The comment contains no text.', $dom)));
+                    $ifield->setError(DataUtil::formatForDisplay($this->__('Error! The comment contains no text.')));
                     $ok = false;
                 }
 
@@ -127,7 +123,7 @@ class EZComments_Form_Handler_Admin_Modify extends Zikula_Form_Handler
                                     'anonmail' => $data['ezcomments_anonmail'],
                                     'anonwebsite' => $data['ezcomments_anonwebsite']))) {
                     // Success
-                    LogUtil::registerStatus(__('Done! Comment updated.', $dom));
+                    LogUtil::registerStatus($this->__('Done! Comment updated.'));
                 }
                 break;
         }
