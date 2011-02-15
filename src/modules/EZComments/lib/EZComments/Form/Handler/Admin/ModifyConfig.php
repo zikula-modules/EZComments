@@ -1,4 +1,5 @@
 <?php
+
 /**
  * EZComments
  *
@@ -7,15 +8,15 @@
  * @version $Id$
  * @license See license.txt
  */
-
-class EZComments_Form_Handler_Admin_ModifyConfig extends Form_Handler
+class EZComments_Form_Handler_Admin_ModifyConfig extends Zikula_Form_Handler
 {
-    function initialize(&$renderer)
+
+    function initialize($view)
     {
         $dom = ZLanguage::getModuleDomain('EZComments');
 
-        $renderer->caching = false;
-        $renderer->add_core_data();
+        $view->caching = false;
+        $view->add_core_data();
 
         $templates = array();
         $rawtemplates = ModUtil::apiFunc('EZComments', 'user', 'gettemplates');
@@ -25,27 +26,26 @@ class EZComments_Form_Handler_Admin_ModifyConfig extends Form_Handler
                 $templates[] = array('text' => $rawtemplate, 'value' => $rawtemplate);
             }
         }
-        $renderer->assign('templates', $templates);
+        $view->assign('templates', $templates);
 
         // is the akismet module available
-        $renderer->assign('akismetavailable', ModUtil::available('Akismet'));
+        $view->assign('akismetavailable', ModUtil::available('Akismet'));
 
-        $statuslevels = array( array('text' => __('Approved', $dom), 'value' => 0),
-                               array('text' => __('Pending', $dom),  'value' => 1),
-                               array('text' => __('Rejected', $dom), 'value' => 2));
+        $statuslevels = array(array('text' => __('Approved', $dom), 'value' => 0),
+            array('text' => __('Pending', $dom), 'value' => 1),
+            array('text' => __('Rejected', $dom), 'value' => 2));
 
-        $renderer->assign('statuslevels', $statuslevels);
+        $view->assign('statuslevels', $statuslevels);
 
-        $feeds = array( array('text' => __('Atom 0.3', $dom), 'value' => 'atom'),
-                        array('text' => __('RSS 2.0', $dom),  'value' => 'rss'));
+        $feeds = array(array('text' => __('Atom 0.3', $dom), 'value' => 'atom'),
+            array('text' => __('RSS 2.0', $dom), 'value' => 'rss'));
 
-        $renderer->assign('feeds', $feeds);
+        $view->assign('feeds', $feeds);
 
         return true;
     }
 
-
-    function handleCommand(&$renderer, $args)
+    function handleCommand($view, &$args)
     {
         $dom = ZLanguage::getModuleDomain('EZComments');
 
@@ -55,32 +55,32 @@ class EZComments_Form_Handler_Admin_ModifyConfig extends Form_Handler
         }
 
         if ($args['commandName'] == 'submit') {
-            $ok = $renderer->pnFormIsValid();
-            $data = $renderer->pnFormGetValues();
+            $ok = $view->pnFormIsValid();
+            $data = $view->pnFormGetValues();
 
             // TODO reduce this to a loop
             if (empty($data['ezcomments_itemsperpage'])) {
-                $ifield = $renderer->pnFormGetPluginById('ezcomments_itemsperpage');
+                $ifield = $view->pnFormGetPluginById('ezcomments_itemsperpage');
                 $ifield->setError(DataUtil::formatForDisplay(__('missing value', $dom)));
                 $ok = false;
             }
             if (empty($data['ezcomments_modlinkcount'])) {
-                $ifield = $renderer->pnFormGetPluginById('ezcomments_modlinkcount');
+                $ifield = $view->pnFormGetPluginById('ezcomments_modlinkcount');
                 $ifield->setError(DataUtil::formatForDisplay(__('missing value', $dom)));
                 $ok = false;
             }
             if (empty($data['ezcomments_blacklinkcount'])) {
-                $ifield = $renderer->pnFormGetPluginById('ezcomments_blacklinkcount');
+                $ifield = $view->pnFormGetPluginById('ezcomments_blacklinkcount');
                 $ifield->setError(DataUtil::formatForDisplay(__('missing value', $dom)));
                 $ok = false;
             }
             if (empty($data['ezcomments_feedcount'])) {
-                $ifield = $renderer->pnFormGetPluginById('ezcomments_feedcount');
+                $ifield = $view->pnFormGetPluginById('ezcomments_feedcount');
                 $ifield->setError(DataUtil::formatForDisplay(__('missing value', $dom)));
                 $ok = false;
             }
             if (empty($data['ezcomments_commentsperpage'])) {
-                $ifield = $renderer->pnFormGetPluginById('ezcomments_commentsperpage');
+                $ifield = $view->pnFormGetPluginById('ezcomments_commentsperpage');
                 $ifield->setError(DataUtil::formatForDisplay(__('missing value', $dom)));
                 $ok = false;
             }
@@ -88,35 +88,36 @@ class EZComments_Form_Handler_Admin_ModifyConfig extends Form_Handler
                 return false;
             }
 
-            ModUtil::setVar('EZComments', 'MailToAdmin',             $data['ezcomments_MailToAdmin']);
-            ModUtil::setVar('EZComments', 'moderationmail',          $data['ezcomments_moderationmail']);
-            ModUtil::setVar('EZComments', 'template',                $data['ezcomments_template']);
-            ModUtil::setVar('EZComments', 'css',                     $data['ezcomments_css']);
-            ModUtil::setVar('EZComments', 'itemsperpage',            $data['ezcomments_itemsperpage']);
-            ModUtil::setVar('EZComments', 'anonusersinfo',           $data['ezcomments_anonusersinfo']);
-            ModUtil::setVar('EZComments', 'moderation',              $data['ezcomments_moderation']);
-            ModUtil::setVar('EZComments', 'enablepager',             $data['ezcomments_enablepager']);
+            ModUtil::setVar('EZComments', 'MailToAdmin', $data['ezcomments_MailToAdmin']);
+            ModUtil::setVar('EZComments', 'moderationmail', $data['ezcomments_moderationmail']);
+            ModUtil::setVar('EZComments', 'template', $data['ezcomments_template']);
+            ModUtil::setVar('EZComments', 'css', $data['ezcomments_css']);
+            ModUtil::setVar('EZComments', 'itemsperpage', $data['ezcomments_itemsperpage']);
+            ModUtil::setVar('EZComments', 'anonusersinfo', $data['ezcomments_anonusersinfo']);
+            ModUtil::setVar('EZComments', 'moderation', $data['ezcomments_moderation']);
+            ModUtil::setVar('EZComments', 'enablepager', $data['ezcomments_enablepager']);
             ModUtil::setVar('EZComments', 'dontmoderateifcommented', $data['ezcomments_dontmoderateifcommented']);
-            ModUtil::setVar('EZComments', 'modlinkcount',            $data['ezcomments_modlinkcount']);
-            ModUtil::setVar('EZComments', 'modlist',                 $data['ezcomments_modlist']);
-            ModUtil::setVar('EZComments', 'blacklinkcount',          $data['ezcomments_blacklinkcount']);
-            ModUtil::setVar('EZComments', 'blacklist',               $data['ezcomments_blacklist']);
-            ModUtil::setVar('EZComments', 'alwaysmoderate',          $data['ezcomments_alwaysmoderate']);
-            ModUtil::setVar('EZComments', 'proxyblacklist',          $data['ezcomments_proxyblacklist']);
-            ModUtil::setVar('EZComments', 'logip',                   $data['ezcomments_logip']);
-            ModUtil::setVar('EZComments', 'feedtype',                $data['ezcomments_feedtype']);
-            ModUtil::setVar('EZComments', 'feedcount',               $data['ezcomments_feedcount']);
-            ModUtil::setVar('EZComments', 'commentsperpage',         $data['ezcomments_commentsperpage']);
-            ModUtil::setVar('EZComments', 'enablepager',             $data['ezcomments_enablepager']);
-            ModUtil::setVar('EZComments', 'akismet',                 $data['ezcomments_akismet']);
-            ModUtil::setVar('EZComments', 'akismetstatus',           $data['ezcomments_akismetstatus']);
-            ModUtil::setVar('EZComments', 'anonusersrequirename',    $data['ezcomments_anonusersrequirename']);
-            ModUtil::setVar('EZComments', 'modifyowntime',           $data['ezcomments_modifyowntime']);
-            ModUtil::setVar('EZComments', 'useaccountpage',          $data['ezcomments_useaccountpage']);
+            ModUtil::setVar('EZComments', 'modlinkcount', $data['ezcomments_modlinkcount']);
+            ModUtil::setVar('EZComments', 'modlist', $data['ezcomments_modlist']);
+            ModUtil::setVar('EZComments', 'blacklinkcount', $data['ezcomments_blacklinkcount']);
+            ModUtil::setVar('EZComments', 'blacklist', $data['ezcomments_blacklist']);
+            ModUtil::setVar('EZComments', 'alwaysmoderate', $data['ezcomments_alwaysmoderate']);
+            ModUtil::setVar('EZComments', 'proxyblacklist', $data['ezcomments_proxyblacklist']);
+            ModUtil::setVar('EZComments', 'logip', $data['ezcomments_logip']);
+            ModUtil::setVar('EZComments', 'feedtype', $data['ezcomments_feedtype']);
+            ModUtil::setVar('EZComments', 'feedcount', $data['ezcomments_feedcount']);
+            ModUtil::setVar('EZComments', 'commentsperpage', $data['ezcomments_commentsperpage']);
+            ModUtil::setVar('EZComments', 'enablepager', $data['ezcomments_enablepager']);
+            ModUtil::setVar('EZComments', 'akismet', $data['ezcomments_akismet']);
+            ModUtil::setVar('EZComments', 'akismetstatus', $data['ezcomments_akismetstatus']);
+            ModUtil::setVar('EZComments', 'anonusersrequirename', $data['ezcomments_anonusersrequirename']);
+            ModUtil::setVar('EZComments', 'modifyowntime', $data['ezcomments_modifyowntime']);
+            ModUtil::setVar('EZComments', 'useaccountpage', $data['ezcomments_useaccountpage']);
 
             LogUtil::registerStatus(__('Done! Module configuration updated.', $dom));
         }
 
         return true;
     }
+
 }
