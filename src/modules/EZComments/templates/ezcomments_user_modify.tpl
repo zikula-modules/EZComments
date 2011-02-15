@@ -1,6 +1,5 @@
-{*  $Id$  *}
 {gt text="Edit comment" assign=templatetitle}
-{include file="ezcomments_user_header.htm"}
+{include file="ezcomments_user_header.tpl"}
 <h3>{$templatetitle}</h3>
 
 {form cssClass="z-form"}

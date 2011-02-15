@@ -125,7 +125,7 @@ class EZComments_HookHandlers extends Zikula_HookHandler
         $css = isset($args['ezccss']) ? $args['ezccss'] : FormUtil::getPassedValue('ezccss');
         $defaultcss = ModUtil::getVar('EZComments', 'css', 'style.css');
 
-        if (!$view->template_exists(DataUtil::formatForOS($templateset) . '/ezcomments_user_view.htm')) {
+        if (!$view->template_exists(DataUtil::formatForOS($templateset) . '/ezcomments_user_view.tpl')) {
             $templateset = ModUtil::getVar('EZComments', 'template', 'Standard');
         }
         $view->assign('template', $templateset);
@@ -136,7 +136,7 @@ class EZComments_HookHandlers extends Zikula_HookHandler
             PageUtil::addVar('stylesheet', $css);
         }
 
-        $event->data['modulehook_area.ezcomments.comments']  = new Zikula_Response_DisplayHook('modulehook_area.ezcomments.comments', $view, DataUtil::formatForOS($templateset) . '/ezcomments_user_view.htm');
+        $event->data['modulehook_area.ezcomments.comments']  = new Zikula_Response_DisplayHook('modulehook_area.ezcomments.comments', $view, DataUtil::formatForOS($templateset) . '/ezcomments_user_view.tpl');
     }
 
     /**

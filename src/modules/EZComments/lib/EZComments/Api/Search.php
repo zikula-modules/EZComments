@@ -33,7 +33,7 @@ class EZComments_Api_Search extends Zikula_Api
             // we can return it easily when required
             $render = Zikula_View::getInstance('EZComments');
             $render->assign('active', !isset($args['active']) || isset($args['active']['EZComments']));
-            return $render->fetch('ezcomments_search_form.htm');
+            return $render->fetch('ezcomments_search_form.tpl');
         }
 
         return '';

@@ -1,5 +1,4 @@
-{*  $Id$  *}
-{include file="ezcomments_admin_menu.htm"}
+{include file="ezcomments_admin_menu.tpl"}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname='EZComments' src='admin.gif' alt='' }</div>
     <h2>{gt text="Edit comment"}</h2>

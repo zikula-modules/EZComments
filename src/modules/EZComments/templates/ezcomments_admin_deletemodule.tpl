@@ -1,15 +1,13 @@
-{*  $Id$  *}
-{include file="ezcomments_admin_menu.htm"}
+{include file="ezcomments_admin_menu.tpl"}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname='EZComments' src='admin.gif' alt='' }</div>
-    <h2>{gt text="Delete item"}</h2>
-    <p class="z-warningmsg">{gt text='Confirm deletion of all comments for object ID \'%1$s\' attached to module \'%2$s\'' tag1=$objectid tag2=$name}</p>
-    <form class="z-form" action="{modurl modname="EZComments" type="admin" func="deleteitem"}" method="post" enctype="application/x-www-form-urlencoded">
+    <div class="z-adminpageicon">{img modname='EZComments' src='admin.gif' alt=''}</div>
+    <h2>{gt text="Delete module"}</h2>
+    <p class="z-warningmsg">{gt text="Confirm deletion of all comments attached to module '%s'" tag1=$name}</p>
+    <form class="z-form" action="{modurl modname='EZComments' type='admin' func='deletemodule'}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" name="authid" value="{insert name='generateauthkey' module='EZComments'}" />
             <input type="hidden" name="confirmation" value="1" />
-            <input type="hidden" name="mod" value="{$name|safetext}" />
-            <input type="hidden" name="objectid" value="{$objectid|safetext}" />
+            <input type="hidden" name="modid" value="{$modid|safetext}" />
             <fieldset>
                 <legend>{gt text="Confirmation prompt"}</legend>
                 <div class="z-formbuttons">
@@ -20,4 +18,3 @@
         </div>
     </form>
 </div>
-

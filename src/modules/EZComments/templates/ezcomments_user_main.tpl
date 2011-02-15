@@ -1,6 +1,6 @@
 {gt text="The last %s created or owned comment" plural="The last %s created or owned comments" count=$itemsperpage tag1=$itemsperpage assign=templatetitle}
 {gt text="unknown" assign=lblunknown}
-{include file="ezcomments_user_header.htm"}
+{include file="ezcomments_user_header.tpl"}
 
 <h3>{$templatetitle}</h3>
 <form class="z-form" action="{modurl modname=EZComments}" method="post">

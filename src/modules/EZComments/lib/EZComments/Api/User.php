@@ -335,7 +335,7 @@ class EZComments_Api_User extends Zikula_Api
                                'fromaddress' => System::getVar('adminmail'),
                                'fromname'    => System::getVar('sitename'),
                                'subject'     => $mailsubject,
-                               'body'        => $renderer->fetch('ezcomments_mail_newcomment.htm')));
+                               'body'        => $renderer->fetch('ezcomments_mail_newcomment.tpl')));
         }
 
         if ($maxstatus && ModUtil::getVar('EZComments', 'moderationmail') && !in_array($args['uid'], array(2, $owneruid))) {
@@ -356,7 +356,7 @@ class EZComments_Api_User extends Zikula_Api
                                'fromaddress' => System::getVar('adminmail'),
                                'fromname'    => System::getVar('sitename'),
                                'subject'     => $mailsubject,
-                               'body'        => $renderer->fetch('ezcomments_mail_modcomment.htm')));
+                               'body'        => $renderer->fetch('ezcomments_mail_modcomment.tpl')));
         }
 
         ModUtil::callHooks('item', 'create', $newcomment['id'], array('module' => 'EZComments'));

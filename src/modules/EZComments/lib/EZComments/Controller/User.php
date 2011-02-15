@@ -92,7 +92,7 @@ class EZComments_Controller_User extends Zikula_Controller
                                              'itemsperpage' => $itemsperpage));
 
         // Return the output
-        return $renderer->fetch('ezcomments_user_main.htm');
+        return $renderer->fetch('ezcomments_user_main.tpl');
     }
 
     /**
@@ -196,7 +196,7 @@ class EZComments_Controller_User extends Zikula_Controller
         $templateset = isset($args['template']) ? $args['template'] : $template;
         $defaultcss  = ModUtil::getVar('EZComments', 'css', 'style.css');
 
-        if (!$renderer->template_exists(DataUtil::formatForOS($templateset) . '/ezcomments_user_comment.htm')) {
+        if (!$renderer->template_exists(DataUtil::formatForOS($templateset) . '/ezcomments_user_comment.tpl')) {
             $templateset = ModUtil::getVar('EZComments', 'template', 'Standard');
         }
         $renderer->assign('template', $templateset);
@@ -208,7 +208,7 @@ class EZComments_Controller_User extends Zikula_Controller
         }
 
         // FIXME comment template missing
-        return $renderer->fetch(DataUtil::formatForOS($templateset) . '/ezcomments_user_view.htm');
+        return $renderer->fetch(DataUtil::formatForOS($templateset) . '/ezcomments_user_view.tpl');
     }
 
     /**
@@ -423,7 +423,7 @@ class EZComments_Controller_User extends Zikula_Controller
         }
 
         // display the feed and notify the core that we're done
-        $renderer->display("ezcomments_user_$feedtype.htm");
+        $renderer->display("ezcomments_user_$feedtype.tpl.tpl");
         return true;
     }
 

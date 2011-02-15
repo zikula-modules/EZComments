@@ -1,4 +1,4 @@
-{include file="ezcomments_admin_menu.htm"}
+{include file="ezcomments_admin_menu.tpl"}
 {ajaxheader ui=true}
 {gt text="unknown" assign=lblunknown}
 
