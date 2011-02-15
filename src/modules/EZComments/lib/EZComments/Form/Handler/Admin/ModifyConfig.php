@@ -11,7 +11,7 @@
 class EZComments_Form_Handler_Admin_ModifyConfig extends Zikula_Form_Handler
 {
 
-    function initialize($view)
+    function initialize(Zikula_Form_View $view)
     {
         $view->caching = false;
         $view->add_core_data();
@@ -43,7 +43,7 @@ class EZComments_Form_Handler_Admin_ModifyConfig extends Zikula_Form_Handler
         return true;
     }
 
-    function handleCommand($view, &$args)
+    function handleCommand(Zikula_Form_View $view, &$args)
     {
         // Security check
         if (!SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
@@ -51,32 +51,32 @@ class EZComments_Form_Handler_Admin_ModifyConfig extends Zikula_Form_Handler
         }
 
         if ($args['commandName'] == 'submit') {
-            $ok = $view->pnFormIsValid();
-            $data = $view->pnFormGetValues();
+            $ok = $view->ssValid();
+            $data = $view->getValues();
 
             // TODO reduce this to a loop
             if (empty($data['ezcomments_itemsperpage'])) {
-                $ifield = $view->pnFormGetPluginById('ezcomments_itemsperpage');
+                $ifield = $view->getPluginById('ezcomments_itemsperpage');
                 $ifield->setError(DataUtil::formatForDisplay($this->__('missing value')));
                 $ok = false;
             }
             if (empty($data['ezcomments_modlinkcount'])) {
-                $ifield = $view->pnFormGetPluginById('ezcomments_modlinkcount');
+                $ifield = $view->getPluginById('ezcomments_modlinkcount');
                 $ifield->setError(DataUtil::formatForDisplay($this->__('missing value')));
                 $ok = false;
             }
             if (empty($data['ezcomments_blacklinkcount'])) {
-                $ifield = $view->pnFormGetPluginById('ezcomments_blacklinkcount');
+                $ifield = $view->getPluginById('ezcomments_blacklinkcount');
                 $ifield->setError(DataUtil::formatForDisplay($this->__('missing value')));
                 $ok = false;
             }
             if (empty($data['ezcomments_feedcount'])) {
-                $ifield = $view->pnFormGetPluginById('ezcomments_feedcount');
+                $ifield = $view->getPluginById('ezcomments_feedcount');
                 $ifield->setError(DataUtil::formatForDisplay($this->__('missing value')));
                 $ok = false;
             }
             if (empty($data['ezcomments_commentsperpage'])) {
-                $ifield = $view->pnFormGetPluginById('ezcomments_commentsperpage');
+                $ifield = $view->getPluginById('ezcomments_commentsperpage');
                 $ifield->setError(DataUtil::formatForDisplay($this->__('missing value')));
                 $ok = false;
             }

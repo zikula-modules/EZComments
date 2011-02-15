@@ -13,7 +13,7 @@ class EZComments_Form_Handler_Admin_Modify extends Zikula_Form_Handler
 
     var $id;
 
-    function initialize($view)
+    function initialize(Zikula_Form_View $view)
     {
         $this->id = (int) FormUtil::getPassedValue('id', -1, 'GETPOST');
         $objectid = FormUtil::getPassedValue('objectid', '', 'GETPOST');
@@ -42,7 +42,7 @@ class EZComments_Form_Handler_Admin_Modify extends Zikula_Form_Handler
         return true;
     }
 
-    function handleCommand($view, &$args)
+    function handleCommand(Zikula_Form_View $view, &$args)
     {
         // Security check
         $securityCheck = ModUtil::apiFunc('EZComments', 'user', 'checkPermission',
@@ -54,8 +54,8 @@ class EZComments_Form_Handler_Admin_Modify extends Zikula_Form_Handler
             return LogUtil::registerPermissionError(ModUtil::url('EZComments', 'admin', 'main'));
         }
 
-        $ok = $view->pnFormIsValid();
-        $data = $view->pnFormGetValues();
+        $ok = $view->ssValid();
+        $data = $view->getValues();
         $comment = ModUtil::apiFunc('EZComments', 'user', 'get', array('id' => $this->id));
 
         switch ($args['commandName'])
@@ -81,19 +81,19 @@ class EZComments_Form_Handler_Admin_Modify extends Zikula_Form_Handler
                     // poster is anonymous
                     // check anon fields
                     if (empty($data['ezcomments_anonname'])) {
-                        $ifield = $view->pnFormGetPluginById('ezcomments_anonname');
+                        $ifield = $view->getPluginById('ezcomments_anonname');
                         $ifield->setError(DataUtil::formatForDisplay($this->__('Name for anonymous user is missing.')));
                         $ok = false;
                     }
                     // anonmail must be valid - really necessary if an admin changes this?
                     if (empty($data['ezcomments_anonmail']) || !System::varValidate($data['ezcomments_anonmail'], 'email')) {
-                        $ifield = $view->pnFormGetPluginById('ezcomments_anonmail');
+                        $ifield = $view->getPluginById('ezcomments_anonmail');
                         $ifield->setError(DataUtil::formatForDisplay($this->__('Email address of anonymous user is missing or invalid.')));
                         $ok = false;
                     }
                     // anonwebsite must be valid
                     if (!empty($data['ezcomments_anonwebsite']) && !System::varValidate($data['ezcomments_anonmail'], 'url')) {
-                        $ifield = $view->pnFormGetPluginById('ezcomments_anonwebsite');
+                        $ifield = $view->getPluginById('ezcomments_anonwebsite');
                         $ifield->setError(DataUtil::formatForDisplay($this->__('Website of anonymous user is invalid.')));
                         $ok = false;
                     }
@@ -104,7 +104,7 @@ class EZComments_Form_Handler_Admin_Modify extends Zikula_Form_Handler
                 // no check on ezcomments_subject as this may be empty
 
                 if (empty($data['ezcomments_comment'])) {
-                    $ifield = $view->pnFormGetPluginById('ezcomments_comment');
+                    $ifield = $view->getPluginById('ezcomments_comment');
                     $ifield->setError(DataUtil::formatForDisplay($this->__('Error! The comment contains no text.')));
                     $ok = false;
                 }
