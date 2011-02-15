@@ -56,7 +56,7 @@ class EZComments_Controller_User extends Zikula_Controller
         {
             $options   = array();
             $options[] = array('url'   => $item['url'] . '#comment' . $item['id'],
-                               'image' => 'demo.gif',
+                               'image' => 'demo.png',
                                'title' => $this->__('View'));
 
             // Security check
@@ -70,7 +70,7 @@ class EZComments_Controller_User extends Zikula_Controller
 
             if ($securityCheck) {
                 $options[] = array('url'   => ModUtil::url('EZComments', 'user', 'modify', array('id' => $item['id'])),
-                                   'image' => 'xedit.gif',
+                                   'image' => 'xedit.png',
                                    'title' => $this->__('Edit'));
             }
 

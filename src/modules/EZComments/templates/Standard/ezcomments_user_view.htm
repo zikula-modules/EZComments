@@ -31,10 +31,10 @@
                 {if $pncore.logged_in eq true}
                 <li class="ezc_options">
                     {if $msgmodule}
-                    <a href="{modurl modname=$msgmodule func='inbox' func='newpm' uid=$comment.uid}">{img modname='core' src='mail_generic.gif' set='icons/extrasmall' __title='Send mail to user' __alt='Send mail to user'}</a>
+                    <a href="{modurl modname=$msgmodule func='inbox' func='newpm' uid=$comment.uid}">{img modname='core' src='mail_generic.png' set='icons/extrasmall' __title='Send mail to user' __alt='Send mail to user'}</a>
                     {/if}
                     {if $comment.del}
-                    <a href="{modurl fqurl=true modname='EZComments' type='user' func='modify' id=$comment.id redirect=$redirect}">{img modname='core' src='xedit.gif' set='icons/extrasmall' __title='Modify comment' __alt='Modify comment'}</a>
+                    <a href="{modurl fqurl=true modname='EZComments' type='user' func='modify' id=$comment.id redirect=$redirect}">{img modname='core' src='xedit.png' set='icons/extrasmall' __title='Modify comment' __alt='Modify comment'}</a>
                     {/if}
                 </li>
                 {/if}
