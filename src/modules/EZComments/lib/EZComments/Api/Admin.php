@@ -284,7 +284,7 @@ class EZComments_Api_Admin extends Zikula_Api
         if (SecurityUtil::checkPermission('EZComments::', '::', ACCESS_ADMIN)) {
             $links[] = array('url' => ModUtil::url('EZComments', 'admin'),
                              'text' => $this->__('View comments'),
-                             'class' => 'z-icon-es-list');
+                             'class' => 'z-icon-es-view');
             $links[] = array('url' => ModUtil::url('EZComments', 'admin', 'stats'),
                              'text' => $this->__('Comment statistics'),
                              'class' => 'z-icon-es-cubes');
