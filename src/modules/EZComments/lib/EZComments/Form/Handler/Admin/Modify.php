@@ -54,7 +54,7 @@ class EZComments_Form_Handler_Admin_Modify extends Zikula_Form_Handler
             return LogUtil::registerPermissionError(ModUtil::url('EZComments', 'admin', 'main'));
         }
 
-        $ok = $view->ssValid();
+        $ok = $view->isValid();
         $data = $view->getValues();
         $comment = ModUtil::apiFunc('EZComments', 'user', 'get', array('id' => $this->id));
 
