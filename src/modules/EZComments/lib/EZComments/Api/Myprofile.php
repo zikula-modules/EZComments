@@ -53,12 +53,15 @@ class EZComments_Api_Myprofile extends Zikula_Api
             }
         }
 
-        $this->view->assign('uid', (int) $args['uid']);
-        $this->view->assign('viewer_uid', UserUtil::getVar('uid'));
-        $this->view->assign('uname', UserUtil::getVar('uname', (int) $args['uid']));
-        $this->view->assign('settings', ModUtil::apiFunc('MyProfile', 'user', 'getSettings', array('uid' => $args['uid'])));
+        // generate output
+        $render = Zikula_View::getInstance('EZComments');
 
-        return $this->view->fetch('ezcomments_myprofile_tab.tpl');
+        $render->assign('uid', (int) $args['uid']);
+        $render->assign('viewer_uid', UserUtil::getVar('uid'));
+        $render->assign('uname', UserUtil::getVar('uname', (int) $args['uid']));
+        $render->assign('settings', ModUtil::apiFunc('MyProfile', 'user', 'getSettings', array('uid' => $args['uid'])));
+
+        return $render->fetch('ezcomments_myprofile_tab.tpl');
     }
 
     /**

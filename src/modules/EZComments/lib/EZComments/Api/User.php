@@ -10,10 +10,6 @@
 
 class EZComments_Api_User extends Zikula_Api
 {
-    public function postInitialize()
-    {
-        $this->view->setCaching(false);
-    }
     /**
      * Get comments for a specific item inside a module
      *
@@ -320,6 +316,9 @@ class EZComments_Api_User extends Zikula_Api
             $toname    = System::getVar('sitename');
         }
 
+        // generate output
+        $renderer = Zikula_View::getInstance('EZComments');
+
         // Inform the content owner or the admin about a new comment
         if (!$maxstatus && ModUtil::getVar('EZComments', 'MailToAdmin') && !in_array($args['uid'], array(2, $owneruid))) {
             if ($args['uid'] > 0) {
@@ -327,7 +326,7 @@ class EZComments_Api_User extends Zikula_Api
             } else {
                 $newcomment['userline'] = "$args[anonname] $args[anonmail]";
             }
-            $this->view->assign('comment', $newcomment);
+            $renderer->assign('comment', $newcomment);
 
             $mailsubject = $this->__('A new comment was entered');
 
@@ -337,7 +336,7 @@ class EZComments_Api_User extends Zikula_Api
                                'fromaddress' => System::getVar('adminmail'),
                                'fromname'    => System::getVar('sitename'),
                                'subject'     => $mailsubject,
-                               'body'        => $this->view->fetch('ezcomments_mail_newcomment.tpl')));
+                               'body'        => $renderer->fetch('ezcomments_mail_newcomment.tpl')));
         }
 
         if ($maxstatus && ModUtil::getVar('EZComments', 'moderationmail') && !in_array($args['uid'], array(2, $owneruid))) {
@@ -346,7 +345,7 @@ class EZComments_Api_User extends Zikula_Api
             } else {
                 $newcomment['userline'] = "$args[anonname] $args[anonmail]";
             }
-            $this->view->assign('comment', $newcomment);
+            $renderer->assign('comment', $newcomment);
 
             $mailsubject = $this->__('New comment for your site');
 
@@ -356,7 +355,7 @@ class EZComments_Api_User extends Zikula_Api
                                'fromaddress' => System::getVar('adminmail'),
                                'fromname'    => System::getVar('sitename'),
                                'subject'     => $mailsubject,
-                               'body'        => $this->view->fetch('ezcomments_mail_modcomment.tpl')));
+                               'body'        => $renderer->fetch('ezcomments_mail_modcomment.tpl')));
         }
 
         ModUtil::callHooks('item', 'create', $newcomment['id'], array('module' => 'EZComments'));
