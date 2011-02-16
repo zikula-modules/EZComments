@@ -84,31 +84,32 @@ class EZComments_Form_Handler_Admin_ModifyConfig extends Zikula_Form_Handler
                 return false;
             }
 
-            ModUtil::setVar('EZComments', 'MailToAdmin', $data['ezcomments_MailToAdmin']);
-            ModUtil::setVar('EZComments', 'moderationmail', $data['ezcomments_moderationmail']);
-            ModUtil::setVar('EZComments', 'template', $data['ezcomments_template']);
-            ModUtil::setVar('EZComments', 'css', $data['ezcomments_css']);
-            ModUtil::setVar('EZComments', 'itemsperpage', $data['ezcomments_itemsperpage']);
-            ModUtil::setVar('EZComments', 'anonusersinfo', $data['ezcomments_anonusersinfo']);
-            ModUtil::setVar('EZComments', 'moderation', $data['ezcomments_moderation']);
-            ModUtil::setVar('EZComments', 'enablepager', $data['ezcomments_enablepager']);
-            ModUtil::setVar('EZComments', 'dontmoderateifcommented', $data['ezcomments_dontmoderateifcommented']);
-            ModUtil::setVar('EZComments', 'modlinkcount', $data['ezcomments_modlinkcount']);
-            ModUtil::setVar('EZComments', 'modlist', $data['ezcomments_modlist']);
-            ModUtil::setVar('EZComments', 'blacklinkcount', $data['ezcomments_blacklinkcount']);
-            ModUtil::setVar('EZComments', 'blacklist', $data['ezcomments_blacklist']);
-            ModUtil::setVar('EZComments', 'alwaysmoderate', $data['ezcomments_alwaysmoderate']);
-            ModUtil::setVar('EZComments', 'proxyblacklist', $data['ezcomments_proxyblacklist']);
-            ModUtil::setVar('EZComments', 'logip', $data['ezcomments_logip']);
-            ModUtil::setVar('EZComments', 'feedtype', $data['ezcomments_feedtype']);
-            ModUtil::setVar('EZComments', 'feedcount', $data['ezcomments_feedcount']);
-            ModUtil::setVar('EZComments', 'commentsperpage', $data['ezcomments_commentsperpage']);
-            ModUtil::setVar('EZComments', 'enablepager', $data['ezcomments_enablepager']);
-            ModUtil::setVar('EZComments', 'akismet', $data['ezcomments_akismet']);
-            ModUtil::setVar('EZComments', 'akismetstatus', $data['ezcomments_akismetstatus']);
-            ModUtil::setVar('EZComments', 'anonusersrequirename', $data['ezcomments_anonusersrequirename']);
-            ModUtil::setVar('EZComments', 'modifyowntime', $data['ezcomments_modifyowntime']);
-            ModUtil::setVar('EZComments', 'useaccountpage', $data['ezcomments_useaccountpage']);
+
+            $this->setVar('MailToAdmin', $data['ezcomments_MailToAdmin']);
+            $this->setVar('moderationmail', $data['ezcomments_moderationmail']);
+            $this->setVar('template', $data['ezcomments_template']);
+            $this->setVar('css', $data['ezcomments_css']);
+            $this->setVar('itemsperpage', $data['ezcomments_itemsperpage']);
+            $this->setVar('anonusersinfo', $data['ezcomments_anonusersinfo']);
+            $this->setVar('moderation', $data['ezcomments_moderation']);
+            $this->setVar('enablepager', $data['ezcomments_enablepager']);
+            $this->setVar('dontmoderateifcommented', $data['ezcomments_dontmoderateifcommented']);
+            $this->setVar('modlinkcount', $data['ezcomments_modlinkcount']);
+            $this->setVar('modlist', $data['ezcomments_modlist']);
+            $this->setVar('blacklinkcount', $data['ezcomments_blacklinkcount']);
+            $this->setVar('blacklist', $data['ezcomments_blacklist']);
+            $this->setVar('alwaysmoderate', $data['ezcomments_alwaysmoderate']);
+            $this->setVar('proxyblacklist', $data['ezcomments_proxyblacklist']);
+            $this->setVar('logip', $data['ezcomments_logip']);
+            $this->setVar('feedtype', $data['ezcomments_feedtype']);
+            $this->setVar('feedcount', $data['ezcomments_feedcount']);
+            $this->setVar('commentsperpage', $data['ezcomments_commentsperpage']);
+            $this->setVar('enablepager', $data['ezcomments_enablepager']);
+            $this->setVar('akismet', $data['ezcomments_akismet']);
+            $this->setVar('akismetstatus', $data['ezcomments_akismetstatus']);
+            $this->setVar('anonusersrequirename', $data['ezcomments_anonusersrequirename']);
+            $this->setVar('modifyowntime', $data['ezcomments_modifyowntime']);
+            $this->setVar('useaccountpage', $data['ezcomments_useaccountpage']);
 
             LogUtil::registerStatus($this->__('Done! Module configuration updated.'));
         }
