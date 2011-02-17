@@ -21,7 +21,6 @@ class EZComments_Form_Handler_User_Modify extends Zikula_Form_Handler
         $redirect = base64_decode(FormUtil::getPassedValue('redirect', '', 'GETPOST'));
 
         $view->caching = false;
-        $view->add_core_data();
 
         $comment = ModUtil::apiFunc('EZComments', 'user', 'get', array('id' => $this->id));
         if ($comment == false || !is_array($comment)) {
