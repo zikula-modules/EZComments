@@ -14,7 +14,6 @@ class EZComments_Form_Handler_Admin_ModifyConfig extends Zikula_Form_Handler
     function initialize(Zikula_Form_View $view)
     {
         $view->caching = false;
-        $view->add_core_data();
 
         $templates = array();
         $rawtemplates = ModUtil::apiFunc('EZComments', 'user', 'gettemplates');
@@ -51,7 +50,7 @@ class EZComments_Form_Handler_Admin_ModifyConfig extends Zikula_Form_Handler
         }
 
         if ($args['commandName'] == 'submit') {
-            $ok = $view->ssValid();
+            $ok = $view->isValid();
             $data = $view->getValues();
 
             // TODO reduce this to a loop
@@ -105,8 +104,8 @@ class EZComments_Form_Handler_Admin_ModifyConfig extends Zikula_Form_Handler
             $this->setVar('feedcount', $data['ezcomments_feedcount']);
             $this->setVar('commentsperpage', $data['ezcomments_commentsperpage']);
             $this->setVar('enablepager', $data['ezcomments_enablepager']);
-            $this->setVar('akismet', $data['ezcomments_akismet']);
-            $this->setVar('akismetstatus', $data['ezcomments_akismetstatus']);
+            $this->setVar('akismet', isset($data['ezcomments_akismet']) ? $data['ezcomments_akismet'] : false);
+            $this->setVar('akismetstatus', isset($data['ezcomments_akismetstatus']) ? $data['ezcomments_akismetstatus'] : 1);
             $this->setVar('anonusersrequirename', $data['ezcomments_anonusersrequirename']);
             $this->setVar('modifyowntime', $data['ezcomments_modifyowntime']);
             $this->setVar('useaccountpage', $data['ezcomments_useaccountpage']);
