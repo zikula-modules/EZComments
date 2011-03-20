@@ -8,7 +8,7 @@
  * @license See license.txt
  */
 
-class EZComments_Installer extends Zikula_Installer
+class EZComments_Installer extends Zikula_AbstractInstaller
 {
     /**
      * initialise the EZComments module

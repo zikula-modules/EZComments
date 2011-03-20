@@ -7,7 +7,7 @@
  * @license See license.txt
  */
 
-class EZComments_Version extends Zikula_Version
+class EZComments_Version extends Zikula_AbstractVersion
 {
 
     public function getMetaData()

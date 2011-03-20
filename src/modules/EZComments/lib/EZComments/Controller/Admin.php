@@ -7,7 +7,7 @@
  * @license See license.txt
  */
 
-class EZComments_Controller_Admin extends Zikula_Controller
+class EZComments_Controller_Admin extends Zikula_AbstractController
 {
     /**
      * Main administration function

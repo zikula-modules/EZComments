@@ -14,7 +14,7 @@
 /**
  * EZComments Hooks Handlers.
  */
-class EZComments_HookHandlers extends Zikula_HookHandler
+class EZComments_HookHandlers extends Zikula_Hook_AbstractHandler
 {
 
     /**
@@ -95,7 +95,7 @@ class EZComments_HookHandlers extends Zikula_HookHandler
         $view->assign('loggedin', UserUtil::isLoggedIn());
 
         $redirect = $event['returnurl'];
-        
+
         // encode the url - otherwise we can get some problems out there....
         $redirect = base64_encode($redirect);
         $view->assign('redirect', $redirect);

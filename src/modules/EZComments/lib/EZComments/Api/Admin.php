@@ -8,7 +8,7 @@
  * @license See license.txt
  */
 
-class EZComments_Api_Admin extends Zikula_Api
+class EZComments_Api_Admin extends Zikula_AbstractApi
 {
     /**
      * get Used Modules

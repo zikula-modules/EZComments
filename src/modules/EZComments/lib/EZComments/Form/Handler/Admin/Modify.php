@@ -8,7 +8,7 @@
  * @version $Id$
  * @license See license.txt
  */
-class EZComments_Form_Handler_Admin_Modify extends Zikula_Form_Handler
+class EZComments_Form_Handler_Admin_Modify extends Zikula_Form_AbstractHandler
 {
 
     var $id;

@@ -8,7 +8,7 @@
  * @license See license.txt
  */
 
-class EZComments_Api_User extends Zikula_Api
+class EZComments_Api_User extends Zikula_AbstractApi
 {
     /**
      * Get comments for a specific item inside a module
@@ -536,7 +536,7 @@ class EZComments_Api_User extends Zikula_Api
         if (!isset($args['var'])) {
             return 0;
         }
-        
+
         $var = $args['var'];
 
         // check blacklisted words - exit silently if found
