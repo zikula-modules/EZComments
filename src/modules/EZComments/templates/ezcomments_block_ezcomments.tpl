@@ -9,7 +9,7 @@
         {if $showusername and $comment.uname neq ''}
         {gt text="by" domain="module_ezcomments"}
         {if $linkusername}
-        {$comment.uid|userprofilelink}
+        {$comment.uid|profilelinkbyuid}
         {else}
         {$comment.uname|safetext}
         {/if}

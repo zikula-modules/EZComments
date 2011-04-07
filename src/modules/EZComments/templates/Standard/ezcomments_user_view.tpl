@@ -13,7 +13,7 @@
             <ul class="ezc_metadata">
                 <li class="ezc_author">
                     {if $comment.uname neq ''}
-                    <strong>{$comment.uid|userprofilelink}</strong>
+                    <strong>{$comment.uid|profilelinkbyuid}</strong>
                     {elseif $comment.anonname neq ''}
                     {if $comment.anonwebsite neq ''}
                     <strong><a rel="nofollow" href="{$comment.anonwebsite}">{$comment.anonname}</a></strong>

@@ -44,7 +44,7 @@
             <td>
                 <span class="z-nowrap">
                     {if $item.uid neq 0}
-                    {$item.uid|userprofilelink|default:$lblunknown}
+                    {$item.uid|profilelinkbyuid|default:$lblunknown}
                     {else}
                     {$item.anonname|safetext|default:$lblunknown}
                     {/if}
@@ -52,7 +52,7 @@
                 <br />
                 <span class="z-nowrap">
                     {if $item.owneruid ne "0"}
-                    {$item.owneruid|userprofilelink|default:$lblunknown}
+                    {$item.owneruid|profilelinkbyuid|default:$lblunknown}
                     {else}
                     {$lblunknown}
                     {/if}

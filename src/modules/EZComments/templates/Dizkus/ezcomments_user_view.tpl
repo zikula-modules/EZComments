@@ -16,7 +16,7 @@
                 {elseif $comment.anonname neq '' && $comment.anonwebsite eq ''}
                 <strong>{$comment.anonname}</strong>
                 {else}
-                <strong>{$comment.uid|userprofilelink}</strong>
+                <strong>{$comment.uid|profilelinkbyuid}</strong>
                 {/if}
                 <br />
                 {useravatar uid=$comment.uid}
@@ -27,7 +27,7 @@
                 {if $pncore.logged_in eq true}
                 <li>
                     {if $prfmodule}
-                    {$comment.uid|userprofilelink:'':"`$baseurl`images/icons/extrasmall/personal.png"}
+                    {$comment.uid|profilelinkbyuid:'':"`$baseurl`images/icons/extrasmall/personal.png"}
                     {/if}
                     {if $msgmodule}
                     <a href="{modurl modname=$msgmodule func="inbox" func="newpm" uid=$comment.uid}">{img modname=core src=mail_generic.png set='icons/extrasmall' __title="Send mail to user" __alt="Send mail to user"}</a>
