@@ -40,14 +40,13 @@ class EZComments_Version extends Zikula_AbstractVersion
 
     protected function setupHookBundles()
     {
-        $bundle = new Zikula_Version_HookProviderBundle('modulehook_area.ezcomments.comments', __('EZComments Comment Hooks'));
+        $bundle = new Zikula_HookManager_ProviderBundle($this->name, 'modulehook_area.ezcomments.comments', 'ui', __('EZComments Comment Hooks'));
         $bundle->addHook('hookhandler.ezcomments.ui.view', 'ui.view', 'EZComments_HookHandlers', 'ui_view', 'ezcomments.hooks');
         $bundle->addHook('hookhandler.ezcomments.process.delete', 'process.delete', 'EZComments_HookHandlers', 'process_delete', 'ezcomments.hooks');
         $this->registerHookProviderBundle($bundle);
 
-        $bundle = new Zikula_Version_HookSubscriberBundle('modulehook_area.ezcomments.commentsfilter', $this->__('EZComment Comments Filter'));
+        $bundle = new Zikula_HookManager_SubscriberBundle($this->name, 'modulehook_area.ezcomments.commentsfilter', 'filter', $this->__('EZComment Comments Filter'));
         $bundle->addType('ui.filter', 'ezcomments.hook.commentsfilter');
         $this->registerHookSubscriberBundle($bundle);
     }
-
 }

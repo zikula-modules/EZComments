@@ -24,24 +24,28 @@ class EZComments_HookHandlers extends Zikula_Hook_AbstractHandler
      * args[id] Is the id of the object.
      * args[caller] the module who notified of this event.
      *
-     * @param Zikula_Event $event The hookable event.
+     * @param Zikula_Hook $hook The hook.
      *
      * @return void
      */
-    public function ui_view(Zikula_Event $event)
+    public function ui_view(Zikula_DisplayHook $hook)
     {
         // work out the input from the hook
-        $mod = $event['caller'];
-        $objectid = isset($event['id']) ? $event['id'] : '';
+        $mod = $hook->getCaller();
+        $objectid = $hook->getId();
 
         // first check if the user is allowed to do any comments for this module/objectid
         if (!SecurityUtil::checkPermission('EZComments::', "$mod:$objectid:", ACCESS_OVERVIEW)) {
             return;
         }
 
-        $subject = $event->getSubject();
-        $owneruid = (int)$subject['cr_uid'];
+        $subject = array();//$hook->getSubject();
+        $owneruid = isset($subject['cr_uid']) ? (int)$subject['cr_uid'] : 0;
         $useurl = isset($subject['useurl']) ? $subject['useurl'] : null;
+        $ownerUidSession = SessionUtil::delVar('commentOwner', 0);
+        if ($ownerUidSession > 0) {
+            $owneruid = $ownerUidSession;
+        }
 
         // we may have a comment incoming
         $ezcomment = unserialize(SessionUtil::getVar('ezcomment', 'a:0:{}'));
@@ -94,7 +98,9 @@ class EZComments_HookHandlers extends Zikula_Hook_AbstractHandler
         $view->assign('allowadd', SecurityUtil::checkPermission('EZComments::', "$mod:$objectid:", ACCESS_COMMENT));
         $view->assign('loggedin', UserUtil::isLoggedIn());
 
-        $redirect = $event['returnurl'];
+        $modUrl = $hook->getUrl();
+        $redirect = (!is_null($modUrl)) ? $modUrl->getUrl() : '';
+        $view->assign('returnurl', $redirect);
 
         // encode the url - otherwise we can get some problems out there....
         $redirect = base64_encode($redirect);
@@ -136,7 +142,7 @@ class EZComments_HookHandlers extends Zikula_Hook_AbstractHandler
             PageUtil::addVar('stylesheet', $css);
         }
 
-        $event->data['modulehook_area.ezcomments.comments']  = new Zikula_Response_DisplayHook('modulehook_area.ezcomments.comments', $view, DataUtil::formatForOS($templateset) . '/ezcomments_user_view.tpl');
+        $hook->setResponse(new Zikula_Response_DisplayHook('modulehook_area.ezcomments.comments', $view, DataUtil::formatForOS($templateset) . '/ezcomments_user_view.tpl'));
     }
 
     /**
@@ -146,20 +152,20 @@ class EZComments_HookHandlers extends Zikula_Hook_AbstractHandler
      * args[id] Is the is of the object
      * args[caller] is the name of who notified this event.
      *
-     * @param Zikula_Event $event The hookable event.
+     * @param Zikula_ProcessHook $hook The hookable event.
      *
      * @return void
      */
-    public function process_delete(Zikula_Event $event)
+    public function process_delete(Zikula_ProcessHook $hook)
     {
-        if ($event['id'] <= 0) {
+        if ($hook->getId() <= 0) {
             return;
         }
 
         // Security check
         $res = ModUtil::apiFunc('EZComments', 'user', 'checkPermission',
-                            array('module'   => $event['caller'],
-                                  'objectid' => $event['id'],
+                            array('module'   => $hook->getCaller(),
+                                  'objectid' => $hook->getId(),
                                   'level'    => ACCESS_DELETE));
 
         if (!$res) {
@@ -170,11 +176,10 @@ class EZComments_HookHandlers extends Zikula_Hook_AbstractHandler
         $tables  = DBUtil::getTables();
         $column  = $tables['EZComments_column'];
 
-        $mod      = DataUtil::formatForStore($event['caller']);
-        $objectid = DataUtil::formatForStore($event['id']);
+        $mod      = DataUtil::formatForStore($hook->getCaller());
+        $objectid = DataUtil::formatForStore($hook->getId());
         $where    = "$column[modname] = '$mod' AND $column[objectid] = '$objectid'";
 
         DBUtil::deleteWhere('EZComments', $where);
     }
-
 }

@@ -158,8 +158,8 @@ class EZComments_Installer extends Zikula_AbstractInstaller
         // delete all module vars for the ezcomments module
         $this->delVars();
 
-        HookUtil::unregisterHookProviderBundles($this->version);
-        HookUtil::unregisterHookSubscriberBundles($this->version);
+        HookUtil::unregisterProviderBundles($this->version->getHookProviderBundles());
+        HookUtil::unregisterSubscriberBundles($this->version->getHookSubscriberBundles());
         EventUtil::unregisterPersistentModuleHandler('EZComments', 'installer.module.uninstalled', array('EZComments_EventHandlers', 'moduleDelete'));
 
         // Deletion successful
