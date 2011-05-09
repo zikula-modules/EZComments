@@ -26,8 +26,9 @@ class EZComments_Installer extends Zikula_AbstractInstaller
         }
 
         // register hooks
-        HookUtil::registerHookProviderBundles($this->version);
-        HookUtil::registerHookSubscriberBundles($this->version);
+        HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
+        HookUtil::registerProviderBundles($this->version->getHookProviderBundles());
+
 
         // register the module delete hook
         EventUtil::registerPersistentModuleHandler('EZComments', 'installer.module.uninstalled', array('EZComments_EventHandlers', 'moduleDelete'));
@@ -113,8 +114,8 @@ class EZComments_Installer extends Zikula_AbstractInstaller
             case '2.0.0':
             case '3.0.0':
                 // register hooks
-                HookUtil::registerHookProviderBundles($this->version);
-                HookUtil::registerHookSubscriberBundles($this->version);
+                HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
+                HookUtil::registerProviderBundles($this->version->getHookProviderBundles());
 
                 // register the module delete hook
                 EventUtil::registerPersistentModuleHandler('EZComments', 'installer.module.uninstalled', array('EZComments_EventHandlers', 'moduleDelete'));
