@@ -5,7 +5,7 @@
     <p class="z-warningmsg">{gt text='Confirm deletion of all comments for object ID \'%1$s\' attached to module \'%2$s\'' tag1=$objectid tag2=$name}</p>
     <form class="z-form" action="{modurl modname="EZComments" type="admin" func="deleteitem"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" value="{insert name='generateauthkey' module='EZComments'}" />
+            <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <input type="hidden" name="confirmation" value="1" />
             <input type="hidden" name="mod" value="{$name|safetext}" />
             <input type="hidden" name="objectid" value="{$objectid|safetext}" />

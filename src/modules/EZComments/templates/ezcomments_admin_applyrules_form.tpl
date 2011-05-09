@@ -5,7 +5,7 @@
     <p class="z-informationmsg">{gt text="This page allows to to re-apply the defined moderation rules to all existing comments allowing all comments to be re-checked if you change your moderation rules."}</p>
     <form class="z-form" action="{modurl modname='EZComments' type='admin' func='applyrules'}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" value="{insert name='generateauthkey' module='EZComments'}" />
+            <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <input type="hidden" name="confirmation" value="1" />
             <fieldset>
                 <legend>{gt text="Choose action"}</legend>

@@ -4,7 +4,7 @@
     <h2>{gt text="Import comments from other modules"}</h2>
     <form class="z-form" action="{modurl modname="EZComments" type="admin" func="migrate_go"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" value="{insert name='generateauthkey' module='EZComments'}" />
+            <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <fieldset>
                 <legend>{gt text="Migration"}</legend>
                 <div class="z-formrow">

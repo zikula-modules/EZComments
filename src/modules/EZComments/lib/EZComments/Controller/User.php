@@ -276,10 +276,11 @@ class EZComments_Controller_User extends Zikula_AbstractController
         }
 
         // Confirm authorisation code
-        if (!SecurityUtil::confirmAuthKey()) {
-            SessionUtil::setVar('ezcomment', serialize($ezcomment));
-            return LogUtil::registerAuthidError($redirect."#commentform_{$mod}_{$objectid}");
-        }
+        // check csrf token
+        SessionUtil::setVar('ezcomment', serialize($ezcomment));
+        $this->checkCsrfToken();
+        SessionUtil::delVar('ezcomment');
+
         // and check we've actually got a comment....
         if (empty($comment)) {
             SessionUtil::setVar('ezcomment', serialize($ezcomment));

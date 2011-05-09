@@ -160,10 +160,8 @@ class EZComments_Controller_Admin extends Zikula_AbstractController
      */
     public function processselected($args)
     {
-        // Confirm authorisation code.
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('EZComments', 'admin', 'main'));
-        }
+        // check csrf token
+        $this->checkCsrfToken();
 
         // Get parameters from whatever input we need.
         $comments = isset($args['comments']) ? $args['comments'] : FormUtil::getPassedValue('comments', null, 'POST');
@@ -289,10 +287,8 @@ class EZComments_Controller_Admin extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        // Authentication key
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('EZComments', 'admin', 'main'));
-        }
+        // check csrf token
+        $this->checkCsrfToken();
 
         // Parameter
         $migrate = FormUtil::getPassedValue('migrate');
@@ -367,10 +363,8 @@ class EZComments_Controller_Admin extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        // Authentication key
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('EZComments', 'admin', 'main'));
-        }
+        // check csrf token
+        $this->checkCsrfToken();
 
         $module = FormUtil::getPassedValue('ezcomments_module');
         if (!isset($module)) {
@@ -415,10 +409,8 @@ class EZComments_Controller_Admin extends Zikula_AbstractController
         }
 
         // If we get here it means that the user has confirmed the action
-        // Confirm authorisation code.
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('EZComments', 'admin', 'main'));
-        }
+        // check csrf token
+        $this->checkCsrfToken();
 
         // The API function is called.
         if (ModUtil::apiFunc('EZComments', 'admin', 'purge',
@@ -548,10 +540,8 @@ class EZComments_Controller_Admin extends Zikula_AbstractController
         }
 
         // If we get here it means that the user has confirmed the action
-        // Confirm authorisation code.
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('EZComments', 'admin', 'main'));
-        }
+        // check csrf token
+        $this->checkCsrfToken();
 
         // The API function is called.
         // note: the api call is a little different here since we'll really calling a hook function that will
@@ -611,10 +601,8 @@ class EZComments_Controller_Admin extends Zikula_AbstractController
         }
 
         // If we get here it means that the user has confirmed the action
-        // Confirm authorisation code.
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('EZComments', 'admin', 'main'));
-        }
+        // check csrf token
+        $this->checkCsrfToken();
 
         // The API function is called.
         // note: the api call is a little different here since we'll really calling a hook function that will
@@ -666,10 +654,8 @@ class EZComments_Controller_Admin extends Zikula_AbstractController
         }
 
         // If we get here it means that the user has confirmed the action
-        // Confirm authorisation code.
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('EZComments', 'admin', 'main'));
-        }
+        // check csrf token
+        $this->checkCsrfToken();
 
         // get the matching comments
         $args = array();

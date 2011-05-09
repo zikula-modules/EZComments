@@ -4,7 +4,7 @@
     <h2>{gt text="Purge comments"}</h2>
     <form class="z-form" action="{modurl modname="EZComments" type="admin" func="purge"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" value="{insert name='generateauthkey' module='EZComments'}" />
+            <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <input type="hidden" name="confirmation" value="1" />
             <fieldset>
                 <legend>{gt text="Options"}</legend>

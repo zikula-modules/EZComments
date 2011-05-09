@@ -9,7 +9,7 @@
     {else}
     <h2>{gt text="All %s comments" tag1=$status|commentstatus"}</h2>
     {/if}
-    <form class="z-form" action="{modurl modname=EZComments type=admin}" method="post">
+    <form class="z-form" action="{modurl modname='EZComments' type='admin' func='main'}" method="post">
         <fieldset>
             <label for="ezcomments_filter">{gt text="Filter by status"}</label>
             <select id="ezcomments_filter" name="status">
@@ -24,9 +24,9 @@
         </fieldset>
     </form>
 
-    <form class="z-form" id="ezcomments_view" action="{modurl modname=EZComments type=admin func=processselected}" method="post">
+    <form class="z-form" id="ezcomments_view" action="{modurl modname='EZComments' type='admin' func='processselected'}" method="post">
         <div>
-            <input type="hidden" name="authid" value="{insert name='generateauthkey' module='EZComments'}" />
+            <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <table id="ezcomments_comments" class="z-admintable">
                 <thead>
                     <tr>

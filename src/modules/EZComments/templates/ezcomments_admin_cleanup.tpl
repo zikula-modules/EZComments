@@ -5,7 +5,7 @@
     <p class="z-warningmsg">{gt text="This functionality allows you to delete comments that are in the database for removed modules."}</p>
     <form class="z-form" action="{modurl modname="EZComments" type="admin" func="cleanup_go"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" value="{insert name='generateauthkey' module='EZComments'}" />
+            <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <fieldset>
                 <legend>{gt text="Confirmation prompt"}</legend>
                 <div class="z-formrow">
