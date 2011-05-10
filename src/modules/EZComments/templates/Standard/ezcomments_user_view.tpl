@@ -71,12 +71,13 @@
     {if $mainscreen AND $allowadd}
     <form class="z-form z-linear" id="commentform_{$ezc_info.mod}_{$ezc_info.objectid}" action="{modurl modname='EZComments' func='create'}" method="post">
         <div>
-            <input type="hidden" name="authid" id="authid" value="{insert name='generateauthkey' module='EZComments'}" />
+            <input type="hidden" name="csrftoken" id="authid" value="{insert name='csrftoken'}" />
             <input type="hidden" name="redirect" id="EZComments_redirect" value="{$redirect|safetext}" />
             <input type="hidden" name="mod" id="EZComments_modname" value="{modgetname}" />
             <input type="hidden" name="owneruid" id="EZComments_owneruid" value="{$owneruid|safetext}" />
             <input type="hidden" name="useurl" id="EZComments_useurl" value="{$useurl|safetext}" />
             <input type="hidden" name="objectid" id="EZComments_objectid" value="{$objectid|safetext}" />
+            <input type="hidden" name="areaid" id="EZComments_areaid" value="{$areaid|safetext}" />
             <fieldset>
                 <legend>{gt text='Add a new comment' domain='module_ezcomments'}</legend>
                 <div class="z-formrow">
