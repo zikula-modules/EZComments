@@ -32,6 +32,7 @@ class EZComments_Installer extends Zikula_AbstractInstaller
 
         // register the module delete hook
         EventUtil::registerPersistentModuleHandler('EZComments', 'installer.module.uninstalled', array('EZComments_EventHandlers', 'moduleDelete'));
+        EventUtil::registerPersistentModuleHandler('EZComments', 'installer.subscriberarea.uninstalled', array('EZComments_EventHandlers', 'hookAreaDelete'));
 
         // Misc
         $this->setVar('template', 'Standard');
@@ -119,6 +120,8 @@ class EZComments_Installer extends Zikula_AbstractInstaller
 
                 // register the module delete hook
                 EventUtil::registerPersistentModuleHandler('EZComments', 'installer.module.uninstalled', array('EZComments_EventHandlers', 'moduleDelete'));
+                EventUtil::registerPersistentModuleHandler('EZComments', 'installer.subscriberarea.uninstalled', array('EZComments_EventHandlers', 'hookAreaDelete'));
+                DBUtil::changeTable('EZComments');
             case '3.0.1':
                 // future upgrade routines
                 break;
@@ -162,6 +165,7 @@ class EZComments_Installer extends Zikula_AbstractInstaller
         HookUtil::unregisterProviderBundles($this->version->getHookProviderBundles());
         HookUtil::unregisterSubscriberBundles($this->version->getHookSubscriberBundles());
         EventUtil::unregisterPersistentModuleHandler('EZComments', 'installer.module.uninstalled', array('EZComments_EventHandlers', 'moduleDelete'));
+        EventUtil::unregisterPersistentModuleHandler('EZComments', 'installer.subscriberarea.uninstalled', array('EZComments_EventHandlers', 'hookAreaDelete'));
 
         // Deletion successful
         return true;

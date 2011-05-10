@@ -10,10 +10,10 @@
 
 /**
  * return the table information
- * 
+ *
  * This function is called internally by the core whenever the module is
- * loaded.  
- * 
+ * loaded.
+ *
  * @return    array    an array with the table infomation
  */
 function EZComments_tables()
@@ -27,6 +27,7 @@ function EZComments_tables()
         'id'          => 'id',
         'modname'     => 'modname',
         'objectid'    => 'objectid',
+        'areaid'      => 'areaid',
         'url'         => 'url',
         'date'        => 'date',
         'uid'         => 'uid',
@@ -45,6 +46,7 @@ function EZComments_tables()
         'id'          => 'I AUTO PRIMARY',
         'modname'     => "C(64) NOTNULL DEFAULT ''",
         'objectid'    => "C(255) NOTNULL DEFAULT ''",
+        'areaid'    => "I NOTNULL DEFAULT 0",
         'url'         => "X NOTNULL DEFAULT ''",
         'date'        => "T NOTNULL DEFAULT '1970-01-01 00:00:00'",
         'uid'         => "I NOTNULL DEFAULT '0'",

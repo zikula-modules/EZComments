@@ -19,7 +19,7 @@ class EZComments_EventHandlers
     /**
      * Handle module uninstall event "installer.module.uninstalled".
      * Receives $modinfo as $args
-     * 
+     *
      * @param Zikula_Event $event
      *
      * @return void
@@ -35,6 +35,28 @@ class EZComments_EventHandlers
 
         // Get items
         $where = "WHERE $columns[modname] = '" . DataUtil::formatForStore($mod) . "'";
+
+        DBUtil::deleteWhere('EZComments', $where);
+    }
+
+    /**
+     * Listener for installer.subscriberarea.uninstalled
+     *
+     * @param Zikula_Event $event
+     *
+     * @return void
+     */
+    public static function hookAreaDelete(Zikula_Event $event)
+    {
+        $areaId = $event['areaid'];
+
+        // Database information
+        ModUtil::dbInfoLoad('EZComments');
+        $tables  = DBUtil::getTables();
+        $columns = $tables['EZComments_column'];
+
+        // Get items
+        $where = "WHERE $columns[areaid] = '" . DataUtil::formatForStore($areaId) . "'";
 
         DBUtil::deleteWhere('EZComments', $where);
     }

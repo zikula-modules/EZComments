@@ -88,6 +88,7 @@ class EZComments_HookHandlers extends Zikula_Hook_AbstractHandler
         // create the output object
         $view = Zikula_View::getInstance('EZComments', false, null, true);
 
+        $view->assign('areaid', $hook->getAreaId());
         $view->assign('comments', $items);
         $view->assign('commentcount', $commentcount);
         $view->assign('ezcomment', $ezcomment);
