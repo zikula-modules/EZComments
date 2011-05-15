@@ -143,7 +143,7 @@ class EZComments_HookHandlers extends Zikula_Hook_AbstractHandler
             PageUtil::addVar('stylesheet', $css);
         }
 
-        $hook->setResponse(new Zikula_Response_DisplayHook('modulehook_area.ezcomments.comments', $view, DataUtil::formatForOS($templateset) . '/ezcomments_user_view.tpl'));
+        $hook->setResponse(new Zikula_Response_DisplayHook('provider_area.ui.ezcomments.comments', $view, DataUtil::formatForOS($templateset) . '/ezcomments_user_view.tpl'));
     }
 
     /**
