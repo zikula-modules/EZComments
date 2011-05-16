@@ -103,7 +103,7 @@
                     <textarea name="comment" id="message" cols="60" rows="10">{$ezcomment.comment|default:''}</textarea>
                 </div>
             </fieldset>
-            {notifydisplayhooks eventname="ezcomments.hook.comments.ui.edit" id=null}
+            {notifydisplayhooks eventname="ezcomments.ui_hooks.comments.form_edit" id=null}
             <div class="z-buttons z-formbuttons">
                 <input type="submit" value="{gt text='Submit'}" />
             </div>

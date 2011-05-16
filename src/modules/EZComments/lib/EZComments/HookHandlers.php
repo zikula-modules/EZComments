@@ -28,7 +28,7 @@ class EZComments_HookHandlers extends Zikula_Hook_AbstractHandler
      *
      * @return void
      */
-    public function ui_view(Zikula_DisplayHook $hook)
+    public function uiView(Zikula_DisplayHook $hook)
     {
         // work out the input from the hook
         $mod = $hook->getCaller();
@@ -143,7 +143,7 @@ class EZComments_HookHandlers extends Zikula_Hook_AbstractHandler
             PageUtil::addVar('stylesheet', $css);
         }
 
-        $hook->setResponse(new Zikula_Response_DisplayHook('provider_area.ui.ezcomments.comments', $view, DataUtil::formatForOS($templateset) . '/ezcomments_user_view.tpl'));
+        $hook->setResponse(new Zikula_Response_DisplayHook('provider.ezcomments.ui_hooks.comments', $view, DataUtil::formatForOS($templateset) . '/ezcomments_user_view.tpl'));
     }
 
     /**
@@ -157,7 +157,7 @@ class EZComments_HookHandlers extends Zikula_Hook_AbstractHandler
      *
      * @return void
      */
-    public function process_delete(Zikula_ProcessHook $hook)
+    public function processDelete(Zikula_ProcessHook $hook)
     {
         if ($hook->getId() <= 0) {
             return;

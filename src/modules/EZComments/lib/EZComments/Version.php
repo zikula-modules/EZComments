@@ -41,22 +41,22 @@ class EZComments_Version extends Zikula_AbstractVersion
 
     protected function setupHookBundles()
     {
-        $bundle = new Zikula_HookManager_ProviderBundle($this->name, 'provider_area.ui.ezcomments.comments', 'ui', __('EZComments Comment Hooks'));
-        $bundle->addHook('hookhandler.ezcomments.ui.view', 'ui.view', 'EZComments_HookHandlers', 'ui_view', 'ezcomments.hooks');
-        $bundle->addHook('hookhandler.ezcomments.process.delete', 'process.delete', 'EZComments_HookHandlers', 'process_delete', 'ezcomments.hooks');
+        $bundle = new Zikula_HookManager_ProviderBundle($this->name, 'provider.ezcomments.ui_hooks.comments', 'ui_hooks', $this->__('EZComments Comment Hooks'));
+        $bundle->addServiceHandler('display_view', 'EZComments_HookHandlers', 'uiView', 'ezcomments.hooks.comments');
+        $bundle->addServiceHandler('process_delete', 'EZComments_HookHandlers', 'processDelete', 'ezcomments.hooks.comments');
         $this->registerHookProviderBundle($bundle);
 
-        $bundle = new Zikula_HookManager_SubscriberBundle($this->name, 'subscriber_area.ui.ezcomments.comments', 'ui', __('EZComments Comment Hooks'));
-        $bundle->addType('ui.view', 'ezcomments.hook.comments.ui.view');
-        $bundle->addType('ui.edit', 'ezcomments.hook.comments.ui.edit');
-        $bundle->addType('validate.edit', 'ezcomments.hook.comments.validate.edit');
-        $bundle->addType('validate.delete', 'ezcomments.hook.comments.validate.delete');
-        $bundle->addType('process.edit', 'ezcomments.hook.comments.process.edit');
-        $bundle->addType('process.delete', 'ezcomments.hook.comments.process.delete');
+        $bundle = new Zikula_HookManager_SubscriberBundle($this->name, 'subscriber.ezcomments.ui_hooks.comments', 'ui_hooks', $this->__('EZComments Comment Hooks'));
+        $bundle->addEvent('ui_view', 'ezcomments.ui_hooks.comments.ui_view');
+        $bundle->addEvent('ui_edit', 'ezcomments.ui_hooks.comments.ui_edit');
+        $bundle->addEvent('validate_edit', 'ezcomments.ui_hooks.comments.validate_edit');
+        $bundle->addEvent('validate_delete', 'ezcomments.ui_hooks.comments.validate_delete');
+        $bundle->addEvent('process_edit', 'ezcomments.ui_hooks.comments.process_edit');
+        $bundle->addEvent('process_delete', 'ezcomments.ui_hooks.comments.process_delete');
         $this->registerHookSubscriberBundle($bundle);
 
-        $bundle = new Zikula_HookManager_SubscriberBundle($this->name, 'subscriber_area.filter.ezcomments.comments', 'filter', $this->__('EZComment Comments Filter'));
-        $bundle->addType('ui.filter', 'ezcomments.hook.filter.comments');
+        $bundle = new Zikula_HookManager_SubscriberBundle($this->name, 'subscriber.ezcomments.filter_hooks.comments', 'filter_hooks', $this->__('EZComment Comments Filter'));
+        $bundle->addEvent('filter', 'ezcomments.filter_hooks.comments.filter');
         $this->registerHookSubscriberBundle($bundle);
     }
 }
