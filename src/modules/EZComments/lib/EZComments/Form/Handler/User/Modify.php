@@ -94,6 +94,9 @@ class EZComments_Form_Handler_User_Modify extends Zikula_Form_AbstractHandler
                     $data['ezcomments_comment'] = $comment_old['comment'];
                     $data['ezcomments_subject'] = $comment_old['subject'];
                 }
+                $data['ezcomments_anonname'] = isset($data['ezcomments_anonname']) ? $data['ezcomments_anonname'] : '';
+                $data['ezcomments_anonmail'] = isset($data['ezcomments_anonmail']) ? $data['ezcomments_anonmail'] : '';
+                $data['ezcomments_anonwebsite'] = isset($data['ezcomments_anonwebsite']) ? $data['ezcomments_anonwebsite'] : '';
 
                 if (!empty($comment['anonname'])) {
                     // poster is anonymous
