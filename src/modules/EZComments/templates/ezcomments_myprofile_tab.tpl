@@ -11,8 +11,8 @@
 
         {gt text="Pinboard entries" domain="module_ezcomments"}: {modapifunc modname="EZComments" type="user" func="countitems" mod="MyProfile" objectid=$uid status="0"}<br /><br />
         {modurl modname="MyProfile" func="display" uid=$uid pluginname="EZComments" order="1" assign="viewUrl"}
-        {modcallhooks hookobject=item hookaction=display hookid=$uid module="MyProfile" returnurl=$viewUrl owneruid=$uid implode=false}
-        {$hooks.EZComments}
+        {* modcallhooks hookobject=item hookaction=display hookid=$uid module="MyProfile" returnurl=$viewUrl owneruid=$uid implode=false *}
+        {* $hooks.EZComments *}
 
     {/if}
 

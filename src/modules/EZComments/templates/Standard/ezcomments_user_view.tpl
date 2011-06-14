@@ -28,10 +28,11 @@
                 <li class="ezc_date">
                     <span>{gt text='Posted on %s' tag1=$comment.date|dateformat:'datetimebrief' domain='module_ezcomments'} </span>
                 </li>
-                {if $pncore.logged_in eq true}
+                {userloggedin assign='logged_in'}
+                {if $logged_in eq true}
                 <li class="ezc_options">
                     {if $msgmodule}
-                    <a href="{modurl modname=$msgmodule func='inbox' func='newpm' uid=$comment.uid}">{img modname='core' src='mail_generic.png' set='icons/extrasmall' __title='Send mail to user' __alt='Send mail to user'}</a>
+                    <a href="{modurl modname=$msgmodule type='user' func='newpm' uid=$comment.uid}">{img modname='core' src='mail_generic.png' set='icons/extrasmall' __title='Send mail to user' __alt='Send mail to user'}</a>
                     {/if}
                     {if $comment.del}
                     <a href="{modurl fqurl=true modname='EZComments' type='user' func='modify' id=$comment.id redirect=$redirect}">{img modname='core' src='xedit.png' set='icons/extrasmall' __title='Modify comment' __alt='Modify comment'}</a>
@@ -69,7 +70,7 @@
     {/if}
 
     {if $mainscreen AND $allowadd}
-    <form class="z-form z-linear" id="commentform_{$ezc_info.mod}_{$ezc_info.objectid}" action="{modurl modname='EZComments' func='create'}" method="post">
+    <form class="z-form z-linear" id="commentform_{$ezc_info.mod}_{$ezc_info.objectid}" action="{modurl modname='EZComments' type='user' func='create'}" method="post">
         <div>
             <input type="hidden" name="csrftoken" id="authid" value="{insert name='csrftoken'}" />
             <input type="hidden" name="redirect" id="EZComments_redirect" value="{$redirect|safetext}" />
@@ -111,8 +112,8 @@
     </form>
     {elseif !$allowadd}
     <p class="z-warningmsg">
-        {capture assign='registerlink'}<a href="{modurl modname='Users' func='register'}">{gt text='Register' domain='module_ezcomments'}</a>{/capture}
-        {capture assign='loginlink'}<a href="{modurl modname='Users' func='loginscreen' returnpage=$returnurl|rawurlencode|rawurlencode}">{gt text='log in' domain='module_ezcomments'}</a>{/capture}
+        {capture assign='registerlink'}<a href="{modurl modname='Users' type='user' func='register'}">{gt text='Register' domain='module_ezcomments'}</a>{/capture}
+        {capture assign='loginlink'}<a href="{modurl modname='Users' type='user' func='loginscreen' returnpage=$returnurl|rawurlencode|rawurlencode}">{gt text='log in' domain='module_ezcomments'}</a>{/capture}
         {gt text='Only logged in users are allowed to comment. %1$s or %2$s.' tag1=$registerlink tag2=$loginlink domain='module_ezcomments'}
     </p>
     {/if}
