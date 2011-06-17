@@ -33,7 +33,7 @@ class EZComments_Version extends Zikula_AbstractVersion
         // recommended and required modules
         $meta['dependencies'] = array(
                 array('modname'    => 'Akismet',
-                        'minversion' => '1.0', 'maxversion' => '',
+                        'minversion' => '2.0', 'maxversion' => '',
                         'status' => ModUtil::DEPENDENCY_RECOMMENDED)
         );
         return $meta;
