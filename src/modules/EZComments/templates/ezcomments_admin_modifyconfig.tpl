@@ -111,7 +111,7 @@
     <p class="z-formnote z-informationmsg">{gt text='Notice: <a href="http://akismet.com/">Akismet</a> is a spam detection service that can, in many cases, eliminate comment and trackback spam. To use Akismet you need to install and configure the <a href="http://code.zikula.org/ezcomments/">Akismet module</a>.'}</p>
     {if $akismetavailable}
     <div class="z-formrow">
-        {formlabel for="ezcomments_akismet" __text='Enable akismet'}
+        {formlabel for="ezcomments_akismet" __text='Enable Akismet'}
         {formcheckbox id="ezcomments_akismet" checked=$modvars.EZComments.akismet}
     </div>
     <div class="z-formrow">

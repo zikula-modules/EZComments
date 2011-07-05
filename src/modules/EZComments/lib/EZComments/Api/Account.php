@@ -22,7 +22,7 @@ class EZComments_Api_Account extends Zikula_AbstractApi
             // Create an array of links to return
             $items['1'] = array('url'   => ModUtil::url('EZComments', 'user', 'main'),
                                 'title' => $this->__('Manage my comments'),
-                                'icon'  => 'mycommentsbutton.gif',
+                                'icon'  => 'mycommentsbutton.png',
                                 'set'   => null);
         }
 
