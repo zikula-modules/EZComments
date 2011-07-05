@@ -59,7 +59,7 @@ class EZComments_Controller_Admin extends Zikula_AbstractController
         foreach ($items as $item)
         {
             $options = array(array('url' => $item['url'] . '#comment' . $item['id'],
-                                   'image' => 'demo.png',
+                                   'image' => 'kview.png',
                                    'title' => $this->__('View')));
 
             $options[] = array('url'   => ModUtil::url('EZComments', 'admin', 'modify', array('id' => $item['id'])),

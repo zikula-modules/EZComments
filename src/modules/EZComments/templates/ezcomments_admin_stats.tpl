@@ -18,14 +18,14 @@
     <tbody>
         {foreach from=$commentstats item=commentstat}
         <tr class="{cycle values=z-odd,z-even}">
-            <td><a href="{modurl modname=EZComments type=admin func=modulestats mod=$commentstat.name}">{$commentstat.name|safetext}</a></td>
+            <td><a href="{modurl modname='EZComments' type='admin' func='modulestats' mod=$commentstat.name}">{$commentstat.name|safetext}</a></td>
             <td>{$commentstat.totalcomments|safetext}</td>
             <td>{$commentstat.approvedcomments|safetext}</td>
             <td>{$commentstat.pendingcomments|safetext}</td>
             <td>{$commentstat.rejectedcomments|safetext}</td>
             <td>
                 {if $commentstat.totalcomments gt 0}
-                <a href="{modurl modname=EZComments type=admin func=deletemodule modid=$commentstat.modid}">{img modname='core' set='icons/extrasmall' src='14_layer_deletelayer.png' __title='Delete' __alt='Delete'}</a>
+                <a href="{modurl modname='EZComments' type='admin' func='deletemodule' modid=$commentstat.modid}">{img modname='core' set='icons/extrasmall' src='14_layer_deletelayer.png' __title='Delete' __alt='Delete'}</a>
                 {else}
                 &nbsp;
                 {/if}

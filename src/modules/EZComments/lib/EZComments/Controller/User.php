@@ -56,7 +56,7 @@ class EZComments_Controller_User extends Zikula_AbstractController
         {
             $options   = array();
             $options[] = array('url'   => $item['url'] . '#comment' . $item['id'],
-                               'image' => 'demo.png',
+                               'image' => 'kview.png',
                                'title' => $this->__('View'));
 
             // Security check

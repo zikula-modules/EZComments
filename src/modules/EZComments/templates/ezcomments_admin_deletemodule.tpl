@@ -13,8 +13,8 @@
         <fieldset>
             <legend>{gt text="Confirmation prompt"}</legend>
             <div class="z-buttons z-formbuttons">
-                {button src='button_ok.png' set='icons/small' __alt='Delete' __title='Delete'}
-                <a href="{modurl modname='EZComments' type='admin' func='main'}">{img modname='core' src='button_cancel.png' set='icons/small' __alt='Cancel' __title='Cancel'}</a>
+                {button src='button_ok.png' set='icons/extrasmall' __alt='Delete' __title='Delete' __text='Delete'}
+                <a href="{modurl modname='EZComments' type='admin' func='main'}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
             </div>
         </fieldset>
     </div>

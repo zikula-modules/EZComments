@@ -15,8 +15,8 @@
             </div>
         </fieldset>
         <div class="z-buttons z-formbuttons">
-            {button src='button_ok.png' set='icons/small' __alt='Start migration' __title='Start migration'}
-            <a href="{modurl modname='EZComments' type='admin' func='main'}">{img modname='core' src='button_cancel.png' set='icons/small' __alt='Cancel' __title='Cancel'}</a>
+            {button src='button_ok.png' set='icons/extrasmall' __alt='Start migration' __title='Start migration' __text='Start migration'}
+            <a href="{modurl modname='EZComments' type='admin' func='main'}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
         </div>
     </div>
 </form>

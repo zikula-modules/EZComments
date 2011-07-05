@@ -3,7 +3,7 @@
 {include file="ezcomments_user_header.tpl"}
 
 <h3>{$templatetitle}</h3>
-<form class="z-form" action="{modurl modname=EZComments}" method="post">
+<form class="z-form" action="{modurl modname='EZComments' type='user'}" method="post">
     <fieldset>
         <label for="ezcomments_filter">{gt text="Filter by status"}</label>
         <select id="ezcomments_filter" name="status">
@@ -12,7 +12,10 @@
             <option value="1"{if $status eq 1} selected="selected"{/if}>{gt text="Pending"}</option>
             <option value="2"{if $status eq 2} selected="selected"{/if}>{gt text="Rejected"}</option>
         </select>
-        <input type="submit" value="{gt text="Filter"}" />
+        &nbsp;&nbsp;
+        <span class="z-nowrap z-buttons">
+            <input class='z-bt-filter z-bt-small' type="submit" value="{gt text="Filter"}" />
+        </span>
     </fieldset>
 </form>
 
@@ -26,16 +29,16 @@
                 <span class="z-nowrap">{gt text="Owner"}</span>
             </th>
             <th>{gt text="Comment"}</th>
-            <th>{gt text="Options"}</th>
+            <th class="z-nowrap z-right">{gt text="Options"}</th>
         </tr>
     </thead>
     <tbody>
         {foreach from=$items item=item}
         <tr class="{cycle values=z-odd,z-even}">
             <td>
-                {if $item.status eq 0}{img modname="EZComments" src='green.gif' __alt='Approved' __title='Approved'}{/if}
-                {if $item.status eq 1}{img modname="EZComments" src='yellow.gif' __alt='Pending' __title='Pending'}{/if}
-                {if $item.status eq 2}{img modname="EZComments" src='red.gif' __alt='Rejected' __title='Rejected'}{/if}
+                {if $item.status eq 0}{img modname="EZComments" class="tooltips" src='green.gif' __alt='Approved' __title='Approved'}{/if}
+                {if $item.status eq 1}{img modname="EZComments" class="tooltips" src='yellow.gif' __alt='Pending' __title='Pending'}{/if}
+                {if $item.status eq 2}{img modname="EZComments" class="tooltips" src='red.gif' __alt='Rejected' __title='Rejected'}{/if}
             </td>
             <td>
                 <span class="z-nowrap">{$item.date|dateformat:datebrief}</span>
@@ -59,22 +62,28 @@
                 </span>
             </td>
             <td>
-                {if $item.subject}<em>{$item.subject|strip_tags}: </em>{/if}
+                {if $item.subject}<em class="tooltips" title="{gt text="Subject"}">{$item.subject|strip_tags}: </em>{/if}
                 {$item.comment|strip_tags|truncate:80}
             </td>
-            <td class="z-nowrap">
+            <td class="z-nowrap z-right">
                 {assign var="options" value=$item.options}
                 {section name=options loop=$options}
-                <a href="{$options[options].url|safetext}">{img modname='core' set='icons/extrasmall' src=$options[options].image title=$options[options].title alt=$options[options].title}</a>
+                <a href="{$options[options].url|safetext}">{img modname='core' set='icons/extrasmall' src=$options[options].image title=$options[options].title alt=$options[options].title class="tooltips"}</a>
                 {/section}
             </td>
         </tr>
         {foreachelse}
         <tr class="z-datatableempty">
-            <td colspan="6">{gt text="No items found"}</td>
+            <td colspan="5">{gt text="No items found"}</td>
         </tr>
         {/foreach}
     </tbody>
 </table>
 
 {pager show="page" rowcount=$ezc_pager.numitems limit=$ezc_pager.itemsperpage posvar=startnum shift=1}
+
+<script type="text/javascript">
+// <![CDATA[
+    Zikula.UI.Tooltips($$('.tooltips'));
+// ]]>
+</script>

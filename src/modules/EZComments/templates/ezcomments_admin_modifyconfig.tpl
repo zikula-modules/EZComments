@@ -134,7 +134,7 @@
 </fieldset>
 
 <div class="z-buttons z-formbuttons">
-    {formbutton id="submit" commandName="submit" __text="Submit"}
+    {formbutton class="z-bt-ok" id="submit" commandName="submit" __title="Submit" __text="Submit"}
 </div>
 {/form}
 {adminfooter}

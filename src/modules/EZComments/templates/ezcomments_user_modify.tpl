@@ -53,9 +53,9 @@
 </fieldset>
 
 <div class="z-buttons z-formbuttons">
-    {formbutton id="submit" commandName="submit" __text="Update"}
-    {formbutton id="delete" commandName="delete" __text="Delete"}
-    {formbutton id="cancel" commandName="cancel" __text="Cancel"}
+    {formbutton class="z-bt-save" id="submit" commandName="submit" __title="Update" __text="Update"}
+    {formbutton class="z-bt-delete" id="delete" commandName="delete" __title="Delete" __text="Delete"}
+    {formbutton class="z-bt-cancel" id="cancel" commandName="cancel" __title="Cancel" __text="Cancel"}
 </div>
 
 {/form}

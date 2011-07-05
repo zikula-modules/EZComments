@@ -1,5 +1,3 @@
-$Id$
-
 Things left to be done:
 
  - Finding a soultion for deleting threaded comments

@@ -17,9 +17,13 @@
             <option value="1"{if $status eq 1} selected="selected"{/if}>{gt text="Pending"}</option>
             <option value="2"{if $status eq 2} selected="selected"{/if}>{gt text="Rejected"}</option>
         </select>
+        &nbsp;&nbsp;
         <label for="ezcomments_showall">{gt text="Show all comments"}</label>
         <input id="ezcomments_showall" type="checkbox" name="showall" value="1"{if $showall eq 1} checked="checked"{/if} />
-        <input type="submit" value="{gt text="Filter"}" />
+        &nbsp;&nbsp;
+        <span class="z-nowrap z-buttons">
+            <input class='z-bt-filter z-bt-small' type="submit" value="{gt text="Filter"}" />
+        </span>
     </fieldset>
 </form>
 
@@ -41,7 +45,7 @@
                         <span class="z-nowrap">{gt text="Comment type"}</span>
                     </th>
                     <th>{gt text="Comment"}</th>
-                    <th>{gt text="Options"}</th>
+                    <th class="z-nowrap z-right">{gt text="Options"}</th>
                 </tr>
             </thead>
             <tbody>
@@ -49,9 +53,9 @@
                 <tr class="{cycle values=z-odd,z-even}">
                     <td><input type="checkbox" name="comments[]" value="{$item.id}" class="comments_checkbox" /></td>
                     <td>
-                        {if $item.status eq 0}{img modname="EZComments" src='green.gif'   __alt='Approved' __title='Approved'}{/if}
-                        {if $item.status eq 1}{img modname="EZComments" src='yellow.gif'   __alt='Pending' __title='Pending'}{/if}
-                        {if $item.status eq 2}{img modname="EZComments" src='red.gif'   __alt='Rejected' __title='Rejected'}{/if}
+                        {if $item.status eq 0}{img modname="EZComments" class="tooltips" src='green.gif'   __alt='Approved' __title='Approved'}{/if}
+                        {if $item.status eq 1}{img modname="EZComments" class="tooltips" src='yellow.gif'   __alt='Pending' __title='Pending'}{/if}
+                        {if $item.status eq 2}{img modname="EZComments" class="tooltips" src='red.gif'   __alt='Rejected' __title='Rejected'}{/if}
                     </td>
                     <td>
                         <span class="z-nowrap">{$item.date|dateformat:datebrief}</span>
@@ -79,13 +83,13 @@
                         {if $item.type}{$item.type|safetext}{/if}
                     </td>
                     <td>
-                        {if $item.subject}<em>{$item.subject|strip_tags}: </em>{/if}
+                        {if $item.subject}<em class="tooltips" title="{gt text="Subject"}">{$item.subject|strip_tags}: </em>{/if}
                         {$item.comment|strip_tags|truncate:80}
                     </td>
-                    <td>
+                    <td class="z-nowrap z-right">
                         {assign var="options" value=$item.options}
                         {section name=options loop=$options}
-                        <a href="{$options[options].url|safetext}">{img modname='core' set='icons/extrasmall' src=$options[options].image title=$options[options].title alt=$options[options].title}</a>
+                        <a href="{$options[options].url|safetext}">{img modname='core' set='icons/extrasmall' src=$options[options].image title=$options[options].title alt=$options[options].title class="tooltips"}</a>
                         {/section}
                     </td>
                 </tr>
@@ -113,8 +117,16 @@
                 <option value="hold">{gt text="Hold"}</option>
                 <option value="reject">{gt text="Reject"}</option>
             </select>
-            <input type="submit" value="{gt text="Submit"}" />
+            <span class="z-nowrap z-buttons">
+                <input class='z-bt-archive z-bt-small' type="submit" value="{gt text="Submit"}" />
+            </span>
         </fieldset>
     </div>
 </form>
 {adminfooter}
+
+<script type="text/javascript">
+// <![CDATA[
+    Zikula.UI.Tooltips($$('.tooltips'));
+// ]]>
+</script>

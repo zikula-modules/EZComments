@@ -4,7 +4,7 @@
     <h3>{gt text='Re-apply moderation rules'}</h3>
 </div>
 
-<form id="ezcomments_view" action="{modurl modname=EZComments type=admin func=applyrules}" method="post">
+<form id="ezcomments_view" action="{modurl modname='EZComments' type='admin' func='applyrules'}" method="post">
     <div>
         <input type="hidden" name="confirmation" value="2" />
         <input type="hidden" name="authid" value="{insert name='generateauthkey' module='EZComments'}" />
@@ -106,8 +106,8 @@
         </table>
 
         <div class="z-buttons z-formbuttons">
-            {button src='button_ok.png' set='icons/small' __alt='Apply' __title='Apply'}
-            <a href="{modurl modname='EZComments' type='admin' func='main'}">{img modname='core' src='button_cancel.png' set='icons/small' __alt='Cancel' __title='Cancel'}</a>
+            {button src='button_ok.png' set='icons/extrasmall' __alt='Apply' __title='Apply' __text='Apply'}
+            <a href="{modurl modname='EZComments' type='admin' func='main'}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
         </div>
     </div>
 </form>
