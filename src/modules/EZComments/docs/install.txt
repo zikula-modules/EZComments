@@ -1,5 +1,3 @@
-$Id$
-
 Please take a look at the project's wiki at
 http://code.zikula.org/ezcomments/wiki/documentation
 http://code.zikula.org/ezcomments/wiki/
