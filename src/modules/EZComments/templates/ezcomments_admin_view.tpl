@@ -99,13 +99,6 @@
             </tbody>
         </table>
 
-        <script type="text/javascript">
-            $('toggle_comments').observe('click', function(e){
-                Zikula.toggleInput('ezcomments_view');
-                e.stop()
-            });
-        </script>
-
         {pager show="page" rowcount=$pager.numitems limit=$pager.itemsperpage posvar=startnum shift=1}
 
         <fieldset>
@@ -127,6 +120,10 @@
 
 <script type="text/javascript">
 // <![CDATA[
+    $('toggle_comments').observe('click', function(e){
+        Zikula.toggleInput('ezcomments_view');
+        e.stop()
+    });
     Zikula.UI.Tooltips($$('.tooltips'));
 // ]]>
 </script>
