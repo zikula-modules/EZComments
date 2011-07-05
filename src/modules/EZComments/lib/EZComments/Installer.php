@@ -111,7 +111,6 @@ class EZComments_Installer extends Zikula_AbstractInstaller
                 $this->setVar('css', 'style.css');
 
             case '2.0.0':
-            case '3.0.0':
                 // register hooks
                 HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
                 HookUtil::registerProviderBundles($this->version->getHookProviderBundles());
@@ -120,7 +119,7 @@ class EZComments_Installer extends Zikula_AbstractInstaller
                 EventUtil::registerPersistentModuleHandler('EZComments', 'installer.module.uninstalled', array('EZComments_EventHandlers', 'moduleDelete'));
                 EventUtil::registerPersistentModuleHandler('EZComments', 'installer.subscriberarea.uninstalled', array('EZComments_EventHandlers', 'hookAreaDelete'));
                 DBUtil::changeTable('EZComments');
-            case '3.0.1':
+            case '3.0.0':
                 // future upgrade routines
                 break;
         }
