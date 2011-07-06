@@ -111,6 +111,7 @@ class EZComments_Installer extends Zikula_AbstractInstaller
                 $this->setVar('css', 'style.css');
 
             case '2.0.0':
+            case '2.0.1':
                 // register hooks
                 HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
                 HookUtil::registerProviderBundles($this->version->getHookProviderBundles());
