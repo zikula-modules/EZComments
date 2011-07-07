@@ -183,4 +183,9 @@ class EZComments_HookHandlers extends Zikula_Hook_AbstractHandler
 
         DBUtil::deleteWhere('EZComments', $where);
     }
+    
+    public function processEdit(Zikula_ProcessHook $hook)
+    {
+        // will need this to update URLs in table
+    }
 }

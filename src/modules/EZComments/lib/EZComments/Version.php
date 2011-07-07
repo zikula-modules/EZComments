@@ -43,6 +43,7 @@ class EZComments_Version extends Zikula_AbstractVersion
     {
         $bundle = new Zikula_HookManager_ProviderBundle($this->name, 'provider.ezcomments.ui_hooks.comments', 'ui_hooks', $this->__('EZComments Comment Hooks'));
         $bundle->addServiceHandler('display_view', 'EZComments_HookHandlers', 'uiView', 'ezcomments.hooks.comments');
+        $bundle->addServiceHandler('process_edit', 'EZComments_HookHandlers', 'processEdit', 'ezcomments.hooks.comments');
         $bundle->addServiceHandler('process_delete', 'EZComments_HookHandlers', 'processDelete', 'ezcomments.hooks.comments');
         $this->registerHookProviderBundle($bundle);
 
