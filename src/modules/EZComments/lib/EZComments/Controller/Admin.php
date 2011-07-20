@@ -441,11 +441,18 @@ class EZComments_Controller_Admin extends Zikula_AbstractController
         $this->view->assign(ModUtil::getVar('EZComments'));
 
         // get a list of the hooked modules
-        $hookedmodules = ModUtil::apiFunc('Modules', 'admin', 'gethookedmodules', array('hookmodname'=> 'EZComments'));
+        $subscriberModules = HookUtil::getHookSubscribers();
+        $hookedmodules = array();
+        foreach ($subscriberModules as $module) {
+            $bindingCount = count(HookUtil::getBindingsBetweenOwners($module['name'], 'EZComments'));
+            if ($bindingCount > 0) {
+                $hookedmodules[] = $module['name'];
+            }
+        }
 
         // get a list of comment stats by module
         $commentstats = array();
-        foreach (array_keys($hookedmodules) as $mod)
+        foreach ($hookedmodules as $mod)
         {
             $data = ModUtil::getInfo(ModUtil::getIdFromName($mod));
             $data['modid'] = $data['id'];

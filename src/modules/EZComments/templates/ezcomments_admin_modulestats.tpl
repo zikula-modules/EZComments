@@ -1,7 +1,7 @@
 {adminheader}
 <div class="z-admin-content-pagetitle">
     {icon type="info" size="small"}
-    <h3>{gt text='Comment statistics'}</h3>
+    <h3>{gt text='Comment statistics for %s' tag1=$name}</h3>
 </div>
 
 <table class="z-admintable">
