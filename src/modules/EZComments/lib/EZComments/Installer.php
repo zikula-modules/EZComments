@@ -119,6 +119,16 @@ class EZComments_Installer extends Zikula_AbstractInstaller
                 // register the module delete hook
                 EventUtil::registerPersistentModuleHandler('EZComments', 'installer.module.uninstalled', array('EZComments_EventHandlers', 'moduleDelete'));
                 EventUtil::registerPersistentModuleHandler('EZComments', 'installer.subscriberarea.uninstalled', array('EZComments_EventHandlers', 'hookAreaDelete'));
+
+                // drop table prefix
+                $connection = Doctrine_Manager::getInstance()->getConnection('default');
+                $sql = 'RENAME TABLE ' . $prefix . '_ezcomments' . " TO ezcomments";
+                $stmt = $connection->prepare($sql);
+                try {
+                    $stmt->execute();
+                } catch (Exception $e) {
+                }
+                
                 DBUtil::changeTable('EZComments');
             case '3.0.0':
                 // future upgrade routines

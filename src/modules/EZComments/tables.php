@@ -21,7 +21,7 @@ function EZComments_tables()
     $tables = array();
 
     // Full table definition
-    $tables['EZComments'] = DBUtil::getLimitedTablename('ezcomments');
+    $tables['EZComments'] = 'ezcomments';
     $tables['EZComments_column'] = array(
         'id'          => 'id',
         'modname'     => 'modname',
