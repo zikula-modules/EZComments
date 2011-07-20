@@ -111,6 +111,7 @@ class EZComments_Controller_User extends Zikula_AbstractController
     {
         $mod         = isset($args['mod'])      ? $args['mod']      : FormUtil::getPassedValue('mod',      null, 'POST');
         $objectid    = isset($args['objectid']) ? $args['objectid'] : FormUtil::getPassedValue('objectid', null, 'POST');
+        $areaid      = isset($args['areaid'])   ? $args['areaid']   : FormUtil::getPassedValue('areaid',   null, 'POST');
         $redirect    = isset($args['redirect']) ? $args['redirect'] : FormUtil::getPassedValue('redirect', null, 'POST');
         $useurl      = isset($args['useurl'])   ? $args['useurl']   : FormUtil::getPassedValue('useurl',   null, 'POST');
         $comment     = isset($args['comment'])  ? $args['comment']  : FormUtil::getPassedValue('comment',  null, 'POST');
@@ -225,6 +226,7 @@ class EZComments_Controller_User extends Zikula_AbstractController
     {
         $mod      = isset($args['mod'])      ? $args['mod']      : FormUtil::getPassedValue('mod',      null, 'POST');
         $objectid = isset($args['objectid']) ? $args['objectid'] : FormUtil::getPassedValue('objectid', null, 'POST');
+        $areaid   = isset($args['areaid'])   ? $args['areaid']   : FormUtil::getPassedValue('areaid',   null, 'POST');
         $comment  = isset($args['comment'])  ? $args['comment']  : FormUtil::getPassedValue('comment',  null, 'POST');
         $subject  = isset($args['subject'])  ? $args['subject']  : FormUtil::getPassedValue('subject',  null, 'POST');
         $replyto  = isset($args['replyto'])  ? $args['replyto']  : FormUtil::getPassedValue('replyto',  null, 'POST');
@@ -293,6 +295,7 @@ class EZComments_Controller_User extends Zikula_AbstractController
         $id = ModUtil::apiFunc('EZComments', 'user', 'create',
                            array('mod'         => $mod,
                                  'objectid'    => $objectid,
+                                 'areaid'      => $areaid,
                                  'url'         => $url,
                                  'comment'     => $comment,
                                  'subject'     => $subject,

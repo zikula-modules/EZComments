@@ -155,6 +155,7 @@ class EZComments_Api_User extends Zikula_AbstractApi
      *
      * @param $args['mod']        Name of the module to create comments for
      * @param $args['objectid']   ID of the item to create comments for
+     * @param $args['areaid']     hook areaID of the item to create comments for
      * @param $args['comment']    The comment itself
      * @param $args['subject']    The subject of the comment
      * @param $args['replyto']    The reference ID
@@ -269,6 +270,7 @@ class EZComments_Api_User extends Zikula_AbstractApi
         $newcomment = array(
             'modname'     => $args['mod'],
             'objectid'    => $args['objectid'],
+            'areaid'      => $args['areaid'],
             'url'         => $url,
             'date'        => $args['date'],
             'uid'         => $args['uid'],

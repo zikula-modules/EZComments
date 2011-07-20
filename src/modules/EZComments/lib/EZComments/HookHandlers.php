@@ -174,12 +174,14 @@ class EZComments_HookHandlers extends Zikula_Hook_AbstractHandler
         }
 
         // get db table and column for where statement
+        ModUtil::dbInfoLoad('EZComments');
         $tables  = DBUtil::getTables();
         $column  = $tables['EZComments_column'];
 
         $mod      = DataUtil::formatForStore($hook->getCaller());
         $objectid = DataUtil::formatForStore($hook->getId());
-        $where    = "$column[modname] = '$mod' AND $column[objectid] = '$objectid'";
+        $areaid   = DataUtil::formatForStore($hook->getAreaId());
+        $where    = "$column[modname] = '$mod' AND $column[objectid] = '$objectid' AND $column[areaid] = '$areaid'";
 
         DBUtil::deleteWhere('EZComments', $where);
     }
@@ -187,5 +189,20 @@ class EZComments_HookHandlers extends Zikula_Hook_AbstractHandler
     public function processEdit(Zikula_ProcessHook $hook)
     {
         // will need this to update URLs in table
+        // get db table and column for where statement
+        ModUtil::dbInfoLoad('EZComments');
+        $tables = DBUtil::getTables();
+        $column = $tables['EZComments_column'];
+
+        $mod      = DataUtil::formatForStore($hook->getCaller());
+        $objectid = DataUtil::formatForStore($hook->getId());
+        $areaid   = DataUtil::formatForStore($hook->getAreaId());
+        $where    = "$column[modname] = '$mod' AND $column[objectid] = '$objectid' AND $column[areaid] = '$areaid'";
+        
+        $objUrl = $hook->getUrl()->getUrl(null, null, false, false); // objecturl provided by subscriber
+        // the fourth arg is forceLang and if left to default (true) then the url is malformed - core bug as of 1.3.0
+        $comment = array('url' => DataUtil::formatForStore($objUrl));
+
+        DBUtil::updateObject($comment, 'EZComments', $where);
     }
 }
