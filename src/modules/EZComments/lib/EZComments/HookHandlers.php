@@ -201,7 +201,7 @@ class EZComments_HookHandlers extends Zikula_Hook_AbstractHandler
         
         $objUrl = $hook->getUrl()->getUrl(null, null, false, false); // objecturl provided by subscriber
         // the fourth arg is forceLang and if left to default (true) then the url is malformed - core bug as of 1.3.0
-        $comment = array('url' => DataUtil::formatForStore($objUrl));
+        $comment = array('url' => System::getHomepageUrl() . DataUtil::formatForStore($objUrl));
 
         DBUtil::updateObject($comment, 'EZComments', $where);
     }
