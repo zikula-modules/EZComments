@@ -8,101 +8,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Zikula 1.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-21 21:08+0000\n"
+"POT-Creation-Date: 2011-08-12 13:15-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: templates/plugins/modifier.commentstatus.php:30
-#: lib/EZComments/Form/Handler/Admin/ModifyConfig.php:30
-#: lib/EZComments/Form/Handler/Admin/Modify.php:29
-#: lib/EZComments/Controller/Admin.php:657
-#: templates/ezcomments_admin_modulestats.tpl:12
-#: templates/ezcomments_user_main.tpl:11 templates/ezcomments_user_main.tpl:39
-#: templates/ezcomments_admin_view.tpl:16
-#: templates/ezcomments_admin_view.tpl:56
-#: templates/ezcomments_admin_stats.tpl:12
-msgid "Approved"
-msgstr ""
-
-#: templates/plugins/modifier.commentstatus.php:32
-#: lib/EZComments/Form/Handler/Admin/ModifyConfig.php:31
-#: lib/EZComments/Form/Handler/Admin/Modify.php:30
-#: lib/EZComments/Controller/Admin.php:655
-#: templates/ezcomments_admin_modulestats.tpl:13
-#: templates/ezcomments_user_main.tpl:12 templates/ezcomments_user_main.tpl:40
-#: templates/ezcomments_admin_view.tpl:17
-#: templates/ezcomments_admin_view.tpl:57
-#: templates/ezcomments_admin_stats.tpl:13
-msgid "Pending"
-msgstr ""
-
-#: templates/plugins/modifier.commentstatus.php:34
-#: lib/EZComments/Form/Handler/Admin/ModifyConfig.php:32
-#: lib/EZComments/Form/Handler/Admin/Modify.php:31
-#: lib/EZComments/Controller/Admin.php:656
-#: templates/ezcomments_admin_modulestats.tpl:14
-#: templates/ezcomments_user_main.tpl:13 templates/ezcomments_user_main.tpl:41
-#: templates/ezcomments_admin_view.tpl:18
-#: templates/ezcomments_admin_view.tpl:58
-#: templates/ezcomments_admin_stats.tpl:14
-msgid "Rejected"
-msgstr ""
-
-#: lib/EZComments/HookHandlers.php:77 lib/EZComments/Controller/User.php:50
-#: lib/EZComments/Controller/User.php:155
-#: lib/EZComments/Controller/Admin.php:54
-msgid "Internal Error."
-msgstr ""
-
-#: lib/EZComments/Api/Myprofile.php:26
-msgid "User's pinboard"
-msgstr ""
-
-#: lib/EZComments/Api/Myprofile.php:51
-msgid "Registering EZComments hook for MyProfile module failed"
-msgstr ""
-
-#: lib/EZComments/Api/User.php:199
-msgid "Error! The user ignores you."
-msgstr ""
-
-#: lib/EZComments/Api/User.php:207
-msgid "Error! The name field is required. Comment rejected."
-msgstr ""
-
-#: lib/EZComments/Api/User.php:263
-msgid ""
-"Error! Your comment contains unacceptable content and has been rejected."
-msgstr ""
-
-#: lib/EZComments/Api/User.php:290
-msgid "Error! Creation attempt failed."
-msgstr ""
-
-#: lib/EZComments/Api/User.php:297
-msgid "Done! Comment added."
-msgstr ""
-
-#: lib/EZComments/Api/User.php:301
-msgid ""
-"Done! Your comment was held for moderation and will be reviewed shortly."
-msgstr ""
-
-#: lib/EZComments/Api/User.php:332 templates/ezcomments_mail_newcomment.tpl:1
-msgid "A new comment was entered"
-msgstr ""
-
-#: lib/EZComments/Api/User.php:351
-msgid "New comment for your site"
-msgstr ""
-
-#: lib/EZComments/Api/User.php:690 lib/EZComments/Api/Search.php:88
-msgid "Error! Could not load items."
-msgstr ""
 
 #: lib/EZComments/Api/Account.php:24
 msgid "Manage my comments"
@@ -118,8 +30,8 @@ msgid "Error! Deletion attempt failed."
 msgstr ""
 
 #: lib/EZComments/Api/Admin.php:144
-#: lib/EZComments/Form/Handler/User/Modify.php:26
 #: lib/EZComments/Form/Handler/Admin/Modify.php:25
+#: lib/EZComments/Form/Handler/User/Modify.php:26
 msgid "No such comment found."
 msgstr ""
 
@@ -153,9 +65,17 @@ msgid "Purge comments"
 msgstr ""
 
 #: lib/EZComments/Api/Admin.php:303
-#: templates/ezcomments_admin_applyrules_results.tpl:4
 #: templates/ezcomments_admin_applyrules_form.tpl:4
+#: templates/ezcomments_admin_applyrules_results.tpl:4
 msgid "Re-apply moderation rules"
+msgstr ""
+
+#: lib/EZComments/Api/Myprofile.php:26
+msgid "User's pinboard"
+msgstr ""
+
+#: lib/EZComments/Api/Myprofile.php:51
+msgid "Registering EZComments hook for MyProfile module failed"
 msgstr ""
 
 #: lib/EZComments/Api/Search.php:55
@@ -165,80 +85,80 @@ msgid ""
 "less than %2$s characters!"
 msgstr ""
 
-#: lib/EZComments/Installer.php:82
-msgid "Error updating the table."
+#: lib/EZComments/Api/Search.php:88 lib/EZComments/Api/User.php:689
+msgid "Error! Could not load items."
 msgstr ""
 
-#: lib/EZComments/Installer.php:152 lib/EZComments/Installer.php:156
-#: lib/EZComments/Installer.php:160
-msgid "Error deleting hook."
+#: lib/EZComments/Api/User.php:199
+msgid "Error! The user ignores you."
 msgstr ""
 
-#: lib/EZComments/Form/Handler/User/Modify.php:85
-#: lib/EZComments/Form/Handler/Admin/Modify.php:73
-#: lib/EZComments/Controller/Admin.php:419
-#: lib/EZComments/Controller/Admin.php:560
-#: lib/EZComments/Controller/Admin.php:621
-msgid "Done! Comment deleted."
+#: lib/EZComments/Api/User.php:207
+msgid "Error! The name field is required. Comment rejected."
 msgstr ""
 
-#: lib/EZComments/Form/Handler/User/Modify.php:105
-#: lib/EZComments/Form/Handler/Admin/Modify.php:83
-msgid "Name for anonymous user is missing."
+#: lib/EZComments/Api/User.php:263
+msgid ""
+"Error! Your comment contains unacceptable content and has been rejected."
 msgstr ""
 
-#: lib/EZComments/Form/Handler/User/Modify.php:111
-#: lib/EZComments/Form/Handler/Admin/Modify.php:89
-msgid "Email address of anonymous user is missing or invalid."
+#: lib/EZComments/Api/User.php:290
+msgid "Error! Creation attempt failed."
 msgstr ""
 
-#: lib/EZComments/Form/Handler/User/Modify.php:117
-#: lib/EZComments/Form/Handler/Admin/Modify.php:95
-msgid "Website of anonymous user is invalid."
+#: lib/EZComments/Api/User.php:297
+msgid "Done! Your comment has been successfully added."
 msgstr ""
 
-#: lib/EZComments/Form/Handler/User/Modify.php:128
-#: lib/EZComments/Form/Handler/Admin/Modify.php:106
-#: lib/EZComments/Controller/User.php:288
-msgid "Error! The comment contains no text."
+#: lib/EZComments/Api/User.php:301
+msgid ""
+"Done! Your comment was held for moderation and will be reviewed shortly."
 msgstr ""
 
-#: lib/EZComments/Form/Handler/User/Modify.php:145
-#: lib/EZComments/Form/Handler/Admin/Modify.php:124
-msgid "Done! Comment updated."
+#: lib/EZComments/Api/User.php:333 templates/ezcomments_mail_newcomment.tpl:1
+msgid "A new comment was entered"
 msgstr ""
 
-#: lib/EZComments/Form/Handler/Admin/ModifyConfig.php:36
-msgid "Atom 0.3"
+#: lib/EZComments/Api/User.php:352
+msgid "Moderation required for a new comment"
 msgstr ""
 
-#: lib/EZComments/Form/Handler/Admin/ModifyConfig.php:37
-msgid "RSS 2.0"
+#: lib/EZComments/Block/EZComments.php:29 lib/EZComments/Version.php:17
+#: templates/Dizkus/ezcomments_user_view.tpl:4
+#: templates/ezcomments_user_header.tpl:3 templates/ezcomments_user_rss.tpl:5
+#: templates/Standard/ezcomments_user_view.tpl:4
+msgid "Comments"
 msgstr ""
 
-#: lib/EZComments/Form/Handler/Admin/ModifyConfig.php:58
-#: lib/EZComments/Form/Handler/Admin/ModifyConfig.php:63
-#: lib/EZComments/Form/Handler/Admin/ModifyConfig.php:68
-#: lib/EZComments/Form/Handler/Admin/ModifyConfig.php:73
-#: lib/EZComments/Form/Handler/Admin/ModifyConfig.php:78
-msgid "missing value"
+#: lib/EZComments/Block/EZComments.php:30
+msgid "Show latest comments"
 msgstr ""
 
-#: lib/EZComments/Form/Handler/Admin/ModifyConfig.php:112
-msgid "Done! Module configuration updated."
+#: lib/EZComments/Block/MostComments.php:29
+msgid "MostComments"
 msgstr ""
 
-#: lib/EZComments/Controller/User.php:59
+#: lib/EZComments/Block/MostComments.php:30
+msgid "Show content with most comments"
+msgstr ""
+
+#: lib/EZComments/Controller/Admin.php:54
+#: lib/EZComments/Controller/User.php:50
+#: lib/EZComments/Controller/User.php:155 lib/EZComments/HookHandlers.php:77
+msgid "Internal Error."
+msgstr ""
+
 #: lib/EZComments/Controller/Admin.php:63
 #: lib/EZComments/Controller/Admin.php:702
+#: lib/EZComments/Controller/User.php:59
 msgid "View"
 msgstr ""
 
-#: lib/EZComments/Controller/User.php:73
 #: lib/EZComments/Controller/Admin.php:67
 #: lib/EZComments/Controller/Admin.php:706
-#: templates/ezcomments_user_modify.tpl:8
+#: lib/EZComments/Controller/User.php:73
 #: templates/ezcomments_admin_modify.tpl:10
+#: templates/ezcomments_user_modify.tpl:8
 msgid "Edit"
 msgstr ""
 
@@ -268,16 +188,107 @@ msgstr ""
 msgid "Done! All orphaned comments for this module deleted."
 msgstr ""
 
+#: lib/EZComments/Controller/Admin.php:419
+#: lib/EZComments/Controller/Admin.php:560
+#: lib/EZComments/Controller/Admin.php:621
+#: lib/EZComments/Form/Handler/Admin/Modify.php:73
+#: lib/EZComments/Form/Handler/User/Modify.php:85
+msgid "Done! Comment deleted."
+msgstr ""
+
+#: lib/EZComments/Controller/Admin.php:655
+#: lib/EZComments/Form/Handler/Admin/Modify.php:30
+#: lib/EZComments/Form/Handler/Admin/ModifyConfig.php:31
+#: templates/plugins/modifier.commentstatus.php:32
+#: templates/ezcomments_admin_modulestats.tpl:13
+#: templates/ezcomments_admin_stats.tpl:13
+#: templates/ezcomments_admin_view.tpl:17
+#: templates/ezcomments_admin_view.tpl:57
+#: templates/ezcomments_user_main.tpl:12 templates/ezcomments_user_main.tpl:40
+msgid "Pending"
+msgstr ""
+
+#: lib/EZComments/Controller/Admin.php:656
+#: lib/EZComments/Form/Handler/Admin/Modify.php:31
+#: lib/EZComments/Form/Handler/Admin/ModifyConfig.php:32
+#: templates/plugins/modifier.commentstatus.php:34
+#: templates/ezcomments_admin_modulestats.tpl:14
+#: templates/ezcomments_admin_stats.tpl:14
+#: templates/ezcomments_admin_view.tpl:18
+#: templates/ezcomments_admin_view.tpl:58
+#: templates/ezcomments_user_main.tpl:13 templates/ezcomments_user_main.tpl:41
+msgid "Rejected"
+msgstr ""
+
+#: lib/EZComments/Controller/Admin.php:657
+#: lib/EZComments/Form/Handler/Admin/Modify.php:29
+#: lib/EZComments/Form/Handler/Admin/ModifyConfig.php:30
+#: templates/plugins/modifier.commentstatus.php:30
+#: templates/ezcomments_admin_modulestats.tpl:12
+#: templates/ezcomments_admin_stats.tpl:12
+#: templates/ezcomments_admin_view.tpl:16
+#: templates/ezcomments_admin_view.tpl:56
+#: templates/ezcomments_user_main.tpl:11 templates/ezcomments_user_main.tpl:39
+msgid "Approved"
+msgstr ""
+
 #: lib/EZComments/Controller/Admin.php:742
 msgid "New comment rules applied"
 msgstr ""
 
-#: lib/EZComments/Version.php:17 lib/EZComments/Block/EZComments.php:29
-#: templates/Standard/ezcomments_user_view.tpl:4
-#: templates/ezcomments_user_header.tpl:3
-#: templates/Dizkus/ezcomments_user_view.tpl:4
-#: templates/ezcomments_user_rss.tpl:5
-msgid "Comments"
+#: lib/EZComments/Controller/User.php:288
+#: lib/EZComments/Form/Handler/Admin/Modify.php:106
+#: lib/EZComments/Form/Handler/User/Modify.php:128
+msgid "Error! The comment contains no text."
+msgstr ""
+
+#: lib/EZComments/Form/Handler/Admin/Modify.php:83
+#: lib/EZComments/Form/Handler/User/Modify.php:105
+msgid "Name for anonymous user is missing."
+msgstr ""
+
+#: lib/EZComments/Form/Handler/Admin/Modify.php:89
+#: lib/EZComments/Form/Handler/User/Modify.php:111
+msgid "Email address of anonymous user is missing or invalid."
+msgstr ""
+
+#: lib/EZComments/Form/Handler/Admin/Modify.php:95
+#: lib/EZComments/Form/Handler/User/Modify.php:117
+msgid "Website of anonymous user is invalid."
+msgstr ""
+
+#: lib/EZComments/Form/Handler/Admin/Modify.php:124
+#: lib/EZComments/Form/Handler/User/Modify.php:145
+msgid "Done! Comment updated."
+msgstr ""
+
+#: lib/EZComments/Form/Handler/Admin/ModifyConfig.php:36
+msgid "Atom 0.3"
+msgstr ""
+
+#: lib/EZComments/Form/Handler/Admin/ModifyConfig.php:37
+msgid "RSS 2.0"
+msgstr ""
+
+#: lib/EZComments/Form/Handler/Admin/ModifyConfig.php:58
+#: lib/EZComments/Form/Handler/Admin/ModifyConfig.php:63
+#: lib/EZComments/Form/Handler/Admin/ModifyConfig.php:68
+#: lib/EZComments/Form/Handler/Admin/ModifyConfig.php:73
+#: lib/EZComments/Form/Handler/Admin/ModifyConfig.php:78
+msgid "missing value"
+msgstr ""
+
+#: lib/EZComments/Form/Handler/Admin/ModifyConfig.php:112
+msgid "Done! Module configuration updated."
+msgstr ""
+
+#: lib/EZComments/Installer.php:82
+msgid "Error updating the table."
+msgstr ""
+
+#: lib/EZComments/Installer.php:152 lib/EZComments/Installer.php:156
+#: lib/EZComments/Installer.php:160
+msgid "Error deleting hook."
 msgstr ""
 
 #: lib/EZComments/Version.php:18
@@ -297,194 +308,140 @@ msgstr ""
 msgid "EZComment Comments Filter"
 msgstr ""
 
-#: lib/EZComments/Block/MostComments.php:29
-msgid "MostComments"
-msgstr ""
-
-#: lib/EZComments/Block/MostComments.php:30
-msgid "Show content with most comments"
-msgstr ""
-
-#: lib/EZComments/Block/EZComments.php:30
-msgid "Show latest comments"
-msgstr ""
-
-#: templates/Standard/ezcomments_user_view.tpl:7
-#: templates/Standard/ezcomments_user_view.tpl:83
 #: templates/Dizkus/ezcomments_user_view.tpl:7
 #: templates/Dizkus/ezcomments_user_view.tpl:74
+#: templates/Standard/ezcomments_user_view.tpl:7
+#: templates/Standard/ezcomments_user_view.tpl:83
 msgid "Add a new comment"
-msgstr ""
-
-#: templates/Standard/ezcomments_user_view.tpl:29
-#, php-format
-msgid "Posted on %s"
-msgstr ""
-
-#: templates/Standard/ezcomments_user_view.tpl:35
-#: templates/Dizkus/ezcomments_user_view.tpl:34
-msgid "Send mail to user"
-msgstr ""
-
-#: templates/Standard/ezcomments_user_view.tpl:38
-#: templates/Dizkus/ezcomments_user_view.tpl:37
-msgid "Modify comment"
-msgstr ""
-
-#: templates/Standard/ezcomments_user_view.tpl:69
-#: templates/Dizkus/ezcomments_user_view.tpl:54
-msgid "No comments posted yet."
-msgstr ""
-
-#: templates/Standard/ezcomments_user_view.tpl:85
-#: templates/ezcomments_user_modify.tpl:32
-#: templates/ezcomments_user_modify.tpl:35
-#: templates/Dizkus/ezcomments_user_view.tpl:76
-#: templates/ezcomments_user_main.tpl:65
-#: templates/ezcomments_admin_view.tpl:86
-#: templates/ezcomments_admin_modify.tpl:38
-msgid "Subject"
-msgstr ""
-
-#: templates/Standard/ezcomments_user_view.tpl:90
-#: templates/ezcomments_user_modify.tpl:12
-#: templates/Dizkus/ezcomments_user_view.tpl:81
-#: templates/ezcomments_admin_modify.tpl:14
-msgid "Name"
-msgstr ""
-
-#: templates/Standard/ezcomments_user_view.tpl:90
-#: templates/Dizkus/ezcomments_user_view.tpl:81
-msgid "(required for unregistered users)"
-msgstr ""
-
-#: templates/Standard/ezcomments_user_view.tpl:94
-#: templates/ezcomments_user_modify.tpl:16
-#: templates/Dizkus/ezcomments_user_view.tpl:85
-#: templates/ezcomments_admin_modify.tpl:18
-msgid "E-mail address (will not be published)"
-msgstr ""
-
-#: templates/Standard/ezcomments_user_view.tpl:98
-#: templates/ezcomments_user_modify.tpl:20
-#: templates/Dizkus/ezcomments_user_view.tpl:89
-#: templates/ezcomments_admin_modify.tpl:22
-msgid "Website"
-msgstr ""
-
-#: templates/Standard/ezcomments_user_view.tpl:103
-#: templates/ezcomments_user_modify.tpl:41
-#: templates/ezcomments_user_modify.tpl:44
-#: templates/Dizkus/ezcomments_user_view.tpl:94
-#: templates/ezcomments_admin_applyrules_results.tpl:21
-#: templates/ezcomments_admin_applyrules_results.tpl:69
-#: templates/ezcomments_user_main.tpl:31
-#: templates/ezcomments_admin_view.tpl:47
-#: templates/ezcomments_admin_modify.tpl:42
-msgid "Comment"
-msgstr ""
-
-#: templates/Standard/ezcomments_user_view.tpl:107
-#: templates/Dizkus/ezcomments_user_view.tpl:98
-#: templates/ezcomments_admin_modifyconfig.tpl:137
-#: templates/ezcomments_admin_view.tpl:114
-#: templates/ezcomments_admin_applyrules_form.tpl:29
-msgid "Submit"
-msgstr ""
-
-#: templates/Standard/ezcomments_user_view.tpl:115
-#: templates/Dizkus/ezcomments_user_view.tpl:106
-msgid "Register"
-msgstr ""
-
-#: templates/Standard/ezcomments_user_view.tpl:116
-#: templates/Dizkus/ezcomments_user_view.tpl:107
-msgid "log in"
-msgstr ""
-
-#: templates/Standard/ezcomments_user_view.tpl:117
-#: templates/Dizkus/ezcomments_user_view.tpl:108
-#, php-format
-msgid "Only logged in users are allowed to comment. %1$s or %2$s."
-msgstr ""
-
-#: templates/ezcomments_admin_modulestats.tpl:4
-#, php-format
-msgid "Comment statistics for %s"
-msgstr ""
-
-#: templates/ezcomments_admin_modulestats.tpl:10
-msgid "Item ID"
-msgstr ""
-
-#: templates/ezcomments_admin_modulestats.tpl:11
-#: templates/ezcomments_admin_stats.tpl:11
-msgid "Total comments"
-msgstr ""
-
-#: templates/ezcomments_admin_modulestats.tpl:15
-#: templates/ezcomments_admin_applyrules_results.tpl:22
-#: templates/ezcomments_admin_applyrules_results.tpl:70
-#: templates/ezcomments_user_main.tpl:32
-#: templates/ezcomments_admin_view.tpl:48
-#: templates/ezcomments_admin_stats.tpl:15
-#: templates/ezcomments_admin_purge.tpl:12
-msgid "Options"
-msgstr ""
-
-#: templates/ezcomments_admin_modulestats.tpl:27
-#: templates/ezcomments_user_modify.tpl:57
-#: templates/ezcomments_admin_cleanup.tpl:19
-#: templates/ezcomments_admin_view.tpl:108
-#: templates/ezcomments_admin_stats.tpl:28
-#: templates/ezcomments_admin_delete.tpl:4
-#: templates/ezcomments_admin_delete.tpl:16
-#: templates/ezcomments_admin_deleteitem.tpl:17
-#: templates/ezcomments_admin_deletemodule.tpl:16
-#: templates/ezcomments_admin_purge.tpl:23
-#: templates/ezcomments_admin_modify.tpl:58
-msgid "Delete"
-msgstr ""
-
-#: templates/ezcomments_user_modify.tpl:1
-#: templates/ezcomments_admin_modify.tpl:4
-msgid "Edit comment"
-msgstr ""
-
-#: templates/ezcomments_user_modify.tpl:25
-#: templates/ezcomments_admin_applyrules_results.tpl:18
-#: templates/ezcomments_admin_applyrules_results.tpl:66
-#: templates/ezcomments_user_main.tpl:28
-#: templates/ezcomments_admin_view.tpl:40
-#: templates/ezcomments_admin_modify.tpl:27
-msgid "Commentator"
-msgstr ""
-
-#: templates/ezcomments_user_modify.tpl:49
-msgid "Redirect to the commented content after finishing"
-msgstr ""
-
-#: templates/ezcomments_user_modify.tpl:56
-#: templates/ezcomments_admin_modify.tpl:57
-msgid "Update"
-msgstr ""
-
-#: templates/ezcomments_user_modify.tpl:58
-#: templates/ezcomments_admin_applyrules_results.tpl:110
-#: templates/ezcomments_admin_cleanup.tpl:20
-#: templates/ezcomments_admin_migrate.tpl:19
-#: templates/ezcomments_admin_applyrules_form.tpl:30
-#: templates/ezcomments_admin_delete.tpl:18
-#: templates/ezcomments_admin_delete.tpl:20
-#: templates/ezcomments_admin_deleteitem.tpl:18
-#: templates/ezcomments_admin_deletemodule.tpl:17
-#: templates/ezcomments_admin_purge.tpl:24
-#: templates/ezcomments_admin_modify.tpl:59
-msgid "Cancel"
 msgstr ""
 
 #: templates/Dizkus/ezcomments_user_view.tpl:25
 msgid "Posted on"
+msgstr ""
+
+#: templates/Dizkus/ezcomments_user_view.tpl:34
+#: templates/Standard/ezcomments_user_view.tpl:35
+msgid "Send mail to user"
+msgstr ""
+
+#: templates/Dizkus/ezcomments_user_view.tpl:37
+#: templates/Standard/ezcomments_user_view.tpl:38
+msgid "Modify comment"
+msgstr ""
+
+#: templates/Dizkus/ezcomments_user_view.tpl:54
+#: templates/Standard/ezcomments_user_view.tpl:69
+msgid "No comments posted yet."
+msgstr ""
+
+#: templates/Dizkus/ezcomments_user_view.tpl:76
+#: templates/ezcomments_admin_modify.tpl:38
+#: templates/ezcomments_admin_view.tpl:86
+#: templates/ezcomments_user_main.tpl:65
+#: templates/ezcomments_user_modify.tpl:32
+#: templates/ezcomments_user_modify.tpl:35
+#: templates/Standard/ezcomments_user_view.tpl:85
+msgid "Subject"
+msgstr ""
+
+#: templates/Dizkus/ezcomments_user_view.tpl:81
+#: templates/ezcomments_admin_modify.tpl:14
+#: templates/ezcomments_user_modify.tpl:12
+#: templates/Standard/ezcomments_user_view.tpl:90
+msgid "Name"
+msgstr ""
+
+#: templates/Dizkus/ezcomments_user_view.tpl:81
+#: templates/Standard/ezcomments_user_view.tpl:90
+msgid "(required for unregistered users)"
+msgstr ""
+
+#: templates/Dizkus/ezcomments_user_view.tpl:85
+#: templates/ezcomments_admin_modify.tpl:18
+#: templates/ezcomments_user_modify.tpl:16
+#: templates/Standard/ezcomments_user_view.tpl:94
+msgid "E-mail address (will not be published)"
+msgstr ""
+
+#: templates/Dizkus/ezcomments_user_view.tpl:89
+#: templates/ezcomments_admin_modify.tpl:22
+#: templates/ezcomments_user_modify.tpl:20
+#: templates/Standard/ezcomments_user_view.tpl:98
+msgid "Website"
+msgstr ""
+
+#: templates/Dizkus/ezcomments_user_view.tpl:94
+#: templates/ezcomments_admin_applyrules_results.tpl:21
+#: templates/ezcomments_admin_applyrules_results.tpl:69
+#: templates/ezcomments_admin_modify.tpl:42
+#: templates/ezcomments_admin_view.tpl:47
+#: templates/ezcomments_user_main.tpl:31
+#: templates/ezcomments_user_modify.tpl:41
+#: templates/ezcomments_user_modify.tpl:44
+#: templates/Standard/ezcomments_user_view.tpl:103
+msgid "Comment"
+msgstr ""
+
+#: templates/Dizkus/ezcomments_user_view.tpl:98
+#: templates/ezcomments_admin_applyrules_form.tpl:29
+#: templates/ezcomments_admin_modifyconfig.tpl:137
+#: templates/ezcomments_admin_view.tpl:114
+#: templates/Standard/ezcomments_user_view.tpl:107
+msgid "Submit"
+msgstr ""
+
+#: templates/Dizkus/ezcomments_user_view.tpl:106
+#: templates/Standard/ezcomments_user_view.tpl:115
+msgid "Register"
+msgstr ""
+
+#: templates/Dizkus/ezcomments_user_view.tpl:107
+#: templates/Standard/ezcomments_user_view.tpl:116
+msgid "log in"
+msgstr ""
+
+#: templates/Dizkus/ezcomments_user_view.tpl:108
+#: templates/Standard/ezcomments_user_view.tpl:117
+#, php-format
+msgid "Only logged in users are allowed to comment. %1$s or %2$s."
+msgstr ""
+
+#: templates/ezcomments_admin_applyrules_form.tpl:7
+msgid ""
+"This page allows to to re-apply the defined moderation rules to all existing "
+"comments allowing all comments to be re-checked if you change your "
+"moderation rules."
+msgstr ""
+
+#: templates/ezcomments_admin_applyrules_form.tpl:13
+#: templates/ezcomments_admin_view.tpl:107
+msgid "Choose action"
+msgstr ""
+
+#: templates/ezcomments_admin_applyrules_form.tpl:15
+msgid "Apply moderation rules to all comments"
+msgstr ""
+
+#: templates/ezcomments_admin_applyrules_form.tpl:19
+msgid "or"
+msgstr ""
+
+#: templates/ezcomments_admin_applyrules_form.tpl:22
+msgid "Apply moderation rules to all comments with status"
+msgstr ""
+
+#: templates/ezcomments_admin_applyrules_form.tpl:30
+#: templates/ezcomments_admin_applyrules_results.tpl:110
+#: templates/ezcomments_admin_cleanup.tpl:20
+#: templates/ezcomments_admin_delete.tpl:18
+#: templates/ezcomments_admin_delete.tpl:20
+#: templates/ezcomments_admin_deleteitem.tpl:18
+#: templates/ezcomments_admin_deletemodule.tpl:17
+#: templates/ezcomments_admin_migrate.tpl:19
+#: templates/ezcomments_admin_modify.tpl:59
+#: templates/ezcomments_admin_purge.tpl:24
+#: templates/ezcomments_user_modify.tpl:58
+msgid "Cancel"
 msgstr ""
 
 #: templates/ezcomments_admin_applyrules_results.tpl:13
@@ -493,17 +450,26 @@ msgstr ""
 
 #: templates/ezcomments_admin_applyrules_results.tpl:17
 #: templates/ezcomments_admin_applyrules_results.tpl:65
-#: templates/ezcomments_user_main.tpl:25
-#: templates/ezcomments_admin_view.tpl:37
 #: templates/ezcomments_admin_modify.tpl:46
+#: templates/ezcomments_admin_view.tpl:37
+#: templates/ezcomments_user_main.tpl:25
 msgid "Status"
+msgstr ""
+
+#: templates/ezcomments_admin_applyrules_results.tpl:18
+#: templates/ezcomments_admin_applyrules_results.tpl:66
+#: templates/ezcomments_admin_modify.tpl:27
+#: templates/ezcomments_admin_view.tpl:40
+#: templates/ezcomments_user_main.tpl:28
+#: templates/ezcomments_user_modify.tpl:25
+msgid "Commentator"
 msgstr ""
 
 #: templates/ezcomments_admin_applyrules_results.tpl:19
 #: templates/ezcomments_admin_applyrules_results.tpl:67
-#: templates/ezcomments_admin_view.tpl:44
-#: templates/ezcomments_admin_stats.tpl:10
 #: templates/ezcomments_admin_migrate.tpl:13
+#: templates/ezcomments_admin_stats.tpl:10
+#: templates/ezcomments_admin_view.tpl:44
 msgid "Module"
 msgstr ""
 
@@ -513,11 +479,21 @@ msgstr ""
 msgid "Comment type"
 msgstr ""
 
+#: templates/ezcomments_admin_applyrules_results.tpl:22
+#: templates/ezcomments_admin_applyrules_results.tpl:70
+#: templates/ezcomments_admin_modulestats.tpl:15
+#: templates/ezcomments_admin_purge.tpl:12
+#: templates/ezcomments_admin_stats.tpl:15
+#: templates/ezcomments_admin_view.tpl:48
+#: templates/ezcomments_user_main.tpl:32
+msgid "Options"
+msgstr ""
+
 #: templates/ezcomments_admin_applyrules_results.tpl:55
 #: templates/ezcomments_admin_applyrules_results.tpl:103
-#: templates/ezcomments_user_main.tpl:77
-#: templates/ezcomments_admin_view.tpl:97
 #: templates/ezcomments_admin_stats.tpl:35
+#: templates/ezcomments_admin_view.tpl:97
+#: templates/ezcomments_user_main.tpl:77
 msgid "No items found"
 msgstr ""
 
@@ -529,41 +505,93 @@ msgstr ""
 msgid "Apply"
 msgstr ""
 
-#: templates/ezcomments_user_main.tpl:1
+#: templates/ezcomments_admin_cleanup.tpl:4
+msgid "Delete all comments for this module"
+msgstr ""
+
+#: templates/ezcomments_admin_cleanup.tpl:7
+msgid ""
+"This functionality allows you to delete comments that are in the database "
+"for removed modules."
+msgstr ""
+
+#: templates/ezcomments_admin_cleanup.tpl:12
+#: templates/ezcomments_admin_delete.tpl:14
+#: templates/ezcomments_admin_deleteitem.tpl:15
+#: templates/ezcomments_admin_deletemodule.tpl:14
+msgid "Confirmation prompt"
+msgstr ""
+
+#: templates/ezcomments_admin_cleanup.tpl:14
+msgid "Select module"
+msgstr ""
+
+#: templates/ezcomments_admin_cleanup.tpl:19
+#: templates/ezcomments_admin_delete.tpl:4
+#: templates/ezcomments_admin_delete.tpl:16
+#: templates/ezcomments_admin_deleteitem.tpl:17
+#: templates/ezcomments_admin_deletemodule.tpl:16
+#: templates/ezcomments_admin_modify.tpl:58
+#: templates/ezcomments_admin_modulestats.tpl:27
+#: templates/ezcomments_admin_purge.tpl:23
+#: templates/ezcomments_admin_stats.tpl:28
+#: templates/ezcomments_admin_view.tpl:108
+#: templates/ezcomments_user_modify.tpl:57
+msgid "Delete"
+msgstr ""
+
+#: templates/ezcomments_admin_deleteitem.tpl:4
+msgid "Delete item"
+msgstr ""
+
+#: templates/ezcomments_admin_deleteitem.tpl:7
 #, php-format
-msgid "The last %s created or owned comment"
-msgid_plural "The last %s created or owned comments"
-msgstr[0] ""
-msgstr[1] ""
-
-#: templates/ezcomments_user_main.tpl:2 templates/ezcomments_admin_view.tpl:2
-msgid "unknown"
+msgid ""
+"Confirm deletion of all comments for object ID '%1$s' attached to module '%2"
+"$s'"
 msgstr ""
 
-#: templates/ezcomments_user_main.tpl:8 templates/ezcomments_admin_view.tpl:13
-msgid "Filter by status"
+#: templates/ezcomments_admin_deletemodule.tpl:4
+msgid "Delete module"
 msgstr ""
 
-#: templates/ezcomments_user_main.tpl:10
-#: templates/ezcomments_admin_view.tpl:15
-#: templates/ezcomments_block_mostcomments_modify.tpl:8
-#: templates/ezcomments_block_ezcomments_modify.tpl:8
-msgid "All"
+#: templates/ezcomments_admin_deletemodule.tpl:7
+#, php-format
+msgid "Confirm deletion of all comments attached to module '%s'"
 msgstr ""
 
-#: templates/ezcomments_user_main.tpl:17
-#: templates/ezcomments_admin_view.tpl:25
-msgid "Filter"
+#: templates/ezcomments_admin_migrate.tpl:4
+msgid "Import comments from other modules"
 msgstr ""
 
-#: templates/ezcomments_user_main.tpl:26
-#: templates/ezcomments_admin_view.tpl:38
-msgid "Date"
+#: templates/ezcomments_admin_migrate.tpl:11
+msgid "Migration"
 msgstr ""
 
-#: templates/ezcomments_user_main.tpl:29
-#: templates/ezcomments_admin_view.tpl:41
-msgid "Owner"
+#: templates/ezcomments_admin_migrate.tpl:18
+msgid "Start migration"
+msgstr ""
+
+#: templates/ezcomments_admin_modify.tpl:4
+#: templates/ezcomments_user_modify.tpl:1
+msgid "Edit comment"
+msgstr ""
+
+#: templates/ezcomments_admin_modify.tpl:33
+msgid "IP address"
+msgstr ""
+
+#: templates/ezcomments_admin_modify.tpl:34
+msgid "not logged"
+msgstr ""
+
+#: templates/ezcomments_admin_modify.tpl:50
+msgid "Send me back to the commented content after finishing"
+msgstr ""
+
+#: templates/ezcomments_admin_modify.tpl:57
+#: templates/ezcomments_user_modify.tpl:56
+msgid "Update"
 msgstr ""
 
 #: templates/ezcomments_admin_modifyconfig.tpl:10
@@ -722,6 +750,128 @@ msgstr ""
 msgid "Number of items to display in feed"
 msgstr ""
 
+#: templates/ezcomments_admin_modulestats.tpl:4
+#, php-format
+msgid "Comment statistics for %s"
+msgstr ""
+
+#: templates/ezcomments_admin_modulestats.tpl:10
+msgid "Item ID"
+msgstr ""
+
+#: templates/ezcomments_admin_modulestats.tpl:11
+#: templates/ezcomments_admin_stats.tpl:11
+msgid "Total comments"
+msgstr ""
+
+#: templates/ezcomments_admin_purge.tpl:14
+msgid "Purge all pending comments"
+msgstr ""
+
+#: templates/ezcomments_admin_purge.tpl:18
+msgid "Purge all rejected comments"
+msgstr ""
+
+#: templates/ezcomments_admin_view.tpl:2 templates/ezcomments_user_main.tpl:2
+msgid "unknown"
+msgstr ""
+
+#: templates/ezcomments_admin_view.tpl:7
+#, php-format
+msgid "The last %s comment"
+msgid_plural "The last %s comments"
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/ezcomments_admin_view.tpl:8
+#, php-format
+msgid "All %s comments"
+msgstr ""
+
+#: templates/ezcomments_admin_view.tpl:13 templates/ezcomments_user_main.tpl:8
+msgid "Filter by status"
+msgstr ""
+
+#: templates/ezcomments_admin_view.tpl:15
+#: templates/ezcomments_block_ezcomments_modify.tpl:8
+#: templates/ezcomments_block_mostcomments_modify.tpl:8
+#: templates/ezcomments_user_main.tpl:10
+msgid "All"
+msgstr ""
+
+#: templates/ezcomments_admin_view.tpl:21
+msgid "Show all comments"
+msgstr ""
+
+#: templates/ezcomments_admin_view.tpl:25
+#: templates/ezcomments_user_main.tpl:17
+msgid "Filter"
+msgstr ""
+
+#: templates/ezcomments_admin_view.tpl:38
+#: templates/ezcomments_user_main.tpl:26
+msgid "Date"
+msgstr ""
+
+#: templates/ezcomments_admin_view.tpl:41
+#: templates/ezcomments_user_main.tpl:29
+msgid "Owner"
+msgstr ""
+
+#: templates/ezcomments_admin_view.tpl:105
+msgid "With selected comments"
+msgstr ""
+
+#: templates/ezcomments_admin_view.tpl:109
+msgid "Approve"
+msgstr ""
+
+#: templates/ezcomments_admin_view.tpl:110
+msgid "Hold"
+msgstr ""
+
+#: templates/ezcomments_admin_view.tpl:111
+msgid "Reject"
+msgstr ""
+
+#: templates/ezcomments_block_ezcomments.tpl:10
+msgid "by"
+msgstr ""
+
+#: templates/ezcomments_block_ezcomments.tpl:18
+msgid "on"
+msgstr ""
+
+#: templates/ezcomments_block_ezcomments_modify.tpl:2
+#: templates/ezcomments_block_mostcomments_modify.tpl:2
+msgid "Number of comments to display"
+msgstr ""
+
+#: templates/ezcomments_block_ezcomments_modify.tpl:6
+#: templates/ezcomments_block_mostcomments_modify.tpl:6
+msgid "Show comments for the following module"
+msgstr ""
+
+#: templates/ezcomments_block_ezcomments_modify.tpl:13
+msgid "Show username"
+msgstr ""
+
+#: templates/ezcomments_block_ezcomments_modify.tpl:21
+msgid "Link username to profile"
+msgstr ""
+
+#: templates/ezcomments_block_ezcomments_modify.tpl:29
+msgid "Show Date"
+msgstr ""
+
+#: templates/ezcomments_block_ezcomments_modify.tpl:37
+msgid "Show pending comments"
+msgstr ""
+
+#: templates/ezcomments_block_mostcomments_modify.tpl:13
+msgid "Show count"
+msgstr ""
+
 #: templates/ezcomments_mail_modcomment.tpl:1
 msgid "A new comment was submitted to your site that requires moderation"
 msgstr ""
@@ -751,153 +901,6 @@ msgstr ""
 msgid "Moderate:"
 msgstr ""
 
-#: templates/ezcomments_admin_cleanup.tpl:4
-msgid "Delete all comments for this module"
-msgstr ""
-
-#: templates/ezcomments_admin_cleanup.tpl:7
-msgid ""
-"This functionality allows you to delete comments that are in the database "
-"for removed modules."
-msgstr ""
-
-#: templates/ezcomments_admin_cleanup.tpl:12
-#: templates/ezcomments_admin_delete.tpl:14
-#: templates/ezcomments_admin_deleteitem.tpl:15
-#: templates/ezcomments_admin_deletemodule.tpl:14
-msgid "Confirmation prompt"
-msgstr ""
-
-#: templates/ezcomments_admin_cleanup.tpl:14
-msgid "Select module"
-msgstr ""
-
-#: templates/ezcomments_admin_view.tpl:7
-#, php-format
-msgid "The last %s comment"
-msgid_plural "The last %s comments"
-msgstr[0] ""
-msgstr[1] ""
-
-#: templates/ezcomments_admin_view.tpl:8
-#, php-format
-msgid "All %s comments"
-msgstr ""
-
-#: templates/ezcomments_admin_view.tpl:21
-msgid "Show all comments"
-msgstr ""
-
-#: templates/ezcomments_admin_view.tpl:105
-msgid "With selected comments"
-msgstr ""
-
-#: templates/ezcomments_admin_view.tpl:107
-#: templates/ezcomments_admin_applyrules_form.tpl:13
-msgid "Choose action"
-msgstr ""
-
-#: templates/ezcomments_admin_view.tpl:109
-msgid "Approve"
-msgstr ""
-
-#: templates/ezcomments_admin_view.tpl:110
-msgid "Hold"
-msgstr ""
-
-#: templates/ezcomments_admin_view.tpl:111
-msgid "Reject"
-msgstr ""
-
-#: templates/ezcomments_block_mostcomments_modify.tpl:2
-#: templates/ezcomments_block_ezcomments_modify.tpl:2
-msgid "Number of comments to display"
-msgstr ""
-
-#: templates/ezcomments_block_mostcomments_modify.tpl:6
-#: templates/ezcomments_block_ezcomments_modify.tpl:6
-msgid "Show comments for the following module"
-msgstr ""
-
-#: templates/ezcomments_block_mostcomments_modify.tpl:13
-msgid "Show count"
-msgstr ""
-
-#: templates/ezcomments_admin_migrate.tpl:4
-msgid "Import comments from other modules"
-msgstr ""
-
-#: templates/ezcomments_admin_migrate.tpl:11
-msgid "Migration"
-msgstr ""
-
-#: templates/ezcomments_admin_migrate.tpl:18
-msgid "Start migration"
-msgstr ""
-
-#: templates/ezcomments_admin_applyrules_form.tpl:7
-msgid ""
-"This page allows to to re-apply the defined moderation rules to all existing "
-"comments allowing all comments to be re-checked if you change your "
-"moderation rules."
-msgstr ""
-
-#: templates/ezcomments_admin_applyrules_form.tpl:15
-msgid "Apply moderation rules to all comments"
-msgstr ""
-
-#: templates/ezcomments_admin_applyrules_form.tpl:19
-msgid "or"
-msgstr ""
-
-#: templates/ezcomments_admin_applyrules_form.tpl:22
-msgid "Apply moderation rules to all comments with status"
-msgstr ""
-
-#: templates/ezcomments_user_rss.tpl:22
-msgid "No subject"
-msgstr ""
-
-#: templates/ezcomments_admin_deleteitem.tpl:4
-msgid "Delete item"
-msgstr ""
-
-#: templates/ezcomments_admin_deleteitem.tpl:7
-#, php-format
-msgid ""
-"Confirm deletion of all comments for object ID '%1$s' attached to module '%2"
-"$s'"
-msgstr ""
-
-#: templates/ezcomments_block_ezcomments.tpl:10
-msgid "by"
-msgstr ""
-
-#: templates/ezcomments_block_ezcomments.tpl:18
-msgid "on"
-msgstr ""
-
-#: templates/ezcomments_search_form.tpl:4
-msgid "Search comments"
-msgstr ""
-
-#: templates/ezcomments_admin_deletemodule.tpl:4
-msgid "Delete module"
-msgstr ""
-
-#: templates/ezcomments_admin_deletemodule.tpl:7
-#, php-format
-msgid "Confirm deletion of all comments attached to module '%s'"
-msgstr ""
-
-#: templates/ezcomments_admin_purge.tpl:14
-msgid "Purge all pending comments"
-msgstr ""
-
-#: templates/ezcomments_admin_purge.tpl:18
-msgid "Purge all rejected comments"
-msgstr ""
-
 #: templates/ezcomments_myprofile_tab.tpl:1
 msgid "Pinboard for member"
 msgstr ""
@@ -914,30 +917,26 @@ msgstr ""
 msgid "Pinboard entries are only visible for registered or logged in users."
 msgstr ""
 
-#: templates/ezcomments_admin_modify.tpl:33
-msgid "IP address"
+#: templates/ezcomments_search_form.tpl:4
+msgid "Search comments"
 msgstr ""
 
-#: templates/ezcomments_admin_modify.tpl:34
-msgid "not logged"
+#: templates/ezcomments_user_main.tpl:1
+#, php-format
+msgid "The last %s created or owned comment"
+msgid_plural "The last %s created or owned comments"
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/ezcomments_user_modify.tpl:49
+msgid "Redirect to the commented content after finishing"
 msgstr ""
 
-#: templates/ezcomments_admin_modify.tpl:50
-msgid "Send me back to the commented content after finishing"
+#: templates/ezcomments_user_rss.tpl:22
+msgid "No subject"
 msgstr ""
 
-#: templates/ezcomments_block_ezcomments_modify.tpl:13
-msgid "Show username"
-msgstr ""
-
-#: templates/ezcomments_block_ezcomments_modify.tpl:21
-msgid "Link username to profile"
-msgstr ""
-
-#: templates/ezcomments_block_ezcomments_modify.tpl:29
-msgid "Show Date"
-msgstr ""
-
-#: templates/ezcomments_block_ezcomments_modify.tpl:37
-msgid "Show pending comments"
+#: templates/Standard/ezcomments_user_view.tpl:29
+#, php-format
+msgid "Posted on %s"
 msgstr ""
