@@ -294,7 +294,7 @@ class EZComments_Api_User extends Zikula_AbstractApi
         switch ($maxstatus)
         {
             case 0:
-                LogUtil::registerStatus($this->__('Done! Comment added.'));
+                LogUtil::registerStatus($this->__('Done! Your comment has been successfully added.'));
                 break;
 
             case 1:
@@ -321,7 +321,7 @@ class EZComments_Api_User extends Zikula_AbstractApi
         $renderer = Zikula_View::getInstance('EZComments');
 
         // Inform the content owner or the admin about a new comment
-        if (!$maxstatus && ModUtil::getVar('EZComments', 'MailToAdmin') && !in_array($args['uid'], array(2, $owneruid))) {
+        if (!$maxstatus && ModUtil::getVar('EZComments', 'MailToAdmin')) {
             if ($args['uid'] > 0) {
                 $newcomment['userline'] = UserUtil::getVar('uname', $args['uid']);
             } else {
@@ -340,7 +340,7 @@ class EZComments_Api_User extends Zikula_AbstractApi
                                'body'        => $renderer->fetch('ezcomments_mail_newcomment.tpl')));
         }
 
-        if ($maxstatus && ModUtil::getVar('EZComments', 'moderationmail') && !in_array($args['uid'], array(2, $owneruid))) {
+        if ($maxstatus && ModUtil::getVar('EZComments', 'moderationmail')) {
             if ($args['uid'] > 0) {
                 $newcomment['userline'] = UserUtil::getVar('uname', $args['uid']);
             } else {
@@ -348,7 +348,7 @@ class EZComments_Api_User extends Zikula_AbstractApi
             }
             $renderer->assign('comment', $newcomment);
 
-            $mailsubject = $this->__('New comment for your site');
+            $mailsubject = $this->__('Moderation required for a new comment');
 
             ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
                          array('toaddress'   => System::getVar('adminmail'),
