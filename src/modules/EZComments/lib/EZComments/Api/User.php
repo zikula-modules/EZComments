@@ -328,6 +328,7 @@ class EZComments_Api_User extends Zikula_AbstractApi
                 $newcomment['userline'] = "$args[anonname] $args[anonmail]";
             }
             $renderer->assign('comment', $newcomment);
+            $renderer->assign('modifyurl', ModUtil::url('EZComments', 'user', 'modify', array('id' => $newcomment['id']), null, null, true));
 
             $mailsubject = $this->__('A new comment was entered');
 

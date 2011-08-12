@@ -5,4 +5,4 @@
 {$comment.comment|safetext}
 
 {gt text='Show:'} {$comment.url}#comment{$comment.id}
-{gt text='Moderate:'} {modurl modname='EZComments' type='user' func='modify' id=$comment.id fqurl=true}
+{gt text='Moderate:'} {$modifyurl}
