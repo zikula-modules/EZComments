@@ -238,9 +238,9 @@ class EZComments_Api_User extends Zikula_AbstractApi
             if (ModUtil::getVar('EZComments', 'alwaysmoderate')) {
                 $status[] = 1;
             } else {
-                $checkvars = array('subject', 'comment', 'anonname', 'anonmail', 'anonwebsite');
+                $checkvars = array($args['subject'], $args['comment'],  $args['anonname'], $args['anonmail'], $args['anonwebsite']);
                 foreach ($checkvars as $checkvar) {
-                    $status[] = $this->checkcomment($$checkvar);
+                    $status[] = $this->checkcomment($checkvar);
                 }
             }
             $status[] = $this->checksubmitter();
@@ -529,16 +529,14 @@ class EZComments_Api_User extends Zikula_AbstractApi
      * @todo turn this into a normal API
      * @param  var string to check
      * @author Mark West
-     * @access prviate
+     * @access private
      * @return mixed int 1 to require moderation, 0 for instant submission, 2 for discarding the comment, void error
      */
     public function checkcomment($args = array())
     {
-        if (!isset($args['var'])) {
+        if (!isset($args) || empty($args)) {
             return 0;
         }
-
-        $var = $args['var'];
 
         // check blacklisted words - exit silently if found
         $blacklistedwords = explode("\n", ModUtil::getVar('EZComments', 'blacklist'));
@@ -548,13 +546,13 @@ class EZComments_Api_User extends Zikula_AbstractApi
             if (empty($blacklistedword)) {
                 continue;
             }
-            if (stristr($var, $blacklistedword)) {
+            if (stristr($args, $blacklistedword)) {
                 return 2;
             }
         }
 
         // count the number of links
-        $linkcount = count(explode('http:', $var));
+        $linkcount = count(explode('http:', $args));
 
         // check link count for blacklisting
         if ($linkcount-1 >= ModUtil::getVar('EZComments', 'blacklinkcount')) {
@@ -569,7 +567,7 @@ class EZComments_Api_User extends Zikula_AbstractApi
             if (empty($modlistedword)) {
                 continue;
             }
-            if (stristr($var, $modlistedword)) {
+            if (stristr($args, $modlistedword)) {
                 return 1;
             }
         }

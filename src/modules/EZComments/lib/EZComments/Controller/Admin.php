@@ -679,8 +679,8 @@ class EZComments_Controller_Admin extends Zikula_AbstractController
         $blacklistedcomments = array();
         foreach ($comments as $comment)
         {
-            $subjectstatus = ModUtil::apiFunc('EZComments', 'user', 'checkcomment', array('var' => $comment['subject']));
-            $commentstatus = ModUtil::apiFunc('EZComments', 'user', 'checkcomment', array('var' => $comment['comment']));
+            $subjectstatus = ModUtil::apiFunc('EZComments', 'user', 'checkcomment', array($comment['subject']));
+            $commentstatus = ModUtil::apiFunc('EZComments', 'user', 'checkcomment', array($comment['comment']));
             // Akismet
             if (ModUtil::available('Akismet') && ModUtil::getVar('EZComments', 'Akismet')
                 && ModUtil::apiFunc('Akismet', 'user', 'isspam',
