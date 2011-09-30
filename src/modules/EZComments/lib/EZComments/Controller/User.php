@@ -35,7 +35,7 @@ class EZComments_Controller_User extends Zikula_AbstractController
 
         // presentation values
         $startnum = isset($args['startnum']) ? $args['startnum'] : FormUtil::getPassedValue('startnum', null, 'GETPOST');
-        $itemsperpage = ModUtil::getVar('EZComments', 'itemsperpage');
+        $itemsperpage = $this->getVar('itemsperpage');
 
         // call the api to get all current comments that are from the user or the user's content
         $params = array('startnum' => $startnum,
@@ -76,16 +76,14 @@ class EZComments_Controller_User extends Zikula_AbstractController
             $items[$k]['options'] = $options;
         }
 
-        // assign the module vars
-        $this->view->assign(ModUtil::getVar('EZComments'));
+        $numberOfItems = ModUtil::apiFunc('EZComments', 'user', 'countitems', $params);
 
-        // assign the items to the template, values for the filters
-        $this->view->assign('items',  $items);
-        $this->view->assign('status', $status);
-
-        // values for the smarty plugin to produce a pager
-        $this->view->assign('ezc_pager', array('numitems'     => ModUtil::apiFunc('EZComments', 'user', 'countitems', $params),
-                                             'itemsperpage' => $itemsperpage));
+        // assign collected data to the template
+        $this->view->assign(ModUtil::getVar('EZComments'))
+                   ->assign('items',  $items)
+                   ->assign('status', $status)
+                   ->assign('ezc_pager', array('numitems'     => $numberOfItems,
+                                               'itemsperpage' => $itemsperpage));
 
         // Return the output
         return $this->view->fetch('ezcomments_user_main.tpl');
@@ -136,9 +134,9 @@ class EZComments_Controller_User extends Zikula_AbstractController
         }
 
         // check if we're using the pager
-        $enablepager = ModUtil::getVar('EZComments', 'enablepager');
+        $enablepager = $this->getVar('enablepager');
         if ($enablepager) {
-            $numitems = ModUtil::getVar('EZComments', 'commentsperpage');
+            $numitems = $this->getVar('commentsperpage');
             $startnum = FormUtil::getPassedValue('comments_startnum');
             if (!isset($startnum) && !is_numeric($startnum)) {
                 $startnum = -1;
@@ -166,35 +164,27 @@ class EZComments_Controller_User extends Zikula_AbstractController
         // don't use caching (for now...)
         $this->view->setCaching(false);
 
-        $this->view->assign('comments',     $items);
-        $this->view->assign('commentcount', $commentcount);
-        $this->view->assign('order',        $sortorder);
-        $this->view->assign('redirect',     $redirect);
-        $this->view->assign('allowadd',     SecurityUtil::checkPermission('EZComments::', "$mod:$objectid: ", ACCESS_COMMENT));
-        $this->view->assign('mod',          DataUtil::formatForDisplay($mod));
-        $this->view->assign('objectid',     DataUtil::formatForDisplay($objectid));
-        $this->view->assign('subject',      DataUtil::formatForDisplay($subject));
-        $this->view->assign('replyto',      DataUtil::formatForDisplay($replyto));
-
-        // assign the user is of the content owner
-        $this->view->assign('owneruid',     $owneruid);
-
-        // assign useurl if there was another url for email and storing submitted
-        $this->view->assign('useurl',       $useurl);
-
-        // assign all module vars (they may be useful...)
-        $this->view->assign(ModUtil::getVar('EZComments'));
-
-        // assign the values for the pager
-        $this->view->assign('ezc_pager', array('numitems'     => $commentcount,
-                                             'itemsperpage' => $numitems));
+        $this->view->assign('comments',     $items)
+                   ->assign('commentcount', $commentcount)
+                   ->assign('order',        $sortorder)
+                   ->assign('redirect',     $redirect)
+                   ->assign('allowadd',     SecurityUtil::checkPermission('EZComments::', "$mod:$objectid: ", ACCESS_COMMENT))
+                   ->assign('mod',          DataUtil::formatForDisplay($mod))
+                   ->assign('objectid',     DataUtil::formatForDisplay($objectid))
+                   ->assign('subject',      DataUtil::formatForDisplay($subject))
+                   ->assign('replyto',      DataUtil::formatForDisplay($replyto))
+                   ->assign('owneruid',     $owneruid)
+                   ->assign('useurl',       $useurl)
+                   ->assign(ModUtil::getVar('EZComments'))
+                   ->assign('ezc_pager', array('numitems'     => $commentcount,
+                                               'itemsperpage' => $numitems));
 
         // find out which template to use
         $templateset = isset($args['template']) ? $args['template'] : $template;
-        $defaultcss  = ModUtil::getVar('EZComments', 'css', 'style.css');
+        $defaultcss  = $this->getVar('css', 'style.css');
 
         if (!$this->view->template_exists(DataUtil::formatForOS($templateset) . '/ezcomments_user_comment.tpl')) {
-            $templateset = ModUtil::getVar('EZComments', 'template', 'Standard');
+            $templateset = $this->getVar('template', 'Standard');
         }
         $this->view->assign('template', $templateset);
 
@@ -384,10 +374,10 @@ class EZComments_Controller_User extends Zikula_AbstractController
 
         // check our input
         if (!isset($feedcount) || !is_numeric($feedcount) || $feedcount < 1 || $feedcount > 999) {
-            $feedcount = ModUtil::getVar('EZcomments', 'feedcount');
+            $feedcount = $this->getVar('feedcount');
         }
         if (!isset($feedtype) || !is_string($feedtype) || ($feedtype !== 'rss' && $feedtype !== 'atom')) {
-            $feedtype = ModUtil::getVar('EZComments', 'feedtype');
+            $feedtype = $this->getVar('feedtype');
         }
         if (!isset($mod) || !is_string($mod) || !ModUtil::available($mod)) {
             $mod = null;
@@ -396,6 +386,7 @@ class EZComments_Controller_User extends Zikula_AbstractController
             $objectid = null;
         }
 
+        // get the last x comments
         $comments = ModUtil::apiFunc('EZComments', 'user', 'getall',
                                  array('mod'       => $mod,
                                        'objectid'  => $objectid,
@@ -403,21 +394,22 @@ class EZComments_Controller_User extends Zikula_AbstractController
                                        'sortorder' => 'DESC',
                                        'status'    => 0));
 
-        // get the last x comments
-        $this->view->assign('comments'    , $comments);
-        $this->view->assign('language'    , ZLanguage::getLocale());
-        $this->view->assign('sitename'    , System::getVar('sitename'));
-        $this->view->assign('slogan'      , System::getVar('slogan'));
-        $this->view->assign('adminmail'   , System::getVar('adminmail'));
-        $this->view->assign('current_date', date(DATE_RSS));
-
         // grab the item url from one of the comments
+        $itemUrl = '';
         if (isset($comments[0]['url'])) {
-            $this->view->assign('itemurl', $comments[0]['url']);
+            $itemUrl = $comments[0]['url'];
         } else {
             // attempt to guess the url (api compliant mods only....)
-            $this->view->assign('itemurl', ModUtil::url($mod, 'user', 'display', array('objectid' => $objectid)));
+            $itemUrl = ModUtil::url($mod, 'user', 'display', array('objectid' => $objectid));
         }
+
+        $this->view->assign('comments'    , $comments)
+                   ->assign('language'    , ZLanguage::getLocale())
+                   ->assign('sitename'    , System::getVar('sitename'))
+                   ->assign('slogan'      , System::getVar('slogan'))
+                   ->assign('adminmail'   , System::getVar('adminmail'))
+                   ->assign('current_date', date(DATE_RSS))
+                   ->assign('itemurl'     , $itemUrl);
 
         // display the feed and notify the core that we're done
         $this->view->display("ezcomments_user_$feedtype.tpl.tpl");
