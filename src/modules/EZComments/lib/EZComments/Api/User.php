@@ -203,7 +203,7 @@ class EZComments_Api_User extends Zikula_AbstractApi
         $args['anonname'] = isset($args['anonname']) ? trim($args['anonname']) : '';
         if (!$loggedin) {
             $args['uid'] = 0;
-            if (ModUtil::getVar('EZComments', 'anonusersrequirename') && empty($args['anonname'])) {
+            if ($this->getVar('anonusersrequirename') && empty($args['anonname'])) {
                 return LogUtil::registerError($this->__('Error! The name field is required. Comment rejected.'));
             }
         }
@@ -222,7 +222,7 @@ class EZComments_Api_User extends Zikula_AbstractApi
 
         // get the users ip
         $ipaddr = '';
-        if (ModUtil::getVar('EZComments', 'logip')) {
+        if ($this->getVar('logip')) {
             $ipaddr = System::serverGetVar('REMOTE_ADDR');
         }
 
@@ -233,9 +233,9 @@ class EZComments_Api_User extends Zikula_AbstractApi
         if (in_array($args['type'], array('trackback', 'pingback'))) {
             $status[] = 1;
 
-        } elseif (ModUtil::getVar('EZComments', 'moderation')) {
+        } elseif ($this->getVar('moderation')) {
             // check if we should moderate all comments
-            if (ModUtil::getVar('EZComments', 'alwaysmoderate')) {
+            if ($this->getVar('alwaysmoderate')) {
                 $status[] = 1;
             } else {
                 $checkvars = array($args['subject'], $args['comment'],  $args['anonname'], $args['anonmail'], $args['anonwebsite']);
@@ -247,14 +247,14 @@ class EZComments_Api_User extends Zikula_AbstractApi
         }
 
         // Akismet
-        if (ModUtil::available('Akismet') && ModUtil::getVar('EZComments', 'Akismet')) {
+        if (ModUtil::available('Akismet') && $this->getVar('Akismet')) {
             if (ModUtil::apiFunc('Akismet', 'user', 'isspam',
                              array('author'      => $loggedin ? UserUtil::getVar('uname') : $args['anonname'],
                                    'authoremail' => $loggedin ? UserUtil::getVar('email') : (isset($args['anonmail']) ? $args['anonmail'] : ''),
                                    'authorurl'   => $loggedin ? UserUtil::getVar('url')   : (isset($args['anonwebsite']) ? $args['anonwebsite'] : ''),
                                    'content'     => $args['comment'],
                                    'permalink'   => $url))) {
-                $status[] = ModUtil::getVar('EZComments', 'akismetstatus');
+                $status[] = $this->getVar('akismetstatus');
             }
         }
 
@@ -302,61 +302,53 @@ class EZComments_Api_User extends Zikula_AbstractApi
                 break;
         }
 
+        $toaddress = $adminEmail = System::getVar('adminmail');
+        $toname    = $siteName   = System::getVar('sitename');
         if ($owneruid > 1) {
+            $owner = array();
             $owner['email'] = UserUtil::getVar('email', $owneruid);
             $owner['uname'] = UserUtil::getVar('uname', $owneruid);
             if (!empty($owner['email']) && !empty($owner['uname'])) {
                 $toaddress = $owner['email'];
                 $toname    = $owner['uname'];
-            } else {
-                $toaddress = System::getVar('adminmail');
-                $toname    = System::getVar('sitename');
             }
-        } else {
-            $toaddress = System::getVar('adminmail');
-            $toname    = System::getVar('sitename');
         }
 
         // generate output
         $renderer = Zikula_View::getInstance('EZComments');
 
+        // prepare user line for emails
+        if ($args['uid'] > 0) {
+            $newcomment['userline'] = UserUtil::getVar('uname', $args['uid']);
+        } else {
+            $newcomment['userline'] = "$args[anonname] $args[anonmail]";
+        }
+
+        $needsModeration ($maxstatus > 0) ? true : false;
+
         // Inform the content owner or the admin about a new comment
-        if (!$maxstatus && ModUtil::getVar('EZComments', 'MailToAdmin')) {
-            if ($args['uid'] > 0) {
-                $newcomment['userline'] = UserUtil::getVar('uname', $args['uid']);
-            } else {
-                $newcomment['userline'] = "$args[anonname] $args[anonmail]";
-            }
+        if (!$needsModeration && $this->getVar('MailToAdmin')) {
             $renderer->assign('comment', $newcomment);
             $renderer->assign('modifyurl', ModUtil::url('EZComments', 'user', 'modify', array('id' => $newcomment['id']), null, null, true));
-
-            $mailsubject = $this->__('A new comment was entered');
 
             ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
                          array('toaddress'   => $toaddress,
                                'toname'      => $toname,
-                               'fromaddress' => System::getVar('adminmail'),
-                               'fromname'    => System::getVar('sitename'),
-                               'subject'     => $mailsubject,
+                               'fromaddress' => $adminEmail,
+                               'fromname'    => $siteName,
+                               'subject'     => $this->__('A new comment was entered'),
                                'body'        => $renderer->fetch('ezcomments_mail_newcomment.tpl')));
         }
 
-        if ($maxstatus && ModUtil::getVar('EZComments', 'moderationmail')) {
-            if ($args['uid'] > 0) {
-                $newcomment['userline'] = UserUtil::getVar('uname', $args['uid']);
-            } else {
-                $newcomment['userline'] = "$args[anonname] $args[anonmail]";
-            }
+        if ($needsModeration && $this->getVar('moderationmail')) {
             $renderer->assign('comment', $newcomment);
 
-            $mailsubject = $this->__('Moderation required for a new comment');
-
             ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
-                         array('toaddress'   => System::getVar('adminmail'),
-                               'toname'      => System::getVar('sitename'),
-                               'fromaddress' => System::getVar('adminmail'),
-                               'fromname'    => System::getVar('sitename'),
-                               'subject'     => $mailsubject,
+                         array('toaddress'   => $adminEmail,
+                               'toname'      => $siteName,
+                               'fromaddress' => $adminEmail,
+                               'fromname'    => $siteName,
+                               'subject'     => $this->__('Moderation required for a new comment'),
                                'body'        => $renderer->fetch('ezcomments_mail_modcomment.tpl')));
         }
 
@@ -455,8 +447,7 @@ class EZComments_Api_User extends Zikula_AbstractApi
         }
 
         if (isset($args['status']) && is_numeric($args['status']) && $args['status'] >= 0 && $args['status'] <= 2) {
-            $args['status'] = DataUtil::formatForStore($args['status']);
-            $queryargs[] = "$columns[status] = '$args[status]'";
+            $queryargs[] = $columns['status'] . ' = \'' . DataUtil::formatForStore($args['status']) . '\'';
         }
 
         // admin mode: only count comments for modules considering permission checks
@@ -465,8 +456,7 @@ class EZComments_Api_User extends Zikula_AbstractApi
             // get list of modules
             $modlist = ModUtil::getAllMods();
             $permclause = array();
-            foreach ($modlist as $module)
-            {
+            foreach ($modlist as $module) {
                 // simple permission check
                 $inst = "$module[name]:".(isset($args['objectid']) ? $args['objectid'] : '').":";
                 if (SecurityUtil::checkPermission('EZComments::', $inst, ACCESS_EDIT)) {
@@ -506,11 +496,9 @@ class EZComments_Api_User extends Zikula_AbstractApi
         $templates = array();
 
         // read each directory for template sets
-        foreach ($rootdirs as $rootdir)
-        {
+        foreach ($rootdirs as $rootdir) {
             $folders = FileUtil::getFiles($rootdir, false, true, null, 'd');
-            foreach ($folders as $folder)
-            {
+            foreach ($folders as $folder) {
                 if (!in_array($folder, array('plugins'))) {
                     $templates[] = $folder;
                 }
@@ -540,7 +528,7 @@ class EZComments_Api_User extends Zikula_AbstractApi
         }
 
         // check blacklisted words - exit silently if found
-        $blacklistedwords = explode("\n", ModUtil::getVar('EZComments', 'blacklist'));
+        $blacklistedwords = explode("\n", $this->getVar('blacklist'));
         foreach ($blacklistedwords as $blacklistedword)
         {
             $blacklistedword = trim($blacklistedword);
@@ -556,14 +544,13 @@ class EZComments_Api_User extends Zikula_AbstractApi
         $linkcount = count(explode('http:', $args));
 
         // check link count for blacklisting
-        if ($linkcount-1 >= ModUtil::getVar('EZComments', 'blacklinkcount')) {
+        if ($linkcount-1 >= $this->getVar('blacklinkcount')) {
             return 2;
         }
 
         // check words to trigger a moderated comment
-        $modlistedwords = explode("\n", ModUtil::getVar('EZComments', 'modlist'));
-        foreach ($modlistedwords as $modlistedword)
-        {
+        $modlistedwords = explode("\n", $this->getVar('modlist'));
+        foreach ($modlistedwords as $modlistedword) {
             $modlistedword = trim($modlistedword);
             if (empty($modlistedword)) {
                 continue;
@@ -574,7 +561,7 @@ class EZComments_Api_User extends Zikula_AbstractApi
         }
 
         // check link count for moderation
-        if ($linkcount-1 >= ModUtil::getVar('EZComments', 'modlinkcount')) {
+        if ($linkcount-1 >= $this->getVar('modlinkcount')) {
             return 1;
         }
 
@@ -603,7 +590,7 @@ class EZComments_Api_User extends Zikula_AbstractApi
             $uid = UserUtil::getVar('uid');
         }
 
-        if (ModUtil::getVar('EZComments', 'proxyblacklist') && !empty($ipnum)) {
+        if ($this->getVar('proxyblacklist') && !empty($ipnum)) {
             $rev_ip = implode('.', array_reverse(explode('.', $ipnum)));
             // opm.blitzed.org is appended to use thier proxy lookup service
             // results of gethostbyname are cached
@@ -615,8 +602,8 @@ class EZComments_Api_User extends Zikula_AbstractApi
 
         // check if the comment comes from user that we trust
         // i.e. one who has an approved comment already
-        if (UserUtil::isLoggedIn() && ModUtil::getVar('EZComments', 'dontmoderateifcommented')) {
-            $commentedlist = ModUtil::apiFunc('EZcomments', 'user', 'getcommentingusers');
+        if (UserUtil::isLoggedIn() && $this->getVar('dontmoderateifcommented')) {
+            $commentedlist = $this->getcommentingusers();
             if (is_array($commentedlist) && in_array($uid, $commentedlist)) {
                 return 0;
             }
@@ -775,8 +762,8 @@ class EZComments_Api_User extends Zikula_AbstractApi
     {
         // default for the style sheet
         if (!isset($args['path']) || empty($args['path'])) {
-            $defaultcss  = ModUtil::getVar('EZComments', 'css', 'style.css');
-            $args['path'] = 'Standard/'.$defaultcss;
+            $defaultcss  = $this->getVar('css', 'style.css');
+            $args['path'] = 'Standard/' . $defaultcss;
         }
 
         $ospath = DataUtil::formatForOS($args['path']);
@@ -794,10 +781,11 @@ class EZComments_Api_User extends Zikula_AbstractApi
         // search for the style sheet
         $csssrc = '';
         foreach (array($configpath, $themepath, $modpath) as $basepath) {
-            if (file_exists("$basepath/$ospath") && is_readable("$basepath/$ospath")) {
-                $csssrc = "$basepath/$ospath";
-                break;
+            if (!file_exists("$basepath/$ospath") || !is_readable("$basepath/$ospath")) {
+                continue;
             }
+            $csssrc = "$basepath/$ospath";
+            break;
         }
         return $csssrc;
     }
@@ -816,8 +804,8 @@ class EZComments_Api_User extends Zikula_AbstractApi
      */
     public function prepareCommentsForDisplay($items)
     {
-        foreach (array_keys($items) as $k)
-        {
+        $itemKeys = array_keys($items);
+        foreach ($itemKeys as $k) {
             if ($items[$k]['uid'] > 0) {
                 // get the user vars and merge into the comment array
                 $userinfo = UserUtil::getVars($items[$k]['uid']);
@@ -834,14 +822,13 @@ class EZComments_Api_User extends Zikula_AbstractApi
                 }
                 $items[$k] = array_merge($items[$k], $userinfo);
                 $items[$k]['anonname'] = '';
-
             } else {
                 // put the generic name if anonymous, uname is empty
                 $items[$k]['uname'] = '';
                 $items[$k]['anonname'] = !empty($items[$k]['anonname']) ? $items[$k]['anonname'] : System::getVar('anonymous');
             }
 
-            $items[$k]['del'] = ModUtil::apiFunc('EZComments', 'user', 'checkPermission',
+            $items[$k]['del'] = $this->checkPermission(
                                             array('module'    => $items[$k]['modname'],
                                                   'objectid'  => $items[$k]['objectid'],
                                                   'commentid' => $items[$k]['id'],
