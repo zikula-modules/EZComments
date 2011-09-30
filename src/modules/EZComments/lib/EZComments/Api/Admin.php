@@ -248,11 +248,38 @@ class EZComments_Api_Admin extends Zikula_AbstractApi
             return LogUtil::registerPermissionError(ModUtil::url('EZComments', 'admin', 'main'));
         }
 
+        // Save old status
+        $oldStatus = $item['status'];
+        if ($oldStatus == $status) {
+            return true;
+        }
+
+        // generate output
+        $renderer = Zikula_View::getInstance('EZComments');
+
         // Update item and store item
-        $item['status'] = $args['status'];
+        $item['status'] = $status;
         if (DBUtil::updateObject($item, 'EZComments')) {
             // Let any hooks know that we have updated an item.
             ModUtil::callHooks('item', 'update', $id, array('module' => 'EZComments'));
+            if ($oldStatus > 0 && $status == 0 && $this->getVar('moderationmail') && $item['owneruid'] > 0) {
+                // approved - send email to content owner
+                $owner = array();
+                $owner['email'] = UserUtil::getVar('email', $owneruid);
+                $owner['uname'] = UserUtil::getVar('uname', $owneruid);
+                if (!empty($owner['email']) && !empty($owner['uname'])) {
+                    $renderer->assign('comment', $item);
+                    $renderer->assign('modifyurl', ModUtil::url('EZComments', 'user', 'modify', array('id' => $item['id']), null, null, true));
+
+                    ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
+                                array('toaddress'   => $owner['email'],
+                                      'toname'      => $owner['uname'],
+                                      'fromaddress' => System::getVar('adminmail'),
+                                      'fromname'    => System::getVar('sitename'),
+                                      'subject'     => $this->__('A new comment was entered'),
+                                      'body'        => $renderer->fetch('ezcomments_mail_newcomment.tpl')));
+                }
+            }
             return true;
         }
 
