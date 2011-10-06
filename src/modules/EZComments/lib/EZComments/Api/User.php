@@ -324,7 +324,7 @@ class EZComments_Api_User extends Zikula_AbstractApi
             $newcomment['userline'] = "$args[anonname] $args[anonmail]";
         }
 
-        $needsModeration ($maxstatus > 0) ? true : false;
+        $needsModeration = ($maxstatus > 0) ? true : false;
 
         // Inform the content owner or the admin about a new comment
         if (!$needsModeration && $this->getVar('MailToAdmin')) {
