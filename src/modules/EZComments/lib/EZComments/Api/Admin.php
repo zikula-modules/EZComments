@@ -265,8 +265,8 @@ class EZComments_Api_Admin extends Zikula_AbstractApi
             if ($oldStatus > 0 && $status == 0 && $this->getVar('moderationmail') && $item['owneruid'] > 0) {
                 // approved - send email to content owner
                 $owner = array();
-                $owner['email'] = UserUtil::getVar('email', $owneruid);
-                $owner['uname'] = UserUtil::getVar('uname', $owneruid);
+                $owner['email'] = UserUtil::getVar('email', $item['owneruid']);
+                $owner['uname'] = UserUtil::getVar('uname', $item['owneruid']);
                 if (!empty($owner['email']) && !empty($owner['uname'])) {
                     $renderer->assign('comment', $item);
                     $renderer->assign('modifyurl', ModUtil::url('EZComments', 'user', 'modify', array('id' => $item['id']), null, null, true));
