@@ -78,9 +78,6 @@ class EZComments_Installer extends Zikula_AbstractInstaller
      */
     public function upgrade($oldversion)
     {
-        if (!DBUtil::changeTable('EZComments')) {
-            return LogUtil::registerError($this->__('Error updating the table.'));
-        }
 
         switch ($oldversion)
         {
@@ -121,6 +118,7 @@ class EZComments_Installer extends Zikula_AbstractInstaller
                 EventUtil::registerPersistentModuleHandler('EZComments', 'installer.subscriberarea.uninstalled', array('EZComments_EventHandlers', 'hookAreaDelete'));
 
                 // drop table prefix
+                $prefix = $this->serviceManager['prefix'];
                 $connection = Doctrine_Manager::getInstance()->getConnection('default');
                 $sql = 'RENAME TABLE ' . $prefix . '_ezcomments' . " TO ezcomments";
                 $stmt = $connection->prepare($sql);
@@ -129,7 +127,10 @@ class EZComments_Installer extends Zikula_AbstractInstaller
                 } catch (Exception $e) {
                 }
                 
-                DBUtil::changeTable('EZComments');
+                if (!DBUtil::changeTable('EZComments')) {
+                    return LogUtil::registerError($this->__('Error updating the table.'));
+                }
+
             case '3.0.0':
                 // future upgrade routines
                 break;
