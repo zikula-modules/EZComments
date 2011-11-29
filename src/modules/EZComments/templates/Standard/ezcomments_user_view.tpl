@@ -28,8 +28,7 @@
                 <li class="ezc_date">
                     <span>{gt text='Posted on %s' tag1=$comment.date|dateformat:'datetimebrief' domain='module_ezcomments'} </span>
                 </li>
-                {userloggedin assign='logged_in'}
-                {if $logged_in eq true}
+                {if $loggedin eq true}
                 <li class="ezc_options">
                     {if $msgmodule}
                     <a href="{modurl modname=$msgmodule type='user' func='newpm' uid=$comment.uid}">{img modname='core' src='mail_generic.png' set='icons/extrasmall' __title='Send mail to user' __alt='Send mail to user'}</a>
@@ -85,7 +84,7 @@
                     <label for="subject">{gt text='Subject' domain='module_ezcomments'}</label>
                     <input type="text" name="subject" id="subject" size="50" maxlength="255" value="{$ezcomment.subject|default:''}" />
                 </div>
-                {if $loggedin neq true and $coredata.EZComments.anonusersinfo eq true}
+                {if $loggedin neq true and $modvars.EZComments.anonusersinfo eq true}
                 <div class="z-formrow">
                     <label for="anonname">{gt text='Name' domain='module_ezcomments'}{if $anonusersrequirename eq true} <span>{gt text='(required for unregistered users)' domain='module_ezcomments'}</span>{/if}</label>
                     <input type="text" name="anonname" id="anonname" size="50" maxlength="255" value="{$ezcomment.anonname|default:''}" />
@@ -118,4 +117,3 @@
     </p>
     {/if}
 </div>
-

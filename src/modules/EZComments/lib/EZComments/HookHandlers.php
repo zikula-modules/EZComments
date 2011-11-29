@@ -115,9 +115,6 @@ class EZComments_HookHandlers extends Zikula_Hook_AbstractHandler
         // differs from the redirect url
         $view->assign('useurl', $useurl);
 
-        // just for backward compatibility - TODO: delete in 2.x
-        $view->assign('anonusersinfo', ModUtil::getVar('EZComments', 'anonusersinfo'));
-
         // flag to recognize the main call
         static $mainScreen = true;
         $view->assign('mainscreen', $mainScreen);
