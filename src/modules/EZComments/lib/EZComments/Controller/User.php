@@ -226,7 +226,7 @@ class EZComments_Controller_User extends Zikula_AbstractController
         $useurl   = isset($args['useurl'])   ? $args['useurl']   : FormUtil::getPassedValue('useurl',   null, 'POST');
 
         // check if the user logged in and if we're allowing anon users to
-        // set a name and e-mail address
+        // set a name and email address
         if (!UserUtil::isLoggedIn()) {
             $anonname    = isset($args['anonname'])    ? $args['anonname']    : FormUtil::getPassedValue('anonname',    null, 'POST');
             $anonmail    = isset($args['anonmail'])    ? $args['anonmail']    : FormUtil::getPassedValue('anonmail',    null, 'POST');

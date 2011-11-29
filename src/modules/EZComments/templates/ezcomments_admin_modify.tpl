@@ -15,7 +15,7 @@
         {formtextinput id="ezcomments_anonname" text=$anonname size="32" maxLength="255"}
     </div>
     <div class="z-formrow">
-        {formlabel for="ezcomments_anonmail" __text='E-mail address (will not be published)'}
+        {formlabel for="ezcomments_anonmail" __text='Email address (will not be published)'}
         {formtextinput id="ezcomments_anonmail" text=$anonmail size="32" maxLength="255"}
     </div>
     <div class="z-formrow">

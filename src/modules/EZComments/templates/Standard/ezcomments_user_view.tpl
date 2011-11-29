@@ -90,7 +90,7 @@
                     <input type="text" name="anonname" id="anonname" size="50" maxlength="255" value="{$ezcomment.anonname|default:''}" />
                 </div>
                 <div class="z-formrow">
-                    <label for="anonmail">{gt text='E-mail address (will not be published)' domain='module_ezcomments'}</label>
+                    <label for="anonmail">{gt text='Email address (will not be published)' domain='module_ezcomments'}</label>
                     <input type="text" name="anonmail" id="anonmail" size="50" maxlength="255" value="{$ezcomment.anonmail|default:''}" />
                 </div>
                 <div class="z-formrow">
