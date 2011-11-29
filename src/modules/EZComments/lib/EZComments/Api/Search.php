@@ -51,7 +51,9 @@ class EZComments_Api_Search extends Zikula_AbstractApi
             return true;
         }
 
-        if (strlen($args['q']) < 3 || strlen($args['q']) > 30) {
+        $minlen = 3;
+        $maxlen = 30;
+        if (strlen($args['q']) < $minlen || strlen($args['q']) > $maxlen) {
             return LogUtil::registerStatus($this->__f('The comments can only be searched for words that are longer than %1$s and less than %2$s characters!', array($minlen, $maxlen)));
         }
 
