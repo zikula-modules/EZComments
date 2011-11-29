@@ -24,8 +24,7 @@
             <ul class="ezc_options">
                 <li><strong>{gt text="Posted on" domain="module_ezcomments"} </strong></li>
                 <li>{$comment.date|dateformat:'datetimebrief'}</li>
-                {userloggedin assign='logged_in'}
-                {if $logged_in eq true}
+                {if $loggedin eq true}
                 <li>
                     {if $prfmodule}
                     {$comment.uid|profilelinkbyuid:'':"`$baseurl`images/icons/extrasmall/personal.png"}
@@ -76,7 +75,7 @@
                     <label for="subject">{gt text="Subject" domain="module_ezcomments"}</label>
                     <input type="text" name="subject" id="subject" size="50" maxlength="255" />
                 </div>
-                {if $logged_in neq true and $coredata.EZComments.anonusersinfo eq true}
+                {if $loggedin neq true and $modvars.EZComments.anonusersinfo eq true}
                 <div class="z-formrow">
                     <label for="anonname">{gt text="Name" domain="module_ezcomments"}{if $anonusersrequirename eq true} <span>{gt text="(required for unregistered users)" domain="module_ezcomments"}</span>{/if}</label>
                     <input type="text" name="anonname" id="anonname" size="50" maxlength="255" />
