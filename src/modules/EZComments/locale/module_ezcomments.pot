@@ -360,7 +360,7 @@ msgstr ""
 #: templates/ezcomments_admin_modify.tpl:18
 #: templates/ezcomments_user_modify.tpl:16
 #: templates/Standard/ezcomments_user_view.tpl:94
-msgid "E-mail address (will not be published)"
+msgid "Email address (will not be published)"
 msgstr ""
 
 #: templates/Dizkus/ezcomments_user_view.tpl:89

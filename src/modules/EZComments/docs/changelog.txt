@@ -90,9 +90,9 @@ Several developers (siehe credits.txt)
 0.8  - Added comment moderation features (blacklists, moderation lists, link count, insecure proxies)
      - Added admin notification on comment requiring moderation
      - Multiple comment deletion functionality added (by status and user selection)
-     - E-mails sent by module are now templated
+     - Emails sent by module are now templated
 
-0.7  - Added anonymous users able to define name and e-mail address
+0.7  - Added anonymous users able to define name and email address
 
 0.6  - Migration scripts moved to a standard module API
      - Migration scripts added for polls and reviews modules
