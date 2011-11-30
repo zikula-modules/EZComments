@@ -39,7 +39,7 @@
     <div class="z-formrow">
         {if $nomodify == 1}
         <label>{gt text="Comment"}</label>
-        {$comment|paragraph|notifyfilters:'ezcomments.filter_hooks.comments.filter'|safetext}
+        {$comment|notifyfilters:'ezcomments.filter_hooks.comments.filter'|safetext|paragraph}
         {else}
         {formlabel for="ezcomments_comment" __text='Comment'}
         {formtextinput id="ezcomments_comment" textMode="multiline" rows="10" cols="50" text=$comment size="32"}
