@@ -352,8 +352,6 @@ class EZComments_Api_User extends Zikula_AbstractApi
                                'body'        => $renderer->fetch('ezcomments_mail_modcomment.tpl')));
         }
 
-        ModUtil::callHooks('item', 'create', $newcomment['id'], array('module' => 'EZComments'));
-
         return $newcomment['id'];
     }
 
