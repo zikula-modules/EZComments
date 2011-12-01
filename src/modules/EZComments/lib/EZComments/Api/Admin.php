@@ -107,9 +107,6 @@ class EZComments_Api_Admin extends Zikula_AbstractApi
             return LogUtil::registerError($this->__('Error! Deletion attempt failed.'));
         }
 
-        // Let any hooks know that we have deleted an item.
-        ModUtil::callHooks('item', 'delete', $args['id'], array('module' => 'EZComments'));
-
         // Let the calling process know that we have finished successfully
         return true;
     }
@@ -160,9 +157,6 @@ class EZComments_Api_Admin extends Zikula_AbstractApi
         if (!DBUtil::updateObject($args, 'EZComments')) {
             return LogUtil::registerError($this->__('Error! Update attempt failed.'));
         }
-
-        // Let any hooks know that we have updated an item.
-        ModUtil::callHooks('item', 'update', $args['id'], array('module' => 'EZComments'));
 
         // Let the calling process know that we have finished successfully
         return true;
@@ -260,8 +254,6 @@ class EZComments_Api_Admin extends Zikula_AbstractApi
         // Update item and store item
         $item['status'] = $status;
         if (DBUtil::updateObject($item, 'EZComments')) {
-            // Let any hooks know that we have updated an item.
-            ModUtil::callHooks('item', 'update', $id, array('module' => 'EZComments'));
             if ($oldStatus > 0 && $status == 0 && $this->getVar('moderationmail') && $item['owneruid'] > 0) {
                 // approved - send email to content owner
                 $owner = array();
