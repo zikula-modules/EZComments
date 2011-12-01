@@ -44,14 +44,6 @@ class EZComments_Api_Myprofile extends Zikula_AbstractApi
      */
     public function tab($args)
     {
-        // is ezcomment hook activated for myprofile module?
-        $result = ModUtil::isHooked('EZComments', 'MyProfile');
-        if (!$result) {
-            if (!ModUtil::apiFunc('Modules', 'admin', 'enablehooks', array('callermodname' => 'MyProfile', 'hookmodname' => 'EZComments'))) {
-                return LogUtil::registerError($this->__('Registering EZComments hook for MyProfile module failed'));
-            }
-        }
-
         // generate output
         $render = Zikula_View::getInstance('EZComments');
 
