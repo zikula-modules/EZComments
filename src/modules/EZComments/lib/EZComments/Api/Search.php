@@ -100,7 +100,7 @@ class EZComments_Api_Search extends Zikula_AbstractApi
      * Access checking is ignored since access check has
      * already been done. But we do add a URL to the found comment
      */
-    public function search_check(&$args)
+    public function search_check($args)
     {
         $datarow = $args['datarow'];
         $url     = $datarow['extra'];
