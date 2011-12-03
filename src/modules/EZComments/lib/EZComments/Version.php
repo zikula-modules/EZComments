@@ -18,8 +18,9 @@ class EZComments_Version extends Zikula_AbstractVersion
         $meta['description'] = $this->__('Attach comments to every kind of content using hooks');
         //! module url in lowercase and different to displayname
         $meta['url'] = $this->__('comments');
-        $meta['version'] = '3.0.0';
+        $meta['version'] = '3.0.1';
         $meta['core_min'] = '1.3.0';
+        $meta['core_max'] = '1.3.99'; // Fixed to 1.3.x range
         $meta['securityschema'] = array(
                 'EZComments::' => 'Module:Item ID:Comment ID',
                 'EZComments::trackback' => 'Module:Item ID:',
