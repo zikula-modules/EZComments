@@ -3,7 +3,7 @@
  * EZComments
  *
  * @copyright (C) EZComments Development Team
- * @link http://code.zikula.org/ezcomments
+ * @link https://github.com/zikula-modules/EZComments
  * @license See license.txt
  */
 

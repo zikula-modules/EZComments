@@ -10,4 +10,4 @@ Things left to be done:
  - find bugs ;-)
 
  - Additional feature requests can be submitted to the project page
-   at http://code.zikula.org/ezcomments/
+   at https://github.com/zikula-modules/EZComments/
