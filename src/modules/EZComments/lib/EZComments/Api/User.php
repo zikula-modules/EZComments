@@ -321,7 +321,7 @@ class EZComments_Api_User extends Zikula_AbstractApi
         if ($args['uid'] > 0) {
             $newcomment['userline'] = UserUtil::getVar('uname', $args['uid']);
         } else {
-            $newcomment['userline'] = "$args[anonname] $args[anonmail]";
+            $newcomment['userline'] = "$args[anonname]";
         }
 
         $needsModeration = ($maxstatus > 0) ? true : false;
