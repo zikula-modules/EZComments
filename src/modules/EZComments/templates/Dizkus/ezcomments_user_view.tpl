@@ -26,11 +26,13 @@
                 <li>{$comment.date|dateformat:'datetimebrief'}</li>
                 {if $loggedin eq true}
                 <li>
-                    {if $prfmodule}
-                    {$comment.uid|profilelinkbyuid:'':"`$baseurl`images/icons/extrasmall/personal.png"}
-                    {/if}
-                    {if $msgmodule}
-                    <a href="{modurl modname=$msgmodule type='user' func="newpm" uid=$comment.uid}">{img modname='core' src='mail_generic.png' set='icons/extrasmall' __title="Send mail to user" __alt="Send mail to user"}</a>
+                    {if $comment.uid neq 0}
+                        {if $prfmodule}
+                        {$comment.uid|profilelinkbyuid:'':"`$baseurl`images/icons/extrasmall/personal.png"}
+                        {/if}
+                        {if $msgmodule}
+                        <a href="{modurl modname=$msgmodule type='user' func="newpm" uid=$comment.uid}">{img modname='core' src='mail_generic.png' set='icons/extrasmall' __title="Send mail to user" __alt="Send mail to user"}</a>
+                        {/if}
                     {/if}
                     {if $comment.del}
                     <a href="{modurl fqurl=true modname='EZComments' type='user' func='modify' id=$comment.id redirect=$redirect}">{img modname='core' src='xedit.png' set='icons/extrasmall' __title="Modify comment" __alt="Modify comment"}</a>
