@@ -132,6 +132,7 @@ class EZComments_Installer extends Zikula_AbstractInstaller
                 }
 
             case '3.0.0':
+            case '3.0.1':
                 // future upgrade routines
                 break;
         }
