@@ -279,6 +279,14 @@ class EZComments_Controller_User extends Zikula_AbstractController
                                           $redirect."#commentform_{$mod}_{$objectid}");
         }
 
+        // Check hooked modules for validation
+        $hookvalidators = $this->notifyHooks(new Zikula_ValidationHook('ezcomments.ui_hooks.comments.validate_edit', new Zikula_Hook_ValidationProviders()))->getValidators();
+        if ($hookvalidators->hasErrors()) {
+            SessionUtil::setVar('ezcomment', serialize($ezcomment));
+            return LogUtil::registerError($this->__('Error! The hooked content does not validate. Could it possibly be that a captcha code was entered incorrectly?'), null,
+                                          $redirect."#commentform_{$mod}_{$objectid}");
+        }
+
         // now parse out the hostname+subfolder from the url for storing in the DB
         $url = str_replace(System::getBaseUri(), '', $useurl);
 

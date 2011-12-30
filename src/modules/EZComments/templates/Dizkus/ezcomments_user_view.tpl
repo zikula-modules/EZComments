@@ -96,7 +96,14 @@
                     <label for="message">{gt text="Comment" domain="module_ezcomments"}</label>
                     <textarea name="comment" id="message" cols="60" rows="10"></textarea>
                 </div>
-                {notifydisplayhooks eventname="ezcomments.ui_hooks.comments.form_edit" id='message'}
+                {notifydisplayhooks eventname='ezcomments.ui_hooks.comments.form_edit' id='hooks' assign='hooks'}
+                {foreach from=$hooks key='provider_area' item='hook'}
+                {if $hook}
+                    <div class="z-formrow">
+                        {$hook}
+                    </div>
+                {/if}
+                {/foreach}
                 <div class="z-buttons z-formbuttons">
                     <input class="z-bt-icon ezc-bt-clone" type="submit" value="{gt text="Submit}" />
                 </div>

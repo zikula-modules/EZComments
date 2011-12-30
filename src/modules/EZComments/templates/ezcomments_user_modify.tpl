@@ -43,9 +43,16 @@
         {else}
         {formlabel for="ezcomments_comment" __text='Comment'}
         {formtextinput id="ezcomments_comment" textMode="multiline" rows="10" cols="50" text=$comment size="32"}
-        {notifydisplayhooks eventname="ezcomments.ui_hooks.comments.form_edit" id='ezcomments_comment'}
         {/if}
     </div>
+    {notifydisplayhooks eventname='ezcomments.ui_hooks.comments.form_edit' id='hooks' assign='hooks'}
+    {foreach from=$hooks key='provider_area' item='hook'}
+    {if $hook}
+        <div class="z-formrow">
+            {$hook}
+        </div>
+    {/if}
+    {/foreach}
     <div class="z-formrow">
         <div>
             {formcheckbox id="ezcomments_sendmeback" checked=$redirect}
