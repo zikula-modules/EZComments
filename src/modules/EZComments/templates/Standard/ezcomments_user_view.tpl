@@ -49,7 +49,7 @@
                                     <strong>{$comment.subject|default:''|safetext}</strong>
                                 </div>
                                 <div class="ezc_content">
-                                    {$comment.comment|safetext|paragraph|notifyfilters:'ezcomments.hook.commentsfilter'}
+                                    {$comment.comment|notifyfilters:'ezcomments.filter_hooks.comments.filter'|safetext|paragraph}
                                 </div>
                             </div>
                         </div>
@@ -57,6 +57,7 @@
                 </div>
             </div>
         </li>
+        {notifydisplayhooks eventname='ezcomments.ui_hooks.comments.display_view' id=$comment.id}
         {/foreach}
     </ol>
 
@@ -102,11 +103,11 @@
                     <label for="message">{gt text='Comment' domain='module_ezcomments'}</label>
                     <textarea name="comment" id="message" cols="60" rows="10">{$ezcomment.comment|default:''}</textarea>
                 </div>
+                {notifydisplayhooks eventname="ezcomments.ui_hooks.comments.form_edit" id='message'}
                 <div class="z-buttons z-formbuttons">
                     <input class="z-bt-icon ezc-bt-clone" type="submit" value="{gt text='Submit'}" />
                 </div>
             </fieldset>
-            {notifydisplayhooks eventname="ezcomments.ui_hooks.comments.form_edit" id=null}
         </div>
     </form>
     {elseif !$allowadd}

@@ -49,8 +49,9 @@ class EZComments_Version extends Zikula_AbstractVersion
         $this->registerHookProviderBundle($bundle);
 
         $bundle = new Zikula_HookManager_SubscriberBundle($this->name, 'subscriber.ezcomments.ui_hooks.comments', 'ui_hooks', $this->__('EZComments Comment Hooks'));
-        $bundle->addEvent('ui_view', 'ezcomments.ui_hooks.comments.ui_view');
-        $bundle->addEvent('ui_edit', 'ezcomments.ui_hooks.comments.ui_edit');
+        $bundle->addEvent('display_view', 'ezcomments.ui_hooks.comments.display_view');
+        $bundle->addEvent('form_edit', 'ezcomments.ui_hooks.comments.form_edit');
+        $bundle->addEvent('form_delete', 'ezcomments.ui_hooks.comments.form_delete');
         $bundle->addEvent('validate_edit', 'ezcomments.ui_hooks.comments.validate_edit');
         $bundle->addEvent('validate_delete', 'ezcomments.ui_hooks.comments.validate_delete');
         $bundle->addEvent('process_edit', 'ezcomments.ui_hooks.comments.process_edit');

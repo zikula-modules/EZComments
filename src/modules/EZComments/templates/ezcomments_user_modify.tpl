@@ -2,7 +2,7 @@
 {include file="ezcomments_user_header.tpl"}
 <h3>{$templatetitle}</h3>
 
-{form cssClass="z-form"}
+{form cssClass="z-form z-linear"}
 {formvalidationsummary}
 <fieldset>
     <legend>{gt text="Edit"}</legend>
@@ -43,11 +43,14 @@
         {else}
         {formlabel for="ezcomments_comment" __text='Comment'}
         {formtextinput id="ezcomments_comment" textMode="multiline" rows="10" cols="50" text=$comment size="32"}
+        {notifydisplayhooks eventname="ezcomments.ui_hooks.comments.form_edit" id='ezcomments_comment'}
         {/if}
     </div>
     <div class="z-formrow">
-        {formlabel for="ezcomments_sendmeback" __text='Redirect to the commented content after finishing'}
-        {formcheckbox id="ezcomments_sendmeback" checked=$redirect}
+        <div>
+            {formcheckbox id="ezcomments_sendmeback" checked=$redirect}
+            {formlabel for="ezcomments_sendmeback" __text='Redirect to the commented content after finishing'}
+        </div>
     </div>
 
 </fieldset>
