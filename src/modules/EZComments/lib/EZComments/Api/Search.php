@@ -102,7 +102,7 @@ class EZComments_Api_Search extends Zikula_AbstractApi
      */
     public function search_check($args)
     {
-        $datarow = $args['datarow'];
+        $datarow = &$args['datarow'];
         $url     = $datarow['extra'];
         $datarow['url'] = $url;
         return true;
