@@ -92,7 +92,7 @@ class EZComments_Api_User extends Zikula_AbstractApi
 
         // admin mode: only show comments for modules considering permission checks
         $admin = isset($args['admin']) ? (bool)$args['admin'] : false;
-        if ($admin) {
+        if ($admin and !SecurityUtil::checkPermission('EZComments::','::', ACCESS_ADMIN)) { // npetkov: this allows administrators to see all comments, including with empty modname column or orphaned
             // get list of modules
             $modlist = ModUtil::getAllMods();
             $permclause = array();

@@ -1,5 +1,6 @@
 <div id="ezc_comments" class="ezcomments ezcomments_{$ezc_info.mod}">
     {if $comments}
+    <a id="comments"></a>
 
     <h3 id="comments_{$ezc_info.mod}_{$ezc_info.objectid}" class="ezcomments_title">{gt text='Comments' domain='module_ezcomments'}</h3>
 
@@ -74,7 +75,7 @@
         <div>
             <input type="hidden" name="csrftoken" id="authid" value="{insert name='csrftoken'}" />
             <input type="hidden" name="redirect" id="EZComments_redirect" value="{$redirect|safetext}" />
-            <input type="hidden" name="mod" id="EZComments_modname" value="{modgetname}" />
+            <input type="hidden" name="mod" id="EZComments_modname" value="{$ezc_info.mod}" />
             <input type="hidden" name="owneruid" id="EZComments_owneruid" value="{$owneruid|safetext}" />
             <input type="hidden" name="useurl" id="EZComments_useurl" value="{$useurl|safetext}" />
             <input type="hidden" name="objectid" id="EZComments_objectid" value="{$objectid|safetext}" />
