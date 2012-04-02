@@ -290,6 +290,9 @@ class EZComments_Api_User extends Zikula_AbstractApi
             return LogUtil::registerError($this->__('Error! Creation attempt failed.'));
         }
 
+        // clear respective cache
+        ModUtil::apiFunc('EZComments', 'user', 'clearItemCache', $newcomment);
+
         // set an approriate status/errormsg
         switch ($maxstatus)
         {
@@ -836,4 +839,23 @@ class EZComments_Api_User extends Zikula_AbstractApi
 
         return $items;
     }
+
+    /**
+     * Clear cache for given item. Actually clears cache for calling module object Id (npetkov)
+     */
+    public function clearItemCache($commentitem)
+    {
+        $result = false;
+        
+        // this a little bit ugly solution (to check for module name, but cannot find better for now)
+        // will attempt to "standartize" calling: name of module user api method
+        if ($commentitem['modname'] == 'News') {
+             $result = ModUtil::apiFunc('News', 'user', 'clearItemCache', $commentitem['objectid']);
+        } else if ($commentitem['modname'] == 'Downloads') {
+             $result = ModUtil::apiFunc('Downloads', 'user', 'clearItemCache', $commentitem['objectid']);
+        }
+        
+        return $result;
+    }
+
 }
