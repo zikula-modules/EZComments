@@ -40,6 +40,8 @@ class EZComments_Controller_Admin extends Zikula_AbstractController
 
         $startnum = FormUtil::getPassedValue('startnum', null, 'GETPOST');
 
+        $this->view->setCaching(false); // we are at admin side, don''t know way, but otherwise changes not seen
+
         // assign the module vars
         $this->view->assign(ModUtil::getVar('EZComments'));
 

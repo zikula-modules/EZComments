@@ -107,6 +107,9 @@ class EZComments_Api_Admin extends Zikula_AbstractApi
             return LogUtil::registerError($this->__('Error! Deletion attempt failed.'));
         }
 
+        // clear respective cache
+        ModUtil::apiFunc('EZComments', 'user', 'clearItemCache', $item);
+
         // Let the calling process know that we have finished successfully
         return true;
     }
@@ -157,6 +160,9 @@ class EZComments_Api_Admin extends Zikula_AbstractApi
         if (!DBUtil::updateObject($args, 'EZComments')) {
             return LogUtil::registerError($this->__('Error! Update attempt failed.'));
         }
+
+        // clear respective cache
+        ModUtil::apiFunc('EZComments', 'user', 'clearItemCache', $item);
 
         // Let the calling process know that we have finished successfully
         return true;
@@ -241,6 +247,9 @@ class EZComments_Api_Admin extends Zikula_AbstractApi
         if (!$securityCheck) {
             return LogUtil::registerPermissionError(ModUtil::url('EZComments', 'admin', 'main'));
         }
+
+        // clear respective cache
+        ModUtil::apiFunc('EZComments', 'user', 'clearItemCache', $item);
 
         // Save old status
         $oldStatus = $item['status'];
