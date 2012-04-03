@@ -78,6 +78,8 @@ class EZComments_Controller_User extends Zikula_AbstractController
 
         $numberOfItems = ModUtil::apiFunc('EZComments', 'user', 'countitems', $params);
 
+        $this->view->setCaching(false); // don't use caching, not so important as only registered users can see this page
+
         // assign collected data to the template
         $this->view->assign(ModUtil::getVar('EZComments'))
                    ->assign('items',  $items)
@@ -306,8 +308,11 @@ class EZComments_Controller_User extends Zikula_AbstractController
                                  'anonmail'    => $anonmail,
                                  'anonwebsite' => $anonwebsite));
 
-        // redirect if it was not successful
-        if (!$id) {
+        if ($id) {
+            // clear respective cache
+            ModUtil::apiFunc('EZComments', 'user', 'clearItemCache', array('id' => $id, 'modname' => $mod, 'objectid' => $objectid, 'url' => $url));
+        } else {
+            // redirect if it was not successful
             SessionUtil::setVar('ezcomment', $ezcomment);
             System::redirect($redirect."#commentform_{$mod}_{$objectid}");
         }
@@ -420,7 +425,7 @@ class EZComments_Controller_User extends Zikula_AbstractController
                    ->assign('itemurl'     , $itemUrl);
 
         // display the feed and notify the core that we're done
-        $this->view->display("ezcomments_user_$feedtype.tpl.tpl");
+        $this->view->display("ezcomments_user_$feedtype.tpl");
         return true;
     }
 
