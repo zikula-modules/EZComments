@@ -70,8 +70,8 @@ class EZComments_HookHandlers extends Zikula_Hook_AbstractHandler
             $numitems = -1;
         }
 
-        $items = ModUtil::apiFunc('EZComments', 'user', 'getall',
-                        compact('mod', 'objectid', 'sortorder', 'status', 'numitems', 'startnum'));
+        $params = compact('mod', 'objectid', 'sortorder', 'status', 'numitems', 'startnum');
+        $items = ModUtil::apiFunc('EZComments', 'user', 'getall', $params);
 
         if ($items === false) {
             return LogUtil::registerError($this->__('Internal Error.'), null, 'index.php');
@@ -121,8 +121,7 @@ class EZComments_HookHandlers extends Zikula_Hook_AbstractHandler
         $mainScreen = false;
 
         // assign the values for the pager
-        $view->assign('ezc_pager', array('numitems' => $commentcount,
-                'itemsperpage' => $numitems));
+        $view->assign('ezc_pager', array('numitems' => $commentcount, 'itemsperpage' => $numitems));
 
         // find out which template and stylesheet to use
         $templateset = isset($args['template']) ? $args['template'] : FormUtil::getPassedValue('eztpl');
@@ -140,7 +139,9 @@ class EZComments_HookHandlers extends Zikula_Hook_AbstractHandler
             PageUtil::addVar('stylesheet', $css);
         }
 
-        $hook->setResponse(new Zikula_Response_DisplayHook('provider.ezcomments.ui_hooks.comments', $view, DataUtil::formatForOS($templateset) . '/ezcomments_user_view.tpl'));
+        $template = DataUtil::formatForOS($templateset) . '/ezcomments_user_view.tpl';
+        $response = new Zikula_Response_DisplayHook('provider_area.ui_hooks.ezcomments.comments', $view, $template);
+        $hook->setResponse($response);
     }
 
     /**
