@@ -67,7 +67,7 @@ class EZComments_Api_Search extends Zikula_AbstractApi
         $searchTable  = $tables['search_result'];
         $searchColumn = $tables['search_result_column'];
         // where
-        $where  = Search_Api_User::search_construct_where($args, array($ezcommentscolumn['subject'], $ezcommentscolumn['comment']));
+        $where  = Search_Api_User::construct_where($args, array($ezcommentscolumn['subject'], $ezcommentscolumn['comment']));
         $where .= " AND " . $ezcommentscolumn['url'] . " != ''";
         $sessionId = session_id();
 
