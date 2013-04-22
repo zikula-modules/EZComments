@@ -3,6 +3,11 @@
     <input id="ezcomments_numentries" type="text" name="numentries" value="{$numentries|safehtml}" size="5" maxlength="5" />
 </div>
 <div class="z-formrow">
+    <label for="ezcomments_numdays">{gt text="Only comments posted in last number of days" domain="module_ezcomments"}</label>
+    <input id="ezcomments_numdays" type="text" name="numdays" value="{$numdays|safehtml}" size="5" maxlength="5" />
+    <em class="z-sub z-formnote">{gt text='Leave 0 for unlimited.'}</em>
+</div>
+<div class="z-formrow">
     <label for="ezcomments_modname">{gt text="Show comments for the following module" domain="module_ezcomments"}</label>
     <select id="ezcomments_modname" name="mod">
         <option label="*" value="*" {if $mod eq "*"}selected="selected"{/if}>{gt text="All" domain="module_ezcomments"}</option>
