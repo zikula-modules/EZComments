@@ -56,6 +56,10 @@ class EZComments_Api_User extends Zikula_AbstractApi
         // form where clause
         $whereclause = array();
 
+        if (isset($args['addwhere'])) {
+            $whereclause[] = $args['addwhere'];
+        }
+
         // object id
         if (isset($args['mod'])) {
             $whereclause[] = "$columns[modname] = '" . DataUtil::formatForStore($args['mod']) . "'";
@@ -428,6 +432,10 @@ class EZComments_Api_User extends Zikula_AbstractApi
         // build the where clause
         $queryargs = array();
 
+        if (isset($args['addwhere'])) {
+            $queryargs[] = $args['addwhere'];
+        }
+        
         if ($owneruid > 1 && $uid > 1) {
             $queryargs[] = "$columns[owneruid] = '$args[owneruid]' OR $columns[uid] = '$args[uid]'";
         } else if ($uid > 1) {

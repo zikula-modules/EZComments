@@ -71,6 +71,9 @@ class EZComments_Form_Handler_Admin_Modify extends Zikula_Form_AbstractHandler
                 if (ModUtil::apiFunc('EZComments', 'admin', 'delete', array('id' => $this->id))) {
                     // Success
                     LogUtil::registerStatus($this->__('Done! Comment deleted.'));
+
+                    // clear respective cache
+                    ModUtil::apiFunc('EZComments', 'user', 'clearItemCache', $comment);
                 }
                 break;
 
@@ -122,6 +125,9 @@ class EZComments_Form_Handler_Admin_Modify extends Zikula_Form_AbstractHandler
                                     'anonwebsite' => $data['ezcomments_anonwebsite']))) {
                     // Success
                     LogUtil::registerStatus($this->__('Done! Comment updated.'));
+
+                    // clear respective cache
+                    ModUtil::apiFunc('EZComments', 'user', 'clearItemCache', $comment);
                 }
                 break;
         }
