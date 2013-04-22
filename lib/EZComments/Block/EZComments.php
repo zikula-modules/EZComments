@@ -61,6 +61,10 @@ class EZComments_Block_EZComments extends Zikula_Controller_AbstractBlock
             $vars['numentries'] = 5;
         }
 
+        if (!isset($vars['numdays'])) {
+            $vars['numdays'] = 0;
+        }
+
         if (!isset($vars['showdate'])) {
             $vars['showdate'] = 0;
         }
@@ -82,6 +86,12 @@ class EZComments_Block_EZComments extends Zikula_Controller_AbstractBlock
         if (!isset($vars['showpending']) || $vars['showpending'] == 0) {
             // don't show pending comments
             $options['status'] = 0;
+        }
+
+        // filter comments posted in last number of days
+        if ($vars['numdays'] > 0) {
+            // date for filtering in format: yyyy-mm-dd hh:mm:ss
+            $options['addwhere'] = "date>='".DateUtil::getDatetime_NextDay(-$vars['numdays'])."'";
         }
 
         // get the comments
@@ -117,6 +127,10 @@ class EZComments_Block_EZComments extends Zikula_Controller_AbstractBlock
         // Defaults
         if (!isset($vars['numentries'])) {
             $vars['numentries'] = 5;
+        }
+
+        if (!isset($vars['numdays'])) {
+            $vars['numdays'] = 0;
         }
 
         if (!isset($vars['showdate'])) {
@@ -168,6 +182,7 @@ class EZComments_Block_EZComments extends Zikula_Controller_AbstractBlock
         // alter the corresponding variable
         $vars['mod']          = (string)FormUtil::getPassedValue('mod', '', 'POST');
         $vars['numentries']   =    (int)FormUtil::getPassedValue('numentries', 5, 'POST');
+        $vars['numdays']      =    (int)FormUtil::getPassedValue('numdays', 0, 'POST');
         $vars['showusername'] =   (bool)FormUtil::getPassedValue('showusername', false, 'POST');
         $vars['linkusername'] =   (bool)FormUtil::getPassedValue('linkusername', false, 'POST');
         $vars['showdate']     =   (bool)FormUtil::getPassedValue('showdate', false, 'POST');
