@@ -27,6 +27,8 @@ class EZComments_Controller_User extends Zikula_AbstractController
         // the following code was taken from the admin interface first and modified
         // that only own comments are shown on the overview page.
 
+        // get user id N.Petkov addition
+        $uid = isset($args['uid']) ? $args['uid'] : FormUtil::getPassedValue('uid', UserUtil::getVar('uid'), 'GETPOST'); // N.Petkov added
         // get the status filter
         $status = isset($args['status']) ? $args['status'] : FormUtil::getPassedValue('status', -1, 'GETPOST');
         if (!isset($status) || !is_numeric($status) || $status < -1 || $status > 2) {
@@ -41,8 +43,8 @@ class EZComments_Controller_User extends Zikula_AbstractController
         $params = array('startnum' => $startnum,
                         'numitems' => $itemsperpage,
                         'status'   => $status,
-                        'owneruid' => UserUtil::getVar('uid'),
-                        'uid'      => UserUtil::getVar('uid'));
+                        'owneruid' => $uid, /* N.Petkov: UserUtil::getVar('uid') => $uid */
+                        'uid'      => $uid); /* N.Petkov: UserUtil::getVar('uid') => $uid */
 
         $items = ModUtil::apiFunc('EZComments', 'user', 'getall', $params);
 
@@ -53,7 +55,11 @@ class EZComments_Controller_User extends Zikula_AbstractController
         // loop through each item adding the relevant links
         foreach ($items as $k => $item)
         {
-            $options   = array();
+        // strip domein (importan if mobile/desktop usage): N.Petkov
+        $urlparts = parse_url($item['url']);
+        $item['url'] = $urlparts['path'].'?'.$urlparts['query'];
+
+        $options   = array();
             $options[] = array('url'   => $item['url'] . '#comment' . $item['id'],
                                'image' => 'kview.png',
                                'title' => $this->__('View'));
