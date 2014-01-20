@@ -55,11 +55,11 @@ class EZComments_Controller_User extends Zikula_AbstractController
         // loop through each item adding the relevant links
         foreach ($items as $k => $item)
         {
-        // strip domain (if mobile/desktop differ)
-        $urlparts = parse_url($item['url']);
-        $item['url'] = $urlparts['path'].'?'.$urlparts['query'];
+            // strip domain (if mobile/desktop differ)
+            $urlparts = parse_url($item['url']);
+            $item['url'] = $urlparts['path'].'?'.$urlparts['query'];
 
-        $options   = array();
+            $options   = array();
             $options[] = array('url'   => $item['url'] . '#comment' . $item['id'],
                                'image' => 'kview.png',
                                'title' => $this->__('View'));
