@@ -47,7 +47,7 @@
                 <strong class="ezc_title">{$comment.subject|default:''|safetext}</strong>
             </div>
             <div class="ezc_content">
-                {$comment.comment|notifyfilters:'ezcomments.filter_hooks.comments.filter'|safetext|paragraph}
+                {$comment.comment|notifyfilters:'ezcomments.filter_hooks.comments.filter'|safehtml|paragraph}
             </div>
         </div>
     </div>
