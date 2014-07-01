@@ -304,7 +304,7 @@ class EZComments_Api_Admin extends Zikula_AbstractApi
      * @author Mark West
      * @return array array of admin links
      */
-    public function getlinks()
+    public function getLinks()
     {
         $links = array();
 
