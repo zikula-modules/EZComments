@@ -63,6 +63,11 @@ class EZComments_Api_User extends Zikula_AbstractApi
         // object id
         if (isset($args['mod'])) {
             $whereclause[] = "$columns[modname] = '" . DataUtil::formatForStore($args['mod']) . "'";
+            if (isset($args['areaId'])) {
+                $whereclause[] = "$columns[areaid] = '" . DataUtil::formatForStore($args['areaId']) . "'";
+            } elseif (isset($args['areaid'])) {
+                $whereclause[] = "$columns[areaid] = '" . DataUtil::formatForStore($args['areaid']) . "'";
+            }
             if (isset($args['objectid'])) {
                 $whereclause[] = "$columns[objectid] = '" . DataUtil::formatForStore($args['objectid']) . "'";
             }

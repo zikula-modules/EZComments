@@ -32,6 +32,7 @@ class EZComments_HookHandlers extends Zikula_Hook_AbstractHandler
     {
         // work out the input from the hook
         $mod = $hook->getCaller();
+        $areaId = $hook->getAreaId();
         $objectid = $hook->getId();
 
         // first check if the user is allowed to do any comments for this module/objectid
@@ -70,7 +71,7 @@ class EZComments_HookHandlers extends Zikula_Hook_AbstractHandler
             $numitems = -1;
         }
 
-        $params = compact('mod', 'objectid', 'sortorder', 'status', 'numitems', 'startnum');
+        $params = compact('mod', 'areaId', 'objectid', 'sortorder', 'status', 'numitems', 'startnum');
         $items = ModUtil::apiFunc('EZComments', 'user', 'getall', $params);
 
         if ($items === false) {
@@ -88,16 +89,16 @@ class EZComments_HookHandlers extends Zikula_Hook_AbstractHandler
         // create the output object
         $view = Zikula_View::getInstance('EZComments', false, null, true);
 
-        $view->assign('areaid', $hook->getAreaId());
-        $view->assign('comments', $items);
-        $view->assign('commentcount', $commentcount);
-        $view->assign('ezcomment', $ezcomment);
-        $view->assign('ezc_info', compact('mod', 'objectid', 'sortorder', 'status'));
-        $view->assign('modinfo', ModUtil::getInfo(ModUtil::getIdFromName($mod)));
-        $view->assign('msgmodule', System::getVar('messagemodule', ''));
-        $view->assign('prfmodule', System::getVar('profilemodule', ''));
-        $view->assign('allowadd', SecurityUtil::checkPermission('EZComments::', "$mod:$objectid:", ACCESS_COMMENT));
-        $view->assign('loggedin', UserUtil::isLoggedIn());
+        $view->assign('areaid', $areaId)
+             ->assign('comments', $items)
+             ->assign('commentcount', $commentcount)
+             ->assign('ezcomment', $ezcomment)
+             ->assign('ezc_info', compact('mod', 'objectid', 'sortorder', 'status'))
+             ->assign('modinfo', ModUtil::getInfo(ModUtil::getIdFromName($mod)))
+             ->assign('msgmodule', System::getVar('messagemodule', ''))
+             ->assign('prfmodule', System::getVar('profilemodule', ''))
+             ->assign('allowadd', SecurityUtil::checkPermission('EZComments::', "$mod:$objectid:", ACCESS_COMMENT))
+             ->assign('loggedin', UserUtil::isLoggedIn());
 
         $modUrl = $hook->getUrl();
         $redirect = (!is_null($modUrl)) ? $modUrl->getUrl() : '';
