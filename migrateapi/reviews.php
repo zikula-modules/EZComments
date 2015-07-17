@@ -23,12 +23,14 @@ function EZComments_migrateapi_reviews()
     } 
 
     // Get datbase setup
-    ModUtil::dbInfoLoad('Reviews', 'EZComments/migrateapi/Reviews', true);
+    ModUtil::dbInfoLoad('Reviews', 'Reviews', true);
 
     $tables = DBUtil::getTables();
 
     $Commentstable  = $tables['reviews_comments'];
     $Commentscolumn = $tables['reviews_comments_column'];
+    $Reviewstable   = $tables['reviews'];
+    $Reviewscolumn  = $tables['reviews_column'];
 
     if (version_compare(PN_VERSION_NUM, '1', '>=')) {
         EZComments_get76xcolumns_reviews($Commentstable, $Commentscolumn);
@@ -39,17 +41,26 @@ function EZComments_migrateapi_reviews()
 
     $Usertable  = $tables['users'];
     $Usercolumn = $tables['users_column'];
+    $Objecttable  = $tables['objectdata_attributes'];
+    $Objectcolumn = $tables['objectdata_attributes_column'];
 
     // note: there's nothing we can do with the score......
     $sql = "SELECT $Commentscolumn[cid],
                    $Commentscolumn[rid],
-                   $Commentscolumn[date], 
+                   C.$Commentscolumn[date], 
                    $Usercolumn[uid], 
+                   $Objectcolumn[object_id] AS 'owneruid',
                    $Commentscolumn[comments],
-                   $Commentscolumn[score]
-              FROM $Commentstable
+                   C.$Commentscolumn[score]
+              FROM $Commentstable C
          LEFT JOIN $Usertable
-                ON $Commentscolumn[userid] = $Usercolumn[uname]";
+                ON $Commentscolumn[userid] = $Usercolumn[uname]
+         LEFT JOIN $Reviewstable
+                ON $Commentscolumn[rid] = $Reviewscolumn[id]
+         LEFT JOIN $Objecttable
+                ON $Objectcolumn[object_type] = 'users'
+               AND $Objectcolumn[attribute_name] = 'realname'
+               AND $Reviewscolumn[reviewer] LIKE $Objectcolumn[value]";
 
     $result = DBUtil::executeSQL($sql);
 
@@ -58,21 +69,25 @@ function EZComments_migrateapi_reviews()
     }
 
     // loop through the old comments and insert them one by one into the DB
-    $items = DBUtil::marshalObjects($result, array('cid', 'rid', 'date', 'uid', 'comment', 'score'));
+    $items = DBUtil::marshallObjects($result, array('cid', 'rid', 'date', 'uid', 'owneruid', 'comment', 'score'));
 
     foreach ($items as $item) {
         // set the correct user id for anonymous users
         if (empty($item['uid'])) {
             $item['uid'] = 1;
         }
+        if (empty($item['owneruid'])) {
+            $item['owneruid'] = 1;
+        }
 
         $id = ModUtil::apiFunc('EZComments', 'user', 'create',
                            array('mod'      => 'Reviews',
                                  'objectid' => DataUtil::formatForStore($item['rid']),
-                                 'url'      => ModUtil::url('Reviews', 'user', 'display', array('id' => $item['rid'])),
+                                 'useurl'      => ModUtil::url('Reviews', 'user', 'display', array('id' => $item['rid'])),
                                  'comment'  => $item['comment'],
                                  'subject'  => '',
                                  'uid'      => $item['uid'],
+                                 'owneruid' => $item['owneruid'],
                                  'date'     => $item['date']));
 
         if (!$id) {
