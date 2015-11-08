@@ -150,18 +150,6 @@ class EZComments_Installer extends Zikula_AbstractInstaller
      */
     public function uninstall()
     {
-        if (!ModUtil::unregisterHook('item', 'display', 'GUI', 'EZComments', 'user', 'view')) {
-            return LogUtil::registerError($this->__('Error deleting hook.'));
-        }
-
-        if (!ModUtil::unregisterHook('item', 'delete', 'API', 'EZComments', 'admin', 'deletebyitem')) {
-            return LogUtil::registerError($this->__('Error deleting hook.'));
-        }
-
-        if (!ModUtil::unregisterHook('module', 'remove', 'API', 'EZComments', 'admin', 'deletemodule')) {
-            return LogUtil::registerError($this->__('Error deleting hook.'));
-        }
-
         // drop main table
         if (!DBUtil::dropTable('EZComments')) {
             return false;
