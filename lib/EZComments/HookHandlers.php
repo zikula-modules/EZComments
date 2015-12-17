@@ -11,6 +11,8 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Hook\DisplayHook;
+
 /**
  * EZComments Hooks Handlers.
  */
@@ -23,12 +25,15 @@ class EZComments_HookHandlers extends Zikula_Hook_AbstractHandler
      * Subject is the object being viewed that we're attaching to.
      * args[id] Is the id of the object.
      * args[caller] the module who notified of this event.
-     *
+     * NOTE:
+     *   Zikula_DisplayHook extends Zikula\Core\Hook\DisplayHook
+     *   SO - this method SHOULD be backward compatible with old hooks.
+     * 
      * @param Zikula_Hook $hook The hook.
      *
      * @return void
      */
-    public function uiView(Zikula_DisplayHook $hook)
+    public function uiView(DisplayHook $hook)
     {
         // work out the input from the hook
         $mod = $hook->getCaller();
