@@ -1,0 +1,3 @@
+ezcommentsmodule:
+    resource: "@ZikualEZCommentsModule/Controller"
+    type:     annotation

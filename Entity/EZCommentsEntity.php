@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * EZComments entity class.
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Zikla\EZCommentsModule\Entity\Repository\EZCommentsEntityRepository")
  * @ORM\Table(name="ezcomments")
  */
 class EZCommentsEntity extends \Zikula\Core\Doctrine\EntityAccess

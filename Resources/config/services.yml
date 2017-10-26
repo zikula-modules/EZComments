@@ -1,0 +1,66 @@
+services:
+  zikula_ezcomments_module.container.link_container:
+    class: Zikula\EZCommentsModule\Container\LinkContainer
+    arguments:
+      - "@translator.default"
+      - "@router"
+      - "@zikula_permissions_module.api.permission"
+    tags:
+      - { name: zikula.link_container }
+
+  zikula_ezcomments_module.form.article_type:
+    class: Zikula\EZCommentsModule\Form\Article
+    arguments:
+      - "@translator.default"
+      - "@zikula_settings_module.locale_api"
+    tags:
+      - { name: form.type }
+
+  zikula_ezcomments_module.form.chapter_type:
+    class: Zikula\EZCommentsModule\Form\Chapter
+    arguments:
+      - "@translator.default"
+    tags:
+      - { name: form.type }
+
+  zikula_ezcomments_module.form.book_type:
+     class: Zikula\EZCommentsModule\Form\Book
+     arguments:
+       - "@translator.default"
+     tags:
+      - { name: form.type }
+
+  zikula_ezcomments_module.form.searchreplace_type:
+    class: Zikula\EZCommentsModule\Form\SearchReplace
+    arguments:
+      - "@translator.default"
+    tags:
+      - { name: form.type }
+
+  zikula_ezcomments_module.form.importchapter_type:
+    class: Zikula\EZCommentsModule\Form\ImportChapter
+    arguments:
+      - "@translator.default"
+    tags:
+      - { name: form.type }
+
+  zikula_ezcomments_module.form.figure_type:
+      class: Zikula\EZCommentsModule\Form\Figure
+      arguments:
+        - "@translator.default"
+      tags:
+        - { name: form.type }
+
+  zikula_ezcomments_module.form.glossary_type:
+    class: Zikula\EZCommentsModule\Form\Glossary
+    arguments:
+        - "@translator.default"
+    tags:
+        - { name: form.type }
+
+  zikula_ezcomments_module.form.importgloss_type:
+      class: Zikula\EZCommentsModule\Form\ImportGloss
+      arguments:
+          - "@translator.default"
+      tags:
+          - { name: form.type }
