@@ -31,13 +31,53 @@ class EZCommentsEntityRepository extends EntityRepository
                            $search = null,
                            $startnum = 1,
                            $numitems = -1,
-                           $sortorder='ASC',
+                           $sortorder= null,
                            $sortby,
                            $status = -1,
-                           $uid = -1,
-                           $ownerid = -1,
-                           $admin = true )
+                           $uid = 0,
+                           $ownerid = 0)
     {
+        //I do not do security checking here. That is the job of the controller.
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select('u')
+            ->from('EZComments:EZCommentsEntity', 'u');
 
+        //search the comments
+        if($search != null){
+            $qb->orWhere($qb->expr()->like('u.subject', '?2'), $qb->expr()->literal('%' . $search . '%'));
+            $qb->orWhere($qb->expr()->like('u.comment', '?2'), $qb->expr()->literal('%' . $search . '%'));
+        }
+
+        //limit to the startnum and limit it if numitems is set
+        $qb->setFirstResult($startnum);
+        if($numitems > 0){
+            $qb->setMaxResults($numitems);
+        }
+
+        //enter the sort order
+        if($sortorder !== null){
+            $qb->orderBy('u.' . $sortby, $sortorder);
+        }
+
+        //search for status
+        if($status >= 0){
+            $qb->andWhere('u.status', '?3');
+            $qb->setParameter('3', $status);
+        }
+
+        if($uid > 0){
+            $qb->andWhere('u.uid', '?4');
+            $qb->setParameter('4', $uid);
+        }
+
+        if($ownerid > 0){
+            $qb->andWhere('u.ownerid', '?5');
+            $qb->setParameter('5', $ownerid);
+        }
+
+        $query = $qb->getQuery();
+        $results = $query->getResult();
+
+        return $results;
     }
 }
