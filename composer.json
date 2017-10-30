@@ -23,15 +23,12 @@
       "core-compatibility": ">=1.4.3",
       "displayname": "EZComments Module",
       "capabilities": {
-        "admin": {"route": "zikulaezcommentsmodule_admin_edit"}
+        "admin": {"route": "zikulaezcommentsmodule_admin_index"}
       },
       "securityschema": {
         "ZikulaEZCommentsModule::": "Module:Item ID:Comment ID",
         "ZikulaEZCommentsModule::trackback": "Module:Item ID:",
         "ZikulaEZCommentsModule::pingback": "Module:Item ID:"
-      }
-      "dependencies": {
-
       }
     }
   }
