@@ -26,7 +26,7 @@ class EZCommentsEntity extends \Zikula\Core\Doctrine\EntityAccess
     /**
      * modname
      *
-     * @ORM\Column(type="string" length=64)
+     * @ORM\Column(type="string", length=64)
      * @Assert\NotBlank()
      */
     private $modname;
@@ -34,7 +34,7 @@ class EZCommentsEntity extends \Zikula\Core\Doctrine\EntityAccess
     /**
      * objectid
      *
-     * @ORM\Column(type="string" length=255)
+     * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
      */
     private $objectid;
@@ -98,14 +98,14 @@ class EZCommentsEntity extends \Zikula\Core\Doctrine\EntityAccess
     /**
      * anonname
      *
-     * @ORM\Column(type="string" length=255)
+     * @ORM\Column(type="string", length=255)
      */
     private $anonname;
 
     /**
      * anonmail
      *
-     * @ORM\Column(type="string" length=255)
+     * @ORM\Column(type="string", length=255)
      */
     private $anonmail;
 
@@ -119,21 +119,21 @@ class EZCommentsEntity extends \Zikula\Core\Doctrine\EntityAccess
     /**
      * ipaddr
      *
-     * @ORM\Column(type="string" length=85)
+     * @ORM\Column(type="string", length=85)
      */
     private $ipaddr;
 
     /**
      * type
      *
-     * @ORM\Column(type="string" length=64)
+     * @ORM\Column(type="string", length=64)
      */
     private $type;
 
     /**
      * anonwebsite
      *
-     * @ORM\Column(type="string" length=255)
+     * @ORM\Column(type="string", length=255)
      */
     private $anonwebsite;
 

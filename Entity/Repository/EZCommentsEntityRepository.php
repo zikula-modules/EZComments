@@ -26,13 +26,13 @@ class EZCommentsEntityRepository extends EntityRepository
      * @param $admin       (optional) is set to 1 for admin mode (permission check)
      * @return array array of items, or false on failure
      */
-    public function getall($mod,
-                           $objectid,
+    public function getall($mod="",
+                           $objectid=-1,
                            $search = null,
                            $startnum = 1,
                            $numitems = -1,
-                           $sortorder= null,
-                           $sortby,
+                           $sortorder= ASC,
+                           $sortby = 'date',
                            $status = -1,
                            $uid = 0,
                            $ownerid = 0)
@@ -42,6 +42,14 @@ class EZCommentsEntityRepository extends EntityRepository
         $qb->select('u')
             ->from('EZComments:EZCommentsEntity', 'u');
 
+        if(!empty($mod)){
+            $qb->andWhere('u.modname', '?mod');
+            $qb->setParameter('mod', $mod);
+        }
+        if($objectid != -1){
+            $qb->andWhere('u.objectid', '?objectid');
+            $qb->setParameter('objectid', $objectid);
+        }
         //search the comments
         if($search != null){
             $qb->orWhere($qb->expr()->like('u.subject', '?2'), $qb->expr()->literal('%' . $search . '%'));

@@ -14,6 +14,7 @@ use Zikula\Component\SortableColumns\Column;
 use Zikula\Core\Response\Ajax\ForbiddenResponse;
 use Zikula\Bundle\HookBundle\Hook\ProcessHook;
 use Zikula\EZCommentsModule\Entity\EZCommentsEntity;
+use Zikula\EZCommentsModule\Entity\Repository\EZCommentsEntityRepository;
 
 /**
  * @Route("/admin")
@@ -24,7 +25,7 @@ class AdminController extends AbstractController
     /**
      * @Route("")
      * @param $request - the incoming request.
-     * The main entry point
+     * The main entry point. List a page of comments
      *
      * @return Response The rendered output consisting mainly of the admin menu
      *
@@ -42,12 +43,6 @@ class AdminController extends AbstractController
         $currentSortDirection = $request->query->get('sdir', Column::DIRECTION_DESCENDING);
 
 
-        // get the status filter
-        /*$status = FormUtil::getPassedValue('status', -1, 'GETPOST');
-        if (!isset($status) || !is_numeric($status) || $status < -1 || $status > 2) {
-            $status = -1;
-        }*/
-
         // presentation values
         $showall = $request->query->get('showall');
         if ($showall) {
@@ -57,9 +52,22 @@ class AdminController extends AbstractController
         }
 
         $startnum = $request->query->get('startnum');
+        $column = $request->query->get('column');
+        return  $this->render('@ZikulaEZCommentsModule\Admin\ezcomments_index.html.twig');
 
-
+        $repo = $this->getDoctrine()->getManager()->getRepository('ZikulaEZCommentsModule:EZCommentsEntity');
+        $repo->getall("", -1, $startnum, $itemsperpage, $currentSortDirection, $column);
         /*
+         * $mod="",
+                           $objectid=-1,
+                           $search = null,
+                           $startnum = 1,
+                           $numitems = -1,
+                           $sortorder= null,
+                           $sortby = 'ASC',
+                           $status = -1,
+                           $uid = 0,
+                           $ownerid = 0)
         // call the api to get all current comments
         $items = ModUtil::apiFunc('EZComments', 'user', 'getall',
                               array('startnum' => $showall == true ? true : $startnum,
