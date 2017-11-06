@@ -130,6 +130,6 @@ class LinkContainer implements LinkContainerInterface
      */
     public function getBundleName()
     {
-        return 'PaustianBookModule';
+        return 'ZikulaEZCommentsModule';
     }
 }

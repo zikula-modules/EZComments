@@ -15,3 +15,14 @@ services:
       - "@zikula_settings_module.locale_api"
     tags:
       - { name: form.type }
+
+  zikula_ezcomments_module.hook_provider.ui_hooks_hooks_provider:
+          class: Zikula\EZCommentsModule\HookProvider\UiHooksProvider
+          arguments:
+            - '@translator.default'
+            - '@zikula_permissions_module.api.permission'
+            - '@templating'
+            - '@doctrine.orm.entity_manager'
+            - '@request_stack'
+          tags:
+          - { name: zikula.hook_provider, areaName: "provider.zikulaezcommentsmodule.ui_hooks.ezcomments" }

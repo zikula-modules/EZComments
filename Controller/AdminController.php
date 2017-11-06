@@ -56,7 +56,7 @@ class AdminController extends AbstractController
         return  $this->render('@ZikulaEZCommentsModule\Admin\ezcomments_index.html.twig');
 
         $repo = $this->getDoctrine()->getManager()->getRepository('ZikulaEZCommentsModule:EZCommentsEntity');
-        $repo->getall("", -1, $startnum, $itemsperpage, $currentSortDirection, $column);
+        $results = $repo->getall("", -1, $startnum, $itemsperpage, $currentSortDirection, $column);
         /*
          * $mod="",
                            $objectid=-1,

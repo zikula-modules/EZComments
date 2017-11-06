@@ -26,7 +26,7 @@ class EZCommentsEntityRepository extends EntityRepository
      * @param $admin       (optional) is set to 1 for admin mode (permission check)
      * @return array array of items, or false on failure
      */
-    public function getall($mod="",
+    public function getComments($mod="",
                            $objectid=-1,
                            $search = null,
                            $startnum = 1,
