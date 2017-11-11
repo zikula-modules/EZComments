@@ -139,7 +139,7 @@ class CommentController extends AbstractController
         $module = $request->request->get('module');
         $areaId = $request->request->get('areaId');
         $comment = $request->request->get('comment');
-        $title = $request->request->get('title');
+        $subject = $request->request->get('subject');
         $user= $request->request->get('user');
         $ownerId = $this->get('zikula_users_module.current_user')->get('uid');
 
@@ -149,19 +149,31 @@ class CommentController extends AbstractController
         $response = $this->redirect($retURL);
         $commentObj = new EZCommentsEntity();
         $commentObj->setUrl($retURL);
+        $commentObj->setObjectid($id);
+        $commentObj->setAreaid($areaId);
         $commentObj->setModname($module);
         $commentObj->setAreaid($areaId);
         $commentObj->setComment($comment);
-        $commentObj->setTitle($title);
-        if(empty($ownerId)){
+        $commentObj->setSubject($subject);
+        $ipaddr = $request->getClientIp();
+        $commentObj->setIpaddr($ipaddr);
+        if($ownerId == 1){ //This happens when not logged in.
             //this is not a logged in user.
             $commentObj->setAnonname($user);
+            $anonEmail = $request->request->get('anonEmail');
+            $anonWebsite = $request->request->get('anonWebsite');
+            $commentObj->setAnonmail($anonEmail);
+            if($anonWebsite != ''){
+                $commentObj->setAnonwebsite($anonWebsite);
+            }
         } else {
 
         }
-        stopped here. I need to figure out what ipaddr is (my guess it is the referer?)
+
         //Now record the comment
-        $em = $this->getDoctrine();
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($commentObj);
+        $em->flush();
         return $response;
         /*        $mod      = isset($args['mod'])      ? $args['mod']      : FormUtil::getPassedValue('mod',      null, 'POST');
                 $objectid = isset($args['objectid']) ? $args['objectid'] : FormUtil::getPassedValue('objectid', null, 'POST');
