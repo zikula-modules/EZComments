@@ -31,7 +31,7 @@ class EZCommentsEntityRepository extends EntityRepository
                            $search = null,
                            $startnum = 1,
                            $numitems = -1,
-                           $sortorder= ASC,
+                           $sortorder= 'ASC',
                            $sortby = 'date',
                            $status = -1,
                            $uid = 0,

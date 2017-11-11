@@ -15,4 +15,5 @@ use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
 class Comment extends AbstractType
 {
+
 }

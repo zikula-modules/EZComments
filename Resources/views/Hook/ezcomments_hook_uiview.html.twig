@@ -1,0 +1,28 @@
+<div class="container-fluid">
+    <div class="row">
+        <h3>{{ __('Comments') }}</h3>
+        {{  comments }}
+        <form action="{{ path('zikulaezcommentsmodule_comment_comment') }}" method="post" enctype="application/x-www-form-urlencoded">
+            <input type="hidden" name="artId" value="{{ artId }}">
+            <input type="hidden" name="module" value="{{ module }}">
+            <input type="hidden" name="retUrl" value="{{ retUrl }}">
+            <table class=""table">
+            {% if currentUser.loggedIn %}
+                <tr><td><b>{{ __('Name: ') }} </b></td><td><input name="user" value="{{  currentUser.uname }}" maxlengh="100" size="50" /></td></tr>
+                {%  else %}
+                <tr><td><b>{{ __('Name: ') }} </b></td><td><input name="user" value="Anonymous Coward" maxlengh="100" size="50" /></td></tr>
+            {% endif %}
+            <tr><td><b>{{  __('Title: ') }} </b></td><td><input name="title" maxlength="100" size="50" /></td></tr>
+            </table>
+            <br />
+            <textarea rows="5" cols="60" name="comment">
+Place comment here.
+            </textarea>
+            <div class="form-group">
+                <button class="btn btn-success" type="submit" name="addComment" value="addComment">
+                    {{ __('Add comment') }}
+                </button>
+            </div>
+        </form>
+    </div><!-- row -->
+</div>

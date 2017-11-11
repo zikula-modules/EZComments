@@ -98,7 +98,11 @@ class UiHooksProvider  implements HookProviderInterface
         ];
     }
 
-
+    /**
+     * uiView - Display a view that is hook to the module.
+     * @param DisplayHook $hook
+     *
+     */
     public function uiView(DisplayHook $hook)
     {
 
@@ -111,30 +115,28 @@ class UiHooksProvider  implements HookProviderInterface
             return;
         }
         $is_admin = $this->permissionApi->hasPermission('EZComments::', '::', ACCESS_ADMIN);
-
+        $url = $hook->getUrl()->getRoute();
         $session = $this->requestStack->getCurrentRequest()->getSession();
-
+        $user =
         /*$subject = array();//$hook->getSubject();
         $useurl = isset($subject['useurl']) ? $subject['useurl'] : null;*/
 
+        //$owneruid = $this->get('zikula_users_module.current_user')->get('uid');
         $owneruid = $session->get('commentOwner', 0);
-
-        $repo = $this->entityManager->getRepository('@ZikulaEZCommentsModule/EZCommentsEntity');
-        $items = $repo->getComments($mod, $id);
-
-
-        $items = ModUtil::apiFunc('EZComments', 'user', 'prepareCommentsForDisplay', $items);
-
-
-
-        /*$route_url = $hook->getUrl();
-        if(isset($route_url)){
-            $return_url = $route_url->getRoute();
-        } else {
-            $return_url = "";
-        }*/
-
-
+        $is_owner = false;
+        $repo = $this->entityManager->getRepository('ZikulaEZCommentsModule:EZCommentsEntity');
+        $items = $repo->findBy(['modname' => $mod, 'id' => $id]);
+        $comments = "Comments go here.";
+        //$items = ModUtil::apiFunc('EZComments', 'user', 'prepareCommentsForDisplay', $items);
+        $content = $this->templating->render('ZikulaEZCommentsModule:Hook:ezcomments_hook_uiview.html.twig',
+            ['comments' => $comments,
+              'isOwner' =>  $is_owner,
+              'isAdmin' =>  $is_admin,
+                'artId' => $id,
+                'module' => $mod,
+                'areaId' => $areaID,
+                'retUrl' => $url
+                ]);
 
         $response = new DisplayHookResponse($this->getServiceId(), $content);
         $hook->setResponse($response);

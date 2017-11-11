@@ -116,7 +116,7 @@ class CommentController extends AbstractController
 
 
     /**
-     * @Route("/create")
+     * @Route("/comment")
      * @param $request
      *
      * todo:This is probably something that could be part of the hook interface. I will have to check out how to get that in.
@@ -133,8 +133,36 @@ class CommentController extends AbstractController
      * @param $replyto The ID of the comment for which this an anser to (taken from HTTP put)
      * @since 0.1
      */
-    public function createAction(Request $request)
+    public function commentAction(Request $request)
     {
+        $id = $request->request->get('artId');
+        $module = $request->request->get('module');
+        $areaId = $request->request->get('areaId');
+        $comment = $request->request->get('comment');
+        $title = $request->request->get('title');
+        $user= $request->request->get('user');
+        $ownerId = $this->get('zikula_users_module.current_user')->get('uid');
+
+        $returnRoute = $request->get('retUrl');
+        $retURL = $this->generateUrl($returnRoute);
+        $retURL .= "/$id";
+        $response = $this->redirect($retURL);
+        $commentObj = new EZCommentsEntity();
+        $commentObj->setUrl($retURL);
+        $commentObj->setModname($module);
+        $commentObj->setAreaid($areaId);
+        $commentObj->setComment($comment);
+        $commentObj->setTitle($title);
+        if(empty($ownerId)){
+            //this is not a logged in user.
+            $commentObj->setAnonname($user);
+        } else {
+
+        }
+        stopped here. I need to figure out what ipaddr is (my guess it is the referer?)
+        //Now record the comment
+        $em = $this->getDoctrine();
+        return $response;
         /*        $mod      = isset($args['mod'])      ? $args['mod']      : FormUtil::getPassedValue('mod',      null, 'POST');
                 $objectid = isset($args['objectid']) ? $args['objectid'] : FormUtil::getPassedValue('objectid', null, 'POST');
                 $areaid   = isset($args['areaid'])   ? $args['areaid']   : FormUtil::getPassedValue('areaid',   null, 'POST');
