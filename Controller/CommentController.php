@@ -119,7 +119,8 @@ class CommentController extends AbstractController
      * @Route("/comment")
      * @param $request
      *
-     * todo:This is probably something that could be part of the hook interface. I will have to check out how to get that in.
+     *  This now will record the coment. I do have to add akismet support, but at least the comment gets recorded.
+     * todo:Add Akismet support
      * Create a comment for a specific item
      *
      * This is a standard function that is called with the results of the
@@ -155,6 +156,8 @@ class CommentController extends AbstractController
         $commentObj->setAreaid($areaId);
         $commentObj->setComment($comment);
         $commentObj->setSubject($subject);
+        //type is either trackback, pingback, or safe. Right now this is not implemented until Akismet is upated to 2.0
+        $commentObj->setType("safe");
         $ipaddr = $request->getClientIp();
         $commentObj->setIpaddr($ipaddr);
         if($ownerId == 1){ //This happens when not logged in.
@@ -162,134 +165,19 @@ class CommentController extends AbstractController
             $commentObj->setAnonname($user);
             $anonEmail = $request->request->get('anonEmail');
             $anonWebsite = $request->request->get('anonWebsite');
-            $commentObj->setAnonmail($anonEmail);
-            if($anonWebsite != ''){
-                $commentObj->setAnonwebsite($anonWebsite);
-            }
         } else {
-
+            $anonEmail = "";
+            $anonWebsite = "";
         }
+        $commentObj->setAnonmail($anonEmail);
+        $commentObj->setAnonwebsite($anonWebsite);
+        $commentObj->setAnonname($user);
 
         //Now record the comment
         $em = $this->getDoctrine()->getManager();
         $em->persist($commentObj);
         $em->flush();
         return $response;
-        /*        $mod      = isset($args['mod'])      ? $args['mod']      : FormUtil::getPassedValue('mod',      null, 'POST');
-                $objectid = isset($args['objectid']) ? $args['objectid'] : FormUtil::getPassedValue('objectid', null, 'POST');
-                $areaid   = isset($args['areaid'])   ? $args['areaid']   : FormUtil::getPassedValue('areaid',   null, 'POST');
-                $comment  = isset($args['comment'])  ? $args['comment']  : FormUtil::getPassedValue('comment',  null, 'POST');
-                $subject  = isset($args['subject'])  ? $args['subject']  : FormUtil::getPassedValue('subject',  null, 'POST');
-                $replyto  = isset($args['replyto'])  ? $args['replyto']  : FormUtil::getPassedValue('replyto',  null, 'POST');
-                $owneruid = isset($args['owneruid']) ? $args['owneruid'] : FormUtil::getPassedValue('owneruid',  null, 'POST');
-
-                $redirect = isset($args['redirect']) ? $args['redirect'] : FormUtil::getPassedValue('redirect', null, 'POST');
-                $useurl   = isset($args['useurl'])   ? $args['useurl']   : FormUtil::getPassedValue('useurl',   null, 'POST');
-
-                // check if the user logged in and if we're allowing anon users to
-                // set a name and email address
-                if (!UserUtil::isLoggedIn()) {
-                    $anonname    = isset($args['anonname'])    ? $args['anonname']    : FormUtil::getPassedValue('anonname',    null, 'POST');
-                    $anonmail    = isset($args['anonmail'])    ? $args['anonmail']    : FormUtil::getPassedValue('anonmail',    null, 'POST');
-                    $anonwebsite = isset($args['anonwebsite']) ? $args['anonwebsite'] : FormUtil::getPassedValue('anonwebsite', null, 'POST');
-                } else {
-                    $anonname = '';
-                    $anonmail = '';
-                    $anonwebsite = '';
-                }
-
-                if (!isset($owneruid) || (!($owneruid > 1))) {
-                    $owneruid = 0;
-                }
-
-                $redirect = str_replace('&amp;', '&', base64_decode($redirect));
-                $redirect = !empty($redirect) ? $redirect : System::serverGetVar('HTTP_REFERER');
-                $useurl   = base64_decode($useurl);
-
-                // save the submitted data if any error occurs
-                $ezcomment = unserialize(SessionUtil::getVar('ezcomment', 'a:0:{}'));
-                if (isset($ezcomment[$mod][$objectid])) {
-                    unset($ezcomment[$mod][$objectid]);
-                }
-                if (!empty($subject)) {
-                    $ezcomment[$mod][$objectid]['subject'] = $subject;
-                }
-                if (!empty($comment)) {
-                    $ezcomment[$mod][$objectid]['comment'] = $comment;
-                }
-                if (!empty($anonname)) {
-                    $ezcomment[$mod][$objectid]['anonname'] = $anonname;
-                }
-                if (!empty($anonmail)) {
-                    $ezcomment[$mod][$objectid]['anonmail'] = $anonmail;
-                }
-                if (!empty($anonwebsite)) {
-                    $ezcomment[$mod][$objectid]['anonwebsite'] = $anonwebsite;
-                }
-
-                // Confirm authorisation code
-                // check csrf token
-                SessionUtil::setVar('ezcomment', serialize($ezcomment));
-                $this->checkCsrfToken();
-                SessionUtil::delVar('ezcomment');
-
-                // and check we've actually got a comment....
-                if (empty($comment)) {
-                    SessionUtil::setVar('ezcomment', serialize($ezcomment));
-                    return LogUtil::registerError($this->__('Error! The comment contains no text.'), null,
-                                                  $redirect."#commentform_{$mod}_{$objectid}");
-                }
-
-                // Check hooked modules for validation
-                $hookvalidators = $this->notifyHooks(new Zikula_ValidationHook('ezcomments.ui_hooks.comments.validate_edit', new Zikula_Hook_ValidationProviders()))->getValidators();
-                if ($hookvalidators->hasErrors()) {
-                    SessionUtil::setVar('ezcomment', serialize($ezcomment));
-                    return LogUtil::registerError($this->__('Error! The hooked content does not validate. Could it possibly be that a captcha code was entered incorrectly?'), null,
-                                                  $redirect."#commentform_{$mod}_{$objectid}");
-                }
-
-                // now parse out the hostname+subfolder from the url for storing in the DB
-                $url = str_replace(System::getBaseUri(), '', $useurl);
-
-                $id = ModUtil::apiFunc('EZComments', 'user', 'create',
-                                   array('mod'         => $mod,
-                                         'objectid'    => $objectid,
-                                         'areaid'      => $areaid,
-                                         'url'         => $url,
-                                         'comment'     => $comment,
-                                         'subject'     => $subject,
-                                         'replyto'     => $replyto,
-                                         'uid'         => UserUtil::getVar('uid'),
-                                         'owneruid'    => $owneruid,
-                                         'useurl'      => $useurl,
-                                         'redirect'    => $redirect,
-                                         'anonname'    => $anonname,
-                                         'anonmail'    => $anonmail,
-                                         'anonwebsite' => $anonwebsite));
-
-                if ($id) {
-                    // clear respective cache
-                    ModUtil::apiFunc('EZComments', 'user', 'clearItemCache', array('id' => $id, 'modname' => $mod, 'objectid' => $objectid, 'url' => $url));
-                } else {
-                    // redirect if it was not successful
-                    SessionUtil::setVar('ezcomment', $ezcomment);
-                    System::redirect($redirect."#commentform_{$mod}_{$objectid}");
-                }
-
-                // clean/set the session data
-                if (isset($ezcomment[$mod][$objectid])) {
-                    unset($ezcomment[$mod][$objectid]);
-                    if (empty($ezcomment[$mod])) {
-                        unset($ezcomment[$mod]);
-                    }
-                }
-                if (empty($ezcomment)) {
-                    SessionUtil::delVar('ezcomment');
-                } else {
-                    SessionUtil::setVar('ezcomment', serialize($ezcomment));
-                }
-
-                return System::redirect($redirect.'#comment'.$id);*/
     }
 
     /**
