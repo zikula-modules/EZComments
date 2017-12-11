@@ -53,10 +53,13 @@ class AdminController extends AbstractController
 
         $startnum = $request->query->get('startnum');
         $column = $request->query->get('column');
-        return  $this->render('@ZikulaEZCommentsModule\Admin\ezcomments_index.html.twig');
 
         $repo = $this->getDoctrine()->getManager()->getRepository('ZikulaEZCommentsModule:EZCommentsEntity');
-        $results = $repo->getall("", -1, $startnum, $itemsperpage, $currentSortDirection, $column);
+        $results = $repo->getComments("", -1, $startnum, $itemsperpage, $currentSortDirection, $column);
+
+        return  $this->render('@ZikulaEZCommentsModule\Admin\ezcomments_index.html.twig');
+
+
         /*
          * $mod="",
                            $objectid=-1,
