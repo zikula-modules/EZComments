@@ -5,7 +5,6 @@ namespace Zikula\EZCommentsModule\Controller;
 use Zikula\Core\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotations - do not remove
 use Symfony\Component\Routing\RouterInterface;
@@ -34,7 +33,7 @@ class AdminController extends AbstractController
     public function indexAction(Request $request)
     {
         // Security check
-        if (!$this->hasPermission('EZComments::', '::', ACCESS_ADMIN)) {
+        if (!$this->hasPermission('EZCommentsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException($this->__('You do not have pemission to access the EZcomments admin interface.'));
         }
         //todo:use the pages index action as an example of how to set up a pager

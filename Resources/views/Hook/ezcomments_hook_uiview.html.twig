@@ -1,24 +1,49 @@
 <div class="container-fluid">
     <div class="row">
+        <hr/>
         <h3>{{ __('Comments') }}</h3>
-        {{  comments }}
-        <form action="{{ path('zikulaezcommentsmodule_comment_comment') }}" method="post" enctype="application/x-www-form-urlencoded">
+        {% for item in items %}
+            {% if currentUser.uid == item.ownerid %}
+                TODO: use javascript or JQuery so that an editing form can turn on if necessary
+            {% else %}
+                <h3>{{ item.subject }}</h3>
+                <p>{{ item.comment }}</p>
+            {% endif %}
+            <hr/>
+        {% endfor %}
+        <form action="{{ path('zikulaezcommentsmodule_comment_comment') }}" method="post"
+              enctype="application/x-www-form-urlencoded">
             <input type="hidden" name="artId" value="{{ artId }}">
             <input type="hidden" name="module" value="{{ module }}">
             <input type="hidden" name="retUrl" value="{{ retUrl }}">
             <input type="hidden" name="areaId" value="{{ areaId }}">
-            <table class=""table">
-            {% if currentUser.loggedIn %}
-                <tr><td><b>{{ __('Name: ') }} </b></td><td><input name="user" value="{{  currentUser.uname }}" maxlengh="100" size="50" /></td></tr>
-                {%  else %}
-                <tr><td><b>{{ __('Name: ') }} </b></td><td><input name="user" value="Anonymous Coward" maxlengh="100" size="50" /></td></tr>
-                    <tr><td><b>{{ __('Email: ') }} </b></td><td><input name="anonEmail" value="Anonymous Coward's Email" maxlengh="100" size="50" /></td></tr>
-                    <tr><td><b>{{ __('Website: ') }} </b></td><td><input name="anonWebsite" value="Anonymous Coward's Website" maxlengh="100" size="50" /></td></tr>
+            <table class="table">
+                {% if currentUser.loggedIn %}
+                    <tr>
+                        <td><b>{{ __('Name: ') }} </b></td>
+                        <td><input name="user" value="{{ currentUser.uname }}" maxlengh="100" size="50"/></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td><b>{{ __('Name: ') }} </b></td>
+                        <td><input name="user" value="Anonymous Coward" maxlengh="100" size="50"/></td>
+                    </tr>
+                    <tr>
+                        <td><b>{{ __('Email: ') }} </b></td>
+                        <td><input name="anonEmail" value="Anonymous Coward's Email" maxlengh="100" size="50"/></td>
+                    </tr>
+                    <tr>
+                        <td><b>{{ __('Website: ') }} </b></td>
+                        <td><input name="anonWebsite" value="Anonymous Coward's Website" maxlengh="100" size="50"/></td>
+                    </tr>
 
-            {% endif %}
-            <tr><td><b>{{  __('Subject: ') }} </b></td><td><input name="subject" maxlength="100" size="50" /></td></tr>
+                {% endif %}
+                <tr>
+                    <td><b>{{ __('Subject: ') }} </b></td>
+                    <td><input name="subject" maxlength="100" size="50"/></td>
+                </tr>
             </table>
-            <br />
+            <br/>
             <textarea rows="5" cols="60" name="comment">
 Place comment here.
             </textarea>

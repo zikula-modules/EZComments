@@ -144,9 +144,7 @@ class CommentController extends AbstractController
         $user= $request->request->get('user');
         $ownerId = $this->get('zikula_users_module.current_user')->get('uid');
 
-        $returnRoute = $request->get('retUrl');
-        $retURL = $this->generateUrl($returnRoute);
-        $retURL .= "/$id";
+        $retURL = $request->get('retUrl');
         $response = $this->redirect($retURL);
         $commentObj = new EZCommentsEntity();
         $commentObj->setUrl($retURL);
@@ -162,12 +160,12 @@ class CommentController extends AbstractController
         $commentObj->setIpaddr($ipaddr);
         if($ownerId == 1){ //This happens when not logged in.
             //this is not a logged in user.
-            $commentObj->setAnonname($user);
             $anonEmail = $request->request->get('anonEmail');
             $anonWebsite = $request->request->get('anonWebsite');
         } else {
             $anonEmail = "";
             $anonWebsite = "";
+            $commentObj->setOwnerid($ownerId);
         }
         $commentObj->setAnonmail($anonEmail);
         $commentObj->setAnonwebsite($anonWebsite);

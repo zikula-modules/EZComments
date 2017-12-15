@@ -40,7 +40,7 @@ class EZCommentsEntityRepository extends EntityRepository
         //I do not do security checking here. That is the job of the controller.
         $qb = $this->_em->createQueryBuilder();
         $qb->select('u')
-            ->from('EZComments:EZCommentsEntity', 'u');
+            ->from('ZikulaEZCommentsModule:EZCommentsEntity', 'u');
 
         if(!empty($mod)){
             $qb->andWhere('u.modname', '?mod');

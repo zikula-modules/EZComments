@@ -117,19 +117,14 @@ class UiHooksProvider  implements HookProviderInterface
         $is_admin = $this->permissionApi->hasPermission('EZComments::', '::', ACCESS_ADMIN);
         $url = $hook->getUrl()->getRoute();
         $session = $this->requestStack->getCurrentRequest()->getSession();
-        $user =
-        /*$subject = array();//$hook->getSubject();
-        $useurl = isset($subject['useurl']) ? $subject['useurl'] : null;*/
 
-        //$owneruid = $this->get('zikula_users_module.current_user')->get('uid');
-        $owneruid = $session->get('commentOwner', 0);
+        $owneruid = 0;
         $is_owner = false;
         $repo = $this->entityManager->getRepository('ZikulaEZCommentsModule:EZCommentsEntity');
-        $items = $repo->findBy(['modname' => $mod, 'id' => $id]);
-        $comments = "Comments go here.";
+        $items = $repo->findAll(['modname' => $mod, 'id' => $id]);
         //$items = ModUtil::apiFunc('EZComments', 'user', 'prepareCommentsForDisplay', $items);
         $content = $this->templating->render('ZikulaEZCommentsModule:Hook:ezcomments_hook_uiview.html.twig',
-            ['comments' => $comments,
+            ['items' => $items,
               'isOwner' =>  $is_owner,
               'isAdmin' =>  $is_admin,
                 'artId' => $id,
