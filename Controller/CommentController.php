@@ -144,7 +144,8 @@ class CommentController extends AbstractController
         $user= $request->request->get('user');
         $ownerId = $this->get('zikula_users_module.current_user')->get('uid');
 
-        $retURL = $request->get('retUrl');
+        $retRoute = $request->get('retUrl');
+        $retURL = $this->generateUrl($retRoute) . "/$id";
         $response = $this->redirect($retURL);
         $commentObj = new EZCommentsEntity();
         $commentObj->setUrl($retURL);

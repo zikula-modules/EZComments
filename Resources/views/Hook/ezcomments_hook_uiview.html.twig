@@ -1,10 +1,33 @@
+{{ pageAddAsset('javascript', zasset('jquery-ui/jquery-ui.js')) }}
+{{ pageAddAsset('stylesheet', asset('jquery-ui/themes/base/jquery-ui.min.css')) }}
+{{ pageAddAsset('stylesheet', zasset('@ZikulaEZCommentsModule:css/style.css')) }}
 <div class="container-fluid">
     <div class="row">
+        <div id="content">
+
+            <p>Selectors are used to do exactly what their name implies: select content within a Web page.</p>
+            <p>They use a very CSS-like syntax in order to do this. To take a few examples:</p>
+            <ul id="list1">
+                <li class="a"><code>jQuery("<i>tag</i>")</code>: Select all of the &lt;tag&gt; elements</li>
+                <li class="a"><code>jQuery("<i>.className</i>")</code>: Select all elements that have the <i>className</i> class applied</li>
+                <li class="b"><code>jQuery("#identifier")</code>: Select the element with the id of <i>identifier</i></li>
+                <li class="b"><code>jQuery("<i>tag.className</i>")</code>: Select all &lt;tag&gt; elements that have the <i>className</i> class
+                    applied</li>
+            </ul>
+            <div id="example">
+                <p class="a">This is paragraph 1</p>
+                <p id="para1">This is paragraph 2</p>
+                <p class="b">This is paragraph 3</p>
+                <p id="para4" lang="en-us">This is paragraph 4</p>
+                <p id="para5" lang="en-gb">This is paragraph 5</p>
+            </div>
+        </div>
         <hr/>
         <h3>{{ __('Comments') }}</h3>
         {% for item in items %}
             {% if currentUser.uid == item.ownerid %}
-                TODO: use javascript or JQuery so that an editing form can turn on if necessary
+                <h3>{{ item.subject }}</h3>
+                <p>{{ item.comment }}</p>
             {% else %}
                 <h3>{{ item.subject }}</h3>
                 <p>{{ item.comment }}</p>
@@ -55,3 +78,10 @@ Place comment here.
         </form>
     </div><!-- row -->
 </div>
+<script type="text/javascript">
+    document.onreadystatechange = function () {
+        //jQuery("p").css("border", "3px solid red");
+        //jQuery(".a").css("border", "3px solid red");
+        jQuery("p.b").css("border", "3px solid red");
+    };
+</script>
