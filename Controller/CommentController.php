@@ -10,6 +10,7 @@ namespace Zikula\EZCommentsModule\Controller;
  * @license See license.txt
  */
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Zikula\Core\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,6 +23,7 @@ use Zikula\Component\SortableColumns\Column;
 use Zikula\Core\Response\Ajax\ForbiddenResponse;
 use Zikula\Bundle\HookBundle\Hook\ProcessHook;
 use Zikula\EZCommentsModule\Entity\EZCommentsEntity;
+use Zikula\EZCommentsModule\ZikulaEZCommentsModule;
 
 class CommentController extends AbstractController
 {
@@ -114,7 +116,12 @@ class CommentController extends AbstractController
         return $this->view->fetch('ezcomments_user_main.tpl');*/
     }
 
-
+    /**
+     * @Route("/jquery")
+     */
+    public function jqueryAction(){
+        return $this->render('ZikulaEZCommentsModule:Comment:ezcomments_comment_jquery.html.twig');
+    }
     /**
      * @Route("/comment")
      * @param $request
@@ -177,6 +184,22 @@ class CommentController extends AbstractController
         $em->persist($commentObj);
         $em->flush();
         return $response;
+    }
+
+    /**
+     * @Route("/getreplies")
+     * @Method("POST")
+     * @param Request $request
+     * @return JsonResponse|FatalResponse|ForbiddenResponse bid or Ajax error
+     */
+
+    public function getrepliesAction(Request $request){
+        if(!$this->hasPermission('ZikulaEZCommentsModule::', '::', ACCESS_ADMIN)){
+            return new ForbiddenResponse($this->__('You have no premission to access this you git.'));
+        }
+
+        return new JsonResponse(['comment' => 'This is a comment. It all worked.']);
+
     }
 
     /**

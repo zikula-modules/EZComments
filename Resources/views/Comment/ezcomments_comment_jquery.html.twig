@@ -1,0 +1,16 @@
+{{ pageAddAsset('javascript', zasset('jquery-ui/jquery-ui.js')) }}
+{{ pageAddAsset('stylesheet', asset('jquery-ui/themes/base/jquery-ui.min.css')) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaEZCommentsModule:js/Zikula.EZComments.GetComments.js')) }}
+{{ pageAddAsset('stylesheet', zasset('@ZikulaEZCommentsModule:css/style.css')) }}
+{{ render(controller('ZikulaAdminModule:Admin:adminheader')) }}
+<div class="container-fluid">
+    <div class="row">
+        <h1>A test of Ajax functions</h1>
+        <div id="content">
+
+            <p>The <code>$.ajax()</code> function is used to perform basic AJAX requests. It can be customized using a variety of parameters.</p>
+            <p>If successful, the returned data will appear here:</p>
+            <p id="ajaxContent"></p>
+        </div>
+    </div><!-- row -->
+    </div>

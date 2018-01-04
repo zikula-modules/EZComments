@@ -82,15 +82,13 @@ class LinkContainer implements LinkContainerInterface
     {
         $links = [];
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::',  ACCESS_ADMIN)) {
-            $links[] = ['url' =>  $this->router->generate('ezcomments_admin_main'),
-                        'text' => $this->translator->__('View comments'),
-                        'icon' => 'eye'];
-
-            $links[] = ['url' => $this->router->generate('ezcomments_admin_stats'),
-                'text' => $this->translator->__('Comment statistics'),
+            $links[] = ['url' =>  $this->router->generate('zikulaezcommentsmodule_admin_modulestats'),
+                        'text' => $this->translator->__('Module Stats'),
+                        'icon' => 'barchart'];
+            $links[] = ['url' =>  $this->router->generate('zikulaezcommentsmodule_comment_getreplies'),
+                'text' => $this->translator->__('Module Stats'),
                 'icon' => 'barchart'];
-
-            $links[] = ['url' => $this->router->generate('ezcomments_admin_modifyconfig'),
+           /* $links[] = ['url' => $this->router->generate('ezcomments_admin_modifyconfig'),
                 'text' => $this->translator->__('Settings'),
                 'icon' => 'wrench',
                 'links' => [
@@ -104,7 +102,7 @@ class LinkContainer implements LinkContainerInterface
                         'text' => $this->translator->__('Purge comments')],
                     ['url' => $this->router->generate('ezcomments_admin_applyrules'),
                         'text' => $this->translator->__('Re-apply moderation rules')]
-                ]];
+                ]];*/
         }
         return $links;
     }

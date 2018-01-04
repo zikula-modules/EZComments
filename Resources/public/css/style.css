@@ -84,3 +84,22 @@ button {
     font-size: 16pt;
     cursor: pointer;
 }
+
+img {
+    margin: 20px;
+    width: 400px;
+    height: 400px;
+}
+
+.pClass {
+    color: green;
+    text-transform: uppercase
+}
+
+button {
+    margin: 5pt 5pt 0 0;
+}
+
+.highlighted {
+    background-color: Red;
+}
