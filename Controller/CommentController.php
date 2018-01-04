@@ -187,17 +187,13 @@ class CommentController extends AbstractController
     }
 
     /**
-     * @Route("/getreplies")
-     * @Method("POST")
+     * @Route("/getreplies", options={"expose"=true})
+     * @Method("GET")
      * @param Request $request
      * @return JsonResponse|FatalResponse|ForbiddenResponse bid or Ajax error
      */
 
     public function getrepliesAction(Request $request){
-        if(!$this->hasPermission('ZikulaEZCommentsModule::', '::', ACCESS_ADMIN)){
-            return new ForbiddenResponse($this->__('You have no premission to access this you git.'));
-        }
-
         return new JsonResponse(['comment' => 'This is a comment. It all worked.']);
 
     }

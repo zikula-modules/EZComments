@@ -1,20 +1,24 @@
 
 (function($){
-    $(document).ready(function(){
-        $.post(
+    $('#twiddle').on('click', getData);
+
+    function getData(evt){
+        $.get(
             Routing.generate('zikulaezcommentsmodule_comment_getreplies'),
-            {comment_id: 3},
             successFn(),
             "json"
         );
-    });
-
+        evt.stopPropagation();
+    }
     function successFn(result) {
-        var jsonResults = JSON.parse(result);
+        var jsonResults = '';
+        if(result){
+             jsonResults = JSON.parse(result);
+        }
         $("#ajaxContent").append(jsonResults.comment);
     }
 
     function errorFn(xhr, status, strErr) {
-        alert("err!" + strErr);
+        $("#ajaxContent").append("err!" + strErr);
     }
 })(jQuery);

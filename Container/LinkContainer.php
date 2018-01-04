@@ -88,7 +88,7 @@ class LinkContainer implements LinkContainerInterface
             $links[] = ['url' =>  $this->router->generate('zikulaezcommentsmodule_comment_getreplies'),
                 'text' => $this->translator->__('Module Stats'),
                 'icon' => 'barchart'];
-           /* $links[] = ['url' => $this->router->generate('ezcomments_admin_modifyconfig'),
+            /*$links[] = ['url' => $this->router->generate('ezcomments_admin_modifyconfig'),
                 'text' => $this->translator->__('Settings'),
                 'icon' => 'wrench',
                 'links' => [
