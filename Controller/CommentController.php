@@ -194,8 +194,8 @@ class CommentController extends AbstractController
      */
 
     public function getrepliesAction(Request $request){
-        return new JsonResponse(['comment' => 'This is a comment. It all worked.']);
-
+        $theResponse =  new JsonResponse(['comment' => 'This is a comment. It all worked.']);
+        return $theResponse;
     }
 
     /**
