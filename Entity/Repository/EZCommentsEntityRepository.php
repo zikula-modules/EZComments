@@ -21,64 +21,69 @@ class EZCommentsEntityRepository extends EntityRepository
      * @param $sortorder   order to sort the comments
      * @param $sortby      field to sort the comments by
      * @param $status      get all comments of this status
-     * @param $uid         (optional) get all comments of this user
-     * @param $owneruid    (optional) get all comments of this content owner
-     * @param $admin       (optional) is set to 1 for admin mode (permission check)
+     * @param $uid (optional) get all comments of this user
+     * @param $owneruid (optional) get all comments of this content owner
+     * @param $admin (optional) is set to 1 for admin mode (permission check)
      * @return array array of items, or false on failure
      */
-    public function getComments($mod="",
-                           $objectid=-1,
-                           $search = null,
-                           $startnum = 1,
-                           $numitems = -1,
-                           $sortorder= 'ASC',
-                           $sortby = 'date',
-                           $status = -1,
-                           $uid = 0,
-                           $ownerid = 0)
+    public function getComments($mod = "",
+                                $objectid = -1,
+                                $replyTo = -1,
+                                $search = null,
+                                $startnum = 1,
+                                $numitems = -1,
+                                $sortorder = 'ASC',
+                                $sortby = 'date',
+                                $status = -1,
+                                $uid = 0,
+                                $ownerid = 0)
     {
         //I do not do security checking here. That is the job of the controller.
         $qb = $this->_em->createQueryBuilder();
         $qb->select('u')
             ->from('ZikulaEZCommentsModule:EZCommentsEntity', 'u');
 
-        if(!empty($mod)){
-            $qb->andWhere('u.modname', '?mod');
+        if (!empty($mod)) {
+            $qb->andWhere($qb->expr()->eq('u.modname', ':mod'));
             $qb->setParameter('mod', $mod);
         }
-        if($objectid != -1){
-            $qb->andWhere('u.objectid', '?objectid');
+        if ($objectid != -1) {
+            $qb->andWhere($qb->expr()->eq('u.objectid', ':objectid'));
             $qb->setParameter('objectid', $objectid);
         }
+        if ($replyTo != -1) {
+            $qb->andWhere($qb->expr()->eq('u.replyto', '?5'));
+            $qb->setParameter('5', $replyTo);
+        }
         //search the comments
-        if($search != null){
+        if ($search != null) {
             $qb->orWhere($qb->expr()->like('u.subject', '?2'), $qb->expr()->literal('%' . $search . '%'));
             $qb->orWhere($qb->expr()->like('u.comment', '?2'), $qb->expr()->literal('%' . $search . '%'));
         }
 
         //limit to the startnum and limit it if numitems is set
         $qb->setFirstResult($startnum);
-        if($numitems > 0){
+        if ($numitems > 0) {
             $qb->setMaxResults($numitems);
         }
 
         //enter the sort order
-        if($sortorder !== null){
+        if ($sortorder !== null) {
             $qb->orderBy('u.' . $sortby, $sortorder);
         }
 
         //search for status
-        if($status >= 0){
+        if ($status >= 0) {
             $qb->andWhere('u.status', '?3');
             $qb->setParameter('3', $status);
         }
 
-        if($uid > 0){
+        if ($uid > 0) {
             $qb->andWhere('u.uid', '?4');
             $qb->setParameter('4', $uid);
         }
 
-        if($ownerid > 0){
+        if ($ownerid > 0) {
             $qb->andWhere('u.ownerid', '?5');
             $qb->setParameter('5', $ownerid);
         }

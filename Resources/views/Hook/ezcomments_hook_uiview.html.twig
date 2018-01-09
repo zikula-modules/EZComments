@@ -1,87 +1,75 @@
 {{ pageAddAsset('javascript', zasset('jquery-ui/jquery-ui.js')) }}
 {{ pageAddAsset('stylesheet', asset('jquery-ui/themes/base/jquery-ui.min.css')) }}
 {{ pageAddAsset('stylesheet', zasset('@ZikulaEZCommentsModule:css/style.css')) }}
-<div class="container-fluid">
-    <div class="row">
-        <div id="content">
+{{ pageAddAsset('javascript', zasset('@ZikulaEZCommentsModule:js/Zikula.EZComments.GetComments.js')) }}
 
-            <p>Selectors are used to do exactly what their name implies: select content within a Web page.</p>
-            <p>They use a very CSS-like syntax in order to do this. To take a few examples:</p>
-            <ul id="list1">
-                <li class="a"><code>jQuery("<i>tag</i>")</code>: Select all of the &lt;tag&gt; elements</li>
-                <li class="a"><code>jQuery("<i>.className</i>")</code>: Select all elements that have the <i>className</i> class applied</li>
-                <li class="b"><code>jQuery("#identifier")</code>: Select the element with the id of <i>identifier</i></li>
-                <li class="b"><code>jQuery("<i>tag.className</i>")</code>: Select all &lt;tag&gt; elements that have the <i>className</i> class
-                    applied</li>
-            </ul>
-            <div id="example">
-                <p class="a">This is paragraph 1</p>
-                <p id="para1">This is paragraph 2</p>
-                <p class="b">This is paragraph 3</p>
-                <p id="para4" lang="en-us">This is paragraph 4</p>
-                <p id="para5" lang="en-gb">This is paragraph 5</p>
+<hr/>
+<div id="Comments">
+    <h3>{{ __('Comments') }}</h3>
+    {% for item in items %}
+        {% if currentUser.uid == item.ownerid %}
+            <div id="itemComment_{{ item.id }}">
+                <h3 id="itemSubject_{{ item.id }}">{{ item.subject }}</h3>
+                <p><i class="username" id="itemName_{{ item.id }}">{{ currentUser.uname }}</i>
+                    {% if item.replyto == 0 %}
+                    <span id="twiddle_{{ item.id }}" class="fa fa-toggle-left"></span>
+                    {% endif %}
+                </p>
+                <p id="itemComment_{{ item.id }}">{{ item.comment }}</p>
+                <hr/>
             </div>
-        </div>
+        {% else %}
+            <div id="itemComment_{{ item.id }}">
+                <h3 id="itemSubject_{{ item.id }}">{{ item.subject }}</h3>
+                <p><i class="username" id="itemName_{{ item.id }}"> {{ item.anonname }}</i></p>
+                <p id="itemComment_{{ item.id }}">{{ item.comment }}</p>
+                <hr/>
+            </div>
+        {% endif %}
         <hr/>
-        <h3>{{ __('Comments') }}</h3>
-        {% for item in items %}
-            {% if currentUser.uid == item.ownerid %}
-                <h3>{{ item.subject }}</h3>
-                <p>{{ item.comment }}</p>
-            {% else %}
-                <h3>{{ item.subject }}</h3>
-                <p>{{ item.comment }}</p>
-            {% endif %}
-            <hr/>
-        {% endfor %}
-        <form action="{{ path('zikulaezcommentsmodule_comment_comment') }}" method="post"
-              enctype="application/x-www-form-urlencoded">
-            <input type="hidden" name="artId" value="{{ artId }}">
-            <input type="hidden" name="module" value="{{ module }}">
-            <input type="hidden" name="retUrl" value="{{ retUrl }}">
-            <input type="hidden" name="areaId" value="{{ areaId }}">
-            <table class="table">
-                {% if currentUser.loggedIn %}
-                    <tr>
-                        <td><b>{{ __('Name: ') }} </b></td>
-                        <td><input name="user" value="{{ currentUser.uname }}" maxlengh="100" size="50"/></td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td><b>{{ __('Name: ') }} </b></td>
-                        <td><input name="user" value="Anonymous Coward" maxlengh="100" size="50"/></td>
-                    </tr>
-                    <tr>
-                        <td><b>{{ __('Email: ') }} </b></td>
-                        <td><input name="anonEmail" value="Anonymous Coward's Email" maxlengh="100" size="50"/></td>
-                    </tr>
-                    <tr>
-                        <td><b>{{ __('Website: ') }} </b></td>
-                        <td><input name="anonWebsite" value="Anonymous Coward's Website" maxlengh="100" size="50"/></td>
-                    </tr>
-
-                {% endif %}
+    {% endfor %}
+</div>
+<div class="comment_form">
+    <form action="{{ path('zikulaezcommentsmodule_comment_comment') }}" method="post"
+          enctype="application/x-www-form-urlencoded">
+        <input type="hidden" name="artId" value="{{ artId }}">
+        <input type="hidden" name="module" value="{{ module }}">
+        <input type="hidden" name="retUrl" value="{{ retUrl }}">
+        <input type="hidden" name="areaId" value="{{ areaId }}">
+        <table class="table">
+            {% if currentUser.loggedIn %}
                 <tr>
-                    <td><b>{{ __('Subject: ') }} </b></td>
-                    <td><input name="subject" maxlength="100" size="50"/></td>
+                    <td><b>{{ __('Name: ') }} </b></td>
+                    <td><input name="user" value="{{ currentUser.uname }}" maxlengh="100" size="50"/></td>
                 </tr>
-            </table>
-            <br/>
-            <textarea rows="5" cols="60" name="comment">
+            {% else %}
+                <tr>
+                    <td><b>{{ __('Name: ') }} </b></td>
+                    <td><input name="user" value="Anonymous Coward" maxlengh="100" size="50"/></td>
+                </tr>
+                <tr>
+                    <td><b>{{ __('Email: ') }} </b></td>
+                    <td><input name="anonEmail" value="Anonymous Coward's Email" maxlengh="100" size="50"/></td>
+                </tr>
+                <tr>
+                    <td><b>{{ __('Website: ') }} </b></td>
+                    <td><input name="anonWebsite" value="Anonymous Coward's Website" maxlengh="100" size="50"/></td>
+                </tr>
+
+            {% endif %}
+            <tr>
+                <td><b>{{ __('Subject: ') }} </b></td>
+                <td><input name="subject" maxlength="100" size="50"/></td>
+            </tr>
+        </table>
+        <br/>
+        <textarea rows="5" cols="60" name="comment">
 Place comment here.
             </textarea>
-            <div class="form-group">
-                <button class="btn btn-success" type="submit" name="addComment" value="addComment">
-                    {{ __('Add comment') }}
-                </button>
-            </div>
-        </form>
-    </div><!-- row -->
-</div>
-<script type="text/javascript">
-    document.onreadystatechange = function () {
-        //jQuery("p").css("border", "3px solid red");
-        //jQuery(".a").css("border", "3px solid red");
-        jQuery("p.b").css("border", "3px solid red");
-    };
-</script>
+        <div class="form-group">
+            <button class="btn btn-success" type="submit" name="addComment" value="addComment">
+                {{ __('Add comment') }}
+            </button>
+        </div>
+    </form>
+</div><!-- comment form -->

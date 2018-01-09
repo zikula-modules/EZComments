@@ -149,6 +149,7 @@ class CommentController extends AbstractController
         $comment = $request->request->get('comment');
         $subject = $request->request->get('subject');
         $user= $request->request->get('user');
+        $parentID = $request->request->get('parentID');
         $ownerId = $this->get('zikula_users_module.current_user')->get('uid');
 
         $retRoute = $request->get('retUrl');
@@ -162,6 +163,9 @@ class CommentController extends AbstractController
         $commentObj->setAreaid($areaId);
         $commentObj->setComment($comment);
         $commentObj->setSubject($subject);
+        if(isset($parentID)){
+            $commentObj->setReplyto($parentID);
+        }
         //type is either trackback, pingback, or safe. Right now this is not implemented until Akismet is upated to 2.0
         $commentObj->setType("safe");
         $ipaddr = $request->getClientIp();
@@ -194,7 +198,20 @@ class CommentController extends AbstractController
      */
 
     public function getrepliesAction(Request $request){
-        $theResponse =  new JsonResponse(['comment' => 'This is a comment. It all worked.']);
+        $mod = $request->query->get('module');
+        $id = $request->query->get('id');
+        $parentId = $request->query->get('parentId');
+        $repo = $this->getDoctrine()->getManager()->getRepository('ZikulaEZCommentsModule:EZCommentsEntity');
+        $items = $repo->findBy(['modname' => $mod, 'objectid' => $id, 'replyto'=> $parentId]);
+        //I need to package this in a JSON object.
+        $jsonReply = [];
+        foreach($items as $item){
+            $jsonReply[] = ['author' => $item->getAnonName(),
+                            'comment' => $item->getComment(),
+                            'subject' => $item->getSubject(),
+                            'id' => $item->getId()];
+        }
+        $theResponse =  new JsonResponse($jsonReply);
         return $theResponse;
     }
 

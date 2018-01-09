@@ -15,6 +15,7 @@ use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Symfony\Component\Templating\EngineInterface;
 use Zikula\Core\UrlInterface;
+use Zikula\UsersModule\Api\CurrentUserApi;
 
 
 /**
@@ -53,6 +54,7 @@ class UiHooksProvider  implements HookProviderInterface
      * @var RequestStack
      */
     private $requestStack;
+
 
 
     /**
@@ -116,13 +118,15 @@ class UiHooksProvider  implements HookProviderInterface
         }
         $is_admin = $this->permissionApi->hasPermission('EZComments::', '::', ACCESS_ADMIN);
         $url = $hook->getUrl()->getRoute();
-        $session = $this->requestStack->getCurrentRequest()->getSession();
 
         $owneruid = 0;
         $is_owner = false;
         $repo = $this->entityManager->getRepository('ZikulaEZCommentsModule:EZCommentsEntity');
-        $items = $repo->findAll(['modname' => $mod, 'id' => $id]);
-        //$items = ModUtil::apiFunc('EZComments', 'user', 'prepareCommentsForDisplay', $items);
+        //get the comments that correspond to this object, but only the parent ones (replyTo set to 0)
+        //child comments will be retrieved when the users opens the arrow
+        $items = $repo->findBy(['modname' => $mod, 'objectid' => $id, 'replyto'=> 0]);
+        //$items = $repo->getComments($mod, $id);
+
         $content = $this->templating->render('ZikulaEZCommentsModule:Hook:ezcomments_hook_uiview.html.twig',
             ['items' => $items,
               'isOwner' =>  $is_owner,
@@ -130,7 +134,7 @@ class UiHooksProvider  implements HookProviderInterface
                 'artId' => $id,
                 'module' => $mod,
                 'areaId' => $areaID,
-                'retUrl' => $url
+                'retUrl' => $url,
                 ]);
 
         $response = new DisplayHookResponse($this->getServiceId(), $content);
