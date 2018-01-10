@@ -150,11 +150,26 @@ class CommentController extends AbstractController
         $subject = $request->request->get('subject');
         $user= $request->request->get('user');
         $parentID = $request->request->get('parentID');
-        $ownerId = $this->get('zikula_users_module.current_user')->get('uid');
-
         $retRoute = $request->get('retUrl');
+
+        $ownerId = $this->get('zikula_users_module.current_user')->get('uid');
         $retURL = $this->generateUrl($retRoute) . "/$id";
         $response = $this->redirect($retURL);
+        $ipaddr = $request->getClientIp();
+        if($ownerId == 1){ //This happens when not logged in.
+            //this is not a logged in user.
+            $anonEmail = $request->request->get('anonEmail');
+            $anonWebsite = $request->request->get('anonWebsite');
+        } else {
+            $anonEmail = "";
+            $anonWebsite = "";
+        }
+
+        $this->_persistComment($id, $module, $areaId, $comment, $subject, $user, $parentID, $retURL, $ownerId, $ipaddr, $anonEmail, $anonWebsite);
+        return $response;
+    }
+
+    private function _persistComment($id, $module, $areaId, $comment, $subject, $user, $parentID, $retURL, $ownerId, $ipaddr, $anonEmail, $anonWebsite){
         $commentObj = new EZCommentsEntity();
         $commentObj->setUrl($retURL);
         $commentObj->setObjectid($id);
@@ -163,22 +178,14 @@ class CommentController extends AbstractController
         $commentObj->setAreaid($areaId);
         $commentObj->setComment($comment);
         $commentObj->setSubject($subject);
+        $commentObj->setOwnerid($ownerId);
         if(isset($parentID)){
             $commentObj->setReplyto($parentID);
         }
         //type is either trackback, pingback, or safe. Right now this is not implemented until Akismet is upated to 2.0
         $commentObj->setType("safe");
-        $ipaddr = $request->getClientIp();
         $commentObj->setIpaddr($ipaddr);
-        if($ownerId == 1){ //This happens when not logged in.
-            //this is not a logged in user.
-            $anonEmail = $request->request->get('anonEmail');
-            $anonWebsite = $request->request->get('anonWebsite');
-        } else {
-            $anonEmail = "";
-            $anonWebsite = "";
-            $commentObj->setOwnerid($ownerId);
-        }
+
         $commentObj->setAnonmail($anonEmail);
         $commentObj->setAnonwebsite($anonWebsite);
         $commentObj->setAnonname($user);
@@ -187,9 +194,42 @@ class CommentController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $em->persist($commentObj);
         $em->flush();
-        return $response;
     }
+    /**
+     * @Route("/setcomment", options={"expose"=true})
+     * @Method("POST")
+     * @param Request $request
+     * @return JsonResponse|FatalResponse|ForbiddenResponse bid or Ajax error
+     */
+    public function setcommentAction(Request $request){
+        $id = $request->query->get('artId');
+        $module = $request->query->get('module');
+        $areaId = $request->query->get('areaId');
+        $comment = $request->query->get('comment');
+        $subject = $request->query->get('subject');
+        $user= $request->query->get('user');
+        $parentID = $request->query->get('parentID');
+        $retRoute = $request->query->get('retUrl');
 
+        $ownerId = $this->get('zikula_users_module.current_user')->get('uid');
+        $retURL = $this->generateUrl($retRoute) . "/$id";
+        $ipaddr = $request->getClientIp();
+        if($ownerId == 1){ //This happens when not logged in.
+            //this is not a logged in user.
+            $anonEmail = $request->query->get('anonEmail');
+            $anonWebsite = $request->query->get('anonWebsite');
+        } else {
+            $anonEmail = "";
+            $anonWebsite = "";
+        }
+
+        $this->_persistComment($id, $module, $areaId, $comment, $subject, $user, $parentID, $retURL, $ownerId, $ipaddr, $anonEmail, $anonWebsite);
+        $jsonReply[] = ['author' => $user,
+            'comment' => $comment,
+            'subject' => $subject,
+            'id' => $id];
+        return  new JsonResponse($jsonReply);
+    }
     /**
      * @Route("/getreplies", options={"expose"=true})
      * @Method("GET")
@@ -202,7 +242,9 @@ class CommentController extends AbstractController
         $id = $request->query->get('id');
         $parentId = $request->query->get('parentId');
         $repo = $this->getDoctrine()->getManager()->getRepository('ZikulaEZCommentsModule:EZCommentsEntity');
-        $items = $repo->findBy(['modname' => $mod, 'objectid' => $id, 'replyto'=> $parentId]);
+        //find the child items to the root parent comment (parentID). Order them in ASC order
+        //todo: make the order user configurable.
+        $items = $repo->findBy(['modname' => $mod, 'objectid' => $id, 'replyto'=> $parentId], ['date' => 'DESC']);
         //I need to package this in a JSON object.
         $jsonReply = [];
         foreach($items as $item){
@@ -211,8 +253,7 @@ class CommentController extends AbstractController
                             'subject' => $item->getSubject(),
                             'id' => $item->getId()];
         }
-        $theResponse =  new JsonResponse($jsonReply);
-        return $theResponse;
+        return  new JsonResponse($jsonReply);
     }
 
     /**

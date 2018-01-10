@@ -16,13 +16,19 @@
                     {% endif %}
                 </p>
                 <p id="itemComment_{{ item.id }}">{{ item.comment }}</p>
+                <div id="itemChild_{{ item.id }}"></div>
                 <hr/>
             </div>
         {% else %}
             <div id="itemComment_{{ item.id }}">
                 <h3 id="itemSubject_{{ item.id }}">{{ item.subject }}</h3>
-                <p><i class="username" id="itemName_{{ item.id }}"> {{ item.anonname }}</i></p>
+                <p><i class="username" id="itemName_{{ item.id }}"> {{ item.anonname }}</i>
+                {% if item.replyto == 0 %}
+                    <span id="twiddle_{{ item.id }}" class="fa fa-toggle-left"></span>
+                {% endif %}
+                </p>
                 <p id="itemComment_{{ item.id }}">{{ item.comment }}</p>
+                <div id="itemChild_{{ item.id }}"></div>
                 <hr/>
             </div>
         {% endif %}
@@ -30,8 +36,8 @@
     {% endfor %}
 </div>
 <div class="comment_form">
-    <form action="{{ path('zikulaezcommentsmodule_comment_comment') }}" method="post"
-          enctype="application/x-www-form-urlencoded">
+    <form id="commentForm" action="{{ path('zikulaezcommentsmodule_comment_comment') }}" method="post"
+          enctype="application/x-www-form-urlencoded" class="noscriptbutton">
         <input type="hidden" name="artId" value="{{ artId }}">
         <input type="hidden" name="module" value="{{ module }}">
         <input type="hidden" name="retUrl" value="{{ retUrl }}">
@@ -67,7 +73,7 @@
 Place comment here.
             </textarea>
         <div class="form-group">
-            <button class="btn btn-success" type="submit" name="addComment" value="addComment">
+            <button id="addComment" class="btn btn-success" type="submit" name="addComment" value="addComment">
                 {{ __('Add comment') }}
             </button>
         </div>
