@@ -93,4 +93,17 @@ class EZCommentsEntityRepository extends EntityRepository
 
         return $results;
     }
+
+    /**
+     * deleteReplies
+     * Given a comment id, do a bulk delete of any replies.
+     * @param $commentId
+     * @return mixed
+     */
+    public function deleteReplies($commentId){
+        //This call may not delete any replies, that's just fine.
+        $q = $this->_em->createQuery("delete from 'ZikulaEZCommentsModule:EZCommentsEntity' m where m.replyto = " . $commentId);
+        $numDeleted = $q->execute();
+        return $numDeleted;
+    }
 }

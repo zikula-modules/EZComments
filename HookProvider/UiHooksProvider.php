@@ -119,8 +119,6 @@ class UiHooksProvider  implements HookProviderInterface
         $is_admin = $this->permissionApi->hasPermission('EZComments::', '::', ACCESS_ADMIN);
         $url = $hook->getUrl()->getRoute();
 
-        $owneruid = 0;
-        $is_owner = false;
         $repo = $this->entityManager->getRepository('ZikulaEZCommentsModule:EZCommentsEntity');
         //get the comments that correspond to this object, but only the parent ones (replyTo set to 0)
         //child comments will be retrieved when the users opens the arrow
@@ -129,7 +127,6 @@ class UiHooksProvider  implements HookProviderInterface
 
         $content = $this->templating->render('ZikulaEZCommentsModule:Hook:ezcomments_hook_uiview.html.twig',
             ['items' => $items,
-              'isOwner' =>  $is_owner,
               'isAdmin' =>  $is_admin,
                 'artId' => $id,
                 'module' => $mod,

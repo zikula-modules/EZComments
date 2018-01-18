@@ -7,37 +7,49 @@
 <div id="Comments">
     <h3>{{ __('Comments') }}</h3>
     {% for item in items %}
-        {% if currentUser.uid == item.ownerid %}
+        {% if currentUser.loggedin %}
             <div id="itemComment_{{ item.id }}">
                 <h3 id="itemSubject_{{ item.id }}">{{ item.subject }}</h3>
                 <p><i class="username" id="itemName_{{ item.id }}">{{ currentUser.uname }}</i>
                     {% if item.replyto == 0 %}
-                    <span id="twiddle_{{ item.id }}" class="fa fa-toggle-left"></span>
+                        <span id="twiddle_{{ item.id }}" title="View Replies" class="fa fa-toggle-left fa-lg"></span>
+                    {% endif %}
+                    {% if currentUser.uid == item.ownerid or isAdmin %}
+                        <span id="edit_{{ item.id }}" title="Edit Comment" class="fa fa-pencil fa-lg"></span>
+                        <span id="trash_{{ item.id }}" title="Delete Comment" class="fa fa-trash fa-lg"></span>
                     {% endif %}
                 </p>
                 <p id="itemComment_{{ item.id }}">{{ item.comment }}</p>
                 <div id="itemChild_{{ item.id }}"></div>
-                <hr/>
             </div>
         {% else %}
             <div id="itemComment_{{ item.id }}">
                 <h3 id="itemSubject_{{ item.id }}">{{ item.subject }}</h3>
                 <p><i class="username" id="itemName_{{ item.id }}"> {{ item.anonname }}</i>
-                {% if item.replyto == 0 %}
-                    <span id="twiddle_{{ item.id }}" class="fa fa-toggle-left"></span>
-                {% endif %}
+                    {% if item.replyto == 0 %}
+                        <span id="twiddle_{{ item.id }}" class="fa fa-toggle-left"></span>
+                    {% endif %}
                 </p>
                 <p id="itemComment_{{ item.id }}">{{ item.comment }}</p>
                 <div id="itemChild_{{ item.id }}"></div>
-                <hr/>
             </div>
         {% endif %}
         <hr/>
     {% endfor %}
+    <!-- add another divs comment section for JS to grab to add new comments dynamically -->
+    <div class="hidden itemComment">
+        <h3 id="itemSubject"></h3>
+        <p><i class="username" id="itemName"></i>
+            <span id="twiddle" title="View Replies" class="fa fa-toggle-left fa-lg"></span>
+            <span id="edit" title="Edit Comment" class="fa fa-pencil fa-lg"></span>
+            <span id="trash" title="Delete Comment" class="fa fa-trash fa-lg"></span>
+        </p>
+        <p id="itemComment"></p>
+    </div>
 </div>
 <div class="comment_form">
     <form id="commentForm" action="{{ path('zikulaezcommentsmodule_comment_comment') }}" method="post"
-          enctype="application/x-www-form-urlencoded" class="noscriptbutton">
+          enctype="application/x-www-form-urlencoded">
         <input type="hidden" name="artId" value="{{ artId }}">
         <input type="hidden" name="module" value="{{ module }}">
         <input type="hidden" name="retUrl" value="{{ retUrl }}">
@@ -73,8 +85,11 @@
 Place comment here.
             </textarea>
         <div class="form-group">
-            <button id="addComment" class="btn btn-success" type="submit" name="addComment" value="addComment">
+            <button id="addComment" type="submit" class="btn btn-success" name="addComment" value="addComment">
                 {{ __('Add comment') }}
+            </button>
+            <button type="reset" class="btn btn-default" name="reset_form" onclick="this.form.reset()">
+                {{ __('Reset') }}
             </button>
         </div>
     </form>

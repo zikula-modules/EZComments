@@ -117,44 +117,27 @@ class CommentController extends AbstractController
     }
 
     /**
-     * @Route("/jquery")
-     */
-    public function jqueryAction(){
-        return $this->render('ZikulaEZCommentsModule:Comment:ezcomments_comment_jquery.html.twig');
-    }
-    /**
      * @Route("/comment")
      * @param $request
-     *
-     *  This now will record the coment. I do have to add akismet support, but at least the comment gets recorded.
-     * todo:Add Akismet support
-     * Create a comment for a specific item
-     *
-     * This is a standard function that is called with the results of the
-     * form supplied by EZComments_user_view to create a new item
-     *
-     * @param $comment the comment (taken from HTTP put)
-     * @param $mod the name of the module the comment is for (taken from HTTP put)
-     * @param $objectid ID of the item the comment is for (taken from HTTP put)
-     * @param $redirect URL to return to (taken from HTTP put)
-     * @param $subject The subject of the comment (if any) (taken from HTTP put)
-     * @param $replyto The ID of the comment for which this an anser to (taken from HTTP put)
-     * @since 0.1
      */
     public function commentAction(Request $request)
     {
-        $id = $request->request->get('artId');
+        return $this->_persistComment($request, 'HTML');
+    }
+
+    private function _persistComment($request, $responseRet = 'JSON'){
+        $artId = $request->request->get('artId');
         $module = $request->request->get('module');
         $areaId = $request->request->get('areaId');
         $comment = $request->request->get('comment');
         $subject = $request->request->get('subject');
         $user= $request->request->get('user');
         $parentID = $request->request->get('parentID');
-        $retRoute = $request->get('retUrl');
+        $retRoute = $request->request->get('retUrl');
+        $id = $request->request->get('id');
 
         $ownerId = $this->get('zikula_users_module.current_user')->get('uid');
-        $retURL = $this->generateUrl($retRoute) . "/$id";
-        $response = $this->redirect($retURL);
+        $retURL = $this->generateUrl($retRoute) . "/$artId";
         $ipaddr = $request->getClientIp();
         if($ownerId == 1){ //This happens when not logged in.
             //this is not a logged in user.
@@ -165,14 +148,16 @@ class CommentController extends AbstractController
             $anonWebsite = "";
         }
 
-        $this->_persistComment($id, $module, $areaId, $comment, $subject, $user, $parentID, $retURL, $ownerId, $ipaddr, $anonEmail, $anonWebsite);
-        return $response;
-    }
+        $em = $this->getDoctrine()->getManager();
+        $commentObj = null;
+        if(isset($id)){
+            $commentObj = $em->getRepository('ZikulaEZCommentsModule:EZCommentsEntity')->findOneBy(['id' => $id]);
+        } else {
+            $commentObj = new EZCommentsEntity();
+        }
 
-    private function _persistComment($id, $module, $areaId, $comment, $subject, $user, $parentID, $retURL, $ownerId, $ipaddr, $anonEmail, $anonWebsite){
-        $commentObj = new EZCommentsEntity();
         $commentObj->setUrl($retURL);
-        $commentObj->setObjectid($id);
+        $commentObj->setObjectid($artId);
         $commentObj->setAreaid($areaId);
         $commentObj->setModname($module);
         $commentObj->setAreaid($areaId);
@@ -191,9 +176,23 @@ class CommentController extends AbstractController
         $commentObj->setAnonname($user);
 
         //Now record the comment
-        $em = $this->getDoctrine()->getManager();
         $em->persist($commentObj);
         $em->flush();
+        //If this has come from a JSON response, then return the data to be inserted into the form
+        //else this is coming from an HTML POST request. Then return a redirect response
+        if($responseRet = 'JSON'){
+            $jsonReply[] = ['author' => $user,
+                'comment' => $comment,
+                'subject' => $subject,
+                'artId' => $artId,
+                'id' => $commentObj->getId(),
+                'parentID' => $parentID,
+                'uid' => $commentObj->getOwnerid()];
+
+            return  new JsonResponse($jsonReply);
+        } else {
+            return $this->redirect($retURL);
+        }
     }
     /**
      * @Route("/setcomment", options={"expose"=true})
@@ -202,34 +201,22 @@ class CommentController extends AbstractController
      * @return JsonResponse|FatalResponse|ForbiddenResponse bid or Ajax error
      */
     public function setcommentAction(Request $request){
-        $id = $request->query->get('artId');
-        $module = $request->query->get('module');
-        $areaId = $request->query->get('areaId');
-        $comment = $request->query->get('comment');
-        $subject = $request->query->get('subject');
-        $user= $request->query->get('user');
-        $parentID = $request->query->get('parentID');
-        $retRoute = $request->query->get('retUrl');
-
-        $ownerId = $this->get('zikula_users_module.current_user')->get('uid');
-        $retURL = $this->generateUrl($retRoute) . "/$id";
-        $ipaddr = $request->getClientIp();
-        if($ownerId == 1){ //This happens when not logged in.
-            //this is not a logged in user.
-            $anonEmail = $request->query->get('anonEmail');
-            $anonWebsite = $request->query->get('anonWebsite');
-        } else {
-            $anonEmail = "";
-            $anonWebsite = "";
-        }
-
-        $this->_persistComment($id, $module, $areaId, $comment, $subject, $user, $parentID, $retURL, $ownerId, $ipaddr, $anonEmail, $anonWebsite);
-        $jsonReply[] = ['author' => $user,
-            'comment' => $comment,
-            'subject' => $subject,
-            'id' => $id];
-        return  new JsonResponse($jsonReply);
+        return $this->_persistComment($request);
     }
+
+    /**
+     * @Route("/getuserid", options={"expose"=true})
+     * @Method("GET")
+     * @param Request $request
+     * @return JsonResponse|FatalResponse|ForbiddenResponse bid or Ajax error
+     */
+    public function getuseridAction(Request $request){
+        $currentUserApi = $this->get('zikula_users_module.current_user');
+        $uid = $currentUserApi->get('uid');
+        $jsonReply = ['uid' => $uid];
+        return new JsonResponse($jsonReply);
+    }
+
     /**
      * @Route("/getreplies", options={"expose"=true})
      * @Method("GET")
@@ -247,94 +234,48 @@ class CommentController extends AbstractController
         $items = $repo->findBy(['modname' => $mod, 'objectid' => $id, 'replyto'=> $parentId], ['date' => 'DESC']);
         //I need to package this in a JSON object.
         $jsonReply = [];
+
         foreach($items as $item){
             $jsonReply[] = ['author' => $item->getAnonName(),
                             'comment' => $item->getComment(),
                             'subject' => $item->getSubject(),
-                            'id' => $item->getId()];
+                            'id' => $item->getId(),
+                            'uid' => $item->getOwnerid()];
         }
         return  new JsonResponse($jsonReply);
     }
 
     /**
-     * @Route("/threadcomments/{comments}")
-     * @param $request
-     * @param  $comments
-     *
-     * Sort comments by thread
-     *
-     * @param $comments An array of comments
-     * @return array The sorted array
-     * @since 0.2
+     * @Route("/deletecomment", options={"expose"=true})
+     * @Method("POST")
+     * @param Request $request
+     * @return JsonResponse|FatalResponse|ForbiddenResponse bid or Ajax error
      */
-    private function threadCommentsAction(Request $request, EZCommentsEntity $comments)
+    public function deletecommentAction(Request $request)
     {
-        return $this->displayChildren($comments, -1, 0);
-    }
-
-    /**
-     * Get all child comments
-     *
-     * This function returns all child comments to a given comment.
-     * It is called recursively
-     *
-     * @param $comments An array of comments
-     * @param $id The id of the parent comment
-     * @param $level The indentation level
-     * @return array The sorted array
-     * @access private
-     * @since 0.2
-     */
-    private function displayChildren(EZCommentsEntity $comments, $id, $level)
-    {
-        /*$childs = array();
-        foreach ($comments as $comment)
-        {
-            if ($comment['replyto'] == $id) {
-                $comment['level'] = $level;
-                $childs[] = $comment;
-                $childs = array_merge($childs, $this->displayChildren($comments, $comment['id'], $level+1));
-            }
+        $commentId = $request->request->get('commentId');
+        $userId = $request->request->get('uid');
+        if(!isset($commentId) || !isset($userId)){
+            return new ForbiddenResponse($this->__('Access Denied'));
         }
+        $repo = $this->getDoctrine()->getManager()->getRepository('ZikulaEZCommentsModule:EZCommentsEntity');
+        //find the comment
+        $comment = $repo->findOneBy(['id' => $commentId]);
 
-        return $childs;*/
-    }
-
-
-    /**
-     * @Route("/modify/{comment}")
-     *
-     * Modify a comment
-     *
-     * This is a standard function that is called whenever an comment owner
-     * wishes to modify a comment
-     *
-     * @param  tid the id of the comment to be modified
-     * @return string the modification page
-     */
-    public function modifyAction(Request $request, EZCommentsEntity $comment)
-    {
-        /*// get our input
-        $id = isset($args['id']) ? $args['id'] : FormUtil::getPassedValue('id', null, 'GETPOST');
-
-        // Security check
-        $securityCheck = ModUtil::apiFunc('EZComments', 'user', 'checkPermission',
-                                      array('module'    => '',
-                                            'objectid'  => '',
-                                            'commentid' => $id,
-                                            'level'     => ACCESS_EDIT));
-        if (!$securityCheck) {
-            $redirect = base64_decode(FormUtil::getPassedValue('redirect'));
-            if (!isset($redirect)) {
-                $redirect = System::getHomepageUrl();
+        $jsonReply = ['comdel' => false];
+        if(null != $comment) {
+            if($userId != $comment->getOwnerId()){
+                return new ForbiddenResponse($this->__('Access Denied'));
             }
-            return LogUtil::registerPermissionError($redirect);
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($comment);
+            //we may need to get rid of replies, do it
+            $repo->deleteReplies($commentId);
+            $em->flush();
+            $jsonReply = ['comdel' => true,
+                            'id' => $commentId];
         }
-
-        // Create Form output object
-        $render = FormUtil::newForm('EZComments', $this);
-
-        // Return the output that has been generated by this function
-        return $render->execute("ezcomments_user_modify.tpl", new EZComments_Form_Handler_User_Modify());*/
+        return new JsonResponse($jsonReply);
     }
+
 }
