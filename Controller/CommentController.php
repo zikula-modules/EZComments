@@ -133,11 +133,10 @@ class CommentController extends AbstractController
         $subject = $request->request->get('subject');
         $user= $request->request->get('user');
         $parentID = $request->request->get('parentID');
-        $retRoute = $request->request->get('retUrl');
+        $retURL = $request->request->get('retUrl');
         $id = $request->request->get('id');
 
         $ownerId = $this->get('zikula_users_module.current_user')->get('uid');
-        $retURL = $this->generateUrl($retRoute) . "/$artId";
         $ipaddr = $request->getClientIp();
         if($ownerId == 1){ //This happens when not logged in.
             //this is not a logged in user.
@@ -150,8 +149,10 @@ class CommentController extends AbstractController
 
         $em = $this->getDoctrine()->getManager();
         $commentObj = null;
+        $isEdit = false;
         if(isset($id)){
             $commentObj = $em->getRepository('ZikulaEZCommentsModule:EZCommentsEntity')->findOneBy(['id' => $id]);
+            $isEdit = true;
         } else {
             $commentObj = new EZCommentsEntity();
         }
@@ -187,7 +188,8 @@ class CommentController extends AbstractController
                 'artId' => $artId,
                 'id' => $commentObj->getId(),
                 'parentID' => $parentID,
-                'uid' => $commentObj->getOwnerid()];
+                'uid' => $commentObj->getOwnerid(),
+                'isEdit' => $isEdit];
 
             return  new JsonResponse($jsonReply);
         } else {

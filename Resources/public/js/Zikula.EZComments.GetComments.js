@@ -87,7 +87,7 @@
                 }
 
                 //add the event to the button
-                this.hookUpCommentButton(commentForm, this.currentId, "c");
+                this.hookUpCommentButton(commentForm, this.currentId);
 
                 commentForm.find("form").prepend("<input type=\"hidden\" name=\"parentID\" value=\"" + this.currentId + "\" />");
                 commentForm.attr("id", "comment_" + this.currentId);
@@ -107,32 +107,26 @@
             //at the bottom, it will have a id of addComment (10 char)
             var itemName = evt.currentTarget.id;
             var itemLen = itemName.length;
-            var parentId = 0;
             var id = -1;
             var form;
             //we need to figure out where the form is. If it is at the bottom,
-            //The form will have no addition. If it had a c, it is a child form
-            //if it is a p, it is a parent form.
+            //The form will have no addition.
             if (itemLen > 10) {
-                var relation = itemName.substring(11, 12);
-                //if it is c, then this is a child element and we are
-                //adding a comment. If it is not, then this is a parent element
-                //and we are editing a comment
-                if (relation === 'c'){
-                    parentId = itemName.substring(13, itemLen);
-                } else {
-                    id = itemName.substring(13, itemLen);
-                }
+                id = itemName.substring(11, itemLen);
             }
             //get the correct form. When we pull down an arrow, the accompanying form
             //is stored in our commentForms object with a matching parentId
             //if this is the parent form (the parentId won't exist) then its already in $comForm
             var currForm = this.$comForm;
             if(parentId > 0){
-                currForm = this.commentForms[parentId + 'c'];
+                currForm = this.commentForms[parentId];
             }
             if(id !== -1){
-                currForm = this.commentForms[id + 'p'];
+                currForm = this.commentForms[id];
+            }
+            var parentId = currForm.find("input[name=parentID]").attr("value");
+            if(parentId === undefined){
+                parentId = 0;
             }
             //Send off the data.
             this.sendAjax(
@@ -188,6 +182,12 @@
             } else {
                 currForm.before(divBlock);
             }
+            if(result[0].isEdit){
+                //this was an edit so we need to remove the commentform.
+                var targetForm = this.commentForms[result[0].id];
+                targetForm.remove();
+                delete this.commentForms[result[0].id];
+            }
 
         },
         hookUpButtons: function(target, result){
@@ -210,9 +210,9 @@
             }
         },
 
-        hookUpCommentButton: function(target, id, relation){
+        hookUpCommentButton: function(target, id){
             var comment = target.find('button[id^=addComment]');
-            comment.attr('id', 'addComment_' + relation + '_' + id);
+            comment.attr('id', 'addComment_' + id);
             comment.on('click', this.addComment.bind(this));
 
         },
