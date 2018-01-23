@@ -257,7 +257,9 @@
             comForm.find("textarea[name=comment]").text(comment);
             comForm.find("input[name=subject]").attr('value', subject);
             this.hookUpCommentButton(comForm, id, 'p');
-
+I am getting there with this. The first time you edit somthing it puts it in the right placeholder
+            and returnd everything to where it should be. However, if you try to reedit, it adds the form in
+                wrong. Check this routine upon reediting
             var form = comForm.find('form');
             form.prepend('<input name="id" type="hidden" value="' + id + '" />');
             var itemChild = divBlock.find("div[id^=itemChild_" + id + "]");
@@ -265,7 +267,12 @@
             divBlock.empty();
             //insert the comForm
             divBlock.append(comForm);
-            if(itemChild) {
+            if(itemChild.length === 0) {
+                var parentName = divBlock.parent().attr('id');
+                var parentID = parentName.substring(8, parentName.length);
+                //if there is no itemchild, then this is a subthread and we need to mark the parentID
+                form.prepend('<input name="parentID" type="hidden" value="' + parentID + '" />');
+            } else {
                 divBlock.append(itemChild);
             }
             this.commentForms[id] = comForm;
