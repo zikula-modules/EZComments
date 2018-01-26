@@ -33,7 +33,6 @@
             this.$addCommentButton.on('click', this.addComment.bind(this));
             this.$deleteButton.on('click', this.deleteComment.bind(this));
             this.$editButton.on('click', this.editComment.bind(this));
-
         },
 
         getUserId: function(){
@@ -154,6 +153,7 @@
         addCommentCallback: function(result, textStatus, jqXHR){
             //We need to grab the data out of the response and put it in a new div block and add
             //it to the page
+
             var len = result.length;
             var divBlock = this.$divCommentBlock.clone();
             var subject = divBlock.find('h3[id=itemSubject]').text(result[0].subject);
@@ -186,6 +186,9 @@
                 //this was an edit so we need to remove the commentform.
                 var targetForm = this.commentForms[result[0].id];
                 targetForm.remove();
+                //get rid of the empty, duplicate div that gets created
+                var doomedDiv = currForm.find("div[id=itemComment_" + result[0].id + "]").first();
+                doomedDiv.remove();
                 delete this.commentForms[result[0].id];
             }
 
@@ -257,16 +260,14 @@
             comForm.find("textarea[name=comment]").text(comment);
             comForm.find("input[name=subject]").attr('value', subject);
             this.hookUpCommentButton(comForm, id, 'p');
-I am getting there with this. The first time you edit somthing it puts it in the right placeholder
-            and returnd everything to where it should be. However, if you try to reedit, it adds the form in
-                wrong. Check this routine upon reediting
+
             var form = comForm.find('form');
             form.prepend('<input name="id" type="hidden" value="' + id + '" />');
             var itemChild = divBlock.find("div[id^=itemChild_" + id + "]");
             //remove all the old elements
             divBlock.empty();
             //insert the comForm
-            divBlock.append(comForm);
+            divBlock.prepend(comForm);
             if(itemChild.length === 0) {
                 var parentName = divBlock.parent().attr('id');
                 var parentID = parentName.substring(8, parentName.length);
@@ -289,7 +290,7 @@ I am getting there with this. The first time you edit somthing it puts it in the
             $.ajax(theRoute, options);
         },
         ajaxError: function(jqXHR, textStatus, errorThrown){
-
+            window.alert(textStatus + "\n" +errorThrown);
         },
     };
 })(jQuery);

@@ -18,7 +18,9 @@ use Zikula\EZCommentsModule\Entity\Repository\EZCommentsEntityRepository;
 /**
  * @Route("/admin")
  */
-
+/* todo: Stopped here. The commenting interface is done. I need to do the admin interface.
+From just scanning this it looks like I can get rid of a bunch of it.
+Rethink what really needs to be displayed.*/
 class AdminController extends AbstractController
 {
     /**
