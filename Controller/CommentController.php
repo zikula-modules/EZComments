@@ -10,20 +10,14 @@ namespace Zikula\EZCommentsModule\Controller;
  * @license See license.txt
  */
 
+use Zikula\Core\Response\Ajax\ForbiddenResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Zikula\Core\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotations - do not remove
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Zikula\Component\SortableColumns\Column;
-use Zikula\Core\Response\Ajax\ForbiddenResponse;
-use Zikula\Bundle\HookBundle\Hook\ProcessHook;
 use Zikula\EZCommentsModule\Entity\EZCommentsEntity;
-use Zikula\EZCommentsModule\ZikulaEZCommentsModule;
+
 
 class CommentController extends AbstractController
 {
@@ -32,88 +26,12 @@ class CommentController extends AbstractController
      * Return to index page
      *
      * This is the default function called when EZComments is called
-     * as a module. As we do not intend to output anything, we just
-     * redirect to the start page.
-     *
-     * @since 0.2
+     * as a module. As we do not intend to output anything for users, we just
+     * redirect to the admin page.
      */
     public function indexAction()
     {
-        /*if (!UserUtil::isLoggedIn()) {
-            return System::redirect(System::getHomepageUrl());
-        }
-
-        // the following code was taken from the admin interface first and modified
-        // that only own comments are shown on the overview page.
-
-        // get user id
-        $uid = isset($args['uid']) ? $args['uid'] : FormUtil::getPassedValue('uid', UserUtil::getVar('uid'), 'GETPOST');
-        // get the status filter
-        $status = isset($args['status']) ? $args['status'] : FormUtil::getPassedValue('status', -1, 'GETPOST');
-        if (!isset($status) || !is_numeric($status) || $status < -1 || $status > 2) {
-            $status = -1;
-        }
-
-        // presentation values
-        $startnum = isset($args['startnum']) ? $args['startnum'] : FormUtil::getPassedValue('startnum', null, 'GETPOST');
-        $itemsperpage = $this->getVar('itemsperpage');
-
-        // call the api to get all current comments that are from the user or the user's content
-        $params = array('startnum' => $startnum,
-                        'numitems' => $itemsperpage,
-                        'status'   => $status,
-                        'owneruid' => $uid,
-                        'uid'      => $uid);
-
-        $items = ModUtil::apiFunc('EZComments', 'user', 'getall', $params);
-
-        if ($items === false) {
-            return LogUtil::registerError($this->__('Internal Error.'));
-        }
-
-        // loop through each item adding the relevant links
-        foreach ($items as $k => $item)
-        {
-            // strip domain (if mobile/desktop differ)
-            $urlparts = parse_url($item['url']);
-            $item['url'] = $urlparts['path'].'?'.$urlparts['query'];
-
-            $options   = array();
-            $options[] = array('url'   => $item['url'] . '#comment' . $item['id'],
-                               'image' => 'kview.png',
-                               'title' => $this->__('View'));
-
-            // Security check
-            $securityCheck = ModUtil::apiFunc('EZComments', 'user', 'checkPermission',
-                                          array('module'    => '',
-                                                'objectid'  => '',
-                                                'commentid' => $item['id'],
-                                                'uid'       => $item['uid'],
-                                                'owneruid'  => $item['owneruid'],
-                                                'level'     => ACCESS_EDIT));
-
-            if ($securityCheck) {
-                $options[] = array('url'   => ModUtil::url('EZComments', 'user', 'modify', array('id' => $item['id'])),
-                                   'image' => 'xedit.png',
-                                   'title' => $this->__('Edit'));
-            }
-
-            $items[$k]['options'] = $options;
-        }
-
-        $numberOfItems = ModUtil::apiFunc('EZComments', 'user', 'countitems', $params);
-
-        $this->view->setCaching(false); // don't use caching, not so important as only registered users can see this page
-
-        // assign collected data to the template
-        $this->view->assign(ModUtil::getVar('EZComments'))
-                   ->assign('items',  $items)
-                   ->assign('status', $status)
-                   ->assign('ezc_pager', array('numitems'     => $numberOfItems,
-                                               'itemsperpage' => $itemsperpage));
-
-        // Return the output
-        return $this->view->fetch('ezcomments_user_main.tpl');*/
+        return $this->redirect($this->generateUrl('zikulaezcomments_admin_index'));
     }
 
     /**
@@ -122,6 +40,9 @@ class CommentController extends AbstractController
      */
     public function commentAction(Request $request)
     {
+        if (!$this->hasPermission($this->name . '::', '::', ACCESS_COMMENT)) {
+            return new ForbiddenResponse($this->__('Access forbidden since you cannot add comments.'));
+        }
         return $this->_persistComment($request, 'HTML');
     }
 
@@ -142,6 +63,7 @@ class CommentController extends AbstractController
             //this is not a logged in user.
             $anonEmail = $request->request->get('anonEmail');
             $anonWebsite = $request->request->get('anonWebsite');
+
         } else {
             $anonEmail = "";
             $anonWebsite = "";
@@ -203,6 +125,9 @@ class CommentController extends AbstractController
      * @return JsonResponse|FatalResponse|ForbiddenResponse bid or Ajax error
      */
     public function setcommentAction(Request $request){
+        if (!$this->hasPermission($this->name . '::', '::', ACCESS_COMMENT)) {
+            return new ForbiddenResponse($this->__('Access forbidden since you cannot add comments.'));
+        }
         return $this->_persistComment($request);
     }
 
@@ -213,6 +138,9 @@ class CommentController extends AbstractController
      * @return JsonResponse|FatalResponse|ForbiddenResponse bid or Ajax error
      */
     public function getuseridAction(Request $request){
+        if (!$this->hasPermission($this->name . '::', '::', ACCESS_READ)) {
+            return new ForbiddenResponse($this->__('Access forbidden since you cannot read comments.'));
+        }
         $currentUserApi = $this->get('zikula_users_module.current_user');
         $uid = $currentUserApi->get('uid');
         $jsonReply = ['uid' => $uid];
@@ -227,6 +155,9 @@ class CommentController extends AbstractController
      */
 
     public function getrepliesAction(Request $request){
+        if (!$this->hasPermission($this->name . '::', '::', ACCESS_READ)) {
+            return new ForbiddenResponse($this->__('Access forbidden since you cannot read comments.'));
+        }
         $mod = $request->query->get('module');
         $id = $request->query->get('id');
         $parentId = $request->query->get('parentId');
@@ -255,6 +186,9 @@ class CommentController extends AbstractController
      */
     public function deletecommentAction(Request $request)
     {
+        if (!$this->hasPermission($this->name . '::', '::', ACCESS_DELETE)) {
+            return new ForbiddenResponse($this->__('Access forbidden since you cannot delete comments.'));
+        }
         $commentId = $request->request->get('commentId');
         $userId = $request->request->get('uid');
         if(!isset($commentId) || !isset($userId)){

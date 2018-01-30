@@ -1,4 +1,48 @@
+{{ pageAddAsset('javascript', zasset('jquery-ui/jquery-ui.js')) }}
+{{ pageAddAsset('stylesheet', asset('jquery-ui/themes/base/jquery-ui.min.css')) }}
+{{ pageAddAsset('stylesheet', zasset('@ZikulaEZCommentsModule:css/style.css')) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaEZCommentsModule:js/Zikula.EZComments.tablesorter.js')) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaEZCommentsModule:js/jquery.tablesorter.combined.js')) }}
+{{ render(controller('ZikulaAdminModule:Admin:adminheader')) }}
 <div>
-
-    <p>This is the index file. Ain't it grand</p>
+    <div class="row">
+        <h3> {{ __('Current Comments') }}</h3>
+        <table id="tableToSort" class="table table-striped">
+            <thead>
+            <tr>
+                <th id="id">{{ __('id') }}</th>
+                <th id="moduleName">{{ __('Module Name') }}</th>
+                <th id="moduleId"> {{ __('Module id') }} </th>
+                <th id="subject">{{ __('Subject') }}</th>
+                <th id="comment">{{ __('Comment') }}</th>
+                <th id="userId">{{ __('User id') }}</th>
+                <th id="date">{{ __('Date') }}</th>
+                <th id="name">{{ __('Name') }}</th>
+                <th id="aEmail">{{ __('Anon Email') }}</th>
+                <th id="aWebSite">{{ __('Anon Web Site') }}</th>
+                <th>{{ __('Actions') }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in items %}
+                <tr id="{{ item.id }}">
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.modname }}</td>
+                    <td> {{ item.objectid }} </td>
+                    <td>{{ item.subject }}</td>
+                    <td>{{ item.comment|truncate(30) }}</td>
+                    <td>{{ item.ownerId }}</td>
+                    <td>{{ item.date|date("m/d/Y") }}</td>
+                    <td>{{ item.anonname }}</td>
+                    <td>{{ item.anonmail }}</td>
+                    <td>{{ item.anonwebsite }}</td>
+                    <td><a href="" class="fa fa-eye"></a>&nbsp;
+                        <a href="{{ path('zikulaezcommentsmodule_admin_edit', {'comment' : item.id}) }}"
+                           class="fa fa-pencil"></a>&nbsp;
+                        <span id="delete_{{ item.id }}" class="fa fa-trash"></span></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
