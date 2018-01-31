@@ -47,20 +47,35 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/edit/{comment}", options={"expose"=true})
-     *
+     * @Route("/edit", options={"expose"=true})
+     * @Method("POST")
      * @param request
+     * @return JsonResponse|FatalResponse|ForbiddenResponse bid or Ajax error
+     *
      * Modify a comment
-     *
      * This is a standard function that is called whenever an administrator
-     * wishes to modify a comment
+     * wishes to modify a comment. This returns the comment data for editing
+     * Should I provide this functionality? This could be abused.
      *
-     * @param  comment  the comment to modify
-     * @return string the modification page
      */
-    public function editAction(Request $request, EZCommentsEntity $comment)
+    public function editAction(Request $request)
     {
+        $id = $request->request->get('id');
+        if (!$this->hasPermission($this->name . '::', $id . "::", ACCESS_EDIT)) {
+            return new ForbiddenResponse($this->__('Access forbidden since you cannot delete comments.'));
+        }
+        $em = $this->getDoctrine()->getManager();
+        $comment = $em->find('ZikulaEZCommentsModule:EZCommentsEntity', $id);
+        if(null === $comment){
+            return new FatalResponse($this->__('That comment for some reason does not exist.'));
+        }
+        $jsonReply = [
+            'comment' => $comment->getComment(),
+            'subject' => $comment->getSubject(),
+            'id' => $id,
+        ];
 
+        return new JsonResponse($jsonReply);
     }
 
     /**
@@ -99,7 +114,6 @@ class AdminController extends AbstractController
         return new JsonResponse($jsonReply);
     }
 
-
     /**
      * @Route("/modifyconfig")
      * @param $reqeust
@@ -136,6 +150,7 @@ class AdminController extends AbstractController
      */
     public function commentStatsAction(Request $request)
     {
+
     }
 
     /**

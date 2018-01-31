@@ -26,19 +26,18 @@
             <tbody>
             {% for item in items %}
                 <tr id="{{ item.id }}">
-                    <td>{{ item.id }}</td>
-                    <td>{{ item.modname }}</td>
-                    <td> {{ item.objectid }} </td>
-                    <td>{{ item.subject }}</td>
-                    <td>{{ item.comment|truncate(30) }}</td>
-                    <td>{{ item.ownerId }}</td>
-                    <td>{{ item.date|date("m/d/Y") }}</td>
-                    <td>{{ item.anonname }}</td>
-                    <td>{{ item.anonmail }}</td>
-                    <td>{{ item.anonwebsite }}</td>
-                    <td><a href="" class="fa fa-eye"></a>&nbsp;
-                        <a href="{{ path('zikulaezcommentsmodule_admin_edit', {'comment' : item.id}) }}"
-                           class="fa fa-pencil"></a>&nbsp;
+                    <td id="id_{{ item.id }}">{{ item.id }}</td>
+                    <td id="modname_{{ item.id}}">{{ item.modname }}</td>
+                    <td id="objectid_{{ item.id}}"> {{ item.objectid }} </td>
+                    <td id="subject_{{ item.id}}">{{ item.subject }}</td>
+                    <td id="comment_{{ item.id}}">{{ item.comment|truncate(30) }}</td>
+                    <td id="ownerId_{{ item.id }}">{{ item.ownerId }}</td>
+                    <td id="date_{{ item.id }}">{{ item.date|date("m/d/Y") }}</td>
+                    <td id="name_{{ item.id }}">{{ item.anonname }}</td>
+                    <td id="email_{{ item.id}}">{{ item.anonmail }}</td>
+                    <td id="website_{{ item.id}}">{{ item.anonwebsite }}</td>
+                    <td><a href="{{ item.url }}#itemComment_{{ item.id }}"  class="fa fa-eye"></a>&nbsp;
+                        &nbsp;<span id="edit_{{ item.id }}" class="fa fa-pencil"></span>
                         <span id="delete_{{ item.id }}" class="fa fa-trash"></span></td>
                 </tr>
             {% endfor %}
