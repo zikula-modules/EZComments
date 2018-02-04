@@ -47,27 +47,10 @@ class CommentController extends AbstractController
     }
 
     private function _persistComment($request, $responseRet = 'JSON'){
-        $artId = $request->request->get('artId');
-        $module = $request->request->get('module');
-        $areaId = $request->request->get('areaId');
+        $id = $request->request->get('id');
         $comment = $request->request->get('comment');
         $subject = $request->request->get('subject');
         $user= $request->request->get('user');
-        $parentID = $request->request->get('parentID');
-        $retURL = $request->request->get('retUrl');
-        $id = $request->request->get('id');
-
-        $ownerId = $this->get('zikula_users_module.current_user')->get('uid');
-        $ipaddr = $request->getClientIp();
-        if($ownerId == 1){ //This happens when not logged in.
-            //this is not a logged in user.
-            $anonEmail = $request->request->get('anonEmail');
-            $anonWebsite = $request->request->get('anonWebsite');
-
-        } else {
-            $anonEmail = "";
-            $anonWebsite = "";
-        }
 
         $em = $this->getDoctrine()->getManager();
         $commentObj = null;
@@ -77,27 +60,41 @@ class CommentController extends AbstractController
             $isEdit = true;
         } else {
             $commentObj = new EZCommentsEntity();
-        }
+            $artId = $request->request->get('artId');
+            $module = $request->request->get('module');
+            $areaId = $request->request->get('areaId');
+            $parentID = $request->request->get('parentID');
+            $retURL = $request->request->get('retUrl');
+            $ipaddr = $request->getClientIp();
+            $ownerId = $this->get('zikula_users_module.current_user')->get('uid');
+            if($ownerId == 1){ //This happens when not logged in.
+                //this is not a logged in user.
+                $anonEmail = $request->request->get('anonEmail');
+                $anonWebsite = $request->request->get('anonWebsite');
 
-        $commentObj->setUrl($retURL);
-        $commentObj->setObjectid($artId);
-        $commentObj->setAreaid($areaId);
-        $commentObj->setModname($module);
-        $commentObj->setAreaid($areaId);
+            } else {
+                $anonEmail = "";
+                $anonWebsite = "";
+            }
+            $commentObj->setUrl($retURL);
+            $commentObj->setObjectid($artId);
+            $commentObj->setAreaid($areaId);
+            $commentObj->setModname($module);
+            $commentObj->setAreaid($areaId);
+            $commentObj->setOwnerid($ownerId);
+            if(isset($parentID)){
+                $commentObj->setReplyto($parentID);
+            }
+            //type is either trackback, pingback, or safe. Right now this is not implemented until Akismet is upated to 2.0
+            $commentObj->setType("safe");
+            $commentObj->setIpaddr($ipaddr);
+
+            $commentObj->setAnonmail($anonEmail);
+            $commentObj->setAnonwebsite($anonWebsite);
+            $commentObj->setAnonname($user);
+        }
         $commentObj->setComment($comment);
         $commentObj->setSubject($subject);
-        $commentObj->setOwnerid($ownerId);
-        if(isset($parentID)){
-            $commentObj->setReplyto($parentID);
-        }
-        //type is either trackback, pingback, or safe. Right now this is not implemented until Akismet is upated to 2.0
-        $commentObj->setType("safe");
-        $commentObj->setIpaddr($ipaddr);
-
-        $commentObj->setAnonmail($anonEmail);
-        $commentObj->setAnonwebsite($anonWebsite);
-        $commentObj->setAnonname($user);
-
         //Now record the comment
         $em->persist($commentObj);
         $em->flush();
@@ -107,9 +104,9 @@ class CommentController extends AbstractController
             $jsonReply[] = ['author' => $user,
                 'comment' => $comment,
                 'subject' => $subject,
-                'artId' => $artId,
+                'artId' => $commentObj->getObjectid(),
                 'id' => $commentObj->getId(),
-                'parentID' => $parentID,
+                'parentID' => $commentObj->getReplyto(),
                 'uid' => $commentObj->getOwnerid(),
                 'isEdit' => $isEdit];
 
