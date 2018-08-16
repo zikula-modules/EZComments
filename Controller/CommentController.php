@@ -149,6 +149,9 @@ class CommentController extends AbstractController
      * @Method("GET")
      * @param Request $request
      * @return JsonResponse|FatalResponse|ForbiddenResponse bid or Ajax error
+     *
+     * Grab all comments associated with this module and item ID and return them to the caller
+     * The caller is a javascript, see the javascripts in Resources/public/js directory
      */
 
     public function getrepliesAction(Request $request){
@@ -162,7 +165,7 @@ class CommentController extends AbstractController
         //find the child items to the root parent comment (parentID). Order them in ASC order
         //todo: make the order user configurable.
         $items = $repo->findBy(['modname' => $mod, 'objectid' => $id, 'replyto'=> $parentId], ['date' => 'DESC']);
-        //I need to package this in a JSON object.
+        //Package this in a JSON object.
         $jsonReply = [];
 
         foreach($items as $item){
@@ -183,11 +186,15 @@ class CommentController extends AbstractController
      */
     public function deletecommentAction(Request $request)
     {
-        if (!$this->hasPermission($this->name . '::', '::', ACCESS_DELETE)) {
+        //get the current user
+        $currentUserApi = $this->get('zikula_users_module.current_user');
+        $uid = $currentUserApi->get('uid');
+        $userId = $request->request->get('uid');
+        //if the user ID does not match or you do not have delete access, then you don't have permission.
+        if(($uid != $userId) && (!$this->hasPermission($this->name . '::', '::', ACCESS_DELETE)) ){
             return new ForbiddenResponse($this->__('Access forbidden since you cannot delete comments.'));
         }
         $commentId = $request->request->get('commentId');
-        $userId = $request->request->get('uid');
         if(!isset($commentId) || !isset($userId)){
             return new ForbiddenResponse($this->__('Access Denied'));
         }
