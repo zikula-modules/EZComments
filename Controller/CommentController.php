@@ -55,7 +55,7 @@ class CommentController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $commentObj = null;
         $isEdit = false;
-        if(isset($id)){
+        if(isset($id) && ($id != 0)){
             $commentObj = $em->getRepository('ZikulaEZCommentsModule:EZCommentsEntity')->findOneBy(['id' => $id]);
             $isEdit = true;
         } else {

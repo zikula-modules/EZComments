@@ -9,8 +9,9 @@
         ajaxSettings: {
             dataType: "json",
             error: this.ajaxError,
-            timeout:10000
-            },
+            timeout: 10000,
+            cache:false
+        },
         init: function () {
             //the action will be removed if JS is enabled. Otherwise it will be there.
             //so that the comment when JS is turned off
@@ -21,15 +22,15 @@
         },
         cacheDom: function () {
             this.$comForm = $("#commentFormDiv");
-            this.$currentDivBlock = 0;
+            this.$currentDivBlock = null;
             this.$divCommentBlock = $(".itemComment");
             this.$toggleComButton = $(".fa-toggle-left");
-            this.$deleteButton= $(".fa-trash");
+            this.$deleteButton = $(".fa-trash");
             this.$editButton = $(".fa-pencil");
             this.$addCommentButton = this.$comForm.find("#addComment");
             this.$artId = $("input[name=artId]").attr("value");
             this.$module = $("input[name=module]").attr("value");
-            this.$newCommentButton = $(".newComment");
+            this.$newCommentButton = $(".fa-plus");
             this.$replyButton = $(".fa-mail-reply");
         },
         bindEvents: function () {
@@ -41,13 +42,13 @@
             this.$replyButton.on("click", this.reply.bind(this));
         },
 
-        getUserId: function(){
+        getUserId: function () {
             this.sendAjax("zikulaezcommentsmodule_comment_getuserid",
                 {},
                 {success: this.getUserIdCallback.bind(this), method: "GET"});
         },
 
-        getUserIdCallback: function(result, textStatus, jqXHR){
+        getUserIdCallback: function (result, textStatus, jqXHR) {
             this.userId = result.uid;
         },
 
@@ -57,8 +58,12 @@
             if (evt.currentTarget.className.includes("fa-toggle-down")) {
                 $("#" + itemName).removeClass("fa-toggle-down");
                 $("#" + itemName).addClass("fa-toggle-left");
-                this.subComments[this.currentId].remove();
-                delete this.subComments[this.currentId];
+                var theComments = this.subComments[this.currentId];
+                if (theComments) {
+                    theComments.remove();
+                    delete this.subComments[this.currentId];
+                }
+                this.clearAndHideForm();
             } else {
                 $("#" + itemName).removeClass("fa-toggle-left");
                 $("#" + itemName).addClass("fa-toggle-down");
@@ -68,47 +73,27 @@
             }
             evt.stopPropagation();
         },
-        getCommentsCallback: function(result, textStatus, jqXHR){
-           if (result) {
-               //get all the comments and add them to a form.
+        getCommentsCallback: function (result, textStatus, jqXHR) {
+            if (result) {
+                //get all the comments and add them to a form.
                 var len = result.length;
-                if(len === 0){
+                if (len === 0) {
                     //no comments to add. Change the toggle back and exit
                     //we recorded the ID in getComments
                     var itemName = "twiddle_" + this.currentId;
-                    $("#" + itemName).removeClass("fa-toggle-down");
-                    $("#" + itemName).addClass("fa-toggle-left");
-                    $("<div class=\"alert alert-danger\">No replies to show!</div>").insertAfter("#" + itemName)
-                        .delay(2000)
-                        .fadeOut(function(){
-                            $(this).remove();
-                        });
+                    var toggleToChange = $("#" + itemName);
+                    toggleToChange.removeClass("fa-toggle-down");
+                    toggleToChange.addClass("fa-toggle-left");
+                    var noReplyDiv = $("#no_replies");
+                    noReplyDiv.removeClass("hidden");
+                    var blockAfter = $("#itemComment_" + this.currentId);
+                    $(noReplyDiv).insertAfter(blockAfter);
+                    noReplyDiv.fadeIn();
+                    noReplyDiv.delay(2000);
+                    noReplyDiv.fadeOut();
                     return;
                 }
-                var subComments = $("<div id=subComments_" + this.currentId + "></div>");
-                for (var i = 0; i < len; i++) {
-                    var divBlock = this.$divCommentBlock.clone();
-                    //Remove the arrow icon. Right now, no replies to replies
-                    divBlock.find("span[id^=twiddle]").remove();
-                    //get rid of the hidden class so you can see it
-                    divBlock.removeClass("hidden");
-                    //enter in the text for this comment
-                    divBlock.find("h3[id=itemSubject]").text(result[i].subject);
-                    divBlock.find("p[id=itemComment]").text(result[i].comment);
-                    divBlock.find("i[id=itemName]").text(result[i].author);
-                    divBlock.attr("id", "itemComment_" + result[i].id);
-                    //add the click listener to the buttons
-                    this.hookUpButtons(divBlock, result[i]);
-                    //add the block to the commentForm.
-                    //Is this a memory leak? No it should not be, since remove takes it all out of the DOM including events
-                    subComments.prepend(divBlock);
-                }
-                subComments.addClass("ez_indent");
-                //remember this set of objects for deletion when the twiddle box is closed
-                this.subComments[this.currentId] = subComments;
-                //finally add the comments to the right spot in the page
-                $("div[id=itemChild_" + this.currentId + "]").append(subComments);
-
+                this.addSubComments(result, len);
             }
         },
 
@@ -126,9 +111,9 @@
             }
 
             var currForm = this.$comForm;
-            //if we have an id, this is a subform, if not it is the bottom form
-            //set up the variables as needed
-            if(id !== -1){
+            //if we have an id, we are doing and edit. Otherwise this is a reply
+            //or it is a top-level comment
+            if (id !== -1) {
                 this.currentId = id;
             } else {
                 this.currentId = 0;
@@ -138,7 +123,8 @@
             //Send off the data.
             this.sendAjax(
                 "zikulaezcommentsmodule_comment_setcomment",
-                {   module: this.$module,
+                {
+                    module: this.$module,
                     artId: this.$artId,
                     parentID: parentId,
                     areaId: currForm.find("input[name=areaId]").attr("value"),
@@ -158,25 +144,32 @@
             evt.stopPropagation();
         },
 
-        addCommentCallback: function(result, textStatus, jqXHR){
+        addCommentCallback: function (result, textStatus, jqXHR) {
             //We need to grab the data out of the response and put it in a new div block and add
             //it to the page
             var divBlock;
-            if(result[0].isEdit){
-                divBlock = $("#itemComment_" + result[0].id);
+            if (result[0].isEdit) {
+                var id = result[0].id;
+                divBlock = $("#itemComment_" + id);
+                //enter in the changed values
+                divBlock.find("h3[id^=itemSubject_" + id + "]").text(result[0].subject);
+                divBlock.find("p[id^=itemComment_" + id + "]").text(result[0].comment);
+                divBlock.find("i[id^=itemName_" + id + "]").text(result[0].author);
+
             } else {
                 divBlock = this.$divCommentBlock.clone();
+                //enter in the changed values
+                divBlock.find("h3[id^=itemSubject]").text(result[0].subject);
+                divBlock.find("p[id^=itemComment]").text(result[0].comment);
+                divBlock.find("i[id^=itemName]").text(result[0].author);
+                divBlock.attr("id", "itemComment_" + result[0].id);
             }
-            //enter in the changed values
-            divBlock.find("h3[id^=itemSubject]").text(result[0].subject);
-            divBlock.find("p[id^=itemComment]").text(result[0].comment);
-            divBlock.find("i[id^=itemName]").text(result[0].author);
-            divBlock.attr("id", "itemComment_" + result[0].id);
+
             //get rid of the twiddle block. Not needed here.
-            if(result[0].parentID > 0){
+            if (result[0].parentID > 0) {
                 divBlock.find("span[id^=twiddle]").remove();
                 divBlock.attr("id", "itemComment_" + result[0].id);
-            } else if(!result[0].isEdit) {
+            } else if (!result[0].isEdit) {
                 //since this is the parent thread we need to
                 //add an itemchild div that data can be appended to.
                 divBlock.append("<div id=\"itemChild_" + result[0].id + "\"></div>");
@@ -187,28 +180,32 @@
             this.hookUpButtons(divBlock, result[0]);
 
             var currForm = this.$comForm;
-            //if this is a new comment we need to insert it
-            //using the before JQuery command
-            //if it is an edit, we already changed it.
-            if(!result[0].isEdit){
-                if(result[0].parentID > 0){
-                    //todo: I need to check both parent and child insertion
-                    var formText = "div[id=form_" + result[0].parentID + "]";
-                    currForm.find(formText).before(divBlock);
-                } else {
-                    currForm.before(divBlock);
+            if (result[0].parentID > 0) {
+                var subComments = this.subComments[result[0].parentID];
+                //if subcomments are already present, just place it at the end.
+                if(!subComments){
+                    subComments = $("<div id=subComments_" + result[0].parentID + "></div>");
+                    subComments.addClass("ez_indent");
                 }
+                //if this is a new comment put it at the end
+                if(!result[0].isEdit){
+                    //this is a subcomment, so get rid of the reply twiddle
+                    divBlock.find("p[id=replyPara]").remove();
+                    subComments.append(divBlock);
+                    //update the subcomments we have stored.
+                    this.subComments[result[0].parentID] = subComments;
+                }
+                currForm.before(subComments);
+            } else {
+                currForm.before(divBlock);
             }
             divBlock.removeClass("hidden");
-            //Now that the comment is entered, hide the comment form
-            currForm.find("textarea").val("");
-            currForm.find("input[name=subject]").val("");
-            currForm.detach();
+            this.clearAndHideForm();
         },
-        hookUpButtons: function(target, result){
+        hookUpButtons: function (target, result) {
             //only add these buttons if the user id is the same
             //if this is an anonymous user, you cannot edit or trash your comments.
-            if(this.userId === result.uid) {
+            if (this.userId === result.uid) {
                 //modify and hook up the trash icon to all the writer to delete the comment if they want.
                 var trash = target.find("span[id^=trash]");
                 trash.attr("id", "trash_" + result.id);
@@ -225,12 +222,22 @@
             }
         },
 
-        hookUpCommentButton: function(target, id){
+        hookUpCommentButton: function (target, id, parentId) {
             var comment = target.find("button[id^=addComment]");
             comment.attr("id", "addComment_" + id);
+            var parentDiv = target.find("input[name=parentID]");
+            parentDiv.val(parentId)
         },
 
-        deleteComment: function (evt){
+        clearAndHideForm: function(){
+            var currForm = this.$comForm;
+            currForm.find("textarea").val("");
+            currForm.find("input[name=subject]").val("");
+            currForm.addClass("hidden");
+        },
+
+
+        deleteComment: function (evt) {
             var itemName = evt.currentTarget.id;
             var itemLen = itemName.length;
             if (itemLen > 5) {
@@ -240,7 +247,7 @@
                     {commentId: id, uid: this.userId},
                     {
                         success: this.deleteCommentCallback.bind(this),
-                        method: "POST",
+                        method: "POST"
                     });
             }
 
@@ -248,31 +255,31 @@
             evt.stopPropagation();
         },
 
-        deleteCommentCallback: function (result, textStatus, jqXHR){
+        deleteCommentCallback: function (result, textStatus, jqXHR) {
             //if the comment was deleted from the db, then remove it from the DOM
-            if(result.comdel){
-                $("#itemComment_" + result.id).remove();
-
+            if (result.comdel) {
+                var commentsToDelete = $("#itemComment_" + result.id);
+                commentsToDelete.remove();
             }
         },
 
-        editComment: function (evt){
+        editComment: function (evt) {
             var itemName = evt.currentTarget.id;
             var itemLen = itemName.length;
             var id = itemName.substring(5, itemLen);
             //grab the divBlock and grab the info that is there
             var divBlock = $("#itemComment_" + id);
-            var uName = divBlock.find("i[id^=itemName]").text();
-            var subject = divBlock.find("h3[id^=itemSubject]").text();
-            var comment = divBlock.find("p[id^=itemComment]").text();
+            var uName = divBlock.find("i[id^=itemName_" + id + "]").text();
+            var subject = divBlock.find("h3[id^=itemSubject_" + id + "]").text();
+            var comment = divBlock.find("p[id^=itemComment_" + id + "]").text();
+
             //get a copy of the comment form and insert the values
             var comForm = this.$comForm;
-            var commentDiv = comForm.find("div[id^=comment_]");
-            commentDiv.attr("id", "comment_" + id);
+            //var commentDiv = comForm.find("div[id^=comment_]");
+            //commentDiv.attr("id", "comment_" + id);
             comForm.find("input[name=user]").val(uName);
-            comForm.find("textarea[name=comment]").text(comment);
+            comForm.find("textarea[name=comment]").val(comment);
             comForm.find("input[name=subject]").val(subject);
-            this.hookUpCommentButton(comForm, id, "p");
 
             var form = comForm.find("form");
             form.attr("id", id);
@@ -282,18 +289,24 @@
             //insert the comForm into the appropriate place.
             divBlock.after(comForm);
             //I have to check to see if a comment is already entered and if so reveal it.
-            if(this.$currentDivBlock != 0) {
-                this.$currentDivBlock.removeClass("hidden");
+            if(this.$currentDivBlock !== null) {
+                var currDivBlockIdString = (this.$currentDivBlock).attr("id");
+                var itemLen2 = currDivBlockIdString.length;
+                var idCurDiv = currDivBlockIdString.substring(12, itemLen2);
+                if (idCurDiv !== id) {
+                    this.$currentDivBlock.removeClass("hidden");
+                }
             }
+            var parentID = 0;
             this.$currentDivBlock = divBlock;
-            if(itemChild.length === 0) {
+            if (itemChild.length === 0) {
                 var parentName = divBlock.parent().attr("id");
-                var parentID = parentName.substring(12, parentName.length);
+                parentID = parentName.substring(12, parentName.length);
                 //if there is no itemchild, then this is a subthread and we need to mark the parentID
                 form.find("input[name=parentID]").val(parentID);
-            } else {
-                divBlock.after(itemChild);
             }
+            this.hookUpCommentButton(comForm, id, parentID);
+
             //finally show the form
             comForm.removeClass("hidden");
 
@@ -301,12 +314,86 @@
             evt.stopPropagation();
         },
 
-        newComment: function (evt){
+        newComment: function (evt) {
+            window.alert("comment works");
+        },
+
+        reply: function (evt) {
+            //find the target comment
+            var itemName = evt.currentTarget.id;
+            var itemLen = itemName.length;
+            this.currentId = itemName.substring(6, itemLen);
+            //are the comments already showing?
+            var subComments = this.subComments[this.currentId];
+            if(subComments) {
+                var target = $("#itemChild_" + this.currentId);
+                this.finishReplySetup(target);
+            } else {
+                this.sendAjax("zikulaezcommentsmodule_comment_getreplies",
+                    {module: this.$module, id: this.$artId, parentId: this.currentId},
+                    {success: this.replyCallback.bind(this), method: "GET"});
+            }
 
         },
 
-        reply: function(evt){
+        replyCallback: function (result, textStatus, jqXHR) {
+            if (result) {
+                //change the toggle
+                var itemName = "twiddle_" + this.currentId;
+                $("#" + itemName).removeClass("fa-toggle-left");
+                $("#" + itemName).addClass("fa-toggle-down");
+                //get all the comments and add them to a form.
+                var len = result.length;
+                if (len !== 0) {
+                    this.addSubComments(result, len);
+                }
+                var target = $("#itemChild_" + this.currentId);
+                this.finishReplySetup(target);
+            }
+        },
 
+        addSubComments: function(result, len) {
+            var subComments = $("<div id=subComments_" + this.currentId + "></div>");
+            for (var i = 0; i < len; i++) {
+                var divBlock = this.$divCommentBlock.clone();
+                //Remove the arrow icon. Right now, no replies to replies
+                divBlock.find("span[id^=twiddle]").remove();
+                divBlock.find("span[id^=reply]").remove();
+                //get rid of the hidden class so you can see it
+                divBlock.removeClass("hidden");
+                //enter in the text for this comment
+                divBlock.find("h3[id=itemSubject]").text(result[i].subject);
+                divBlock.find("p[id=itemComment]").text(result[i].comment);
+                divBlock.find("i[id=itemName]").text(result[i].author);
+                divBlock.attr("id", "itemComment_" + result[i].id);
+                //add the click listener to the buttons
+                this.hookUpButtons(divBlock, result[i]);
+                //add the block to the commentForm.
+                //Is this a memory leak? No it should not be, since remove takes it all out of the DOM including events
+                subComments.prepend(divBlock);
+            }
+            subComments.addClass("ez_indent");
+            //remember this set of objects for deletion when the twiddle box is closed
+            this.subComments[this.currentId] = subComments;
+            //finally add the comments to the right spot in the page
+            $("div[id=itemChild_" + this.currentId + "]").append(subComments);
+        },
+
+
+        finishReplySetup: function (target) {
+            //get the comment form and get it ready
+            var comForm = this.$comForm;
+            //this is a new comment, 0 it out.
+            this.hookUpCommentButton(comForm, 0, this.currentId);
+
+            //enter the form after the comment
+            target.append(comForm);
+            //indent since this is a reply
+            comForm.addClass("ez_indent");
+            //finally show the form
+            comForm.removeClass("hidden");
+
+            comForm.toggle().toggle();
         },
 
         sendAjax: function (url, data, options) {
@@ -316,8 +403,8 @@
             var theRoute = Routing.generate(url);
             $.ajax(theRoute, options);
         },
-        ajaxError: function(jqXHR, textStatus, errorThrown){
-            window.alert(textStatus + "\n" +errorThrown);
+        ajaxError: function (jqXHR, textStatus, errorThrown) {
+            window.alert(textStatus + "\n" + errorThrown);
         },
     };
 })(jQuery);

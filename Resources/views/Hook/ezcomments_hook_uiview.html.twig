@@ -20,8 +20,8 @@
                     {% endif %}
                 </p>
                 <p id="itemComment_{{ item.id }}" class="alert alert-warning">{{ item.comment }}</p>
-                <p>
-                    <span id="reply" title="reply" class="fa fa-mail-reply fa-large"></span>
+                <p id="replyPara">
+                    <span id="reply_{{ item.id }}" title="reply" class="fa fa-mail-reply fa-large"></span>
                 </p>
                 <div id="itemChild_{{ item.id }}"></div>
             </div>
@@ -34,13 +34,16 @@
                     {% endif %}
                 </p>
                 <p id="itemComment_{{ item.id }}" class="alert alert-info">{{ item.comment }}</p>
-                <p>
-                    <span id="reply" title="reply" class="fa fa-mail-reply fa-large"></span>
+                <p id="replyPara">
+                    <span id="reply_{{ item.id }}" title="reply" class="fa fa-mail-reply fa-large"></span>
                 </p>
                 <div id="itemChild_{{ item.id }}"></div>
             </div>
         {% endif %}
     {% endfor %}
+    <p>
+        <span id="newComment_{{ item.id }}" title="Add a comment" class="fa fa-plus fa-large"></span>
+    </p>
     <!-- add another divs comment section for JS to grab to add new comments dynamically -->
     <div class="hidden itemComment">
         <h3 id="itemSubject"></h3>
@@ -50,7 +53,7 @@
             <span id="trash" title="Delete Comment" class="fa fa-trash fa-lg"></span>
         </p>
         <p id="itemComment" class="alert alert-success"></p>
-        <p>
+        <p id="replyPara">
             <span id="reply" title="reply" class="fa fa-mail-reply fa-large"></span>
         </p>
     </div>
@@ -91,8 +94,7 @@
                 </tr>
             </table>
             <br/>
-            <textarea rows="5" cols="60" name="comment">
-            </textarea>
+            <textarea rows="5" cols="60" name="comment"></textarea>
             <div class="form-group">
                 <button id="addComment" type="submit" class="btn btn-success" name="addComment" value="addComment">
                     {{ __('Add comment') }}
@@ -105,3 +107,4 @@
     </div>
 </div>
 <!-- comment form -->
+<div class="alert alert-danger hidden" id="no_replies">{{ __('No replies to show!') }}</div>
