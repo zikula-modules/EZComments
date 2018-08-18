@@ -102,24 +102,24 @@
             //at the bottom, it will have a id of addComment (10 char)
             var itemName = evt.currentTarget.id;
             var itemLen = itemName.length;
-            var id = -1;
 
             //we need to figure out where the form is. If it is at the bottom,
             //The form will have no addition.
             if (itemLen > 10) {
-                id = itemName.substring(11, itemLen);
-            }
-
-            var currForm = this.$comForm;
-            //if we have an id, we are doing and edit. Otherwise this is a reply
-            //or it is a top-level comment
-            if (id !== -1) {
-                this.currentId = id;
+                this.currentId = itemName.substring(11, itemLen);
             } else {
                 this.currentId = 0;
             }
 
+            var currForm = this.$comForm;
+            //if we have an id, we are doing an edit. Otherwise this is a reply
+            //or it is a top-level comment
+            if (this.currentId === -1) {
+                this.currentId = 0;
+            }
+
             var parentId = currForm.find("input[name=parentID]").attr("value");
+
             //Send off the data.
             this.sendAjax(
                 "zikulaezcommentsmodule_comment_setcomment",
@@ -134,7 +134,7 @@
                     comment: currForm.find("textarea[name=comment]").val(),
                     anonEmail: currForm.find("input[name=anonEmail]").attr("value"),
                     anonWebsite: currForm.find("input[name=anonWebsite]").attr("value"),
-                    id: id
+                    id: this.currentId
                 },
                 {
                     success: this.addCommentCallback.bind(this),
@@ -176,6 +176,9 @@
                 var twiddle = divBlock.find("span[id^=twiddle]");
                 twiddle.attr("id", "twiddle_" + result[0].id);
                 twiddle.on("click", this.getComments.bind(this));
+                //this is the root comment form we re using. Therefore, we are adding the comment
+                //and need to put back the add comment button for the next comment
+                this.$newCommentButton.removeClass("hidden");
             }
             this.hookUpButtons(divBlock, result[0]);
 
@@ -223,10 +226,8 @@
         },
 
         hookUpCommentButton: function (target, id, parentId) {
-            var comment = target.find("button[id^=addComment]");
-            comment.attr("id", "addComment_" + id);
-            var parentDiv = target.find("input[name=parentID]");
-            parentDiv.val(parentId)
+            target.find("button[id^=addComment]").attr("id", "addComment_" + id);
+            target.find("input[name=parentID]").val(parentId);
         },
 
         clearAndHideForm: function(){
@@ -283,7 +284,6 @@
 
             var form = comForm.find("form");
             form.attr("id", id);
-            var itemChild = divBlock.find("div[id^=itemChild_" + id + "]");
             //hide the div block
             divBlock.addClass("hidden");
             //insert the comForm into the appropriate place.
@@ -299,11 +299,17 @@
             }
             var parentID = 0;
             this.$currentDivBlock = divBlock;
+            var itemChild = divBlock.find("div[id^=itemChild_" + id + "]");
             if (itemChild.length === 0) {
                 var parentName = divBlock.parent().attr("id");
                 parentID = parentName.substring(12, parentName.length);
                 //if there is no itemchild, then this is a subthread and we need to mark the parentID
                 form.find("input[name=parentID]").val(parentID);
+            } else {
+                //The comment form may have been ready to add a root comment
+                //Just in case that is true, we show the comment button.
+                //It doesn't hurt if it is already visible.
+                this.$newCommentButton.removeClass("hidden");
             }
             this.hookUpCommentButton(comForm, id, parentID);
 
@@ -315,7 +321,15 @@
         },
 
         newComment: function (evt) {
-            window.alert("comment works");
+            //we cannot cache this DOM because it can change.
+            //get the last comment
+            var lastComment = $("div[id^=itemComment_]").last();
+            //clean out the comForm if there is anything in it
+            this.clearAndHideForm();
+            this.hookUpCommentButton(this.$comForm, 0, 0);
+            lastComment.after(this.$comForm);
+            this.$comForm.removeClass("hidden");
+            this.$newCommentButton.addClass("hidden");
         },
 
         reply: function (evt) {
@@ -392,8 +406,10 @@
             comForm.addClass("ez_indent");
             //finally show the form
             comForm.removeClass("hidden");
-
-            comForm.toggle().toggle();
+            //The comment form may have been ready to add a root comment
+            //Just in case that is true, we show the comment button.
+            //It doesn't hurt if it is already visible.
+            this.$newCommentButton.removeClass("hidden");
         },
 
         sendAjax: function (url, data, options) {
