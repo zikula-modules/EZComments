@@ -1,0 +1,12 @@
+{{ pageAddAsset('javascript', zasset('jquery-ui/jquery-ui.js')) }}
+{{ pageAddAsset('stylesheet', asset('jquery-ui/themes/base/jquery-ui.min.css')) }}
+{{ pageAddAsset('stylesheet', zasset('@ZikulaEZCommentsModule:css/style.css')) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaEZCommentsModule:js/Zikula.EZComments.tablesorter.js')) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaEZCommentsModule:js/jquery.tablesorter.combined.js')) }}
+{{ render(controller('ZikulaAdminModule:Admin:adminheader')) }}
+<div>
+    <div class="row">
+        <h3> {{ __('Comment Stats') }}</h3>
+       <p>{{ __('There are ') }} {{ count }} {{ __(' comments.') }}</p>
+    </div>
+</div>

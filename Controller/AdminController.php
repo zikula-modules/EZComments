@@ -151,6 +151,7 @@ class AdminController extends AbstractController
     public function commentStatsAction(Request $request)
     {
 
+
     }
 
     /**
@@ -164,6 +165,12 @@ class AdminController extends AbstractController
      */
     public function modulestatsAction(Request $request)
     {
+        $repo = $this->getDoctrine()->getManager()->getRepository('ZikulaEZCommentsModule:EZCommentsEntity');
+
+        $items = $repo->findAll();
+        $count = count($items);
+        return $this->render('ZikulaEZCommentsModule:Admin:ezcomments_modulestats.html.twig', [
+            'count' => $count]);
     }
 
     /**
