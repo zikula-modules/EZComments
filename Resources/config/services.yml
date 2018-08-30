@@ -24,5 +24,6 @@ services:
             - '@templating'
             - '@doctrine.orm.entity_manager'
             - '@request_stack'
+            - "@router"
           tags:
           - { name: zikula.hook_provider, areaName: "provider.zikulaezcommentsmodule.ui_hooks.ezcomments" }

@@ -1,12 +1,40 @@
 {{ pageAddAsset('javascript', zasset('jquery-ui/jquery-ui.js')) }}
 {{ pageAddAsset('stylesheet', asset('jquery-ui/themes/base/jquery-ui.min.css')) }}
 {{ pageAddAsset('stylesheet', zasset('@ZikulaEZCommentsModule:css/style.css')) }}
-{{ pageAddAsset('javascript', zasset('@ZikulaEZCommentsModule:js/Zikula.EZComments.tablesorter.js')) }}
-{{ pageAddAsset('javascript', zasset('@ZikulaEZCommentsModule:js/jquery.tablesorter.combined.js')) }}
 {{ render(controller('ZikulaAdminModule:Admin:adminheader')) }}
-<div>
-    <div class="row">
-        <h3> {{ __('Comment Stats') }}</h3>
-       <p>{{ __('There are ') }} {{ count }} {{ __(' comments.') }}</p>
-    </div>
-</div>
+
+<h3>{{ __('Comment\'s Stats') }}</h3>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>{{ __("Category") }}</th>
+        <th>{{ __("Result") }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>{{ __("Total Comments") }}</td>
+        <td>{{ counts.totalComments }}</td>
+    </tr>
+    <tr>
+        <td>{{ __("Modules that have comments") }}</td>
+        <td>{{ counts.modules }}</td>
+    </tr>
+    <tr>
+        <td>{{ __("Users with Comments") }}</td>
+        <td>{{ counts.users }}</td>
+    </tr>
+    <tr>
+        <td>{{ __("Last Post By") }}</td>
+        <td>{{ counts.lastPost.0.anonname }}</td>
+    </tr>
+    <tr>
+        <td>{{ __("Most Active Poster") }}</td>
+        <td>{{ counts.mostActive.name }} {{ __("with") }} {{ counts.mostActive.number}} {{  __("posts.") }}</td>
+    </tr>
+    <tr>
+        <td>{{ __("Post Rate") }}</td>
+        <td> {{ counts.postRate|number_format(3) }} {{  __(" posts per day.") }}</td>
+    </tr>
+    </tbody>
+</table>

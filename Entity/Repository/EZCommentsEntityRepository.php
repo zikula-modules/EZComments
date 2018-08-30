@@ -7,6 +7,9 @@ use Zikula\EZCommentsModule\Entity\EZCommentsEntity;
 
 class EZCommentsEntityRepository extends EntityRepository
 {
+    const MINDATE = 0;
+    const MAXDATE = 1;
+
     /**
      * Get comments for a specific item inside a module
      *
@@ -41,7 +44,7 @@ class EZCommentsEntityRepository extends EntityRepository
         //I do not do security checking here. That is the job of the controller.
         $qb = $this->_em->createQueryBuilder();
         $qb->select('u')
-            ->from('ZikulaEZCommentsModule:EZCommentsEntity', 'u');
+            ->from($this->_entityName, 'u');
 
         if (!empty($mod)) {
             $qb->andWhere($qb->expr()->eq('u.modname', ':mod'));
@@ -74,17 +77,17 @@ class EZCommentsEntityRepository extends EntityRepository
 
         //search for status
         if ($status >= 0) {
-            $qb->andWhere('u.status', '?3');
+            $qb->andWhere($qb->expr()->eq('u.status', '?3'));
             $qb->setParameter('3', $status);
         }
 
         if ($uid > 0) {
-            $qb->andWhere('u.uid', '?4');
+            $qb->andWhere($qb->expr()->eq('u.uid', '?4'));
             $qb->setParameter('4', $uid);
         }
 
         if ($ownerid > 0) {
-            $qb->andWhere('u.ownerid', '?5');
+            $qb->andWhere($qb->expr()->eq('u.ownerid', '?5'));
             $qb->setParameter('5', $ownerid);
         }
 
@@ -100,10 +103,100 @@ class EZCommentsEntityRepository extends EntityRepository
      * @param $commentId
      * @return mixed
      */
-    public function deleteReplies($commentId){
+    public function deleteReplies($commentId)
+    {
         //This call may not delete any replies, that's just fine.
         $q = $this->_em->createQuery("delete from 'ZikulaEZCommentsModule:EZCommentsEntity' m where m.replyto = " . $commentId);
         $numDeleted = $q->execute();
         return $numDeleted;
+    }
+
+    public function getLatestPost()
+    {
+        //find the last date of the comment
+        $date = $this->getPostBorder(self::MAXDATE);
+        return $this->getPostWithDate($date);
+
+    }
+
+    public function getPostWithDate($inDate)
+    {
+        $qb2 = $this->_em->createQueryBuilder();
+        $qb2->select('b')
+            ->from($this->_entityName, 'b')
+            ->andWhere($qb2->expr()->eq('b.date', '?1'))
+            ->setParameter(1, $inDate);
+        return $qb2->getQuery()->getResult();
+    }
+
+    public function getEarliestPost()
+    {
+        $date = $this->getPostBorder(self::MINDATE);
+        return $this->getPostWithDate($date);
+    }
+
+    public function getPostBorder($inPostBorder){
+        $qb = $this->_em->createQueryBuilder();
+        $qb->from($this->_entityName, 'a');
+        $dateItem = null;
+        if($inPostBorder === self::MINDATE){
+            $dateItem =  $qb->select($qb->expr()->min('a.date'))->getQuery()->getResult();
+        } else {
+            $dateItem =  $qb->select($qb->expr()->max('a.date'))->getQuery()->getResult();
+        }
+        return $dateItem[0];
+    }
+
+    public function count($row, $parameter = '', $distinct = false)
+    {
+        $qb = $this->_em->createQueryBuilder();
+        if ($distinct) {
+            $qb->select($qb->expr()->countDistinct('t.' . $row));
+        } else {
+            $qb->select($qb->expr()->count('t'));
+        }
+        $qb->from($this->_entityName, 't');
+        if ($parameter) {
+            $qb->where($qb->expr()->eq('t.' . $row, '?1'))
+                ->setParameter(1, $parameter);
+
+        }
+        $query = $qb->getQuery();
+        return $query->getSingleScalarResult();
+    }
+
+    public function mostActivePoster()
+    {
+        $uniqueUsers = $this->findUniqueUsers();
+        $max = ['name'=> 'noone','number'=> 0];
+        foreach ($uniqueUsers as $user) {
+            $currCount = $this->count('anonname', $user['anonname']);
+            if($currCount > $max['number']){
+                $max['name'] = $user['anonname'];
+                $max['number'] = $currCount;
+            }
+        }
+        return $max;
+    }
+
+    public function findUniqueUsers(){
+        $qb = $this->_em->createQueryBuilder();
+        $qb->from($this->_entityName, 't');
+        $qb->select('t.anonname')->distinct();
+        $query = $qb->getQuery();
+        return $query->getResult();
+    }
+
+    public function findPostRate(){
+        //get the min post
+        $firstDate = $this->getPostBorder(self::MINDATE);
+        $lastDate = $this>$this->getPostBorder(self::MAXDATE);
+        $firstDay = new \DateTime($firstDate[1]);
+        $lastDay = new \DateTime($lastDate[1]);
+        $interval = $firstDay->diff($lastDay);
+
+        $totalPosts = $this->count('modname');
+        return $totalPosts/$interval->days;
+
     }
 }

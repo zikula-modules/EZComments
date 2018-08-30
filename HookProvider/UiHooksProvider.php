@@ -14,6 +14,7 @@ use Zikula\Bundle\HookBundle\ServiceIdTrait;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Symfony\Component\Templating\EngineInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Zikula\Core\UrlInterface;
 use Zikula\UsersModule\Api\CurrentUserApi;
 
@@ -55,6 +56,11 @@ class UiHooksProvider  implements HookProviderInterface
      */
     private $requestStack;
 
+    /**
+     * @var RouterInterface
+     */
+    private $router;
+
 
 
     /**
@@ -65,13 +71,15 @@ class UiHooksProvider  implements HookProviderInterface
                                 PermissionApiInterface $permissionApi,
                                 EngineInterface $templating,
                                 EntityManager $entityManager,
-                                RequestStack $requestStack)
+                                RequestStack $requestStack,
+                                RouterInterface $router)
     {
         $this->translator = $translator;
         $this->permissionApi = $permissionApi;
         $this->templating = $templating;
         $this->entityManager = $entityManager;
         $this->requestStack = $requestStack;
+        $this->router = $router;
     }
 
     public function getOwner()
@@ -117,8 +125,8 @@ class UiHooksProvider  implements HookProviderInterface
             return;
         }
         $is_admin = $this->permissionApi->hasPermission('EZComments::', '::', ACCESS_ADMIN);
-        $url = $hook->getUrl()->getRoute();
-
+        $url = $hook->getUrl();
+        $urlString = $this->router->generate($url->getRoute(), $url->getArgs());
         $repo = $this->entityManager->getRepository('ZikulaEZCommentsModule:EZCommentsEntity');
         //get the comments that correspond to this object, but only the parent ones (replyTo set to 0)
         //child comments will be retrieved when the users opens the arrow
@@ -131,7 +139,7 @@ class UiHooksProvider  implements HookProviderInterface
                 'artId' => $id,
                 'module' => $mod,
                 'areaId' => $areaID,
-                'retUrl' => $url,
+                'retUrl' => $urlString,
                 ]);
 
         $response = new DisplayHookResponse($this->getServiceId(), $content);

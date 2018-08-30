@@ -1,39 +1,37 @@
 {{ pageAddAsset('javascript', zasset('jquery-ui/jquery-ui.js')) }}
 {{ pageAddAsset('stylesheet', asset('jquery-ui/themes/base/jquery-ui.min.css')) }}
 {{ pageAddAsset('stylesheet', zasset('@ZikulaEZCommentsModule:css/style.css')) }}
+{{ pageAddAsset('stylesheet', 'https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css') }}
+{{ pageAddAsset('javascript', 'https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js') }}
 {{ pageAddAsset('javascript', zasset('@ZikulaEZCommentsModule:js/Zikula.EZComments.tablesorter.js')) }}
-{{ pageAddAsset('javascript', zasset('@ZikulaEZCommentsModule:js/jquery.tablesorter.combined.js')) }}
 {{ render(controller('ZikulaAdminModule:Admin:adminheader')) }}
-<div>
-    <div class="row">
-        <h3> {{ __('Current Comments') }}</h3>
-        <table id="tableToSort" class="table table-striped">
-            <thead>
-            <tr>
-                <th id="id">{{ __('id') }}</th>
-                <th id="moduleName">{{ __('Module Name') }}</th>
-                <th id="subject">{{ __('Subject') }}</th>
-                <th id="comment">{{ __('Comment') }}</th>
-                <th id="date">{{ __('Date') }}</th>
-                <th id="name">{{ __('Name') }}</th>
-                <th>{{ __('Actions') }}</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for item in items %}
-                <tr id="{{ item.id }}">
-                    <td id="id_{{ item.id }}">{{ item.id }}</td>
-                    <td id="modname_{{ item.id}}">{{ item.modname }}</td>
-                    <td id="subject_{{ item.id}}">{{ item.subject }}</td>
-                    <td id="comment_{{ item.id}}">{{ item.comment|truncate(30) }}</td>
-                    <td id="date_{{ item.id }}">{{ item.date|date("m/d/Y") }}</td>
-                    <td id="name_{{ item.id }}">{{ item.anonname }}</td>
-                    <td id="actions"><a href="{{ item.url }}#itemComment_{{ item.id }}"  class="fa fa-eye"></a>&nbsp;
-                        &nbsp;<span id="edit_{{ item.id }}" class="fa fa-pencil"></span>
-                        <span id="delete_{{ item.id }}" class="fa fa-trash"></span></td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</div>
+
+<h3> {{ __('Current Comments') }}</h3>
+<table id="tableToSort" class="table table-striped">
+    <thead>
+    <tr>
+        <th id="id">{{ __('id') }}</th>
+        <th id="moduleName">{{ __('Module Name') }}</th>
+        <th id="subject">{{ __('Subject') }}</th>
+        <th id="comment">{{ __('Comment') }}</th>
+        <th id="date">{{ __('Date') }}</th>
+        <th id="name">{{ __('Name') }}</th>
+        <th>{{ __('Actions') }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in items %}
+        <tr id="{{ item.id }}">
+            <td id="id_{{ item.id }}">{{ item.id }}</td>
+            <td id="modname_{{ item.id }}">{{ item.modname }}</td>
+            <td id="subject_{{ item.id }}">{{ item.subject }}</td>
+            <td id="comment_{{ item.id }}">{{ item.comment|truncate(30) }}</td>
+            <td id="date_{{ item.id }}">{{ item.date|date("m/d/Y") }}</td>
+            <td id="name_{{ item.id }}">{{ item.anonname }}</td>
+            <td id="actions"><a href="{{ item.url }}#itemComment_{{ item.id }}" class="fa fa-eye"></a>&nbsp;
+                &nbsp;<span id="edit_{{ item.id }}" class="fa fa-pencil"></span>
+                <span id="delete_{{ item.id }}" class="fa fa-trash"></span></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

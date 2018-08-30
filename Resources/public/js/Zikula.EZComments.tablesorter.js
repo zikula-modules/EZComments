@@ -1,6 +1,6 @@
 (function ($) {
     $(document).ready(function () {
-        $("#tableToSort").tablesorter({dateFormat: 'us'});
+        $("#tableToSort").DataTable();
         tablesorter.init();
     });
 

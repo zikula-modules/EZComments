@@ -166,11 +166,18 @@ class AdminController extends AbstractController
     public function modulestatsAction(Request $request)
     {
         $repo = $this->getDoctrine()->getManager()->getRepository('ZikulaEZCommentsModule:EZCommentsEntity');
+        //an array to store the data in
+        $counts = [];
+        $counts['modules'] = $repo->count('modname', '', true);
+        $counts['totalComments'] = $repo->count('modname');
+        $counts['users'] = $repo->count('ownerid', '', true);
+        $counts['lastPost'] = $repo->getLatestPost();
+        $counts['firstPost'] = $repo->getEarliestPost();
+        $counts['mostActive'] = $repo->mostActivePoster();
+        $counts['postRate'] = $repo->findPostRate();
 
-        $items = $repo->findAll();
-        $count = count($items);
         return $this->render('ZikulaEZCommentsModule:Admin:ezcomments_modulestats.html.twig', [
-            'count' => $count]);
+            'counts' => $counts]);
     }
 
     /**
