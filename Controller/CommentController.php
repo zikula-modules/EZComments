@@ -201,10 +201,10 @@ class CommentController extends AbstractController
         $repo = $this->getDoctrine()->getManager()->getRepository('ZikulaEZCommentsModule:EZCommentsEntity');
         //find the comment
         $comment = $repo->findOneBy(['id' => $commentId]);
-
+        $isAdmin = $this->hasPermission('EZComments::', '::', ACCESS_ADMIN);
         $jsonReply = ['comdel' => false];
         if(null != $comment) {
-            if($userId != $comment->getOwnerId()){
+            if( ($userId != $comment->getOwnerId()) && !$isAdmin){
                 return new ForbiddenResponse($this->__('Access Denied'));
             }
             $em = $this->getDoctrine()->getManager();

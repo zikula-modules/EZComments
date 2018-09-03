@@ -27,11 +27,12 @@
             this.$toggleComButton = $(".fa-toggle-left");
             this.$deleteButton = $(".fa-trash");
             this.$editButton = $(".fa-pencil");
-            this.$addCommentButton = this.$comForm.find("#addComment");
+            this.$addCommentButton = $("#addComment");
             this.$artId = $("input[name=artId]").attr("value");
             this.$module = $("input[name=module]").attr("value");
             this.$newCommentButton = $(".fa-plus");
             this.$replyButton = $(".fa-mail-reply");
+            this.$cancelButton = $("#cancelComment");
         },
         bindEvents: function () {
             this.$toggleComButton.on("click", this.getComments.bind(this));
@@ -40,6 +41,7 @@
             this.$editButton.on("click", this.editComment.bind(this));
             this.$newCommentButton.on("click", this.newComment.bind(this));
             this.$replyButton.on("click", this.reply.bind(this));
+            this.$cancelButton.on("click", this.cancelComment.bind(this));
         },
 
         getUserId: function () {
@@ -97,7 +99,7 @@
             }
         },
 
-        addComment: function (evt) {
+        gatherCommentInfo: function (evt, lenOfButtonText){
             //determine what form this is. If it is the root form
             //at the bottom, it will have a id of addComment (10 char)
             var itemName = evt.currentTarget.id;
@@ -105,21 +107,23 @@
 
             //we need to figure out where the form is. If it is at the bottom,
             //The form will have no addition.
-            if (itemLen > 10) {
-                this.currentId = itemName.substring(11, itemLen);
+            if (itemLen > lenOfButtonText) {
+                this.currentId = itemName.substring(lenOfButtonText + 1, itemLen);
             } else {
                 this.currentId = 0;
             }
-
-            var currForm = this.$comForm;
             //if we have an id, we are doing an edit. Otherwise this is a reply
             //or it is a top-level comment
             if (this.currentId === -1) {
                 this.currentId = 0;
             }
+        },
 
+        addComment: function (evt) {
+
+            this.gatherCommentInfo(evt, 10);
+            var currForm = this.$comForm;
             var parentId = currForm.find("input[name=parentID]").attr("value");
-
             //Send off the data.
             this.sendAjax(
                 "zikulaezcommentsmodule_comment_setcomment",
@@ -159,10 +163,7 @@
             } else {
                 divBlock = this.$divCommentBlock.clone();
                 //enter in the changed values
-                divBlock.find("h3[id^=itemSubject]").text(result[0].subject);
-                divBlock.find("p[id^=itemComment]").text(result[0].comment);
-                divBlock.find("i[id^=itemName]").text(result[0].author);
-                divBlock.attr("id", "itemComment_" + result[0].id);
+                this.fillDivBlock(divBlock, result[0]);
             }
 
             //get rid of the twiddle block. Not needed here.
@@ -183,6 +184,7 @@
             this.hookUpButtons(divBlock, result[0]);
 
             var currForm = this.$comForm;
+            //Is this a subcomment?
             if (result[0].parentID > 0) {
                 var subComments = this.subComments[result[0].parentID];
                 //if subcomments are already present, just place it at the end.
@@ -197,12 +199,18 @@
                     subComments.append(divBlock);
                     //update the subcomments we have stored.
                     this.subComments[result[0].parentID] = subComments;
+                } else {
+                    //This is an edit. We need to fill the hidden block with the
+                    //new values and reveal it
+                    this.fillDivBlock(divBlock, result[0]);
                 }
-                currForm.before(subComments);
             } else {
+                //This is on the main thread. I need to modify the reply block at least
+                var replyButton = divBlock.find("span[id=reply]");
+                replyButton.attr("id", "reply_" + result[0].id);
+                replyButton.on("click", this.reply.bind(this));
                 currForm.before(divBlock);
             }
-            divBlock.removeClass("hidden");
             this.clearAndHideForm();
         },
         hookUpButtons: function (target, result) {
@@ -237,6 +245,27 @@
             currForm.addClass("hidden");
         },
 
+        cancelComment :function(evt){
+            //Find out the currentId
+            this.gatherCommentInfo(evt, 13);
+            //show the comment again. We are not changing anything tho
+            if(this.currentId === 0){
+                this.$newCommentButton.removeClass("hidden");
+            }
+            //If we have a divBlock hidden, we want to reveal it
+            if(this.$currentDivBlock !== null){
+                this.$currentDivBlock.removeClass("hidden");
+                //reset to null since the divBlock is no longer hidden
+                this.$currentDivBlock = null;
+            }
+
+            //hide the form.
+            this.clearAndHideForm();
+
+            //stop propagation of this event
+            evt.preventDefault();
+            evt.stopPropagation();
+        },
 
         deleteComment: function (evt) {
             var itemName = evt.currentTarget.id;
@@ -276,8 +305,8 @@
 
             //get a copy of the comment form and insert the values
             var comForm = this.$comForm;
-            //var commentDiv = comForm.find("div[id^=comment_]");
-            //commentDiv.attr("id", "comment_" + id);
+            var commentDiv = comForm.find("div[id^=comment_]");
+            commentDiv.attr("id", "comment_" + id);
             comForm.find("input[name=user]").val(uName);
             comForm.find("textarea[name=comment]").val(comment);
             comForm.find("input[name=subject]").val(subject);
@@ -330,6 +359,8 @@
             lastComment.after(this.$comForm);
             this.$comForm.removeClass("hidden");
             this.$newCommentButton.addClass("hidden");
+            //since this is a new comment, the id is 0
+            this.currentId = 0;
         },
 
         reply: function (evt) {
@@ -368,18 +399,14 @@
 
         addSubComments: function(result, len) {
             var subComments = $("<div id=subComments_" + this.currentId + "></div>");
+            var divBlock = null;
             for (var i = 0; i < len; i++) {
-                var divBlock = this.$divCommentBlock.clone();
+                divBlock = this.$divCommentBlock.clone();
                 //Remove the arrow icon. Right now, no replies to replies
                 divBlock.find("span[id^=twiddle]").remove();
                 divBlock.find("span[id^=reply]").remove();
-                //get rid of the hidden class so you can see it
-                divBlock.removeClass("hidden");
-                //enter in the text for this comment
-                divBlock.find("h3[id=itemSubject]").text(result[i].subject);
-                divBlock.find("p[id=itemComment]").text(result[i].comment);
-                divBlock.find("i[id=itemName]").text(result[i].author);
-                divBlock.attr("id", "itemComment_" + result[i].id);
+                this.fillDivBlock(divBlock, result[i]);
+
                 //add the click listener to the buttons
                 this.hookUpButtons(divBlock, result[i]);
                 //add the block to the commentForm.
@@ -393,6 +420,23 @@
             $("div[id=itemChild_" + this.currentId + "]").append(subComments);
         },
 
+        fillDivBlock:function(inDivBlock, result){
+            //get rid of the hidden class so you can see it
+            inDivBlock.removeClass("hidden");
+            //enter in the text for this comment
+            var subject = inDivBlock.find("h3[id=itemSubject]");
+            subject.text(result.subject);
+            subject.attr("id", "itemSubject_" + result.id);
+
+            var comment = inDivBlock.find("p[id=itemComment]");
+            comment.text(result.comment);
+            comment.attr("id", "itemComment_" + result.id);
+
+            var name = inDivBlock.find("i[id=itemName]");
+            name.text(result.author);
+            name.attr("id", "itemName_" + result.id);
+            inDivBlock.attr("id", "itemComment_" + result.id);
+        },
 
         finishReplySetup: function (target) {
             //get the comment form and get it ready
@@ -411,6 +455,7 @@
             //It doesn't hurt if it is already visible.
             this.$newCommentButton.removeClass("hidden");
         },
+
 
         sendAjax: function (url, data, options) {
             //push the data object into the options
