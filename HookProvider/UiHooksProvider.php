@@ -5,7 +5,6 @@ namespace Zikula\EZCommentsModule\HookProvider;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\Bundle\HookBundle\Category\UiHooksCategory;
-use Zikula\Bundle\HookBundle\FormAwareHook\FormAwareHook;
 use Zikula\Bundle\HookBundle\Hook\DisplayHook;
 use Zikula\Bundle\HookBundle\Hook\DisplayHookResponse;
 use Zikula\Bundle\HookBundle\Hook\ProcessHook;
@@ -15,8 +14,6 @@ use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Zikula\Core\UrlInterface;
-use Zikula\UsersModule\Api\CurrentUserApi;
 
 
 /**
@@ -146,7 +143,7 @@ class UiHooksProvider  implements HookProviderInterface
         $hook->setResponse($response);
     }
 
-    public function commentEdit(FormAwareHook $hook)
+    public function commentEdit(DisplayHook $hook)
     {
 
         $this->requestStack->getMasterRequest()->getSession()->getFlashBag()->add('success', 'Ui hook comment processed!');

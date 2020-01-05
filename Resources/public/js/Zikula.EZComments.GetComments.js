@@ -91,7 +91,7 @@
                     var blockAfter = $("#itemComment_" + this.currentId);
                     $(noReplyDiv).insertAfter(blockAfter);
                     noReplyDiv.fadeIn();
-                    noReplyDiv.delay(2000);
+                    noReplyDiv.delay(1000);
                     noReplyDiv.fadeOut();
                     return;
                 }
@@ -187,10 +187,13 @@
             //Is this a subcomment?
             if (result[0].parentID > 0) {
                 var subComments = this.subComments[result[0].parentID];
-                //if subcomments are already present, just place it at the end.
+                //if There are not subcomments, then create the div they live in and add the ez_indent class to make sure it's indented.
                 if(!subComments){
                     subComments = $("<div id=subComments_" + result[0].parentID + "></div>");
                     subComments.addClass("ez_indent");
+                    //There were no subcomments to this comment.
+                    //we need to add this to the DOM since it wasn't there, right after the <div id="itemchild_"> tag.
+                    $("#itemChild_" + result[0].parentID).prepend(subComments);
                 }
                 //if this is a new comment put it at the end
                 if(!result[0].isEdit){
@@ -352,15 +355,28 @@
         newComment: function (evt) {
             //we cannot cache this DOM because it can change.
             //get the last comment
-            var lastComment = $("div[id^=itemComment_]").last();
+            var lastComment = this.getLastRootComment();
             //clean out the comForm if there is anything in it
             this.clearAndHideForm();
             this.hookUpCommentButton(this.$comForm, 0, 0);
             lastComment.after(this.$comForm);
             this.$comForm.removeClass("hidden");
+            //since this is a new comment, we don't want the comment box indented.
+            this.$comForm.removeClass("ez_indent")
             this.$newCommentButton.addClass("hidden");
             //since this is a new comment, the id is 0
             this.currentId = 0;
+        },
+
+        getLastRootComment: function(){
+          var lastComment = $("div[id^=itemComment_]").last();
+          var theParent = lastComment.parent();
+          //walk the hierarchy until you get to a root comment
+          while(theParent.attr("id") !== "Comments"){
+              lastComment = theParent;
+              theParent = lastComment.parent();
+          }
+          return lastComment;
         },
 
         reply: function (evt) {
