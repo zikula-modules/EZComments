@@ -159,6 +159,7 @@
                 divBlock.find("h3[id^=itemSubject_" + id + "]").text(result[0].subject);
                 divBlock.find("p[id^=itemComment_" + id + "]").text(result[0].comment);
                 divBlock.find("i[id^=itemName_" + id + "]").text(result[0].author);
+                divBlock.removeClass("hidden");
 
             } else {
                 divBlock = this.$divCommentBlock.clone();
@@ -197,8 +198,6 @@
                 }
                 //if this is a new comment put it at the end
                 if(!result[0].isEdit){
-                    //this is a subcomment, so get rid of the reply twiddle
-                    divBlock.find("p[id=replyPara]").remove();
                     subComments.append(divBlock);
                     //update the subcomments we have stored.
                     this.subComments[result[0].parentID] = subComments;
