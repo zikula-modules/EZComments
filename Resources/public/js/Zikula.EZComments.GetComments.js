@@ -369,6 +369,9 @@
 
         getLastRootComment: function(){
           var lastComment = $("div[id^=itemComment_]").last();
+          if(lastComment.length === 0){
+              return lastComment;
+          }
           var theParent = lastComment.parent();
           //walk the hierarchy until you get to a root comment
           while(theParent.attr("id") !== "Comments"){

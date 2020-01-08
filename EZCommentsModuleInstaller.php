@@ -26,6 +26,7 @@ class EZCommentsModuleInstaller extends AbstractExtensionInstaller {
         } catch (Exception $e) {
             return false;
         }
+        $this->setVar('allowanon', false);
 
         return true;
     }

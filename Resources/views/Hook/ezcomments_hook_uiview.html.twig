@@ -34,15 +34,19 @@
                     {% endif %}
                 </p>
                 <p id="itemComment_{{ item.id }}" class="alert alert-info">{{ item.comment }}</p>
+                {% if doAnon %}
                 <p id="replyPara">
                     <span id="reply_{{ item.id }}" title="reply" class="fa fa-mail-reply fa-large"></span>
                 </p>
+                {%  endif %}
                 <div id="itemChild_{{ item.id }}"></div>
             </div>
         {% endif %}
     {% endfor %}
     <p>
+        {% if doAnon %}
         <span id="newComment" title="Add a comment" class="fa fa-plus fa-large"></span>
+        {%  endif %}
     </p>
     <!-- add another divs comment section for JS to grab to add new comments dynamically -->
     <div class="hidden itemComment">

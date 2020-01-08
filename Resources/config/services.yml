@@ -8,22 +8,22 @@ services:
     tags:
       - { name: zikula.link_container }
 
-  zikula_ezcomments_module.form.comment_type:
-    class: Zikula\EZCommentsModule\Form\Comment
+  zikula_ezcomments_module.form.config_type:
+    class: Zikula\EZCommentsModule\Form\Config
     arguments:
       - "@translator.default"
-      - "@zikula_settings_module.locale_api"
     tags:
       - { name: form.type }
 
   zikula_ezcomments_module.hook_provider.ui_hooks_hooks_provider:
-          class: Zikula\EZCommentsModule\HookProvider\UiHooksProvider
-          arguments:
-            - '@translator.default'
-            - '@zikula_permissions_module.api.permission'
-            - '@templating'
-            - '@doctrine.orm.entity_manager'
-            - '@request_stack'
-            - "@router"
-          tags:
-          - { name: zikula.hook_provider, areaName: "provider.zikulaezcommentsmodule.ui_hooks.ezcomments" }
+    class: Zikula\EZCommentsModule\HookProvider\UiHooksProvider
+    arguments:
+      - '@translator.default'
+      - '@zikula_permissions_module.api.permission'
+      - '@templating'
+      - '@doctrine.orm.entity_manager'
+      - '@request_stack'
+      - "@router"
+      - "@zikula_extensions_module.api.variable"
+    tags:
+    - { name: zikula.hook_provider, areaName: "provider.zikulaezcommentsmodule.ui_hooks.ezcomments" }

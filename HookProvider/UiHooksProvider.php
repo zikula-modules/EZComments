@@ -11,6 +11,8 @@ use Zikula\Bundle\HookBundle\Hook\ProcessHook;
 use Zikula\Bundle\HookBundle\HookProviderInterface;
 use Zikula\Bundle\HookBundle\ServiceIdTrait;
 use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -54,6 +56,10 @@ class UiHooksProvider  implements HookProviderInterface
     private $requestStack;
 
     /**
+     * @var VariableApiInterface
+     */
+    private $variableApi;
+    /**
      * @var RouterInterface
      */
     private $router;
@@ -69,13 +75,15 @@ class UiHooksProvider  implements HookProviderInterface
                                 EngineInterface $templating,
                                 EntityManager $entityManager,
                                 RequestStack $requestStack,
-                                RouterInterface $router)
+                                RouterInterface $router,
+                                VariableApiInterface $variableApi)
     {
         $this->translator = $translator;
         $this->permissionApi = $permissionApi;
         $this->templating = $templating;
         $this->entityManager = $entityManager;
         $this->requestStack = $requestStack;
+        $this->variableApi = $variableApi;
         $this->router = $router;
     }
 
@@ -118,7 +126,7 @@ class UiHooksProvider  implements HookProviderInterface
         $areaID = $hook->getAreaId();
         // Security checks
         // first check if the user is allowed to do any comments for this module/objectid
-        if (!$this->permissionApi->hasPermission('EZComments::', "$mod:$id:", ACCESS_COMMENT)) {
+        if (!$this->permissionApi->hasPermission('EZComments::', "$mod:$id:", ACCESS_READ)) {
             return;
         }
         $is_admin = $this->permissionApi->hasPermission('EZComments::', '::', ACCESS_ADMIN);
@@ -128,7 +136,8 @@ class UiHooksProvider  implements HookProviderInterface
         //get the comments that correspond to this object, but only the parent ones (replyTo set to 0)
         //child comments will be retrieved when the users opens the arrow
         $items = $repo->findBy(['modname' => $mod, 'objectid' => $id, 'replyto'=> 0]);
-        //$items = $repo->getComments($mod, $id);
+
+        $doAnon = $this->variableApi->get('ZikulaEZCommentsModule', 'allowanon');
 
         $content = $this->templating->render('ZikulaEZCommentsModule:Hook:ezcomments_hook_uiview.html.twig',
             ['items' => $items,
@@ -137,6 +146,7 @@ class UiHooksProvider  implements HookProviderInterface
                 'module' => $mod,
                 'areaId' => $areaID,
                 'retUrl' => $urlString,
+                'doAnon' => $doAnon
                 ]);
 
         $response = new DisplayHookResponse($this->getServiceId(), $content);

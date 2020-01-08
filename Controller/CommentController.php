@@ -122,7 +122,8 @@ class CommentController extends AbstractController
      * @return JsonResponse|FatalResponse|ForbiddenResponse bid or Ajax error
      */
     public function setcommentAction(Request $request){
-        if (!$this->hasPermission($this->name . '::', '::', ACCESS_COMMENT)) {
+        $allowAnon = $this->getVar('allowanon');
+        if (!$this->hasPermission($this->name . '::', '::', ACCESS_COMMENT) && !$allowAnon) {
             return new ForbiddenResponse($this->__('Access forbidden since you cannot add comments.'));
         }
         return $this->_persistComment($request);
@@ -158,6 +159,8 @@ class CommentController extends AbstractController
         if (!$this->hasPermission($this->name . '::', '::', ACCESS_READ)) {
             return new ForbiddenResponse($this->__('Access forbidden since you cannot read comments.'));
         }
+
+
         $mod = $request->query->get('module');
         $id = $request->query->get('id');
         $parentId = $request->query->get('parentId');

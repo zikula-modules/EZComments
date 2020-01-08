@@ -114,18 +114,6 @@ class AdminController extends AbstractController
         return new JsonResponse($jsonReply);
     }
 
-    /**
-     * @Route("/modifyconfig")
-     * @param $reqeust
-     * Modify configuration --
-     *  moderation of comments
-     *  anonymous comments
-     *
-     * @return string The configuration page
-     */
-    public function modifyconfigAction(Request $request)
-    {
-    }
 
     /**
      * @Route("/blockuser")
