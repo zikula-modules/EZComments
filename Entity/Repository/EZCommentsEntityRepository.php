@@ -196,7 +196,9 @@ class EZCommentsEntityRepository extends EntityRepository
         $interval = $firstDay->diff($lastDay);
 
         $totalPosts = $this->count('modname');
-        return $totalPosts/$interval->days;
+        $days = $interval->days + 1;
+
+        return $totalPosts/$days;
 
     }
 }

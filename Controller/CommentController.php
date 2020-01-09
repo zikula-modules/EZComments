@@ -46,7 +46,46 @@ class CommentController extends AbstractController
         return $this->_persistComment($request, 'HTML');
     }
 
+    /**
+     * @param $id
+     * @return bool
+     * Find out if this is a banned poster. If this is true, the number of posts by this user will be equal
+     * to the number of banned posts. This saves having to keep track of this with another database.
+     */
+
+    private function _bannedPoster($id){
+        $repo = $this->getDoctrine()->getManager()->getRepository('ZikulaEZCommentsModule:EZCommentsEntity');
+        $postsByUser = $repo->findBy(['ownerid' => $id]);
+        $postsBannedByUser = $repo->findBy(['ownerid' => $id, 'status' => 1]);
+        $countPosts = count($postsByUser);
+        //if they don't have any posts or just 1, they cannot be banned.
+        if($countPosts <= 1){
+            return false;
+        }
+        return ($countPosts === count($postsBannedByUser));
+
+    }
+
+    /**
+     * @param $request
+     * @param string $responseRet
+     * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse|FatalResponse
+     *
+     * Save a comment to the database. We check for banned posters and prevent them from adding comments.
+     */
     private function _persistComment($request, $responseRet = 'JSON'){
+        //check to see if commenter is banned. This will happen if the number of comments they have is
+        //equal to the number of banned comments. (NOTE if they only posted one comment and it was banned, but you still
+        //want them to be able to post, then just delete that comment and communicate with them.
+        $ownerId = $this->get('zikula_users_module.current_user')->get('uid');
+        if($this->_bannedPoster($ownerId) && ($responseRet === 'JSON')){
+            //send back a different JSON reqeust.
+            $jsonReply[] = ['id' => -1,
+                'comment' => $this->__("You have been banned by the administrator of this web site to post comments")
+                ];
+
+            return  new JsonResponse($jsonReply);
+        }
         $id = $request->request->get('id');
         $comment = $request->request->get('comment');
         $subject = $request->request->get('subject');
@@ -66,7 +105,6 @@ class CommentController extends AbstractController
             $parentID = $request->request->get('parentID');
             $retURL = $request->request->get('retUrl');
             $ipaddr = $request->getClientIp();
-            $ownerId = $this->get('zikula_users_module.current_user')->get('uid');
             if($ownerId == 1){ //This happens when not logged in.
                 //this is not a logged in user.
                 $anonEmail = $request->request->get('anonEmail');
@@ -126,7 +164,7 @@ class CommentController extends AbstractController
         if (!$this->hasPermission($this->name . '::', '::', ACCESS_COMMENT) && !$allowAnon) {
             return new ForbiddenResponse($this->__('Access forbidden since you cannot add comments.'));
         }
-        return $this->_persistComment($request);
+        return $this->_persistComment($request, 'JSON');
     }
 
     /**
@@ -160,7 +198,6 @@ class CommentController extends AbstractController
             return new ForbiddenResponse($this->__('Access forbidden since you cannot read comments.'));
         }
 
-
         $mod = $request->query->get('module');
         $id = $request->query->get('id');
         $parentId = $request->query->get('parentId');
@@ -172,11 +209,14 @@ class CommentController extends AbstractController
         $jsonReply = [];
 
         foreach($items as $item){
-            $jsonReply[] = ['author' => $item->getAnonName(),
-                            'comment' => $item->getComment(),
-                            'subject' => $item->getSubject(),
-                            'id' => $item->getId(),
-                            'uid' => $item->getOwnerid()];
+            //do not include banned comments
+            if($item->getStatus() === 0){
+                $jsonReply[] = ['author' => $item->getAnonName(),
+                    'comment' => $item->getComment(),
+                    'subject' => $item->getSubject(),
+                    'id' => $item->getId(),
+                    'uid' => $item->getOwnerid()];
+            }
         }
         return  new JsonResponse($jsonReply);
     }

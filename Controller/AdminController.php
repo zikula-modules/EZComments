@@ -2,6 +2,7 @@
 
 namespace Zikula\EZCommentsModule\Controller;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Zikula\Core\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,9 +18,7 @@ use Zikula\EZCommentsModule\Entity\EZCommentsEntity;
 /**
  * @Route("/admin")
  */
-/* todo: Stopped here. The commenting interface is done. I need to do the admin interface.
-From just scanning this it looks like I can get rid of a bunch of it.
-Rethink what really needs to be displayed.*/
+
 class AdminController extends AbstractController
 {
     /**
@@ -114,19 +113,95 @@ class AdminController extends AbstractController
         return new JsonResponse($jsonReply);
     }
 
-
     /**
-     * @Route("/blockuser")
-     * @param $reqeust
+     * @Route("/deleteall/{comment}")
+     * @param Request $request
+     * @param EZCommentsEntity $comment
      * block users that are being annoying.
      */
 
-    public function blockuserAction(Request $request)
+    public function deleteallAction(Request $request, EZCommentsEntity $comment)
     {
 
     }
+    /**
+     * @Route("/blockuser/{comment}")
+     * @param Request $request
+     * @param EZCommentsEntity $comment
+     * @return RedirectResponse | ForbiddenResponse | FatalResponse
+     * block users that are being annoying.
+     */
 
+    public function blockuserAction(Request $request, EZCommentsEntity $comment)
+    {
+        //I don't know if I have to have this error checking in here, but just in case
+        if(null === $comment){
+            return new FatalResponse($this->__('That comment for some reason does not exist.'));
+        }
+        $id = $comment->getId();
+        if (!$this->hasPermission($this->name . '::', $id . "::", ACCESS_EDIT)) {
+            return new AccessDeniedException($this->__('Access forbidden since you cannot block comments.'));
+        }
+        $em = $this->getDoctrine()->getManager();
 
+        //right now this is a toggle. In the future it may have to be more sophisticated.
+        $userToBlock = $comment->getOwnerid();
+        if($userToBlock === 1){
+            //This is the anonymous user (guest id), you cannot group ban all the comments
+            $this->addFlash('status', $this->__("Banning the anonymous user will block all comments by any anonymous posters. If you want to block all anonymous comments, change the global setting. You will need to block each inappropriate comment individually"));
+        } else {
+            //Find all comments with this uid
+            $repo = $em->getRepository('ZikulaEZCommentsModule:EZCommentsEntity');
+            $userComments = $repo->findBy(['ownerid' => $userToBlock]);
+            //determine the goal (to ban or unban, based upon the first comment)
+            $blocked = !$userComments[0]->getStatus();
+            //walk each comment and change it's block status.
+            foreach($userComments as $comment){
+                $comment->setStatus($blocked);
+                $em->persist($comment);
+            }
+            $em->flush();
+            if($blocked){
+                $this->addFlash('status', $this->__("User " . $comment->getAnonname() . "'s comments are banned. You can unban them by clicking on the ban icon again."));
+            } else {
+                $this->addFlash('status', $this->__("User ". $comment->getAnonname() . "'s comments are unbanned."));
+            }
+        }
+        return $this->redirect($this->generateUrl('zikulaezcommentsmodule_admin_index'));
+    }
+
+    /**
+     * @Route("/blockcomment/{comment}")
+     * @param Request $request
+     * @param EZCommentsEntity $comment
+     * @return RedirectResponse | ForbiddenResponse | FatalResponse
+     * block comment that is annoying
+     */
+
+    public function blockCommentAction(Request $request, EZCommentsEntity $comment)
+    {
+        //I don't know if I have to have this error checking in here, but just in case
+        if(null === $comment){
+            return new FatalResponse($this->__('That comment for some reason does not exist.'));
+        }
+        $id = $comment->getId();
+        if (!$this->hasPermission($this->name . '::', $id . "::", ACCESS_EDIT)) {
+            return new AccessDeniedException($this->__('Access forbidden since you cannot block comments.'));
+        }
+        //right now this is a toggle. In the future it may have to be more sophisticated.
+        $blocked = !$comment->getStatus();
+        $comment->setStatus($blocked);
+        $em = $this->getDoctrine()->getManager();
+        //presist the comment and flush
+        $em->persist($comment);
+        $em->flush();
+        if($blocked){
+            $this->addFlash('status', $this->__('Comment is banned. You can unban the comment by clicking on the ban icon again.'));
+        } else {
+            $this->addFlash('status', $this->__('Comment is unbanned.'));
+        }
+        return $this->redirect($this->generateUrl('zikulaezcommentsmodule_admin_index'));
+    }
 
 
     /**

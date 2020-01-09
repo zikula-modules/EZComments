@@ -110,7 +110,7 @@ class EZCommentsEntity extends \Zikula\Core\Doctrine\EntityAccess
     private $anonmail;
 
     /**
-     * status
+     * status - codes that determine the status of the comment. Right now blocked (1) or not (0).
      *
      * @ORM\Column(type="integer", length=4)
      */

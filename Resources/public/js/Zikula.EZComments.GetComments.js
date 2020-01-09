@@ -87,6 +87,7 @@
                     toggleToChange.removeClass("fa-toggle-down");
                     toggleToChange.addClass("fa-toggle-left");
                     var noReplyDiv = $("#no_replies");
+                    noReplyDiv.html("There are no replies to this comment.")
                     noReplyDiv.removeClass("hidden");
                     var blockAfter = $("#itemComment_" + this.currentId);
                     $(noReplyDiv).insertAfter(blockAfter);
@@ -151,6 +152,22 @@
         addCommentCallback: function (result, textStatus, jqXHR) {
             //We need to grab the data out of the response and put it in a new div block and add
             //it to the page
+            if(result[0].id === -1){
+                //this means it is a banned poster, put up an alert and leave
+                //ToDo:Change the text to inform the poster that they are banned.
+                this.clearAndHideForm();
+                var noReplyDiv = $("#no_replies");
+                var currentText = noReplyDiv.html();
+                noReplyDiv.html(result[0].comment);
+                var blockAfter = $("#commentFormDiv");
+                $(noReplyDiv).insertAfter(blockAfter);
+                noReplyDiv.removeClass("hidden");
+                noReplyDiv.fadeIn();
+                noReplyDiv.delay(4000);
+                noReplyDiv.fadeOut();
+                $("#newComment").removeClass("hidden");
+                return;
+            }
             var divBlock;
             if (result[0].isEdit) {
                 var id = result[0].id;

@@ -16,6 +16,7 @@ use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Zikula\UsersModule\Api\CurrentUserApi;
 
 
 /**
@@ -64,11 +65,22 @@ class UiHooksProvider  implements HookProviderInterface
      */
     private $router;
 
+    /**
+     * @var CurrentUserApi
+     */
+    private $currentUserApi;
 
 
     /**
-     * ProviderHandler constructor.
+     * UiHooksProvider constructor.
+     * @param TranslatorInterface $translator
+     * @param PermissionApiInterface $permissionApi
+     * @param EngineInterface $templating
+     * @param EntityManager $entityManager
      * @param RequestStack $requestStack
+     * @param RouterInterface $router
+     * @param VariableApiInterface $variableApi
+     * @param CurrentUserApi $currentUserApi
      */
     public function __construct(TranslatorInterface $translator,
                                 PermissionApiInterface $permissionApi,
@@ -76,7 +88,8 @@ class UiHooksProvider  implements HookProviderInterface
                                 EntityManager $entityManager,
                                 RequestStack $requestStack,
                                 RouterInterface $router,
-                                VariableApiInterface $variableApi)
+                                VariableApiInterface $variableApi,
+                                CurrentUserApi $currentUserApi)
     {
         $this->translator = $translator;
         $this->permissionApi = $permissionApi;
@@ -85,6 +98,7 @@ class UiHooksProvider  implements HookProviderInterface
         $this->requestStack = $requestStack;
         $this->variableApi = $variableApi;
         $this->router = $router;
+        $this->currentUserApi = $currentUserApi;
     }
 
     public function getOwner()
@@ -135,9 +149,12 @@ class UiHooksProvider  implements HookProviderInterface
         $repo = $this->entityManager->getRepository('ZikulaEZCommentsModule:EZCommentsEntity');
         //get the comments that correspond to this object, but only the parent ones (replyTo set to 0)
         //child comments will be retrieved when the users opens the arrow
-        $items = $repo->findBy(['modname' => $mod, 'objectid' => $id, 'replyto'=> 0]);
+        //also do not get banned comments
+        $items = $repo->findBy(['modname' => $mod, 'objectid' => $id, 'replyto'=> 0, 'status' => 0]);
 
-        $doAnon = $this->variableApi->get('ZikulaEZCommentsModule', 'allowanon');
+        $loggedin = $this->currentUserApi->isLoggedIn();
+        //if we are logged in or allowanon is true then add the comment button
+        $doAnon = $this->variableApi->get('ZikulaEZCommentsModule', 'allowanon') || $loggedin;
 
         $content = $this->templating->render('ZikulaEZCommentsModule:Hook:ezcomments_hook_uiview.html.twig',
             ['items' => $items,

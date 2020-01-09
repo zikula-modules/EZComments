@@ -25,5 +25,6 @@ services:
       - '@request_stack'
       - "@router"
       - "@zikula_extensions_module.api.variable"
+      - "@zikula_users_module.current_user"
     tags:
     - { name: zikula.hook_provider, areaName: "provider.zikulaezcommentsmodule.ui_hooks.ezcomments" }
