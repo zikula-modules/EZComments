@@ -154,7 +154,6 @@
             //it to the page
             if(result[0].id === -1){
                 //this means it is a banned poster, put up an alert and leave
-                //ToDo:Change the text to inform the poster that they are banned.
                 this.clearAndHideForm();
                 var noReplyDiv = $("#no_replies");
                 var currentText = noReplyDiv.html();
@@ -183,7 +182,6 @@
                 //enter in the changed values
                 this.fillDivBlock(divBlock, result[0]);
             }
-
             //get rid of the twiddle block. Not needed here.
             if (result[0].parentID > 0) {
                 divBlock.find("span[id^=twiddle]").remove();
@@ -215,6 +213,9 @@
                 }
                 //if this is a new comment put it at the end
                 if(!result[0].isEdit){
+                    var replyIcon = divBlock.find("span[id^=reply]");
+                    replyIcon.attr("id", "reply_" + result[0].parentID);
+                    replyIcon.on("click", this.reply.bind(this));
                     subComments.append(divBlock);
                     //update the subcomments we have stored.
                     this.subComments[result[0].parentID] = subComments;
@@ -309,6 +310,11 @@
             if (result.comdel) {
                 var commentsToDelete = $("#itemComment_" + result.id);
                 commentsToDelete.remove();
+                if(result.parentid > 0){
+                    //This is a signal that there are no other replies. Hide that twiddle
+                    var itemName = "#twiddle_" + result.parentid;
+                    $(itemName).addClass("hidden");
+                }
             }
         },
 
@@ -419,9 +425,11 @@
         replyCallback: function (result, textStatus, jqXHR) {
             if (result) {
                 //change the toggle
-                var itemName = "twiddle_" + this.currentId;
-                $("#" + itemName).removeClass("fa-toggle-left");
-                $("#" + itemName).addClass("fa-toggle-down");
+                var itemName = "#twiddle_" + this.currentId;
+                //if the twiddle is hidden, show it.
+                $(itemName).removeClass("hidden");
+                $(itemName).removeClass("fa-toggle-left");
+                $(itemName).addClass("fa-toggle-down");
                 //get all the comments and add them to a form.
                 var len = result.length;
                 if (len !== 0) {
@@ -439,7 +447,9 @@
                 divBlock = this.$divCommentBlock.clone();
                 //Remove the arrow icon. Right now, no replies to replies
                 divBlock.find("span[id^=twiddle]").remove();
-                divBlock.find("span[id^=reply]").remove();
+                var replyIcon = divBlock.find("span[id^=reply]");
+                replyIcon.attr("id", "reply_" + result[i].parentid);
+                replyIcon.on("click", this.reply.bind(this));
                 this.fillDivBlock(divBlock, result[i]);
 
                 //add the click listener to the buttons

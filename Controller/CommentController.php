@@ -118,7 +118,6 @@ class CommentController extends AbstractController
             $commentObj->setObjectid($artId);
             $commentObj->setAreaid($areaId);
             $commentObj->setModname($module);
-            $commentObj->setAreaid($areaId);
             $commentObj->setOwnerid($ownerId);
             if(isset($parentID)){
                 $commentObj->setReplyto($parentID);
@@ -215,6 +214,7 @@ class CommentController extends AbstractController
                     'comment' => $item->getComment(),
                     'subject' => $item->getSubject(),
                     'id' => $item->getId(),
+                    'parentid' => $item->getReplyto(),
                     'uid' => $item->getOwnerid()];
             }
         }
@@ -251,11 +251,19 @@ class CommentController extends AbstractController
                 return new ForbiddenResponse($this->__('Access Denied'));
             }
             $em = $this->getDoctrine()->getManager();
+            //determine if there are other comments to this comment
+            $parentId = $comment->getReplyto();
             $em->remove($comment);
             //we may need to get rid of replies, do it
             $repo->deleteReplies($commentId);
             $em->flush();
+            $items = $repo->findOneBy(['replyto' => $parentId]);
+            if(null !== $items){
+                //there are other replies to this item, set parentId to -1
+                $parentId = -1;
+            }
             $jsonReply = ['comdel' => true,
+                            'parentid' => $parentId,
                             'id' => $commentId];
         }
         return new JsonResponse($jsonReply);

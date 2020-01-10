@@ -12,7 +12,11 @@
                 <h3 id="itemSubject_{{ item.id }}">{{ item.subject }}</h3>
                 <p><i class="username" id="itemName_{{ item.id }}">{{ item.anonname}}</i>
                     {% if item.replyto == 0 %}
-                        <span id="twiddle_{{ item.id }}" title="View Replies" class="fa fa-toggle-left fa-lg"></span>
+                        {%  if item.areaid == 1 %}
+                            <span id="twiddle_{{ item.id }}" title="View Replies" class="fa fa-toggle-left fa-lg"></span>
+                            {% else %}
+                            <span id="twiddle_{{ item.id }}" title="View Replies" class="hidden fa fa-toggle-left fa-lg"></span>
+                        {% endif %}
                     {% endif %}
                     {% if currentUser.uid == item.ownerid or isAdmin %}
                         <span id="edit_{{ item.id }}" title="Edit Comment" class="fa fa-pencil fa-lg"></span>

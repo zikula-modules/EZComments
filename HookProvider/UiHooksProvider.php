@@ -152,6 +152,14 @@ class UiHooksProvider  implements HookProviderInterface
         //also do not get banned comments
         $items = $repo->findBy(['modname' => $mod, 'objectid' => $id, 'replyto'=> 0, 'status' => 0]);
 
+        //walk the items and see if they have replies
+        foreach($items as $item){
+            $replies = $repo->findOneBy(['modname' => $mod, 'objectid' => $id, 'replyto'=> $item->getId(), 'status' => 0]);
+            if($replies){
+                //this marks it as having replies.
+                $item->setAreaid(1);
+            }
+        }
         $loggedin = $this->currentUserApi->isLoggedIn();
         //if we are logged in or allowanon is true then add the comment button
         $doAnon = $this->variableApi->get('ZikulaEZCommentsModule', 'allowanon') || $loggedin;
