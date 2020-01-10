@@ -10,7 +10,7 @@
         {% if currentUser.loggedin %}
             <div id="itemComment_{{ item.id }}">
                 <h3 id="itemSubject_{{ item.id }}">{{ item.subject }}</h3>
-                <p><i class="username" id="itemName_{{ item.id }}">{{ item.anonname}}</i>
+                <p> <span id="avatar" class="avatar">{{ userAvatar(item.ownerid, {rating: 'g'}) }}</span><i class="username" id="itemName_{{ item.id }}">{{ item.anonname}}</i>
                     {% if item.replyto == 0 %}
                         {%  if item.areaid == 1 %}
                             <span id="twiddle_{{ item.id }}" title="View Replies" class="fa fa-toggle-left fa-lg"></span>
@@ -23,7 +23,7 @@
                         <span id="trash_{{ item.id }}" title="Delete Comment" class="fa fa-trash fa-lg"></span>
                     {% endif %}
                 </p>
-                <p id="itemComment_{{ item.id }}" class="alert alert-warning">{{ item.comment }}</p>
+                <p id="itemComment_{{ item.id }}" class="commentBox">{{ item.comment }}</p>
                 <p id="replyPara">
                     <span id="reply_{{ item.id }}" title="reply" class="fa fa-mail-reply fa-large"></span>
                 </p>
@@ -55,12 +55,12 @@
     <!-- add another divs comment section for JS to grab to add new comments dynamically -->
     <div class="hidden itemComment">
         <h3 id="itemSubject"></h3>
-        <p><i class="username" id="itemName"></i>
+        <p><span id="avatar"></span><i class="username" id="itemName"></i>
             <span id="twiddle" title="View Replies" class="fa fa-toggle-left fa-lg"></span>
             <span id="edit" title="Edit Comment" class="fa fa-pencil fa-lg"></span>
             <span id="trash" title="Delete Comment" class="fa fa-trash fa-lg"></span>
         </p>
-        <p id="itemComment" class="alert alert-success"></p>
+        <p id="itemComment" class="commentBox"></p>
         <p id="replyPara">
             <span id="reply" title="reply" class="fa fa-mail-reply fa-large"></span>
         </p>
@@ -104,13 +104,13 @@
             <br/>
             <textarea rows="5" cols="60" name="comment"></textarea>
             <div class="form-group">
-                <button id="addComment" type="submit" class="btn btn-success" name="addComment" value="addComment">
+                <button id="addComment" type="submit" class="btn btn-primary" name="addComment" value="addComment">
                     {{ __('Add Comment') }}
                 </button>
-                <button id="cancelComment" type="submit" class="btn btn-warning" name="cancelComment">
+                <button id="cancelComment" type="submit" class="btn btn-info" name="cancelComment">
                     {{ __('Cancel Comment') }}
                 </button>
-                <button type="reset" class="btn btn-default" name="reset_form" onclick="this.form.reset()">
+                <button type="reset" class="btn btn-default" name="btn-default" onclick="this.form.reset()">
                     {{ __('Reset') }}
                 </button>
             </div>

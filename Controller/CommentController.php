@@ -206,16 +206,18 @@ class CommentController extends AbstractController
         $items = $repo->findBy(['modname' => $mod, 'objectid' => $id, 'replyto'=> $parentId], ['date' => 'DESC']);
         //Package this in a JSON object.
         $jsonReply = [];
-
         foreach($items as $item){
             //do not include banned comments
             if($item->getStatus() === 0){
+                $uid = $item->getOwnerid();
                 $jsonReply[] = ['author' => $item->getAnonName(),
                     'comment' => $item->getComment(),
                     'subject' => $item->getSubject(),
                     'id' => $item->getId(),
                     'parentid' => $item->getReplyto(),
-                    'uid' => $item->getOwnerid()];
+                    'uid' => $uid,
+                    'avatar' => $this->render('ZikulaEZCommentsModule:Comment:ezcomments_comment_avatar.html.twig', [
+                        'uid' => $uid])->getContent()];
             }
         }
         return  new JsonResponse($jsonReply);

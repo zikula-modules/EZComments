@@ -481,6 +481,9 @@
             name.text(result.author);
             name.attr("id", "itemName_" + result.id);
             inDivBlock.attr("id", "itemComment_" + result.id);
+
+            var avatar = inDivBlock.find("span[id=avatar]");
+            avatar.text(result.avatar);
         },
 
         finishReplySetup: function (target) {
