@@ -28,3 +28,13 @@ services:
       - "@zikula_users_module.current_user"
     tags:
     - { name: zikula.hook_provider, areaName: "provider.zikulaezcommentsmodule.ui_hooks.ezcomments" }
+
+  zikula_ezcomments_module.hook_provider.countcomment_ui_hooks_provider:
+    class: Zikula\EZCommentsModule\HookProvider\CountCommentsUiHooksProvider
+    arguments:
+      - '@translator.default'
+      - '@zikula_permissions_module.api.permission'
+      - '@templating'
+      - '@doctrine.orm.entity_manager'
+    tags:
+      - { name: zikula.hook_provider, areaName: "provider.zikulaezcommentsmodule.ui_hooks.countcomments" }

@@ -34,10 +34,14 @@
                 <h3 id="itemSubject_{{ item.id }}">{{ item.subject }}</h3>
                 <p><i class="username" id="itemName_{{ item.id }}"> {{ item.anonname }}</i>
                     {% if item.replyto == 0 %}
-                        <span id="twiddle_{{ item.id }}" class="fa fa-toggle-left"></span>
+                        {%  if item.areaid == 1 %}
+                            <span id="twiddle_{{ item.id }}" title="View Replies" class="fa fa-toggle-left fa-lg"></span>
+                        {% else %}
+                            <span id="twiddle_{{ item.id }}" title="View Replies" class="hidden fa fa-toggle-left fa-lg"></span>
+                        {% endif %}
                     {% endif %}
                 </p>
-                <p id="itemComment_{{ item.id }}" class="alert alert-info">{{ item.comment }}</p>
+                <p id="itemComment_{{ item.id }}" class="alert commentBox">{{ item.comment }}</p>
                 {% if doAnon %}
                 <p id="replyPara">
                     <span id="reply_{{ item.id }}" title="reply" class="fa fa-mail-reply fa-large"></span>
@@ -61,9 +65,11 @@
             <span id="trash" title="Delete Comment" class="fa fa-trash fa-lg"></span>
         </p>
         <p id="itemComment" class="commentBox"></p>
-        <p id="replyPara">
-            <span id="reply" title="reply" class="fa fa-mail-reply fa-large"></span>
-        </p>
+        {% if doAnon %}
+            <p id="replyPara">
+                <span id="reply_{{ item.id }}" title="reply" class="fa fa-mail-reply fa-large"></span>
+            </p>
+        {%  endif %}
     </div>
 </div>
 <div id="commentFormDiv">

@@ -483,7 +483,7 @@
             inDivBlock.attr("id", "itemComment_" + result.id);
 
             var avatar = inDivBlock.find("span[id=avatar]");
-            avatar.text(result.avatar);
+            avatar.html(result.avatar);
         },
 
         finishReplySetup: function (target) {

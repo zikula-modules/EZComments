@@ -29,6 +29,8 @@ use Zikula\UsersModule\Api\CurrentUserApi;
 
 class UiHooksProvider  implements HookProviderInterface
 {
+    const COUNT_COMMENTS = 'ezcomments.ui_hooks.count.comments';
+
     use ServiceIdTrait;
 
     /**
@@ -119,11 +121,7 @@ class UiHooksProvider  implements HookProviderInterface
     public function getProviderTypes()
     {
         return [
-            UiHooksCategory::TYPE_DISPLAY_VIEW => 'uiView',
-            UiHooksCategory::TYPE_FORM_EDIT => 'commentEdit',
-            UiHooksCategory::TYPE_FORM_DELETE => 'commentDelete',
-            UiHooksCategory::TYPE_PROCESS_DELETE => 'processDelete',
-            UiHooksCategory::TYPE_PROCESS_EDIT => 'processEdit'
+            UiHooksCategory::TYPE_DISPLAY_VIEW => 'uiView'
         ];
     }
 
@@ -134,7 +132,6 @@ class UiHooksProvider  implements HookProviderInterface
      */
     public function uiView(DisplayHook $hook)
     {
-
         $mod = $hook->getCaller();
         $id = $hook->getId();
         $areaID = $hook->getAreaId();
@@ -143,61 +140,51 @@ class UiHooksProvider  implements HookProviderInterface
         if (!$this->permissionApi->hasPermission('EZComments::', "$mod:$id:", ACCESS_READ)) {
             return;
         }
-        $is_admin = $this->permissionApi->hasPermission('EZComments::', '::', ACCESS_ADMIN);
-        $url = $hook->getUrl();
-        $urlString = $this->router->generate($url->getRoute(), $url->getArgs());
         $repo = $this->entityManager->getRepository('ZikulaEZCommentsModule:EZCommentsEntity');
-        //get the comments that correspond to this object, but only the parent ones (replyTo set to 0)
-        //child comments will be retrieved when the users opens the arrow
-        //also do not get banned comments
-        $items = $repo->findBy(['modname' => $mod, 'objectid' => $id, 'replyto'=> 0, 'status' => 0]);
 
-        //walk the items and see if they have replies
-        foreach($items as $item){
-            $replies = $repo->findOneBy(['modname' => $mod, 'objectid' => $id, 'replyto'=> $item->getId(), 'status' => 0]);
-            if($replies){
-                //this marks it as having replies.
-                $item->setAreaid(1);
+        if($areaID == self::COUNT_COMMENTS){
+            $repo = $this->entityManager->getRepository('ZikulaEZCommentsModule:EZCommentsEntity');
+            $commentCount = $repo->createQueryBuilder('a')
+                ->select('count(a.objectid)')
+                ->where('a.status = 0')
+                ->getQuery()
+                ->getSingleScalarResult();
+
+            $response = new DisplayHookResponse($this->getServiceId(), $commentCount);
+        } else {
+            $is_admin = $this->permissionApi->hasPermission('EZComments::', '::', ACCESS_ADMIN);
+            $url = $hook->getUrl();
+            $urlString = $this->router->generate($url->getRoute(), $url->getArgs());
+            //get the comments that correspond to this object, but only the parent ones (replyTo set to 0)
+            //child comments will be retrieved when the users opens the arrow
+            //also do not get banned comments
+            $items = $repo->findBy(['modname' => $mod, 'objectid' => $id, 'replyto'=> 0, 'status' => 0]);
+
+            //walk the items and see if they have replies
+            foreach($items as $item){
+                $replies = $repo->findOneBy(['modname' => $mod, 'objectid' => $id, 'replyto'=> $item->getId(), 'status' => 0]);
+                if($replies){
+                    //this marks it as having replies.
+                    $item->setAreaid(1);
+                }
             }
-        }
-        $loggedin = $this->currentUserApi->isLoggedIn();
-        //if we are logged in or allowanon is true then add the comment button
-        $doAnon = $this->variableApi->get('ZikulaEZCommentsModule', 'allowanon') || $loggedin;
+            $loggedin = $this->currentUserApi->isLoggedIn();
+            //if we are logged in or allowanon is true then add the comment button
+            $doAnon = $this->variableApi->get('ZikulaEZCommentsModule', 'allowanon') || $loggedin;
 
-        $content = $this->templating->render('ZikulaEZCommentsModule:Hook:ezcomments_hook_uiview.html.twig',
-            ['items' => $items,
-              'isAdmin' =>  $is_admin,
-                'artId' => $id,
-                'module' => $mod,
-                'areaId' => $areaID,
-                'retUrl' => $urlString,
-                'doAnon' => $doAnon
+            $content = $this->templating->render('ZikulaEZCommentsModule:Hook:ezcomments_hook_uiview.html.twig',
+                ['items' => $items,
+                    'isAdmin' =>  $is_admin,
+                    'artId' => $id,
+                    'module' => $mod,
+                    'areaId' => $areaID,
+                    'retUrl' => $urlString,
+                    'doAnon' => $doAnon
                 ]);
 
-        $response = new DisplayHookResponse($this->getServiceId(), $content);
+            $response = new DisplayHookResponse($this->getServiceId(), $content);
+        }
         $hook->setResponse($response);
     }
 
-    public function commentEdit(DisplayHook $hook)
-    {
-
-        $this->requestStack->getMasterRequest()->getSession()->getFlashBag()->add('success', 'Ui hook comment processed!');
-    }
-
-    public function processDelete(ProcessHook $hook)
-    {
-
-        $this->requestStack->getMasterRequest()->getSession()->getFlashBag()->add('success', 'Ui hook delete properly processed!');
-    }
-
-    public function commentDelete(ProcessHook $hook)
-    {
-
-        $this->requestStack->getMasterRequest()->getSession()->getFlashBag()->add('success', 'Ui hook delete properly processed!');
-    }
-
-    public function processEdit(ProcessHook $hook)
-    {
-        $this->requestStack->getMasterRequest()->getSession()->getFlashBag()->add('success', 'Ui hook edit properly processed!');
-    }
 }
