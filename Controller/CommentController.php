@@ -78,14 +78,6 @@ class CommentController extends AbstractController
         //equal to the number of banned comments. (NOTE if they only posted one comment and it was banned, but you still
         //want them to be able to post, then just delete that comment and communicate with them.
         $ownerId = $this->get('zikula_users_module.current_user')->get('uid');
-        if($this->_bannedPoster($ownerId) && ($responseRet === 'JSON')){
-            //send back a different JSON reqeust.
-            $jsonReply[] = ['id' => -1,
-                'comment' => $this->__("You have been banned by the administrator of this web site to post comments")
-                ];
-
-            return  new JsonResponse($jsonReply);
-        }
         $id = $request->request->get('id');
         $comment = $request->request->get('comment');
         $subject = $request->request->get('subject');
@@ -138,7 +130,7 @@ class CommentController extends AbstractController
         //If this has come from a JSON response, then return the data to be inserted into the form
         //else this is coming from an HTML POST request. Then return a redirect response
         if($responseRet = 'JSON'){
-            $jsonReply[] = ['author' => $user,
+            $jsonReply = ['author' => $user,
                 'comment' => $comment,
                 'subject' => $subject,
                 'artId' => $commentObj->getObjectid(),
@@ -166,6 +158,84 @@ class CommentController extends AbstractController
         return $this->_persistComment($request, 'JSON');
     }
 
+    /**
+     * @Route("/verifycomment", options={"expose"=true})
+     * @Method("POST")
+     * @param Request $request
+     * @return JsonResponse|ForbiddenResponse
+     */
+    public function verifycommentAction(Request $request)
+    {
+        $allowAnon = $this->getVar('allowanon');
+        if (!$this->hasPermission($this->name . '::', '::', ACCESS_COMMENT) && !$allowAnon) {
+            return new ForbiddenResponse($this->__('Access forbidden since you cannot add comments.'));
+        }
+        $ownerId = $this->get('zikula_users_module.current_user')->get('uid');
+        if($this->_bannedPoster($ownerId)){
+            //send back a different JSON reqeust.
+            return  new JsonResponse(['verified' => false,
+                'reason' => 'ban',
+                'message' => $this->__("You have been banned by the administrator of this web site to post comments")
+            ]);
+        }
+        $comment = $request->request->get('comment');
+        $subject = $request->request->get('subject');
+        $user= $request->request->get('user');
+        $artId = $request->request->get('artId');
+        $module = $request->request->get('module');
+        $areaId = $request->request->get('areaId');
+        $parentID = $request->request->get('parentID');
+        $retURL = $request->request->get('retUrl');
+        $anonEmail = "";
+        $anonWebsite = "";
+        if($ownerId == 1){ //This happens when not logged in.
+            //this is not a logged in user.
+            $anonEmail = $request->request->get('anonEmail');
+            $anonWebsite = $request->request->get('anonWebsite');
+
+        } else {
+            if($user == ""){
+                return  new JsonResponse(['verified' => false,
+                    'reason' => 'user',
+                    'message' => $this->__("Please provide a username for your comment.")
+                ]);
+            }
+        }
+        if(!isset($artId)){
+            //There is a problem with the comment. Hopefuly this never happens
+            return  new JsonResponse(['verified' => false,
+                'reason' => 'struct',
+                'message' => $this->__("There is a problem with how the reply structure was set. Please reload the page and try again.")
+            ]);
+        }
+        if($comment == ""){
+            return  new JsonResponse(['verified' => false,
+                'reason' => 'comment',
+                'message' => $this->__("Your comment is empty, please enter some text before submitting your comment.")
+            ]);
+        }
+
+        if($subject == ""){
+            //There is a problem with the comment. Hopefuly this never happens
+            return  new JsonResponse(['verified' => false,
+                'reason' => 'subject',
+                'message' => $this->__("Please enter a subject for your comment.")
+            ]);
+        }
+        $id = $request->request->get('id');
+        return  new JsonResponse(['verified' => true,
+            'comment' => $comment,
+            'subject' => $subject,
+            'user' => $user,
+            'artId' => $artId,
+            'module' => $module,
+            'areaId' => $areaId,
+            'parentID' => $parentID,
+            'retUrl' => $retURL,
+            'anonEmail' => $anonEmail,
+            'anonWebsite' => $anonWebsite,
+            'id' => $id]);
+    }
     /**
      * @Route("/getuserid", options={"expose"=true})
      * @Method("GET")

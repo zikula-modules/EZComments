@@ -32,7 +32,7 @@
         {% else %}
             <div id="itemComment_{{ item.id }}">
                 <h3 id="itemSubject_{{ item.id }}">{{ item.subject }}</h3>
-                <p><i class="username" id="itemName_{{ item.id }}"> {{ item.anonname }}</i>
+                <p><span id="avatar" class="avatar">{{ userAvatar(item.ownerid, {rating: 'g'}) }}</span><i class="username" id="itemName_{{ item.id }}"> {{ item.anonname }}</i>
                     {% if item.replyto == 0 %}
                         {%  if item.areaid == 1 %}
                             <span id="twiddle_{{ item.id }}" title="View Replies" class="fa fa-toggle-left fa-lg"></span>
@@ -67,7 +67,7 @@
         <p id="itemComment" class="commentBox"></p>
         {% if doAnon %}
             <p id="replyPara">
-                <span id="reply_{{ item.id }}" title="reply" class="fa fa-mail-reply fa-large"></span>
+                <span id="reply" title="reply" class="fa fa-mail-reply fa-large"></span>
             </p>
         {%  endif %}
     </div>
@@ -104,11 +104,11 @@
                 {% endif %}
                 <tr>
                     <td><b>{{ __('Subject: ') }} </b></td>
-                    <td><input name="subject" maxlength="100" size="50"/></td>
+                    <td><input id="subject-area" name="subject" maxlength="100" size="50"/></td>
                 </tr>
             </table>
             <br/>
-            <textarea rows="5" cols="60" name="comment"></textarea>
+            <textarea id="comment-area" rows="5" cols="60" name="comment"></textarea>
             <div class="form-group">
                 <button id="addComment" type="submit" class="btn btn-primary" name="addComment" value="addComment">
                     {{ __('Add Comment') }}
@@ -125,3 +125,7 @@
 </div>
 <!-- comment form -->
 <div class="alert alert-danger hidden" id="no_replies">{{ __('No replies to show!') }}</div>
+
+<div id="dialog-message" title="There was a problem with your comment?">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span><span id="comment_message"></span></p>
+</div>

@@ -19,6 +19,7 @@
             this.bindEvents();
             this.getUserId();
             this.$comForm.addClass("hidden");
+            this.setUpMessageDialog();
         },
         cacheDom: function () {
             this.$comForm = $("#commentFormDiv");
@@ -48,6 +49,30 @@
             this.sendAjax("zikulaezcommentsmodule_comment_getuserid",
                 {},
                 {success: this.getUserIdCallback.bind(this), method: "GET"});
+        },
+
+        setUpMessageDialog: function(){
+            $( "#dialog-message" ).dialog({
+                autoOpen: false,
+                buttons: {
+                    Ok: function() {
+                        $( this ).dialog( "close" );
+                    }
+                },
+                width: 450,
+                open: function(event, ui)
+                {
+                    setTimeout(function() {$("#dialog-message").dialog("close");}, 5000);
+                },
+                show: {
+                    effect: "blind",
+                    duration: 1000
+                },
+                hide: {
+                    effect: "fade",
+                    duration: 1000
+                }
+            });
         },
 
         getUserIdCallback: function (result, textStatus, jqXHR) {
@@ -125,9 +150,12 @@
             this.gatherCommentInfo(evt, 10);
             var currForm = this.$comForm;
             var parentId = currForm.find("input[name=parentID]").attr("value");
+            var subject = currForm.find("input[name=subject]").val();
+            var comment = currForm.find("textarea[name=comment]").val();
+
             //Send off the data.
             this.sendAjax(
-                "zikulaezcommentsmodule_comment_setcomment",
+                "zikulaezcommentsmodule_comment_verifycomment",
                 {
                     module: this.$module,
                     artId: this.$artId,
@@ -135,99 +163,136 @@
                     areaId: currForm.find("input[name=areaId]").attr("value"),
                     retUrl: currForm.find("input[name=retUrl]").attr("value"),
                     user: currForm.find("input[name=user]").attr("value"),
-                    subject: currForm.find("input[name=subject]").val(),
-                    comment: currForm.find("textarea[name=comment]").val(),
+                    subject: subject,
+                    comment: comment,
                     anonEmail: currForm.find("input[name=anonEmail]").attr("value"),
                     anonWebsite: currForm.find("input[name=anonWebsite]").attr("value"),
                     id: this.currentId
                 },
                 {
-                    success: this.addCommentCallback.bind(this),
+                    success: this.verifiedCommentCallback.bind(this),
                     method: "POST"
                 });
             evt.preventDefault();
             evt.stopPropagation();
         },
 
-        addCommentCallback: function (result, textStatus, jqXHR) {
-            //We need to grab the data out of the response and put it in a new div block and add
-            //it to the page
-            if(result[0].id === -1){
-                //this means it is a banned poster, put up an alert and leave
-                this.clearAndHideForm();
-                var noReplyDiv = $("#no_replies");
-                var currentText = noReplyDiv.html();
-                noReplyDiv.html(result[0].comment);
-                var blockAfter = $("#commentFormDiv");
-                $(noReplyDiv).insertAfter(blockAfter);
-                noReplyDiv.removeClass("hidden");
-                noReplyDiv.fadeIn();
-                noReplyDiv.delay(4000);
-                noReplyDiv.fadeOut();
-                $("#newComment").removeClass("hidden");
+        verifiedCommentCallback: function(result, textStatus, jsXHR){
+            if(result.verified === false){
+                //There was a problem, post the message that came back and exit
+                $("#comment_message").text(result.message);
+                $("#dialog-message").dialog("open");
+                switch(result.reason){
+                    case "comment":
+                        $("#comment-area").css("border-color", "#f34f4f");
+                        $("#comment-area").css("border-width", "1px");
+                        $("#comment-area").css("background", "#ffe1da");
+                        break;
+                    case "subject":
+                        $("#subject-area").css("border-color", "#f34f4f");
+                        $("#subject-area").css("border-width", "1px");
+                        $("#subject-area").css("border-style", "solid");
+                        $("#subject-area").css("background", "#ffe1da");
+                        $("#subject-area").focus();
+                        break;
+                }
+                setTimeout(this.resetCommentFields.bind(this), 5000);
                 return;
             }
+            this.sendAjax(
+                "zikulaezcommentsmodule_comment_setcomment",
+                {
+                    //I think we can just pass the data along
+                    module: result.module,
+                    artId: result.artId,
+                    parentID: result.parentID,
+                    areaId: result.areaId,
+                    retUrl: result.retUrl,
+                    user: result.user,
+                    subject: result.subject,
+                    comment: result.comment,
+                    anonEmail: result.anonEmail,
+                    anonWebsite: result.anonWebsite,
+                    id: result.id
+                },
+                {
+                    success: this.addCommentCallback.bind(this),
+                    method: "POST"
+                });
+        },
+
+        resetCommentFields: function(){
+            $("#comment-area").css("border-color", "black");
+            $("#comment-area").css("border-width", "1px");
+            $("#comment-area").css("background", "white");
+            $("#subject-area").css("border-color", "black");
+            $("#subject-area").css("border-width", "1px");
+            $("#subject-area").css("border-style", "solid");
+            $("#subject-area").css("background", "white");
+        },
+
+        addCommentCallback: function (result, textStatus, jqXHR) {
             var divBlock;
-            if (result[0].isEdit) {
-                var id = result[0].id;
+            if (result.isEdit) {
+                var id = result.id;
                 divBlock = $("#itemComment_" + id);
                 //enter in the changed values
-                divBlock.find("h3[id^=itemSubject_" + id + "]").text(result[0].subject);
-                divBlock.find("p[id^=itemComment_" + id + "]").text(result[0].comment);
-                divBlock.find("i[id^=itemName_" + id + "]").text(result[0].author);
+                divBlock.find("h3[id^=itemSubject_" + id + "]").text(result.subject);
+                divBlock.find("p[id^=itemComment_" + id + "]").text(result.comment);
+                divBlock.find("i[id^=itemName_" + id + "]").text(result.author);
                 divBlock.removeClass("hidden");
 
             } else {
                 divBlock = this.$divCommentBlock.clone();
                 //enter in the changed values
-                this.fillDivBlock(divBlock, result[0]);
+                this.fillDivBlock(divBlock, result);
             }
             //get rid of the twiddle block. Not needed here.
-            if (result[0].parentID > 0) {
+            if (result.parentID > 0) {
                 divBlock.find("span[id^=twiddle]").remove();
-                divBlock.attr("id", "itemComment_" + result[0].id);
-            } else if (!result[0].isEdit) {
+                divBlock.attr("id", "itemComment_" + result.id);
+            } else if (!result.isEdit) {
                 //since this is the parent thread we need to
                 //add an itemchild div that data can be appended to.
-                divBlock.append("<div id=\"itemChild_" + result[0].id + "\"></div>");
+                divBlock.append("<div id=\"itemChild_" + result.id + "\"></div>");
                 var twiddle = divBlock.find("span[id^=twiddle]");
-                twiddle.attr("id", "twiddle_" + result[0].id);
+                twiddle.attr("id", "twiddle_" + result.id);
                 twiddle.on("click", this.getComments.bind(this));
                 //this is the root comment form we re using. Therefore, we are adding the comment
                 //and need to put back the add comment button for the next comment
                 this.$newCommentButton.removeClass("hidden");
             }
-            this.hookUpButtons(divBlock, result[0]);
+            this.hookUpButtons(divBlock, result);
 
             var currForm = this.$comForm;
             //Is this a subcomment?
-            if (result[0].parentID > 0) {
-                var subComments = this.subComments[result[0].parentID];
+            if (result.parentID > 0) {
+                var subComments = this.subComments[result.parentID];
                 //if There are not subcomments, then create the div they live in and add the ez_indent class to make sure it's indented.
                 if(!subComments){
-                    subComments = $("<div id=subComments_" + result[0].parentID + "></div>");
+                    subComments = $("<div id=subComments_" + result.parentID + "></div>");
                     subComments.addClass("ez_indent");
                     //There were no subcomments to this comment.
                     //we need to add this to the DOM since it wasn't there, right after the <div id="itemchild_"> tag.
-                    $("#itemChild_" + result[0].parentID).prepend(subComments);
+                    $("#itemChild_" + result.parentID).prepend(subComments);
                 }
                 //if this is a new comment put it at the end
-                if(!result[0].isEdit){
+                if(!result.isEdit){
                     var replyIcon = divBlock.find("span[id^=reply]");
-                    replyIcon.attr("id", "reply_" + result[0].parentID);
+                    replyIcon.attr("id", "reply_" + result.parentID);
                     replyIcon.on("click", this.reply.bind(this));
                     subComments.append(divBlock);
                     //update the subcomments we have stored.
-                    this.subComments[result[0].parentID] = subComments;
+                    this.subComments[result.parentID] = subComments;
                 } else {
                     //This is an edit. We need to fill the hidden block with the
                     //new values and reveal it
-                    this.fillDivBlock(divBlock, result[0]);
+                    this.fillDivBlock(divBlock, result);
                 }
             } else {
                 //This is on the main thread. I need to modify the reply block at least
                 var replyButton = divBlock.find("span[id=reply]");
-                replyButton.attr("id", "reply_" + result[0].id);
+                replyButton.attr("id", "reply_" + result.id);
                 replyButton.on("click", this.reply.bind(this));
                 currForm.before(divBlock);
             }
@@ -516,5 +581,7 @@
             window.alert(textStatus + "\n" + errorThrown);
         },
     };
+
+
 })(jQuery);
 
