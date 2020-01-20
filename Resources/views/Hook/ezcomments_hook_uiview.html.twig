@@ -23,7 +23,7 @@
                         <span id="trash_{{ item.id }}" title="Delete Comment" class="fa fa-trash fa-lg"></span>
                     {% endif %}
                 </p>
-                <p id="itemComment_{{ item.id }}" class="commentBox">{{ item.comment }}</p>
+                <p id="itemComment_{{ item.id }}" class="commentBox">{{ item.comment|raw }}</p>
                 <p id="replyPara">
                     <span id="reply_{{ item.id }}" title="reply" class="fa fa-mail-reply fa-large"></span>
                 </p>
@@ -41,7 +41,7 @@
                         {% endif %}
                     {% endif %}
                 </p>
-                <p id="itemComment_{{ item.id }}" class="alert commentBox">{{ item.comment }}</p>
+                <p id="itemComment_{{ item.id }}" class="alert commentBox">{{ item.comment |raw }}</p>
                 {% if doAnon %}
                 <p id="replyPara">
                     <span id="reply_{{ item.id }}" title="reply" class="fa fa-mail-reply fa-large"></span>

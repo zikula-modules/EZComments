@@ -179,6 +179,7 @@ class CommentController extends AbstractController
             ]);
         }
         $comment = $request->request->get('comment');
+        $comment = nl2br($comment);
         $subject = $request->request->get('subject');
         $user= $request->request->get('user');
         $artId = $request->request->get('artId');

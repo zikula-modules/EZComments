@@ -7,12 +7,10 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\Bundle\HookBundle\Category\UiHooksCategory;
 use Zikula\Bundle\HookBundle\Hook\DisplayHook;
 use Zikula\Bundle\HookBundle\Hook\DisplayHookResponse;
-use Zikula\Bundle\HookBundle\Hook\ProcessHook;
 use Zikula\Bundle\HookBundle\HookProviderInterface;
 use Zikula\Bundle\HookBundle\ServiceIdTrait;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -29,8 +27,6 @@ use Zikula\UsersModule\Api\CurrentUserApi;
 
 class UiHooksProvider  implements HookProviderInterface
 {
-    const COUNT_COMMENTS = 'ezcomments.ui_hooks.count.comments';
-
     use ServiceIdTrait;
 
     /**
@@ -142,48 +138,37 @@ class UiHooksProvider  implements HookProviderInterface
         }
         $repo = $this->entityManager->getRepository('ZikulaEZCommentsModule:EZCommentsEntity');
 
-        if($areaID == self::COUNT_COMMENTS){
-            $repo = $this->entityManager->getRepository('ZikulaEZCommentsModule:EZCommentsEntity');
-            $commentCount = $repo->createQueryBuilder('a')
-                ->select('count(a.objectid)')
-                ->where('a.status = 0')
-                ->getQuery()
-                ->getSingleScalarResult();
+        $is_admin = $this->permissionApi->hasPermission('EZComments::', '::', ACCESS_ADMIN);
+        $url = $hook->getUrl();
+        $urlString = $this->router->generate($url->getRoute(), $url->getArgs());
+        //get the comments that correspond to this object, but only the parent ones (replyTo set to 0)
+        //child comments will be retrieved when the users opens the arrow
+        //also do not get banned comments
+        $items = $repo->findBy(['modname' => $mod, 'objectid' => $id, 'replyto'=> 0, 'status' => 0]);
 
-            $response = new DisplayHookResponse($this->getServiceId(), $commentCount);
-        } else {
-            $is_admin = $this->permissionApi->hasPermission('EZComments::', '::', ACCESS_ADMIN);
-            $url = $hook->getUrl();
-            $urlString = $this->router->generate($url->getRoute(), $url->getArgs());
-            //get the comments that correspond to this object, but only the parent ones (replyTo set to 0)
-            //child comments will be retrieved when the users opens the arrow
-            //also do not get banned comments
-            $items = $repo->findBy(['modname' => $mod, 'objectid' => $id, 'replyto'=> 0, 'status' => 0]);
-
-            //walk the items and see if they have replies
-            foreach($items as $item){
-                $replies = $repo->findOneBy(['modname' => $mod, 'objectid' => $id, 'replyto'=> $item->getId(), 'status' => 0]);
-                if($replies){
-                    //this marks it as having replies.
-                    $item->setAreaid(1);
-                }
+        //walk the items and see if they have replies
+        foreach($items as $item){
+            $replies = $repo->findOneBy(['modname' => $mod, 'objectid' => $id, 'replyto'=> $item->getId(), 'status' => 0]);
+            if($replies){
+                //this marks it as having replies.
+                $item->setAreaid(1);
             }
-            $loggedin = $this->currentUserApi->isLoggedIn();
-            //if we are logged in or allowanon is true then add the comment button
-            $doAnon = $this->variableApi->get('ZikulaEZCommentsModule', 'allowanon') || $loggedin;
-
-            $content = $this->templating->render('ZikulaEZCommentsModule:Hook:ezcomments_hook_uiview.html.twig',
-                ['items' => $items,
-                    'isAdmin' =>  $is_admin,
-                    'artId' => $id,
-                    'module' => $mod,
-                    'areaId' => $areaID,
-                    'retUrl' => $urlString,
-                    'doAnon' => $doAnon
-                ]);
-
-            $response = new DisplayHookResponse($this->getServiceId(), $content);
         }
+        $loggedin = $this->currentUserApi->isLoggedIn();
+        //if we are logged in or allowanon is true then add the comment button
+        $doAnon = $this->variableApi->get('ZikulaEZCommentsModule', 'allowanon') || $loggedin;
+
+        $content = $this->templating->render('ZikulaEZCommentsModule:Hook:ezcomments_hook_uiview.html.twig',
+            ['items' => $items,
+                'isAdmin' =>  $is_admin,
+                'artId' => $id,
+                'module' => $mod,
+                'areaId' => $areaID,
+                'retUrl' => $urlString,
+                'doAnon' => $doAnon
+            ]);
+
+        $response = new DisplayHookResponse($this->getServiceId(), $content);
         $hook->setResponse($response);
     }
 

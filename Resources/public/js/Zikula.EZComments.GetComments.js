@@ -193,12 +193,12 @@
                         $("#subject-area").css("border-width", "1px");
                         $("#subject-area").css("border-style", "solid");
                         $("#subject-area").css("background", "#ffe1da");
-                        $("#subject-area").focus();
                         break;
                 }
                 setTimeout(this.resetCommentFields.bind(this), 5000);
                 return;
             }
+
             this.sendAjax(
                 "zikulaezcommentsmodule_comment_setcomment",
                 {
@@ -238,7 +238,7 @@
                 divBlock = $("#itemComment_" + id);
                 //enter in the changed values
                 divBlock.find("h3[id^=itemSubject_" + id + "]").text(result.subject);
-                divBlock.find("p[id^=itemComment_" + id + "]").text(result.comment);
+                divBlock.find("p[id^=itemComment_" + id + "]").html(result.comment);
                 divBlock.find("i[id^=itemName_" + id + "]").text(result.author);
                 divBlock.removeClass("hidden");
 
@@ -392,6 +392,7 @@
             var uName = divBlock.find("i[id^=itemName_" + id + "]").text();
             var subject = divBlock.find("h3[id^=itemSubject_" + id + "]").text();
             var comment = divBlock.find("p[id^=itemComment_" + id + "]").text();
+            comment.replace(/<br\s*\/?>/mg,"\n");
 
             //get a copy of the comment form and insert the values
             var comForm = this.$comForm;
@@ -539,7 +540,7 @@
             subject.attr("id", "itemSubject_" + result.id);
 
             var comment = inDivBlock.find("p[id=itemComment]");
-            comment.text(result.comment);
+            comment.html(result.comment);
             comment.attr("id", "itemComment_" + result.id);
 
             var name = inDivBlock.find("i[id=itemName]");
