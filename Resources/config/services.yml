@@ -1,0 +1,57 @@
+services:
+  zikula_ezcomments_module.container.link_container:
+    class: Zikula\EZCommentsModule\Container\LinkContainer
+    arguments:
+      - "@translator.default"
+      - "@router"
+      - "@zikula_permissions_module.api.permission"
+    tags:
+      - { name: zikula.link_container }
+
+  zikula_ezcomments_module.form.config_type:
+    class: Zikula\EZCommentsModule\Form\Config
+    arguments:
+      - "@translator.default"
+    tags:
+      - { name: form.type }
+
+  zikula_ezcomments_module.hook_provider.ui_hooks_hooks_provider:
+    class: Zikula\EZCommentsModule\HookProvider\UiHooksProvider
+    arguments:
+      - '@translator.default'
+      - '@zikula_permissions_module.api.permission'
+      - '@templating'
+      - '@doctrine.orm.entity_manager'
+      - '@request_stack'
+      - "@router"
+      - "@zikula_extensions_module.api.variable"
+      - "@zikula_users_module.current_user"
+    tags:
+    - { name: zikula.hook_provider, areaName: "provider.zikulaezcommentsmodule.ui_hooks.ezcomments" }
+
+  zikula_ezcomments_module.hook_provider.countcomment_ui_hooks_provider:
+    class: Zikula\EZCommentsModule\HookProvider\CountCommentsUiHooksProvider
+    arguments:
+      - '@translator.default'
+      - '@zikula_permissions_module.api.permission'
+      - '@templating'
+      - '@doctrine.orm.entity_manager'
+    tags:
+      - { name: zikula.hook_provider, areaName: "provider.zikulaezcommentsmodule.ui_hooks.countcomments" }
+
+  zikula_ezcomments_module.form.type.block.commentslist:
+    class: Zikula\EZCommentsModule\Block\Form\EZCommentsBlockType
+    arguments:
+      - "@translator.default"
+    tags: ['form.type']
+
+  zikula_ezcomments_module.form.type.block.mostcomments:
+    class: Zikula\EZCommentsModule\Block\Form\MostCommentsBlockType
+    arguments:
+      - "@translator.default"
+    tags: ['form.type']
+
+  zikula_ezcomments_module.ezcomments_module_repository:
+    class: Zikula\EZComments\Entity\Repository\EZCommentsEntityRepository
+    factory: ["@doctrine.orm.default_entity_manager", getRepository]
+    arguments: ["ZikulaEZCommentsModule:EZCommentsEntity"]

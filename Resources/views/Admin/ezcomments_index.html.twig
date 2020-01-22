@@ -1,0 +1,43 @@
+{{ pageAddAsset('javascript', zasset('jquery-ui/jquery-ui.js')) }}
+{{ pageAddAsset('stylesheet', asset('jquery-ui/themes/base/jquery-ui.min.css')) }}
+{{ pageAddAsset('stylesheet', zasset('@ZikulaEZCommentsModule:css/style.css')) }}
+{{ pageAddAsset('stylesheet', 'https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css') }}
+{{ pageAddAsset('javascript', 'https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js') }}
+{{ pageAddAsset('javascript', zasset('@ZikulaEZCommentsModule:js/Zikula.EZComments.tablesorter.js')) }}
+{{ render(controller('ZikulaAdminModule:Admin:adminheader')) }}
+
+<h3> {{ __('Current Comments') }}</h3>
+<table id="tableToSort" class="table table-striped">
+    <thead>
+    <tr>
+        <th id="id">{{ __('id') }}</th>
+        <th id="moduleName">{{ __('Module Name') }}</th>
+        <th id="subject">{{ __('Subject') }}</th>
+        <th id="comment">{{ __('Comment') }}</th>
+        <th id="date">{{ __('Date') }}</th>
+        <th id="name">{{ __('Name') }}</th>
+        <th id="name">{{ __('Status') }}</th>
+        <th>{{ __('Actions') }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in items %}
+        <tr id="{{ item.id }}">
+            <td id="id_{{ item.id }}">{{ item.id }}</td>
+            <td id="modname_{{ item.id }}">{{ item.modname }}</td>
+            <td id="subject_{{ item.id }}">{{ item.subject }}</td>
+            <td id="comment_{{ item.id }}">{{ item.comment|truncate(30) }}</td>
+            <td id="date_{{ item.id }}">{{ item.date|date("m/d/Y") }}</td>
+            <td id="name_{{ item.id }}">{{ item.anonname }}</td>
+            <td id="status_{{ item.id }}">{% if item.status %}<span class="fa fa-ban"></span>{% endif %}</td>
+            <td id="actions"><a href="{{ item.url }}#itemComment_{{ item.id }}" class="fa fa-eye" title="View Comment in Context"></a>&nbsp;
+                <span id="edit_{{ item.id }}" class="fa fa-pencil" title="Edit Comment"></span>
+                <span id="delete_{{ item.id }}" class="fa fa-trash" title="Delete Comment"></span>
+                <a href="{{ path('zikulaezcommentsmodule_admin_deleteall', {comment: item.id}) }}" class="fa fa-trash-o" title="Delete All Users Comments" onclick="return confirm('Are you sure you want to delete all comments by this user?')"></a>
+                <a href="{{ path('zikulaezcommentsmodule_admin_blockcomment', {comment: item.id}) }}" class="fa fa-hand-stop-o" title="Ban/Unban Comment"></a>
+                <a href="{{ path('zikulaezcommentsmodule_admin_blockuser', {comment: item.id}) }}" class="fa fa-ban" title="Ban/Unban User"></a>
+                </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

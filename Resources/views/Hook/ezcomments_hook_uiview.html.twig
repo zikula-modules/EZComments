@@ -1,0 +1,131 @@
+{{ pageAddAsset('javascript', zasset('jquery-ui/jquery-ui.js')) }}
+{{ pageAddAsset('stylesheet', asset('jquery-ui/themes/base/jquery-ui.min.css')) }}
+{{ pageAddAsset('stylesheet', zasset('@ZikulaEZCommentsModule:css/style.css')) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaEZCommentsModule:js/Zikula.EZComments.GetComments.js')) }}
+
+<hr/>
+<div id="Comments">
+    <h3>{{ __('Comments') }}</h3>
+    {% for item in items %}
+        {% if currentUser.loggedin %}
+            <div id="itemComment_{{ item.id }}">
+                <h3 id="itemSubject_{{ item.id }}">{{ item.subject }}</h3>
+                <p> <span id="avatar" class="avatar">{{ userAvatar(item.ownerid, {rating: 'g'}) }}</span><i class="username" id="itemName_{{ item.id }}">{{ item.anonname}}</i>
+                    {% if item.replyto == 0 %}
+                        {%  if item.areaid == 1 %}
+                            <span id="twiddle_{{ item.id }}" title="View Replies" class="fa fa-toggle-left fa-lg"></span>
+                            {% else %}
+                            <span id="twiddle_{{ item.id }}" title="View Replies" class="hidden fa fa-toggle-left fa-lg"></span>
+                        {% endif %}
+                    {% endif %}
+                    {% if currentUser.uid == item.ownerid or isAdmin %}
+                        <span id="edit_{{ item.id }}" title="Edit Comment" class="fa fa-pencil fa-lg"></span>
+                        <span id="trash_{{ item.id }}" title="Delete Comment" class="fa fa-trash fa-lg"></span>
+                    {% endif %}
+                </p>
+                <p id="itemComment_{{ item.id }}" class="commentBox">{{ item.comment|raw }}</p>
+                <p id="replyPara">
+                    <span id="reply_{{ item.id }}" title="reply" class="fa fa-mail-reply fa-large"></span>
+                </p>
+                <div id="itemChild_{{ item.id }}"></div>
+            </div>
+        {% else %}
+            <div id="itemComment_{{ item.id }}">
+                <h3 id="itemSubject_{{ item.id }}">{{ item.subject }}</h3>
+                <p><span id="avatar" class="avatar">{{ userAvatar(item.ownerid, {rating: 'g'}) }}</span><i class="username" id="itemName_{{ item.id }}"> {{ item.anonname }}</i>
+                    {% if item.replyto == 0 %}
+                        {%  if item.areaid == 1 %}
+                            <span id="twiddle_{{ item.id }}" title="View Replies" class="fa fa-toggle-left fa-lg"></span>
+                        {% else %}
+                            <span id="twiddle_{{ item.id }}" title="View Replies" class="hidden fa fa-toggle-left fa-lg"></span>
+                        {% endif %}
+                    {% endif %}
+                </p>
+                <p id="itemComment_{{ item.id }}" class="alert commentBox">{{ item.comment |raw }}</p>
+                {% if doAnon %}
+                <p id="replyPara">
+                    <span id="reply_{{ item.id }}" title="reply" class="fa fa-mail-reply fa-large"></span>
+                </p>
+                {%  endif %}
+                <div id="itemChild_{{ item.id }}"></div>
+            </div>
+        {% endif %}
+    {% endfor %}
+    <p>
+        {% if doAnon %}
+        <span id="newComment" title="Add a comment" class="fa fa-plus fa-large"></span>
+        {%  endif %}
+    </p>
+    <!-- add another divs comment section for JS to grab to add new comments dynamically -->
+    <div class="hidden itemComment">
+        <h3 id="itemSubject"></h3>
+        <p><span id="avatar"></span><i class="username" id="itemName"></i>
+            <span id="twiddle" title="View Replies" class="fa fa-toggle-left fa-lg"></span>
+            <span id="edit" title="Edit Comment" class="fa fa-pencil fa-lg"></span>
+            <span id="trash" title="Delete Comment" class="fa fa-trash fa-lg"></span>
+        </p>
+        <p id="itemComment" class="commentBox"></p>
+        {% if doAnon %}
+            <p id="replyPara">
+                <span id="reply" title="reply" class="fa fa-mail-reply fa-large"></span>
+            </p>
+        {%  endif %}
+    </div>
+</div>
+<div id="commentFormDiv">
+    <div class="comment_form" id="comment_0">
+        <form id="commentForm" action="{{ path('zikulaezcommentsmodule_comment_comment') }}" method="post"
+              enctype="application/x-www-form-urlencoded">
+            <input type="hidden" name="artId" value="{{ artId }}">
+            <input type="hidden" name="module" value="{{ module }}">
+            <input type="hidden" name="retUrl" value="{{ retUrl }}">
+            <input type="hidden" name="areaId" value="{{ areaId }}">
+            <input type="hidden" name="parentID" value="0">
+            <table class="table">
+                {% if currentUser.loggedIn %}
+                    <tr>
+                        <td><b>{{ __('Name: ') }} </b></td>
+                        <td><input name="user" value="{{ currentUser.uname }}" maxlengh="100" size="50"/></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td><b>{{ __('Name: ') }} </b></td>
+                        <td><input name="user" value="Anonymous Coward" maxlengh="100" size="50"/></td>
+                    </tr>
+                    <tr>
+                        <td><b>{{ __('Email: ') }} </b></td>
+                        <td><input name="anonEmail" value="Anonymous Coward's Email" maxlengh="100" size="50"/></td>
+                    </tr>
+                    <tr>
+                        <td><b>{{ __('Website: ') }} </b></td>
+                        <td><input name="anonWebsite" value="Anonymous Coward's Website" maxlengh="100" size="50"/></td>
+                    </tr>
+
+                {% endif %}
+                <tr>
+                    <td><b>{{ __('Subject: ') }} </b></td>
+                    <td><input id="subject-area" name="subject" maxlength="100" size="50"/></td>
+                </tr>
+            </table>
+            <br/>
+            <textarea id="comment-area" rows="5" cols="60" name="comment"></textarea>
+            <div class="form-group">
+                <button id="addComment" type="submit" class="btn btn-primary" name="addComment" value="addComment">
+                    {{ __('Add Comment') }}
+                </button>
+                <button id="cancelComment" type="submit" class="btn btn-info" name="cancelComment">
+                    {{ __('Cancel Comment') }}
+                </button>
+                <button type="reset" class="btn btn-default" name="btn-default" onclick="this.form.reset()">
+                    {{ __('Reset') }}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- comment form -->
+<div class="alert alert-danger hidden" id="no_replies">{{ __('No replies to show!') }}</div>
+
+<div id="dialog-message" title="There was a problem with your comment?">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span><span id="comment_message"></span></p>
+</div>

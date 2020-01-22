@@ -1,0 +1,36 @@
+{
+  "name": "zikula/ezcomments-module",
+  "version": "4.0",
+  "description": "Attach comments to every kind of content using hooks",
+  "type": "zikula-module",
+  "license": "LGPL-3.0+",
+  "authors": [
+    {
+      "name": "Zikula",
+      "homepage": "http://zikula.org/"
+    }
+  ],
+  "autoload": {
+    "psr-4": { "Zikula\\EZCommentsModule\\": "" }
+  },
+  "require": {
+    "php": ">5.4.0"
+  },
+  "extra": {
+    "zikula": {
+      "url": "comments",
+      "class": "Zikula\\EZCommentsModule\\ZikulaEZCommentsModule",
+      "core-compatibility": ">=1.4.3",
+      "displayname": "EZComments Module",
+      "capabilities": {
+        "admin": {"route": "zikulaezcommentsmodule_admin_index"}
+      },
+      "securityschema": {
+        "ZikulaEZCommentsModule::": "Module:Item ID:Comment ID",
+        "ZikulaEZComments:EZCommentsBlock:": "Module:Item ID:",
+        "ZikulaEZComments:MostCommentsBlock": "Module:Item ID:"
+      }
+    }
+  }
+}
+
