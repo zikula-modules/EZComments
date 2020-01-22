@@ -27,8 +27,8 @@
       },
       "securityschema": {
         "ZikulaEZCommentsModule::": "Module:Item ID:Comment ID",
-        "ZikulaEZCommentsModule::trackback": "Module:Item ID:",
-        "ZikulaEZCommentsModule::pingback": "Module:Item ID:"
+        "ZikulaEZComments:EZCommentsBlock:": "Module:Item ID:",
+        "ZikulaEZComments:MostCommentsBlock": "Module:Item ID:"
       }
     }
   }

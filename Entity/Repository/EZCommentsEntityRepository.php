@@ -3,7 +3,6 @@
 namespace Zikula\EZCommentsModule\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Zikula\EZCommentsModule\Entity\EZCommentsEntity;
 
 class EZCommentsEntityRepository extends EntityRepository
 {
@@ -165,18 +164,21 @@ class EZCommentsEntityRepository extends EntityRepository
         return $query->getSingleScalarResult();
     }
 
-    public function mostActivePoster()
+    public function mostActivePosters($number)
     {
+        if($number < 1){
+            return [];
+        }
         $uniqueUsers = $this->findUniqueUsers();
-        $max = ['name'=> 'noone','number'=> 0];
+        $userCounts= [];
         foreach ($uniqueUsers as $user) {
             $currCount = $this->count('anonname', $user['anonname']);
-            if($currCount > $max['number']){
-                $max['name'] = $user['anonname'];
-                $max['number'] = $currCount;
-            }
+            $userCounts[$user['anonname']] = $currCount;
         }
-        return $max;
+        //use rsort to get the array sorted.
+        arsort($userCounts);
+        $sliceNo = min(count($userCounts), $number);
+        return array_slice($userCounts, 0, $sliceNo);
     }
 
     public function findUniqueUsers(){
@@ -199,6 +201,19 @@ class EZCommentsEntityRepository extends EntityRepository
         $days = $interval->days + 1;
 
         return $totalPosts/$days;
+    }
 
+    public function getLatestComments($properties){
+        //Grab all comments after the set date
+        $cutOffTime = new \DateTime("now");
+        $cutOffTime->sub(new \DateInterval("P" . $properties['numdays'] . "D"));
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select('b');
+        $qb->from($this->_entityName, 'b')
+            ->andWhere($qb->expr()->gte('b.date', '?1'))
+            ->setParameter(1, $cutOffTime)
+            ->orderBy('b.date', 'DESC')
+            ->setMaxResults($properties['numcomments']);
+       return  $qb->getQuery()->getResult();
     }
 }

@@ -1,0 +1,7 @@
+<div>
+    {%  for poster,commentcount in activeposters %}
+        <p><b>{{ poster }}</b> {% if showcount %} -  <i>{{ commentcount }} posts</i>{% endif %}</p>
+    {% else %}
+        <p>{{ __('No comments found in last .') }}{{ days }}{{ __(' days') }}</p>
+    {% endfor %}
+</div>

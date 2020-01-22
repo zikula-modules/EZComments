@@ -38,3 +38,20 @@ services:
       - '@doctrine.orm.entity_manager'
     tags:
       - { name: zikula.hook_provider, areaName: "provider.zikulaezcommentsmodule.ui_hooks.countcomments" }
+
+  zikula_ezcomments_module.form.type.block.commentslist:
+    class: Zikula\EZCommentsModule\Block\Form\EZCommentsBlockType
+    arguments:
+      - "@translator.default"
+    tags: ['form.type']
+
+  zikula_ezcomments_module.form.type.block.mostcomments:
+    class: Zikula\EZCommentsModule\Block\Form\MostCommentsBlockType
+    arguments:
+      - "@translator.default"
+    tags: ['form.type']
+
+  zikula_ezcomments_module.ezcomments_module_repository:
+    class: Zikula\EZComments\Entity\Repository\EZCommentsEntityRepository
+    factory: ["@doctrine.orm.default_entity_manager", getRepository]
+    arguments: ["ZikulaEZCommentsModule:EZCommentsEntity"]
