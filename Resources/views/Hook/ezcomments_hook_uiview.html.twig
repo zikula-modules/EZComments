@@ -9,7 +9,7 @@
     {% for item in items %}
         {% if currentUser.loggedin %}
             <div id="itemComment_{{ item.id }}">
-                <h3 id="itemSubject_{{ item.id }}">{{ item.subject }}</h3>
+                <h4 id="itemSubject_{{ item.id }}" class="comment-text">{{ item.subject }}</h4>
                 <p> <span id="avatar" class="avatar">{{ userAvatar(item.ownerid, {rating: 'g'}) }}</span><i class="username" id="itemName_{{ item.id }}">{{ item.anonname}}</i>
                     {% if item.replyto == 0 %}
                         {%  if item.areaid == 1 %}

@@ -236,7 +236,7 @@ class AdminController extends AbstractController
         $counts['users'] = $repo->count('ownerid', '', true);
         $counts['lastPost'] = $repo->getLatestPost();
         $counts['firstPost'] = $repo->getEarliestPost();
-        $counts['mostActive'] = $repo->mostActivePoster();
+        $counts['mostActive'] = $repo->mostActivePosters();
         $counts['postRate'] = $repo->findPostRate();
 
         return $this->render('ZikulaEZCommentsModule:Admin:ezcomments_modulestats.html.twig', [

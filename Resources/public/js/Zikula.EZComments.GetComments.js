@@ -5,6 +5,7 @@
 
     var comment = {
         currentId: 0,
+        $replySubject: "",
         subComments: {},
         ajaxSettings: {
             dataType: "json",
@@ -473,8 +474,15 @@
         reply: function (evt) {
             //find the target comment
             var itemName = evt.currentTarget.id;
-            var itemLen = itemName.length;
-            this.currentId = itemName.substring(6, itemLen);
+            //get the subject of the item you are replying to
+            var items = itemName.split("_");
+            this.currentId = items[1];
+            //if this is a root comment, then get its subject
+            if(items.length === 2){
+                this.$replySubject = $("#itemSubject_" + items[1]).text();
+            } else {
+                this.$replySubject = $("#itemSubject_" + items[2]).text();
+            }
             //are the comments already showing?
             var subComments = this.subComments[this.currentId];
             if(subComments) {
@@ -514,7 +522,7 @@
                 //Remove the arrow icon. Right now, no replies to replies
                 divBlock.find("span[id^=twiddle]").remove();
                 var replyIcon = divBlock.find("span[id^=reply]");
-                replyIcon.attr("id", "reply_" + result[i].parentid);
+                replyIcon.attr("id", "reply_" + result[i].parentid + "_" + result[i].id );
                 replyIcon.on("click", this.reply.bind(this));
                 this.fillDivBlock(divBlock, result[i]);
 
@@ -537,8 +545,11 @@
             //enter in the text for this comment
             var subject = inDivBlock.find("h3[id=itemSubject]");
             subject.text(result.subject);
-            subject.attr("id", "itemSubject_" + result.id);
-
+            if(result.parentID !== 0){
+                subject.attr("id", "itemSubject_" + result.parentId + "_" + result.id);
+            } else {
+                subject.attr("id", "itemSubject_" + result.id);
+            }
             var comment = inDivBlock.find("p[id=itemComment]");
             comment.html(result.comment);
             comment.attr("id", "itemComment_" + result.id);
@@ -555,6 +566,10 @@
         finishReplySetup: function (target) {
             //get the comment form and get it ready
             var comForm = this.$comForm;
+            if(this.$replySubject !== ""){
+                comForm.find("input[name=subject]").val("Re: " + this.$replySubject);
+            }
+            this.$replySubject = "";
             //this is a new comment, 0 it out.
             this.hookUpCommentButton(comForm, 0, this.currentId);
 

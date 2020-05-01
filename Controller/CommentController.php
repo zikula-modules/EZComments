@@ -216,13 +216,13 @@ class CommentController extends AbstractController
             ]);
         }
 
-        if($subject == ""){
+        /*if($subject == ""){
             //There is a problem with the comment. Hopefuly this never happens
             return  new JsonResponse(['verified' => false,
                 'reason' => 'subject',
                 'message' => $this->__("Please enter a subject for your comment.")
             ]);
-        }
+        }*/
         $id = $request->request->get('id');
         return  new JsonResponse(['verified' => true,
             'comment' => $comment,
