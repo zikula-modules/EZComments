@@ -81,43 +81,36 @@
             <input type="hidden" name="retUrl" value="{{ retUrl }}">
             <input type="hidden" name="areaId" value="{{ areaId }}">
             <input type="hidden" name="parentID" value="0">
-            <table class="table">
-                {% if currentUser.loggedIn %}
-                    <tr>
-                        <td><b>{{ __('Name: ') }} </b></td>
-                        <td><input name="user" value="{{ currentUser.uname }}" maxlengh="100" size="50"/></td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td><b>{{ __('Name: ') }} </b></td>
-                        <td><input name="user" value="Anonymous Coward" maxlengh="100" size="50"/></td>
-                    </tr>
-                    <tr>
-                        <td><b>{{ __('Email: ') }} </b></td>
-                        <td><input name="anonEmail" value="Anonymous Coward's Email" maxlengh="100" size="50"/></td>
-                    </tr>
-                    <tr>
-                        <td><b>{{ __('Website: ') }} </b></td>
-                        <td><input name="anonWebsite" value="Anonymous Coward's Website" maxlengh="100" size="50"/></td>
-                    </tr>
-
-                {% endif %}
+            <table class="ezcomments-form-table">
+            {% if currentUser.loggedIn %}
                 <tr>
-                    <td><b>{{ __('Subject: ') }} </b></td>
-                    <td><input id="subject-area" name="subject" maxlength="100" size="50"/></td>
+                    <td class="ezcomments-pretty-name">{{ __('Name: ') }}</td><td><input name="user" value="{{ currentUser.uname }}" maxlengh="100" class="ezcomments-form-box"/></td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td class="ezcomments-pretty-name">{{ __('Name: ') }}</td><td><input name="user" value="Anonymous Coward" maxlengh="100" class="ezcomments-form-box"/></td>
+                </tr>
+                <tr>
+                    <td class="ezcomments-pretty-name">{{ __('Email: ') }}</td><td><input name="anonEmail" value="Anonymous Coward's Email" maxlengh="100" size="51" class="ezcomments-form-box"/></td>
+                </tr>
+                <tr>
+                    <td class="ezcomments-pretty-name">{{ __('Website: ') }}</td><td><input name="anonWebsite" value="Anonymous Coward's Website" maxlengh="100" size="46" class="ezcomments-form-box"/></td>
+                </tr>
+             {% endif %}
+                <tr>
+                    <td class="ezcomments-pretty-name">{{ __('Subject: ') }}</td><td><input id="subject-area" name="subject" maxlength="100" size="47" class="ezcomments-form-box"/></td>
                 </tr>
             </table>
-            <br/>
-            <textarea id="comment-area" rows="5" cols="60" name="comment"></textarea>
-            <div class="form-group">
-                <button id="addComment" type="submit" class="btn btn-primary" name="addComment" value="addComment">
-                    {{ __('Add Comment') }}
+                <textarea id="comment-area" rows="3" cols="56" name="comment" class="ezcomments-text-box"></textarea>
+            <div class="form-group ezcomments-align-right">
+                <button id="addComment" type="submit" class="btn btn-primary btn-sm" name="addComment" value="addComment">
+                    <span title="{{ __("Add Comment") }}" class="fa fa-check"></span>
                 </button>
-                <button id="cancelComment" type="submit" class="btn btn-info" name="cancelComment">
-                    {{ __('Cancel Comment') }}
+                <button id="cancelComment" type="submit" class="btn btn-warning btn-sm" name="cancelComment">
+                    <span title="{{ __("Cancel Comment") }}" class="fa fa-ban"
                 </button>
-                <button type="reset" class="btn btn-default" name="btn-default" onclick="this.form.reset()">
-                    {{ __('Reset') }}
+                <button title="{{ __("Reset Form") }}" type="reset" class="btn btn-default  btn-sm" name="btn-danger" onclick="this.form.reset()">
+                    <span class="fa fa-refresh">
                 </button>
             </div>
         </form>
