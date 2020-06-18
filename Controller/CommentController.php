@@ -12,10 +12,11 @@ namespace Zikula\EZCommentsModule\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\EZCommentsModule\Entity\EZCommentsEntity;
-
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 
 class CommentController extends AbstractController
 {
@@ -36,12 +37,15 @@ class CommentController extends AbstractController
      * @Route("/comment")
      * @param $request
      */
-    public function commentAction(Request $request)
-    {
+    public function commentAction(
+        CurrentUserApiInterface $currentUserApi,
+        Request $request
+    ) {
         if (!$this->hasPermission($this->name . '::', '::', ACCESS_COMMENT)) {
-            return new ForbiddenResponse($this->trans('Access forbidden since you cannot add comments.'));
+            return new JsonResponse($this->trans('Access forbidden since you cannot add comments.'), Response::HTTP_FORBIDDEN);
         }
-        return $this->_persistComment($request, 'HTML');
+
+        return $this->_persistComment($request, $currentUserApi->get('uid'), 'HTML');
     }
 
     /**
@@ -67,15 +71,14 @@ class CommentController extends AbstractController
     /**
      * @param $request
      * @param string $responseRet
-     * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse|FatalResponse
+     * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      *
      * Save a comment to the database. We check for banned posters and prevent them from adding comments.
      */
-    private function _persistComment($request, $responseRet = 'JSON'){
+    private function _persistComment($request, $ownerId, $responseRet = 'JSON'){
         //check to see if commenter is banned. This will happen if the number of comments they have is
         //equal to the number of banned comments. (NOTE if they only posted one comment and it was banned, but you still
         //want them to be able to post, then just delete that comment and communicate with them.
-        $ownerId = $this->get('zikula_users_module.current_user')->get('uid');
         $id = $request->request->get('id');
         $comment = $request->request->get('comment');
         $subject = $request->request->get('subject');
@@ -145,28 +148,34 @@ class CommentController extends AbstractController
     /**
      * @Route("/setcomment", options={"expose"=true}, methods={"POST"})
      * @param Request $request
-     * @return JsonResponse|FatalResponse|ForbiddenResponse bid or Ajax error
+     * @return JsonResponse bid or Ajax error
      */
-    public function setcommentAction(Request $request){
+    public function setcommentAction(
+        CurrentUserApiInterface $currentUserApi,
+        Request $request
+    ) {
         $allowAnon = $this->getVar('allowanon');
         if (!$this->hasPermission($this->name . '::', '::', ACCESS_COMMENT) && !$allowAnon) {
-            return new ForbiddenResponse($this->trans('Access forbidden since you cannot add comments.'));
+            return new JsonResponse($this->trans('Access forbidden since you cannot add comments.'), Response::HTTP_FORBIDDEN);
         }
-        return $this->_persistComment($request, 'JSON');
+
+        return $this->_persistComment($request, $currentUserApi->get('uid'), 'JSON');
     }
 
     /**
      * @Route("/verifycomment", options={"expose"=true}, methods={"POST"})
      * @param Request $request
-     * @return JsonResponse|ForbiddenResponse
+     * @return JsonResponse
      */
-    public function verifycommentAction(Request $request)
-    {
+    public function verifycommentAction(
+        CurrentUserApiInterface $currentUserApi,
+        Request $request
+    ) {
         $allowAnon = $this->getVar('allowanon');
         if (!$this->hasPermission($this->name . '::', '::', ACCESS_COMMENT) && !$allowAnon) {
-            return new ForbiddenResponse($this->trans('Access forbidden since you cannot add comments.'));
+            return new JsonResponse($this->trans('Access forbidden since you cannot add comments.'), Response::HTTP_FORBIDDEN);
         }
-        $ownerId = $this->get('zikula_users_module.current_user')->get('uid');
+        $ownerId = $currentUserApi->get('uid');
         if($this->_bannedPoster($ownerId)){
             //send back a different JSON reqeust.
             return  new JsonResponse(['verified' => false,
@@ -236,13 +245,15 @@ class CommentController extends AbstractController
     /**
      * @Route("/getuserid", options={"expose"=true}, methods={"GET"})
      * @param Request $request
-     * @return JsonResponse|FatalResponse|ForbiddenResponse bid or Ajax error
+     * @return JsonResponse bid or Ajax error
      */
-    public function getuseridAction(Request $request){
+    public function getuseridAction(
+        CurrentUserApiInterface $currentUserApi,
+        Request $request
+    ) {
         if (!$this->hasPermission($this->name . '::', '::', ACCESS_READ)) {
-            return new ForbiddenResponse($this->trans('Access forbidden since you cannot read comments.'));
+            return new JsonResponse($this->trans('Access forbidden since you cannot read comments.'), Response::HTTP_FORBIDDEN);
         }
-        $currentUserApi = $this->get('zikula_users_module.current_user');
         $uid = $currentUserApi->get('uid');
         $jsonReply = ['uid' => $uid];
         return new JsonResponse($jsonReply);
@@ -251,7 +262,7 @@ class CommentController extends AbstractController
     /**
      * @Route("/getreplies", options={"expose"=true}, methods={"GET"})
      * @param Request $request
-     * @return JsonResponse|FatalResponse|ForbiddenResponse bid or Ajax error
+     * @return JsonResponse bid or Ajax error
      *
      * Grab all comments associated with this module and item ID and return them to the caller
      * The caller is a javascript, see the javascripts in Resources/public/js directory
@@ -259,7 +270,7 @@ class CommentController extends AbstractController
 
     public function getrepliesAction(Request $request){
         if (!$this->hasPermission($this->name . '::', '::', ACCESS_READ)) {
-            return new ForbiddenResponse($this->trans('Access forbidden since you cannot read comments.'));
+            return new JsonResponse($this->trans('Access forbidden since you cannot read comments.'), Response::HTTP_FORBIDDEN);
         }
 
         $mod = $request->query->get('module');
@@ -291,21 +302,22 @@ class CommentController extends AbstractController
     /**
      * @Route("/deletecomment", options={"expose"=true}, methods={"POST"})
      * @param Request $request
-     * @return JsonResponse|FatalResponse|ForbiddenResponse bid or Ajax error
+     * @return JsonResponse bid or Ajax error
      */
-    public function deletecommentAction(Request $request)
-    {
+    public function deletecommentAction(
+        CurrentUserApiInterface $currentUserApi,
+        Request $request
+    ) {
         //get the current user
-        $currentUserApi = $this->get('zikula_users_module.current_user');
         $uid = $currentUserApi->get('uid');
         $userId = $request->request->get('uid');
         //if the user ID does not match or you do not have delete access, then you don't have permission.
         if(($uid != $userId) && (!$this->hasPermission($this->name . '::', '::', ACCESS_DELETE)) ){
-            return new ForbiddenResponse($this->trans('Access forbidden since you cannot delete comments.'));
+            return new JsonResponse($this->trans('Access forbidden since you cannot delete comments.'), Response::HTTP_FORBIDDEN);
         }
         $commentId = $request->request->get('commentId');
         if(!isset($commentId) || !isset($userId)){
-            return new ForbiddenResponse($this->trans('Access Denied'));
+            return new JsonResponse($this->trans('Access Denied.'), Response::HTTP_FORBIDDEN);
         }
         $repo = $this->getDoctrine()->getManager()->getRepository(EZCommentsEntity::class);
         //find the comment
@@ -314,7 +326,7 @@ class CommentController extends AbstractController
         $jsonReply = ['comdel' => false];
         if(null != $comment) {
             if( ($userId != $comment->getOwnerId()) && !$isAdmin){
-                return new ForbiddenResponse($this->trans('Access Denied'));
+                return new JsonResponse($this->trans('Access Denied.'), Response::HTTP_FORBIDDEN);
             }
             $em = $this->getDoctrine()->getManager();
             //determine if there are other comments to this comment

@@ -44,7 +44,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/edit", options={"expose"=true}, methods={"POST"})
      * @param request
-     * @return JsonResponse|FatalResponse|ForbiddenResponse bid or Ajax error
+     * @return JsonResponse bid or Ajax error
      *
      * Modify a comment
      * This is a standard function that is called whenever an administrator
@@ -56,12 +56,12 @@ class AdminController extends AbstractController
     {
         $id = $request->request->get('id');
         if (!$this->hasPermission($this->name . '::', $id . "::", ACCESS_EDIT)) {
-            return new ForbiddenResponse($this->trans('Access forbidden since you cannot delete comments.'));
+            return new JsonResponse($this->trans('Access forbidden since you cannot delete comments.'), Response::HTTP_FORBIDDEN);
         }
         $em = $this->getDoctrine()->getManager();
         $comment = $em->find(EZCommentsEntity::class, $id);
         if(null === $comment){
-            return new FatalResponse($this->trans('That comment for some reason does not exist.'));
+            return new JsonResponse($this->trans('That comment for some reason does not exist.'), Response::HTTP_NOT_FOUND);
         }
         $jsonReply = [
             'comment' => $comment->getComment(),
@@ -75,7 +75,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/delete", options={"expose"=true}, methods={"POST"})
      * @param Request $request
-     * @return JsonResponse|FatalResponse|ForbiddenResponse bid or Ajax error
+     * @return JsonResponse bid or Ajax error
      *
      * Delete item
      * This function is called when an admin wants to delete a comment
@@ -85,12 +85,12 @@ class AdminController extends AbstractController
     {
         $id = $request->request->get('id');
         if (!$this->hasPermission($this->name . '::', $id . "::", ACCESS_DELETE)) {
-            return new ForbiddenResponse($this->trans('Access forbidden since you cannot delete comments.'));
+            return new JsonResponse($this->trans('Access forbidden since you cannot delete comments.'), Response::HTTP_FORBIDDEN);
         }
         $em = $this->getDoctrine()->getManager();
         $comment = $em->find(EZCommentsEntity::class, $id);
         if(null === $comment){
-            return new FatalResponse($this->trans('That comment for some reason does not exist.'));
+            return new JsonResponse($this->trans('That comment for some reason does not exist.'), Response::HTTP_NOT_FOUND);
         }
         $success = true;
         $message = "Success";
@@ -122,15 +122,15 @@ class AdminController extends AbstractController
      * @Route("/blockuser/{comment}")
      * @param Request $request
      * @param EZCommentsEntity $comment
-     * @return RedirectResponse | ForbiddenResponse | FatalResponse
+     * @return RedirectResponse|JsonResponse
      * block users that are being annoying.
      */
 
     public function blockuserAction(Request $request, EZCommentsEntity $comment)
     {
         //I don't know if I have to have this error checking in here, but just in case
-        if(null === $comment){
-            return new FatalResponse($this->trans('That comment for some reason does not exist.'));
+        if (null === $comment){
+            return new JsonResponse($this->trans('That comment for some reason does not exist.'), Response::HTTP_NOT_FOUND);
         }
         $id = $comment->getId();
         if (!$this->hasPermission($this->name . '::', $id . "::", ACCESS_EDIT)) {
@@ -168,7 +168,7 @@ class AdminController extends AbstractController
      * @Route("/blockcomment/{comment}")
      * @param Request $request
      * @param EZCommentsEntity $comment
-     * @return RedirectResponse | ForbiddenResponse | FatalResponse
+     * @return RedirectResponse|JsonResponse
      * block comment that is annoying
      */
 
@@ -176,7 +176,7 @@ class AdminController extends AbstractController
     {
         //I don't know if I have to have this error checking in here, but just in case
         if(null === $comment){
-            return new FatalResponse($this->trans('That comment for some reason does not exist.'));
+            return new JsonResponse($this->trans('That comment for some reason does not exist.'), Response::HTTP_NOT_FOUND);
         }
         $id = $comment->getId();
         if (!$this->hasPermission($this->name . '::', $id . "::", ACCESS_EDIT)) {
