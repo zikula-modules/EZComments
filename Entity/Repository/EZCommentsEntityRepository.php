@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Zikula\EZCommentsModule\Entity\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -9,6 +11,7 @@ use Zikula\EZCommentsModule\Entity\EZCommentsEntity;
 class EZCommentsEntityRepository extends ServiceEntityRepository
 {
     const MINDATE = 0;
+
     const MAXDATE = 1;
 
     public function __construct(ManagerRegistry $registry)
@@ -35,17 +38,19 @@ class EZCommentsEntityRepository extends ServiceEntityRepository
      * @param $admin (optional) is set to 1 for admin mode (permission check)
      * @return array array of items, or false on failure
      */
-    public function getComments($mod = "",
-                                $objectid = -1,
-                                $replyTo = -1,
-                                $search = null,
-                                $startnum = 1,
-                                $numitems = -1,
-                                $sortorder = 'ASC',
-                                $sortby = 'date',
-                                $status = -1,
-                                $uid = 0,
-                                $ownerid = 0)
+    public function getComments(
+        $mod = "",
+        $objectid = -1,
+        $replyTo = -1,
+        $search = null,
+        $startnum = 1,
+        $numitems = -1,
+        $sortorder = 'ASC',
+        $sortby = 'date',
+        $status = -1,
+        $uid = 0,
+        $ownerid = 0
+    )
     {
         //I do not do security checking here. That is the job of the controller.
         $qb = $this->_em->createQueryBuilder();
@@ -56,16 +61,16 @@ class EZCommentsEntityRepository extends ServiceEntityRepository
             $qb->andWhere($qb->expr()->eq('u.modname', ':mod'));
             $qb->setParameter('mod', $mod);
         }
-        if ($objectid != -1) {
+        if (-1 !== $objectid) {
             $qb->andWhere($qb->expr()->eq('u.objectid', ':objectid'));
             $qb->setParameter('objectid', $objectid);
         }
-        if ($replyTo != -1) {
+        if (-1 !== $replyTo) {
             $qb->andWhere($qb->expr()->eq('u.replyto', '?5'));
             $qb->setParameter('5', $replyTo);
         }
         //search the comments
-        if ($search != null) {
+        if (null !== $search) {
             $qb->orWhere($qb->expr()->like('u.subject', '?2'), $qb->expr()->literal('%' . $search . '%'));
             $qb->orWhere($qb->expr()->like('u.comment', '?2'), $qb->expr()->literal('%' . $search . '%'));
         }
@@ -77,7 +82,7 @@ class EZCommentsEntityRepository extends ServiceEntityRepository
         }
 
         //enter the sort order
-        if ($sortorder !== null) {
+        if (null !== $sortorder) {
             $qb->orderBy('u.' . $sortby, $sortorder);
         }
 
@@ -114,6 +119,7 @@ class EZCommentsEntityRepository extends ServiceEntityRepository
         //This call may not delete any replies, that's just fine.
         $q = $this->_em->createQuery("delete from 'ZikulaEZCommentsModule:EZCommentsEntity' m where m.replyto = " . $commentId);
         $numDeleted = $q->execute();
+
         return $numDeleted;
     }
 
@@ -121,8 +127,8 @@ class EZCommentsEntityRepository extends ServiceEntityRepository
     {
         //find the last date of the comment
         $date = $this->getPostBorder(self::MAXDATE);
-        return $this->getPostWithDate($date);
 
+        return $this->getPostWithDate($date);
     }
 
     public function getPostWithDate($inDate)
@@ -132,24 +138,28 @@ class EZCommentsEntityRepository extends ServiceEntityRepository
             ->from($this->_entityName, 'b')
             ->andWhere($qb2->expr()->eq('b.date', '?1'))
             ->setParameter(1, $inDate);
+
         return $qb2->getQuery()->getResult();
     }
 
     public function getEarliestPost()
     {
         $date = $this->getPostBorder(self::MINDATE);
+
         return $this->getPostWithDate($date);
     }
 
-    public function getPostBorder($inPostBorder){
+    public function getPostBorder($inPostBorder)
+    {
         $qb = $this->_em->createQueryBuilder();
         $qb->from($this->_entityName, 'a');
         $dateItem = null;
-        if($inPostBorder === self::MINDATE){
+        if (self::MINDATE === $inPostBorder) {
             $dateItem =  $qb->select($qb->expr()->min('a.date'))->getQuery()->getResult();
         } else {
             $dateItem =  $qb->select($qb->expr()->max('a.date'))->getQuery()->getResult();
         }
+
         return $dateItem[0];
     }
 
@@ -165,15 +175,15 @@ class EZCommentsEntityRepository extends ServiceEntityRepository
         if ($parameter) {
             $qb->where($qb->expr()->eq('t.' . $row, '?1'))
                 ->setParameter(1, $parameter);
-
         }
         $query = $qb->getQuery();
+
         return $query->getSingleScalarResult();
     }
 
     public function mostActivePosters($number)
     {
-        if($number < 1){
+        if ($number < 1) {
             return [];
         }
         $uniqueUsers = $this->findUniqueUsers();
@@ -185,21 +195,25 @@ class EZCommentsEntityRepository extends ServiceEntityRepository
         //use rsort to get the array sorted.
         arsort($userCounts);
         $sliceNo = min(count($userCounts), $number);
+
         return array_slice($userCounts, 0, $sliceNo);
     }
 
-    public function findUniqueUsers(){
+    public function findUniqueUsers()
+    {
         $qb = $this->_em->createQueryBuilder();
         $qb->from($this->_entityName, 't');
         $qb->select('t.anonname')->distinct();
         $query = $qb->getQuery();
+
         return $query->getResult();
     }
 
-    public function findPostRate(){
+    public function findPostRate()
+    {
         //get the min post
         $firstDate = $this->getPostBorder(self::MINDATE);
-        $lastDate = $this>$this->getPostBorder(self::MAXDATE);
+        $lastDate = $this > $this->getPostBorder(self::MAXDATE);
         $firstDay = new \DateTime($firstDate[1]);
         $lastDay = new \DateTime($lastDate[1]);
         $interval = $firstDay->diff($lastDay);
@@ -207,10 +221,11 @@ class EZCommentsEntityRepository extends ServiceEntityRepository
         $totalPosts = $this->count('modname');
         $days = $interval->days + 1;
 
-        return $totalPosts/$days;
+        return $totalPosts / $days;
     }
 
-    public function getLatestComments($properties){
+    public function getLatestComments($properties)
+    {
         //Grab all comments after the set date
         $cutOffTime = new \DateTime("now");
         $cutOffTime->sub(new \DateInterval("P" . $properties['numdays'] . "D"));
@@ -221,6 +236,7 @@ class EZCommentsEntityRepository extends ServiceEntityRepository
             ->setParameter(1, $cutOffTime)
             ->orderBy('b.date', 'DESC')
             ->setMaxResults($properties['numcomments']);
-       return  $qb->getQuery()->getResult();
+
+        return  $qb->getQuery()->getResult();
     }
 }

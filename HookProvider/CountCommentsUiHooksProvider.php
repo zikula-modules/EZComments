@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Zikula\EZCommentsModule\HookProvider;
 
 use Doctrine\ORM\EntityManager;
@@ -16,7 +18,6 @@ use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
  * Copyright 2017 Timothy Paustian
  *
  * @license MIT
- *
  */
 
 class CountCommentsUiHooksProvider implements HookProviderInterface
@@ -30,6 +31,7 @@ class CountCommentsUiHooksProvider implements HookProviderInterface
      * @var PermissionApiInterface
      */
     private $permissionApi;
+
     /**
      * @var Environment
      */
@@ -79,15 +81,13 @@ class CountCommentsUiHooksProvider implements HookProviderInterface
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-
     public function uiView(DisplayHook $hook)
     {
-
         $mod = $hook->getCaller();
         $id = $hook->getId();
         // Security checks
         // first check if the user is allowed to do any comments for this module/objectid
-        if (!$this->permissionApi->hasPermission('EZComments::', "$mod:$id:", ACCESS_READ)) {
+        if (!$this->permissionApi->hasPermission('EZComments::', "${mod}:${id}:", ACCESS_READ)) {
             return;
         }
 
@@ -99,9 +99,11 @@ class CountCommentsUiHooksProvider implements HookProviderInterface
                 ->setParameter('id', $id)
                 ->getQuery()
                 ->getSingleScalarResult();
-        $content = $this->twig->render('@ZikulaEZCommentsModule/Hook/ezcomments_hook_comment_counts.html.twig',
+        $content = $this->twig->render(
+            '@ZikulaEZCommentsModule/Hook/ezcomments_hook_comment_counts.html.twig',
             ['count' => $commentCount
-            ]);
+            ]
+        );
         $response = new DisplayHookResponse($this->getAreaName(), $content);
         $hook->setResponse($response);
     }

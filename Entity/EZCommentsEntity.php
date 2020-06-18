@@ -1,10 +1,12 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Zikula\EZCommentsModule\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
-
 
 /**
  * EZComments entity class.
@@ -137,8 +139,8 @@ class EZCommentsEntity extends EntityAccess
      */
     private $anonwebsite;
 
-
-    public function __construct(){
+    public function __construct()
+    {
         $this->date = new \DateTime();
     }
 
@@ -413,7 +415,4 @@ class EZCommentsEntity extends EntityAccess
     {
         $this->anonwebsite = $anonwebsite;
     }
-
-
 }
-

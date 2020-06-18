@@ -1,9 +1,11 @@
 <?php
+
+declare(strict_types=1);
 /**
  * EZComments
  *
  * @copyright (C) EZComments Development Team
- * @link https://github.com/zikula-modules/EZComments
+ * @see https://github.com/zikula-modules/EZComments
  * @license See license.txt
  */
 
@@ -46,12 +48,15 @@ class MostCommentsBlock extends AbstractBlockHandler
 
         $activePosters = $this->commentsRepository->mostActivePosters($properties['numcommenters']);
 
-        return $this->renderView("@ZikulaEZCommentsModule\Block\list_most_commenters.html.twig",
-            [ 'activeposters' => $activePosters,
-                'showcount' => $properties['showcount'] == 'yes']);
+        return $this->renderView(
+            "@ZikulaEZCommentsModule\\Block\\list_most_commenters.html.twig",
+            ['activeposters' => $activePosters,
+                'showcount' => 'yes' === $properties['showcount']]
+        );
     }
 
-    public function getFormClassName(): string {
+    public function getFormClassName(): string
+    {
         return MostCommentsBlockType::class;
     }
 
@@ -60,7 +65,8 @@ class MostCommentsBlock extends AbstractBlockHandler
         return '@ZikulaEZCommentsModule/Block/most_comments.html.twig';
     }
 
-    public function getDefaults(){
+    public function getDefaults()
+    {
         return [
             'numcommenters' => 5,
             'showcount' => 'yes'

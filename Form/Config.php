@@ -1,10 +1,13 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Zikula\EZCommentsModule\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormBuilderInterface;
 
 class Config extends AbstractType
 {
@@ -25,7 +28,6 @@ class Config extends AbstractType
                 'class' => 'btn btn-default'
             ]
         ]);
-
     }
 
     public function getName()

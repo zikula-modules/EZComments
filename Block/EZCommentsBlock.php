@@ -1,11 +1,14 @@
 <?php
+
+declare(strict_types=1);
 /**
  * EZComments
  *
  * @copyright (C) EZComments Development Team
- * @link https://github.com/zikula-modules/EZComments
+ * @see https://github.com/zikula-modules/EZComments
  * @license See license.txt
  */
+
 namespace Zikula\EZCommentsModule\Block;
 
 use Zikula\BlocksModule\AbstractBlockHandler;
@@ -44,20 +47,20 @@ class EZCommentsBlock extends AbstractBlockHandler
         $defaults = $this->getDefaults();
         $properties = array_merge($defaults, $properties);
 
-
         //return the desired items based upon how the properties have been set
         $items = $this->commentsRepository->getLatestComments($properties);
 
-        return $this->renderView("@ZikulaEZCommentsModule\Block\list_latest_comments.html.twig", [
+        return $this->renderView("@ZikulaEZCommentsModule\\Block\\list_latest_comments.html.twig", [
             'items' => $items,
             'days' => $properties['numdays'],
-            'showdate' => $properties['showdate'] == 'yes',
-            'showuser' => $properties['showuser'] == 'yes',
-            'linkuser' => $properties['linkuser'] == 'yes'
+            'showdate' => 'yes' === $properties['showdate'],
+            'showuser' => 'yes' === $properties['showuser'],
+            'linkuser' => 'yes' === $properties['linkuser']
         ]);
     }
 
-    public function getFormClassName(): string {
+    public function getFormClassName(): string
+    {
         return EZCommentsBlockType::class;
     }
 
@@ -66,7 +69,8 @@ class EZCommentsBlock extends AbstractBlockHandler
         return '@ZikulaEZCommentsModule/Block/options_modify.html.twig';
     }
 
-    public function getDefaults(){
+    public function getDefaults()
+    {
         return [
             'numcomments' => 5,
             'numdays' => 14,

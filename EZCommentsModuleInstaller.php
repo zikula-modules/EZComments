@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Zikula\EZCommentsModule;
 
 use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
@@ -7,11 +9,12 @@ use Zikula\EZCommentsModule\Entity\EZCommentsEntity;
 
 class EZCommentsModuleInstaller extends AbstractExtensionInstaller
 {
-    private $entities = array(
+    private $entities = [
         EZCommentsEntity::class,
-    );
+    ];
 
-    public function install(): bool {
+    public function install(): bool
+    {
         //Create the tables of the module.
         try {
             $this->schemaTool->create($this->entities);
@@ -23,7 +26,8 @@ class EZCommentsModuleInstaller extends AbstractExtensionInstaller
         return true;
     }
 
-    public function upgrade($oldversion): bool  {
+    public function upgrade($oldversion): bool
+    {
         /*switch ($oldversion)
         {
             case '1.2':
@@ -86,17 +90,17 @@ class EZCommentsModuleInstaller extends AbstractExtensionInstaller
         return true;
     }
 
-    public function uninstall(): bool  {
-
+    public function uninstall(): bool
+    {
         //drop the tables
         try {
             $this->schemaTool->drop($this->entities);
-        } catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->addFlash('error', $e->getMessage());
+
             return false;
         }
         // Deletion successful
         return true;
     }
 }
-

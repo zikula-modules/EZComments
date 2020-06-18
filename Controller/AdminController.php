@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Zikula\EZCommentsModule\Controller;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Zikula\EZCommentsModule\Entity\EZCommentsEntity;
 
 /**
@@ -26,7 +28,7 @@ class AdminController extends AbstractController
      *
      * The rendered output consisting mainly of the admin menu and a table of comments
      *
-     * @throws AccessDeniedException Thrown if the user does not have the appropriate access level for the function.
+     * @throws AccessDeniedException thrown if the user does not have the appropriate access level for the function
      */
     public function indexAction(Request $request)
     {
@@ -50,7 +52,6 @@ class AdminController extends AbstractController
      * This is a standard function that is called whenever an administrator
      * wishes to modify a comment. This returns the comment data for editing
      * Should I provide this functionality? This could be abused.
-     *
      */
     public function editAction(Request $request)
     {
@@ -60,7 +61,7 @@ class AdminController extends AbstractController
         }
         $em = $this->getDoctrine()->getManager();
         $comment = $em->find(EZCommentsEntity::class, $id);
-        if(null === $comment){
+        if (null === $comment) {
             return new JsonResponse($this->trans('That comment for some reason does not exist.'), Response::HTTP_NOT_FOUND);
         }
         $jsonReply = [
@@ -79,7 +80,6 @@ class AdminController extends AbstractController
      *
      * Delete item
      * This function is called when an admin wants to delete a comment
-     *
      */
     public function deleteAction(Request $request)
     {
@@ -89,7 +89,7 @@ class AdminController extends AbstractController
         }
         $em = $this->getDoctrine()->getManager();
         $comment = $em->find(EZCommentsEntity::class, $id);
-        if(null === $comment){
+        if (null === $comment) {
             return new JsonResponse($this->trans('That comment for some reason does not exist.'), Response::HTTP_NOT_FOUND);
         }
         $success = true;
@@ -111,25 +111,23 @@ class AdminController extends AbstractController
      * @Route("/deleteall/{comment}")
      * @param Request $request
      * @param EZCommentsEntity $comment
-     * block users that are being annoying.
+     * block users that are being annoying
      */
-
     public function deleteallAction(Request $request, EZCommentsEntity $comment)
     {
-
     }
+
     /**
      * @Route("/blockuser/{comment}")
      * @param Request $request
      * @param EZCommentsEntity $comment
-     * @return RedirectResponse|JsonResponse
-     * block users that are being annoying.
+     * @return redirectResponse|JsonResponse
+     * block users that are being annoying
      */
-
     public function blockuserAction(Request $request, EZCommentsEntity $comment)
     {
         //I don't know if I have to have this error checking in here, but just in case
-        if (null === $comment){
+        if (null === $comment) {
             return new JsonResponse($this->trans('That comment for some reason does not exist.'), Response::HTTP_NOT_FOUND);
         }
         $id = $comment->getId();
@@ -140,7 +138,7 @@ class AdminController extends AbstractController
 
         //right now this is a toggle. In the future it may have to be more sophisticated.
         $userToBlock = $comment->getOwnerid();
-        if($userToBlock === 1){
+        if (1 === $userToBlock) {
             //This is the anonymous user (guest id), you cannot group ban all the comments
             $this->addFlash('status', $this->trans("Banning the anonymous user will block all comments by any anonymous posters. If you want to block all anonymous comments, change the global setting. You will need to block each inappropriate comment individually"));
         } else {
@@ -150,17 +148,18 @@ class AdminController extends AbstractController
             //determine the goal (to ban or unban, based upon the first comment)
             $blocked = !$userComments[0]->getStatus();
             //walk each comment and change it's block status.
-            foreach($userComments as $comment){
+            foreach ($userComments as $comment) {
                 $comment->setStatus($blocked);
                 $em->persist($comment);
             }
             $em->flush();
-            if($blocked){
+            if ($blocked) {
                 $this->addFlash('status', $this->trans("User " . $comment->getAnonname() . "'s comments are banned. You can unban them by clicking on the ban icon again."));
             } else {
                 $this->addFlash('status', $this->trans("User ". $comment->getAnonname() . "'s comments are unbanned."));
             }
         }
+
         return $this->redirect($this->generateUrl('zikulaezcommentsmodule_admin_index'));
     }
 
@@ -171,11 +170,10 @@ class AdminController extends AbstractController
      * @return RedirectResponse|JsonResponse
      * block comment that is annoying
      */
-
     public function blockCommentAction(Request $request, EZCommentsEntity $comment)
     {
         //I don't know if I have to have this error checking in here, but just in case
-        if(null === $comment){
+        if (null === $comment) {
             return new JsonResponse($this->trans('That comment for some reason does not exist.'), Response::HTTP_NOT_FOUND);
         }
         $id = $comment->getId();
@@ -189,14 +187,14 @@ class AdminController extends AbstractController
         //presist the comment and flush
         $em->persist($comment);
         $em->flush();
-        if($blocked){
+        if ($blocked) {
             $this->addFlash('status', $this->trans('Comment is banned. You can unban the comment by clicking on the ban icon again.'));
         } else {
             $this->addFlash('status', $this->trans('Comment is unbanned.'));
         }
+
         return $this->redirect($this->generateUrl('zikulaezcommentsmodule_admin_index'));
     }
-
 
     /**
      * @Route("/commentstats")
@@ -207,8 +205,6 @@ class AdminController extends AbstractController
      */
     public function commentStatsAction(Request $request)
     {
-
-
     }
 
     /**
@@ -249,6 +245,5 @@ class AdminController extends AbstractController
      */
     public function deletemoduleAction(Request $request, $moduleName)
     {
-
     }
 }

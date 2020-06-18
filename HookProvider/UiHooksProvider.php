@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Zikula\EZCommentsModule\HookProvider;
 
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use Zikula\Bundle\HookBundle\Category\UiHooksCategory;
@@ -13,16 +16,14 @@ use Zikula\Bundle\HookBundle\HookProviderInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\EZCommentsModule\Entity\EZCommentsEntity;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Zikula\UsersModule\Api\CurrentUserApi;
 
 /**
  * Copyright 2017 Timothy Paustian
  *
  * @license MIT
- *
  */
-class UiHooksProvider  implements HookProviderInterface
+class UiHooksProvider implements HookProviderInterface
 {
     /**
      * @var TranslatorInterface
@@ -53,6 +54,7 @@ class UiHooksProvider  implements HookProviderInterface
      * @var VariableApiInterface
      */
     private $variableApi;
+
     /**
      * @var RouterInterface
      */
@@ -108,7 +110,6 @@ class UiHooksProvider  implements HookProviderInterface
     /**
      * uiView - Display a view that is hook to the module.
      * @param DisplayHook $hook
-     *
      */
     public function uiView(DisplayHook $hook)
     {
@@ -117,7 +118,7 @@ class UiHooksProvider  implements HookProviderInterface
         $areaID = $hook->getAreaId();
         // Security checks
         // first check if the user is allowed to do any comments for this module/objectid
-        if (!$this->permissionApi->hasPermission('EZComments::', "$mod:$id:", ACCESS_READ)) {
+        if (!$this->permissionApi->hasPermission('EZComments::', "${mod}:${id}:", ACCESS_READ)) {
             return;
         }
         $repo = $this->entityManager->getRepository(EZCommentsEntity::class);
@@ -131,9 +132,9 @@ class UiHooksProvider  implements HookProviderInterface
         $items = $repo->findBy(['modname' => $mod, 'objectid' => $id, 'replyto'=> 0, 'status' => 0]);
 
         //walk the items and see if they have replies
-        foreach($items as $item){
+        foreach ($items as $item) {
             $replies = $repo->findOneBy(['modname' => $mod, 'objectid' => $id, 'replyto'=> $item->getId(), 'status' => 0]);
-            if($replies){
+            if ($replies) {
                 //this marks it as having replies.
                 $item->setAreaid(1);
             }
@@ -142,7 +143,8 @@ class UiHooksProvider  implements HookProviderInterface
         //if we are logged in or allowanon is true then add the comment button
         $doAnon = $this->variableApi->get('ZikulaEZCommentsModule', 'allowanon') || $loggedin;
 
-        $content = $this->twig->render('@ZikulaEZCommentsModule/Hook/ezcomments_hook_uiview.html.twig',
+        $content = $this->twig->render(
+            '@ZikulaEZCommentsModule/Hook/ezcomments_hook_uiview.html.twig',
             ['items' => $items,
                 'isAdmin' =>  $is_admin,
                 'artId' => $id,
@@ -150,7 +152,8 @@ class UiHooksProvider  implements HookProviderInterface
                 'areaId' => $areaID,
                 'retUrl' => $urlString,
                 'doAnon' => $doAnon
-            ]);
+            ]
+        );
 
         $response = new DisplayHookResponse($this->getAreaName(), $content);
         $hook->setResponse($response);
@@ -160,5 +163,4 @@ class UiHooksProvider  implements HookProviderInterface
     {
         return 'provider.zikulaezcommentsmodule.ui_hooks.ezcomments';
     }
-
 }
