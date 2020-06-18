@@ -11,7 +11,7 @@
 
 namespace Zikula\EZCommentsModule;
 
-use Zikula\Core\AbstractModule;
+use Zikula\ExtensionsModule\AbstractModule;
 
 class ZikulaEZCommentsModule extends AbstractModule
 {

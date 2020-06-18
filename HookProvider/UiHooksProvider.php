@@ -4,18 +4,17 @@ namespace Zikula\EZCommentsModule\HookProvider;
 
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
 use Zikula\Bundle\HookBundle\Category\UiHooksCategory;
 use Zikula\Bundle\HookBundle\Hook\DisplayHook;
 use Zikula\Bundle\HookBundle\Hook\DisplayHookResponse;
 use Zikula\Bundle\HookBundle\HookProviderInterface;
-use Zikula\Bundle\HookBundle\ServiceIdTrait;
-use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\EZCommentsModule\Entity\EZCommentsEntity;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
-use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\UsersModule\Api\CurrentUserApi;
-
 
 /**
  * Copyright 2017 Timothy Paustian
@@ -23,12 +22,8 @@ use Zikula\UsersModule\Api\CurrentUserApi;
  * @license MIT
  *
  */
-
-
 class UiHooksProvider  implements HookProviderInterface
 {
-    use ServiceIdTrait;
-
     /**
      * @var TranslatorInterface
      */
@@ -40,9 +35,9 @@ class UiHooksProvider  implements HookProviderInterface
     private $permissionApi;
 
     /**
-     * @var EngineInterface
+     * @var Environment
      */
-    private $templating;
+    private $twig;
 
     /**
      * @var EntityManager
@@ -68,30 +63,19 @@ class UiHooksProvider  implements HookProviderInterface
      */
     private $currentUserApi;
 
-
-    /**
-     * UiHooksProvider constructor.
-     * @param TranslatorInterface $translator
-     * @param PermissionApiInterface $permissionApi
-     * @param EngineInterface $templating
-     * @param EntityManager $entityManager
-     * @param RequestStack $requestStack
-     * @param RouterInterface $router
-     * @param VariableApiInterface $variableApi
-     * @param CurrentUserApi $currentUserApi
-     */
-    public function __construct(TranslatorInterface $translator,
-                                PermissionApiInterface $permissionApi,
-                                EngineInterface $templating,
-                                EntityManager $entityManager,
-                                RequestStack $requestStack,
-                                RouterInterface $router,
-                                VariableApiInterface $variableApi,
-                                CurrentUserApi $currentUserApi)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        PermissionApiInterface $permissionApi,
+        Environment $twig,
+        EntityManager $entityManager,
+        RequestStack $requestStack,
+        RouterInterface $router,
+        VariableApiInterface $variableApi,
+        CurrentUserApi $currentUserApi
+    ) {
         $this->translator = $translator;
         $this->permissionApi = $permissionApi;
-        $this->templating = $templating;
+        $this->twig = $twig;
         $this->entityManager = $entityManager;
         $this->requestStack = $requestStack;
         $this->variableApi = $variableApi;
@@ -99,22 +83,22 @@ class UiHooksProvider  implements HookProviderInterface
         $this->currentUserApi = $currentUserApi;
     }
 
-    public function getOwner()
+    public function getOwner(): string
     {
         return 'ZikulaEZCommentsModule';
     }
 
-    public function getTitle()
+    public function getTitle(): string
     {
-        return $this->translator->__('EZComments Display Provider');
+        return $this->translator->trans('EZComments Display Provider');
     }
 
-    public function getCategory()
+    public function getCategory(): string
     {
         return UiHooksCategory::NAME;
     }
 
-    public function getProviderTypes()
+    public function getProviderTypes(): array
     {
         return [
             UiHooksCategory::TYPE_DISPLAY_VIEW => 'uiView'
@@ -136,7 +120,7 @@ class UiHooksProvider  implements HookProviderInterface
         if (!$this->permissionApi->hasPermission('EZComments::', "$mod:$id:", ACCESS_READ)) {
             return;
         }
-        $repo = $this->entityManager->getRepository('ZikulaEZCommentsModule:EZCommentsEntity');
+        $repo = $this->entityManager->getRepository(EZCommentsEntity::class);
 
         $is_admin = $this->permissionApi->hasPermission('EZComments::', '::', ACCESS_ADMIN);
         $url = $hook->getUrl();
@@ -158,7 +142,7 @@ class UiHooksProvider  implements HookProviderInterface
         //if we are logged in or allowanon is true then add the comment button
         $doAnon = $this->variableApi->get('ZikulaEZCommentsModule', 'allowanon') || $loggedin;
 
-        $content = $this->templating->render('ZikulaEZCommentsModule:Hook:ezcomments_hook_uiview.html.twig',
+        $content = $this->twig->render('@ZikulaEZCommentsModule/Hook/ezcomments_hook_uiview.html.twig',
             ['items' => $items,
                 'isAdmin' =>  $is_admin,
                 'artId' => $id,
@@ -168,8 +152,13 @@ class UiHooksProvider  implements HookProviderInterface
                 'doAnon' => $doAnon
             ]);
 
-        $response = new DisplayHookResponse($this->getServiceId(), $content);
+        $response = new DisplayHookResponse($this->getAreaName(), $content);
         $hook->setResponse($response);
+    }
+
+    public function getAreaName(): string
+    {
+        return 'provider.zikulaezcommentsmodule.ui_hooks.ezcomments';
     }
 
 }

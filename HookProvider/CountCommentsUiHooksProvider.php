@@ -3,21 +3,14 @@
 namespace Zikula\EZCommentsModule\HookProvider;
 
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
 use Zikula\Bundle\HookBundle\Category\UiHooksCategory;
 use Zikula\Bundle\HookBundle\Hook\DisplayHook;
 use Zikula\Bundle\HookBundle\Hook\DisplayHookResponse;
-use Zikula\Bundle\HookBundle\Hook\ProcessHook;
 use Zikula\Bundle\HookBundle\HookProviderInterface;
-use Zikula\Bundle\HookBundle\ServiceIdTrait;
-use Zikula\Common\Translator\TranslatorInterface;
-use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\EZCommentsModule\Entity\EZCommentsEntity;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
-use Symfony\Component\Templating\EngineInterface;
-use Symfony\Component\Routing\RouterInterface;
-use Zikula\UsersModule\Api\CurrentUserApi;
-
 
 /**
  * Copyright 2017 Timothy Paustian
@@ -26,11 +19,8 @@ use Zikula\UsersModule\Api\CurrentUserApi;
  *
  */
 
-
-class CountCommentsUiHooksProvider  implements HookProviderInterface
+class CountCommentsUiHooksProvider implements HookProviderInterface
 {
-    use ServiceIdTrait;
-
     /**
      * @var TranslatorInterface
      */
@@ -41,49 +31,43 @@ class CountCommentsUiHooksProvider  implements HookProviderInterface
      */
     private $permissionApi;
     /**
-     * @var EngineInterface
+     * @var Environment
      */
-    private $templating;
+    private $twig;
 
     /**
      * @var EntityManager
      */
     private $entityManager;
 
-
-    /**
-     * UiHooksProvider constructor.
-     * @param TranslatorInterface $translator
-     * @param PermissionApiInterface $permissionApi
-     * @param EntityManager $entityManager
-     */
-    public function __construct(TranslatorInterface $translator,
-                                PermissionApiInterface $permissionApi,
-                                EngineInterface $templating,
-                                EntityManager $entityManager)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        PermissionApiInterface $permissionApi,
+        Environment $twig,
+        EntityManager $entityManager
+    ) {
         $this->translator = $translator;
         $this->permissionApi = $permissionApi;
-        $this->templating = $templating;
+        $this->twig = $twig;
         $this->entityManager = $entityManager;
     }
 
-    public function getOwner()
+    public function getOwner(): string
     {
         return 'ZikulaEZCommentsModule';
     }
 
-    public function getTitle()
+    public function getTitle(): string
     {
-        return $this->translator->__('EZComments Count Provider');
+        return $this->translator->trans('EZComments Count Provider');
     }
 
-    public function getCategory()
+    public function getCategory(): string
     {
         return UiHooksCategory::NAME;
     }
 
-    public function getProviderTypes()
+    public function getProviderTypes(): array
     {
         return [
             UiHooksCategory::TYPE_DISPLAY_VIEW => 'uiView'
@@ -107,7 +91,7 @@ class CountCommentsUiHooksProvider  implements HookProviderInterface
             return;
         }
 
-        $repo = $this->entityManager->getRepository('ZikulaEZCommentsModule:EZCommentsEntity');
+        $repo = $this->entityManager->getRepository(EZCommentsEntity::class);
         $commentCount = $repo->createQueryBuilder('a')
                 ->select('count(a.objectid)')
                 ->where('a.status = 0')
@@ -115,10 +99,15 @@ class CountCommentsUiHooksProvider  implements HookProviderInterface
                 ->setParameter('id', $id)
                 ->getQuery()
                 ->getSingleScalarResult();
-        $content = $this->templating->render('ZikulaEZCommentsModule:Hook:ezcomments_hook_comment_counts.html.twig',
+        $content = $this->twig->render('@ZikulaEZCommentsModule/Hook/ezcomments_hook_comment_counts.html.twig',
             ['count' => $commentCount
             ]);
-        $response = new DisplayHookResponse($this->getServiceId(), $content);
+        $response = new DisplayHookResponse($this->getAreaName(), $content);
         $hook->setResponse($response);
+    }
+
+    public function getAreaName(): string
+    {
+        return 'provider.zikulaezcommentsmodule.ui_hooks.countcomments';
     }
 }

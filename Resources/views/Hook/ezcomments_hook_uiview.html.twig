@@ -5,7 +5,7 @@
 
 <hr/>
 <div id="Comments">
-    <h3>{{ __('Comments') }}</h3>
+    <h3>{% trans %}Comments{% endtrans %}</h3>
     {% for item in items %}
         {% if currentUser.loggedin %}
             <div id="itemComment_{{ item.id }}">
@@ -84,40 +84,40 @@
             <table class="ezcomments-form-table">
             {% if currentUser.loggedIn %}
                 <tr>
-                    <td class="ezcomments-pretty-name">{{ __('Name: ') }}</td><td><input name="user" value="{{ currentUser.uname }}" maxlengh="100" class="ezcomments-form-box"/></td>
+                    <td class="ezcomments-pretty-name">{% trans %}Name: {% endtrans %}</td><td><input name="user" value="{{ currentUser.uname }}" maxlengh="100" class="ezcomments-form-box"/></td>
                 </tr>
             {% else %}
                 <tr>
-                    <td class="ezcomments-pretty-name">{{ __('Name: ') }}</td><td><input name="user" value="Anonymous Coward" maxlengh="100" class="ezcomments-form-box"/></td>
+                    <td class="ezcomments-pretty-name">{% trans %}Name: {% endtrans %}</td><td><input name="user" value="Anonymous Coward" maxlengh="100" class="ezcomments-form-box"/></td>
                 </tr>
                 <tr>
-                    <td class="ezcomments-pretty-name">{{ __('Email: ') }}</td><td><input name="anonEmail" value="Anonymous Coward's Email" maxlengh="100" size="51" class="ezcomments-form-box"/></td>
+                    <td class="ezcomments-pretty-name">{% trans %}Email: {% endtrans %}</td><td><input name="anonEmail" value="Anonymous Coward's Email" maxlengh="100" size="51" class="ezcomments-form-box"/></td>
                 </tr>
                 <tr>
-                    <td class="ezcomments-pretty-name">{{ __('Website: ') }}</td><td><input name="anonWebsite" value="Anonymous Coward's Website" maxlengh="100" size="46" class="ezcomments-form-box"/></td>
+                    <td class="ezcomments-pretty-name">{% trans %}Website: {% endtrans %}</td><td><input name="anonWebsite" value="Anonymous Coward's Website" maxlengh="100" size="46" class="ezcomments-form-box"/></td>
                 </tr>
              {% endif %}
                 <tr>
-                    <td class="ezcomments-pretty-name">{{ __('Subject: ') }}</td><td><input id="subject-area" name="subject" maxlength="100" size="47" class="ezcomments-form-box"/></td>
+                    <td class="ezcomments-pretty-name">{% trans %}Subject: {% endtrans %}</td><td><input id="subject-area" name="subject" maxlength="100" size="47" class="ezcomments-form-box"/></td>
                 </tr>
             </table>
                 <textarea id="comment-area" rows="3" cols="56" name="comment" class="ezcomments-text-box"></textarea>
             <div class="form-group ezcomments-align-right">
                 <button id="addComment" type="submit" class="btn btn-primary btn-sm" name="addComment" value="addComment">
-                    <span title="{{ __("Add Comment") }}" class="fa fa-check"></span>
+                    <span title="{% trans %}Add Comment{% endtrans %}" class="fa fa-check"></span>
                 </button>
                 <button id="cancelComment" type="submit" class="btn btn-warning btn-sm" name="cancelComment">
-                    <span title="{{ __("Cancel Comment") }}" class="fa fa-ban"
+                    <span title="{% trans %}Cancel Comment{% endtrans %}" class="fa fa-ban"></span>
                 </button>
-                <button title="{{ __("Reset Form") }}" type="reset" class="btn btn-default  btn-sm" name="btn-danger" onclick="this.form.reset()">
-                    <span class="fa fa-refresh">
+                <button title="{% trans %}Reset Form{% endtrans %}" type="reset" class="btn btn-default btn-sm" name="btn-danger" onclick="this.form.reset()">
+                    <span class="fa fa-refresh"></span>
                 </button>
             </div>
         </form>
     </div>
 </div>
 <!-- comment form -->
-<div class="alert alert-danger hidden" id="no_replies">{{ __('No replies to show!') }}</div>
+<div class="alert alert-danger hidden" id="no_replies">{% trans %}No replies to show!{% endtrans %}</div>
 
 <div id="dialog-message" title="There was a problem with your comment?">
     <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span><span id="comment_message"></span></p>

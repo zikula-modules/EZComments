@@ -2,12 +2,19 @@
 
 namespace Zikula\EZCommentsModule\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
+use Zikula\EZCommentsModule\Entity\EZCommentsEntity;
 
-class EZCommentsEntityRepository extends EntityRepository
+class EZCommentsEntityRepository extends ServiceEntityRepository
 {
     const MINDATE = 0;
     const MAXDATE = 1;
+
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, EZCommentsEntity::class);
+    }
 
     /**
      * Get comments for a specific item inside a module

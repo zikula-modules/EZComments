@@ -2,28 +2,20 @@
 
 namespace Zikula\EZCommentsModule;
 
-
-use Zikula\Core\AbstractExtensionInstaller;
+use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 use Zikula\EZCommentsModule\Entity\EZCommentsEntity;
 
-class EZCommentsModuleInstaller extends AbstractExtensionInstaller {
-
-
-
+class EZCommentsModuleInstaller extends AbstractExtensionInstaller
+{
     private $entities = array(
         EZCommentsEntity::class,
     );
 
-    /**
-     * initialise the pmci module
-     * This function is only ever called once during the lifetime of a particular
-     * module instance
-     */
-    public function install() {
+    public function install(): bool {
         //Create the tables of the module.
         try {
             $this->schemaTool->create($this->entities);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
         $this->setVar('allowanon', false);
@@ -31,11 +23,7 @@ class EZCommentsModuleInstaller extends AbstractExtensionInstaller {
         return true;
     }
 
-    /**
-     * upgrade the pmci module from an old version
-     * This function can be called multiple times
-     */
-    public function upgrade($oldversion) {
+    public function upgrade($oldversion): bool  {
         /*switch ($oldversion)
         {
             case '1.2':
@@ -98,17 +86,12 @@ class EZCommentsModuleInstaller extends AbstractExtensionInstaller {
         return true;
     }
 
-    /**
-     * delete the pmci module data
-     * This function is only ever called once during the lifetime of a particular
-     * module instance
-     */
-    public function uninstall() {
+    public function uninstall(): bool  {
 
         //drop the tables
         try {
             $this->schemaTool->drop($this->entities);
-        } catch(Exception $e){
+        } catch(\Exception $e){
             $this->addFlash('error', $e->getMessage());
             return false;
         }

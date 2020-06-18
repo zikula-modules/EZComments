@@ -1,6 +1,6 @@
 {
   "name": "zikula/ezcomments-module",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "description": "Attach comments to every kind of content using hooks",
   "type": "zikula-module",
   "license": "LGPL-3.0+",
@@ -14,13 +14,14 @@
     "psr-4": { "Zikula\\EZCommentsModule\\": "" }
   },
   "require": {
-    "php": ">5.4.0"
+    "php": "^7.2.5"
   },
   "extra": {
     "zikula": {
       "url": "comments",
+      "icon": "far fa-comments",
       "class": "Zikula\\EZCommentsModule\\ZikulaEZCommentsModule",
-      "core-compatibility": ">=1.4.3",
+      "core-compatibility": ">=3.0.0 <4.0.0",
       "displayname": "EZComments Module",
       "capabilities": {
         "admin": {"route": "zikulaezcommentsmodule_admin_index"}

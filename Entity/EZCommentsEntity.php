@@ -1,9 +1,9 @@
 <?php
 namespace Zikula\EZCommentsModule\Entity;
 
-use Zikula\Core\Doctrine\EntityAccess;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 
 
 /**
@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="Zikula\EZCommentsModule\Entity\Repository\EZCommentsEntityRepository")
  * @ORM\Table(name="ezcomments")
  */
-class EZCommentsEntity extends \Zikula\Core\Doctrine\EntityAccess
+class EZCommentsEntity extends EntityAccess
 {
     /**
      * id

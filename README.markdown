@@ -1,4 +1,7 @@
 EZComments
 ==========
 
-EZComments is a commenting module for the Zikula Application Framework. Version 4.0 is a complete rewrite of the module.
+EZComments is a hookable commenting module for the Zikula Application Framework.
+
+ - Version 5.* is compatible with Core 3.*
+ - Version 4.* is compatible with Core 1.5 - Core 2.*

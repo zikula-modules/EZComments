@@ -10,12 +10,10 @@ namespace Zikula\EZCommentsModule\Controller;
  * @license See license.txt
  */
 
-use Zikula\Core\Response\Ajax\ForbiddenResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Zikula\Core\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotations - do not remove
+use Symfony\Component\Routing\Annotation\Route;
+use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\EZCommentsModule\Entity\EZCommentsEntity;
 
 
@@ -41,7 +39,7 @@ class CommentController extends AbstractController
     public function commentAction(Request $request)
     {
         if (!$this->hasPermission($this->name . '::', '::', ACCESS_COMMENT)) {
-            return new ForbiddenResponse($this->__('Access forbidden since you cannot add comments.'));
+            return new ForbiddenResponse($this->trans('Access forbidden since you cannot add comments.'));
         }
         return $this->_persistComment($request, 'HTML');
     }
@@ -54,7 +52,7 @@ class CommentController extends AbstractController
      */
 
     private function _bannedPoster($id){
-        $repo = $this->getDoctrine()->getManager()->getRepository('ZikulaEZCommentsModule:EZCommentsEntity');
+        $repo = $this->getDoctrine()->getManager()->getRepository(EZCommentsEntity::class);
         $postsByUser = $repo->findBy(['ownerid' => $id]);
         $postsBannedByUser = $repo->findBy(['ownerid' => $id, 'status' => 1]);
         $countPosts = count($postsByUser);
@@ -87,7 +85,7 @@ class CommentController extends AbstractController
         $commentObj = null;
         $isEdit = false;
         if(isset($id) && ($id != 0)){
-            $commentObj = $em->getRepository('ZikulaEZCommentsModule:EZCommentsEntity')->findOneBy(['id' => $id]);
+            $commentObj = $em->getRepository(EZCommentsEntity::class)->findOneBy(['id' => $id]);
             $isEdit = true;
         } else {
             $commentObj = new EZCommentsEntity();
@@ -145,22 +143,20 @@ class CommentController extends AbstractController
         }
     }
     /**
-     * @Route("/setcomment", options={"expose"=true})
-     * @Method("POST")
+     * @Route("/setcomment", options={"expose"=true}, methods={"POST"})
      * @param Request $request
      * @return JsonResponse|FatalResponse|ForbiddenResponse bid or Ajax error
      */
     public function setcommentAction(Request $request){
         $allowAnon = $this->getVar('allowanon');
         if (!$this->hasPermission($this->name . '::', '::', ACCESS_COMMENT) && !$allowAnon) {
-            return new ForbiddenResponse($this->__('Access forbidden since you cannot add comments.'));
+            return new ForbiddenResponse($this->trans('Access forbidden since you cannot add comments.'));
         }
         return $this->_persistComment($request, 'JSON');
     }
 
     /**
-     * @Route("/verifycomment", options={"expose"=true})
-     * @Method("POST")
+     * @Route("/verifycomment", options={"expose"=true}, methods={"POST"})
      * @param Request $request
      * @return JsonResponse|ForbiddenResponse
      */
@@ -168,14 +164,14 @@ class CommentController extends AbstractController
     {
         $allowAnon = $this->getVar('allowanon');
         if (!$this->hasPermission($this->name . '::', '::', ACCESS_COMMENT) && !$allowAnon) {
-            return new ForbiddenResponse($this->__('Access forbidden since you cannot add comments.'));
+            return new ForbiddenResponse($this->trans('Access forbidden since you cannot add comments.'));
         }
         $ownerId = $this->get('zikula_users_module.current_user')->get('uid');
         if($this->_bannedPoster($ownerId)){
             //send back a different JSON reqeust.
             return  new JsonResponse(['verified' => false,
                 'reason' => 'ban',
-                'message' => $this->__("You have been banned by the administrator of this web site to post comments")
+                'message' => $this->trans("You have been banned by the administrator of this web site to post comments")
             ]);
         }
         $comment = $request->request->get('comment');
@@ -198,7 +194,7 @@ class CommentController extends AbstractController
             if($user == ""){
                 return  new JsonResponse(['verified' => false,
                     'reason' => 'user',
-                    'message' => $this->__("Please provide a username for your comment.")
+                    'message' => $this->trans("Please provide a username for your comment.")
                 ]);
             }
         }
@@ -206,13 +202,13 @@ class CommentController extends AbstractController
             //There is a problem with the comment. Hopefuly this never happens
             return  new JsonResponse(['verified' => false,
                 'reason' => 'struct',
-                'message' => $this->__("There is a problem with how the reply structure was set. Please reload the page and try again.")
+                'message' => $this->trans("There is a problem with how the reply structure was set. Please reload the page and try again.")
             ]);
         }
         if($comment == ""){
             return  new JsonResponse(['verified' => false,
                 'reason' => 'comment',
-                'message' => $this->__("Your comment is empty, please enter some text before submitting your comment.")
+                'message' => $this->trans("Your comment is empty, please enter some text before submitting your comment.")
             ]);
         }
 
@@ -220,7 +216,7 @@ class CommentController extends AbstractController
             //There is a problem with the comment. Hopefuly this never happens
             return  new JsonResponse(['verified' => false,
                 'reason' => 'subject',
-                'message' => $this->__("Please enter a subject for your comment.")
+                'message' => $this->trans("Please enter a subject for your comment.")
             ]);
         }*/
         $id = $request->request->get('id');
@@ -238,14 +234,13 @@ class CommentController extends AbstractController
             'id' => $id]);
     }
     /**
-     * @Route("/getuserid", options={"expose"=true})
-     * @Method("GET")
+     * @Route("/getuserid", options={"expose"=true}, methods={"GET"})
      * @param Request $request
      * @return JsonResponse|FatalResponse|ForbiddenResponse bid or Ajax error
      */
     public function getuseridAction(Request $request){
         if (!$this->hasPermission($this->name . '::', '::', ACCESS_READ)) {
-            return new ForbiddenResponse($this->__('Access forbidden since you cannot read comments.'));
+            return new ForbiddenResponse($this->trans('Access forbidden since you cannot read comments.'));
         }
         $currentUserApi = $this->get('zikula_users_module.current_user');
         $uid = $currentUserApi->get('uid');
@@ -254,8 +249,7 @@ class CommentController extends AbstractController
     }
 
     /**
-     * @Route("/getreplies", options={"expose"=true})
-     * @Method("GET")
+     * @Route("/getreplies", options={"expose"=true}, methods={"GET"})
      * @param Request $request
      * @return JsonResponse|FatalResponse|ForbiddenResponse bid or Ajax error
      *
@@ -265,13 +259,13 @@ class CommentController extends AbstractController
 
     public function getrepliesAction(Request $request){
         if (!$this->hasPermission($this->name . '::', '::', ACCESS_READ)) {
-            return new ForbiddenResponse($this->__('Access forbidden since you cannot read comments.'));
+            return new ForbiddenResponse($this->trans('Access forbidden since you cannot read comments.'));
         }
 
         $mod = $request->query->get('module');
         $id = $request->query->get('id');
         $parentId = $request->query->get('parentId');
-        $repo = $this->getDoctrine()->getManager()->getRepository('ZikulaEZCommentsModule:EZCommentsEntity');
+        $repo = $this->getDoctrine()->getManager()->getRepository(EZCommentsEntity::class);
         //find the child items to the root parent comment (parentID). Order them in ASC order
         //todo: make the order user configurable.
         $items = $repo->findBy(['modname' => $mod, 'objectid' => $id, 'replyto'=> $parentId], ['date' => 'DESC']);
@@ -287,7 +281,7 @@ class CommentController extends AbstractController
                     'id' => $item->getId(),
                     'parentid' => $item->getReplyto(),
                     'uid' => $uid,
-                    'avatar' => $this->render('ZikulaEZCommentsModule:Comment:ezcomments_comment_avatar.html.twig', [
+                    'avatar' => $this->render('@ZikulaEZCommentsModule/Comment/ezcomments_comment_avatar.html.twig', [
                         'uid' => $uid])->getContent()];
             }
         }
@@ -295,8 +289,7 @@ class CommentController extends AbstractController
     }
 
     /**
-     * @Route("/deletecomment", options={"expose"=true})
-     * @Method("POST")
+     * @Route("/deletecomment", options={"expose"=true}, methods={"POST"})
      * @param Request $request
      * @return JsonResponse|FatalResponse|ForbiddenResponse bid or Ajax error
      */
@@ -308,20 +301,20 @@ class CommentController extends AbstractController
         $userId = $request->request->get('uid');
         //if the user ID does not match or you do not have delete access, then you don't have permission.
         if(($uid != $userId) && (!$this->hasPermission($this->name . '::', '::', ACCESS_DELETE)) ){
-            return new ForbiddenResponse($this->__('Access forbidden since you cannot delete comments.'));
+            return new ForbiddenResponse($this->trans('Access forbidden since you cannot delete comments.'));
         }
         $commentId = $request->request->get('commentId');
         if(!isset($commentId) || !isset($userId)){
-            return new ForbiddenResponse($this->__('Access Denied'));
+            return new ForbiddenResponse($this->trans('Access Denied'));
         }
-        $repo = $this->getDoctrine()->getManager()->getRepository('ZikulaEZCommentsModule:EZCommentsEntity');
+        $repo = $this->getDoctrine()->getManager()->getRepository(EZCommentsEntity::class);
         //find the comment
         $comment = $repo->findOneBy(['id' => $commentId]);
         $isAdmin = $this->hasPermission('EZComments::', '::', ACCESS_ADMIN);
         $jsonReply = ['comdel' => false];
         if(null != $comment) {
             if( ($userId != $comment->getOwnerId()) && !$isAdmin){
-                return new ForbiddenResponse($this->__('Access Denied'));
+                return new ForbiddenResponse($this->trans('Access Denied'));
             }
             $em = $this->getDoctrine()->getManager();
             //determine if there are other comments to this comment

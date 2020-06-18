@@ -3,15 +3,11 @@
 namespace Zikula\EZCommentsModule\Controller;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Zikula\Core\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotations - do not remove
-use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Zikula\Core\Response\Ajax\FatalResponse;
-use Zikula\Core\Response\Ajax\ForbiddenResponse;
+use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Zikula\EZCommentsModule\Entity\EZCommentsEntity;
 
@@ -35,19 +31,18 @@ class AdminController extends AbstractController
     public function indexAction(Request $request)
     {
         if (!$this->hasPermission($this->name . '::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException($this->__('You do not have pemission to access the EZComments admin interface.'));
+            throw new AccessDeniedException($this->trans('You do not have pemission to access the EZComments admin interface.'));
         }
-        $repo = $this->getDoctrine()->getManager()->getRepository('ZikulaEZCommentsModule:EZCommentsEntity');
+        $repo = $this->getDoctrine()->getManager()->getRepository(EZCommentsEntity::class);
 
         $items = $repo->findAll();
 
-        return $this->render('ZikulaEZCommentsModule:Admin:ezcomments_index.html.twig', [
+        return $this->render('@ZikulaEZCommentsModule/Admin/ezcomments_index.html.twig', [
             'items' => $items]);
     }
 
     /**
-     * @Route("/edit", options={"expose"=true})
-     * @Method("POST")
+     * @Route("/edit", options={"expose"=true}, methods={"POST"})
      * @param request
      * @return JsonResponse|FatalResponse|ForbiddenResponse bid or Ajax error
      *
@@ -61,12 +56,12 @@ class AdminController extends AbstractController
     {
         $id = $request->request->get('id');
         if (!$this->hasPermission($this->name . '::', $id . "::", ACCESS_EDIT)) {
-            return new ForbiddenResponse($this->__('Access forbidden since you cannot delete comments.'));
+            return new ForbiddenResponse($this->trans('Access forbidden since you cannot delete comments.'));
         }
         $em = $this->getDoctrine()->getManager();
-        $comment = $em->find('ZikulaEZCommentsModule:EZCommentsEntity', $id);
+        $comment = $em->find(EZCommentsEntity::class, $id);
         if(null === $comment){
-            return new FatalResponse($this->__('That comment for some reason does not exist.'));
+            return new FatalResponse($this->trans('That comment for some reason does not exist.'));
         }
         $jsonReply = [
             'comment' => $comment->getComment(),
@@ -78,8 +73,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/delete", options={"expose"=true})
-     * @Method("POST")
+     * @Route("/delete", options={"expose"=true}, methods={"POST"})
      * @param Request $request
      * @return JsonResponse|FatalResponse|ForbiddenResponse bid or Ajax error
      *
@@ -91,12 +85,12 @@ class AdminController extends AbstractController
     {
         $id = $request->request->get('id');
         if (!$this->hasPermission($this->name . '::', $id . "::", ACCESS_DELETE)) {
-            return new ForbiddenResponse($this->__('Access forbidden since you cannot delete comments.'));
+            return new ForbiddenResponse($this->trans('Access forbidden since you cannot delete comments.'));
         }
         $em = $this->getDoctrine()->getManager();
-        $comment = $em->find('ZikulaEZCommentsModule:EZCommentsEntity', $id);
+        $comment = $em->find(EZCommentsEntity::class, $id);
         if(null === $comment){
-            return new FatalResponse($this->__('That comment for some reason does not exist.'));
+            return new FatalResponse($this->trans('That comment for some reason does not exist.'));
         }
         $success = true;
         $message = "Success";
@@ -136,11 +130,11 @@ class AdminController extends AbstractController
     {
         //I don't know if I have to have this error checking in here, but just in case
         if(null === $comment){
-            return new FatalResponse($this->__('That comment for some reason does not exist.'));
+            return new FatalResponse($this->trans('That comment for some reason does not exist.'));
         }
         $id = $comment->getId();
         if (!$this->hasPermission($this->name . '::', $id . "::", ACCESS_EDIT)) {
-            return new AccessDeniedException($this->__('Access forbidden since you cannot block comments.'));
+            throw new AccessDeniedException($this->trans('Access forbidden since you cannot block comments.'));
         }
         $em = $this->getDoctrine()->getManager();
 
@@ -148,10 +142,10 @@ class AdminController extends AbstractController
         $userToBlock = $comment->getOwnerid();
         if($userToBlock === 1){
             //This is the anonymous user (guest id), you cannot group ban all the comments
-            $this->addFlash('status', $this->__("Banning the anonymous user will block all comments by any anonymous posters. If you want to block all anonymous comments, change the global setting. You will need to block each inappropriate comment individually"));
+            $this->addFlash('status', $this->trans("Banning the anonymous user will block all comments by any anonymous posters. If you want to block all anonymous comments, change the global setting. You will need to block each inappropriate comment individually"));
         } else {
             //Find all comments with this uid
-            $repo = $em->getRepository('ZikulaEZCommentsModule:EZCommentsEntity');
+            $repo = $em->getRepository(EZCommentsEntity::class);
             $userComments = $repo->findBy(['ownerid' => $userToBlock]);
             //determine the goal (to ban or unban, based upon the first comment)
             $blocked = !$userComments[0]->getStatus();
@@ -162,9 +156,9 @@ class AdminController extends AbstractController
             }
             $em->flush();
             if($blocked){
-                $this->addFlash('status', $this->__("User " . $comment->getAnonname() . "'s comments are banned. You can unban them by clicking on the ban icon again."));
+                $this->addFlash('status', $this->trans("User " . $comment->getAnonname() . "'s comments are banned. You can unban them by clicking on the ban icon again."));
             } else {
-                $this->addFlash('status', $this->__("User ". $comment->getAnonname() . "'s comments are unbanned."));
+                $this->addFlash('status', $this->trans("User ". $comment->getAnonname() . "'s comments are unbanned."));
             }
         }
         return $this->redirect($this->generateUrl('zikulaezcommentsmodule_admin_index'));
@@ -182,11 +176,11 @@ class AdminController extends AbstractController
     {
         //I don't know if I have to have this error checking in here, but just in case
         if(null === $comment){
-            return new FatalResponse($this->__('That comment for some reason does not exist.'));
+            return new FatalResponse($this->trans('That comment for some reason does not exist.'));
         }
         $id = $comment->getId();
         if (!$this->hasPermission($this->name . '::', $id . "::", ACCESS_EDIT)) {
-            return new AccessDeniedException($this->__('Access forbidden since you cannot block comments.'));
+            throw new AccessDeniedException($this->trans('Access forbidden since you cannot block comments.'));
         }
         //right now this is a toggle. In the future it may have to be more sophisticated.
         $blocked = !$comment->getStatus();
@@ -196,9 +190,9 @@ class AdminController extends AbstractController
         $em->persist($comment);
         $em->flush();
         if($blocked){
-            $this->addFlash('status', $this->__('Comment is banned. You can unban the comment by clicking on the ban icon again.'));
+            $this->addFlash('status', $this->trans('Comment is banned. You can unban the comment by clicking on the ban icon again.'));
         } else {
-            $this->addFlash('status', $this->__('Comment is unbanned.'));
+            $this->addFlash('status', $this->trans('Comment is unbanned.'));
         }
         return $this->redirect($this->generateUrl('zikulaezcommentsmodule_admin_index'));
     }
@@ -228,7 +222,7 @@ class AdminController extends AbstractController
      */
     public function modulestatsAction(Request $request)
     {
-        $repo = $this->getDoctrine()->getManager()->getRepository('ZikulaEZCommentsModule:EZCommentsEntity');
+        $repo = $this->getDoctrine()->getManager()->getRepository(EZCommentsEntity::class);
         //an array to store the data in
         $counts = [];
         $counts['modules'] = $repo->count('modname', '', true);
@@ -239,7 +233,7 @@ class AdminController extends AbstractController
         $counts['mostActive'] = $repo->mostActivePosters();
         $counts['postRate'] = $repo->findPostRate();
 
-        return $this->render('ZikulaEZCommentsModule:Admin:ezcomments_modulestats.html.twig', [
+        return $this->render('@ZikulaEZCommentsModule/Admin/ezcomments_modulestats.html.twig', [
             'counts' => $counts]);
     }
 
@@ -253,7 +247,7 @@ class AdminController extends AbstractController
      * @param  modname the name of the module to delete all comments for
      * @return bool true on sucess, false on failure
      */
-    public function deletemoduleAciton(Request $request, $moduleName)
+    public function deletemoduleAction(Request $request, $moduleName)
     {
 
     }

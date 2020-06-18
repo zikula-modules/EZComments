@@ -4,20 +4,19 @@
 {{ pageAddAsset('stylesheet', 'https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css') }}
 {{ pageAddAsset('javascript', 'https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js') }}
 {{ pageAddAsset('javascript', zasset('@ZikulaEZCommentsModule:js/Zikula.EZComments.tablesorter.js')) }}
-{{ render(controller('ZikulaAdminModule:Admin:adminheader')) }}
 
-<h3> {{ __('Current Comments') }}</h3>
+<h3> {% trans %}Current Comments{% endtrans %}</h3>
 <table id="tableToSort" class="table table-striped">
     <thead>
     <tr>
-        <th id="id">{{ __('id') }}</th>
-        <th id="moduleName">{{ __('Module Name') }}</th>
-        <th id="subject">{{ __('Subject') }}</th>
-        <th id="comment">{{ __('Comment') }}</th>
-        <th id="date">{{ __('Date') }}</th>
-        <th id="name">{{ __('Name') }}</th>
-        <th id="name">{{ __('Status') }}</th>
-        <th>{{ __('Actions') }}</th>
+        <th id="id">{% trans %}id{% endtrans %}</th>
+        <th id="moduleName">{% trans %}Module Name{% endtrans %}</th>
+        <th id="subject">{% trans %}Subject{% endtrans %}</th>
+        <th id="comment">{% trans %}Comment{% endtrans %}</th>
+        <th id="date">{% trans %}Date{% endtrans %}</th>
+        <th id="name">{% trans %}Name{% endtrans %}</th>
+        <th id="name">{% trans %}Status{% endtrans %}</th>
+        <th>{% trans %}Actions{% endtrans %}</th>
     </tr>
     </thead>
     <tbody>

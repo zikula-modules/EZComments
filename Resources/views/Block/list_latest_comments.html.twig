@@ -4,6 +4,6 @@
     <p>{% if showuser %}<b>{{ item.anonname }}</b>{% endif %} {% if showdate %} <i>{{ item.date | date("F j, Y, g:i a") }}</i>{% endif %}</p>
     <p>{{ item.comment|striptags|truncate(50, true, '…') }}</p>
     {% else %}
-    <p>{{ __('No comments found in last .') }}{{ days }}{{ __(' days') }}</p>
+    <p>{% trans %}No comments found in last .{% endtrans %}{{ days }}{% trans %} days{% endtrans %}</p>
     {% endfor %}
 </div>

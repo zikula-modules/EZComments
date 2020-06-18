@@ -2,6 +2,6 @@
     {%  for poster,commentcount in activeposters %}
         <p><b>{{ poster }}</b> {% if showcount %} -  <i>{{ commentcount }} posts</i>{% endif %}</p>
     {% else %}
-        <p>{{ __('No comments found in last .') }}{{ days }}{{ __(' days') }}</p>
+        <p>{% trans %}No comments found in last .{% endtrans %}{{ days }}{% trans %} days{% endtrans %}</p>
     {% endfor %}
 </div>
