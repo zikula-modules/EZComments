@@ -15,12 +15,9 @@ class EZCommentsModuleInstaller extends AbstractExtensionInstaller
 
     public function install(): bool
     {
-        //Create the tables of the module.
-        try {
-            $this->schemaTool->create($this->entities);
-        } catch (\Exception $e) {
-            return false;
-        }
+        // create the tables of the module.
+        $this->schemaTool->create($this->entities);
+
         $this->setVar('allowanon', false);
 
         return true;
@@ -92,15 +89,10 @@ class EZCommentsModuleInstaller extends AbstractExtensionInstaller
 
     public function uninstall(): bool
     {
-        //drop the tables
-        try {
-            $this->schemaTool->drop($this->entities);
-        } catch (\Exception $e) {
-            $this->addFlash('error', $e->getMessage());
+        // drop the tables
+        $this->schemaTool->drop($this->entities);
 
-            return false;
-        }
-        // Deletion successful
+        // deletion successful
         return true;
     }
 }
