@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Zikula\EZCommentsModule\HookProvider;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use Zikula\Bundle\HookBundle\Category\UiHooksCategory;
@@ -46,7 +47,7 @@ class CountCommentsUiHooksProvider implements HookProviderInterface
         TranslatorInterface $translator,
         PermissionApiInterface $permissionApi,
         Environment $twig,
-        EntityManager $entityManager
+        EntityManagerInterface $entityManager
     ) {
         $this->translator = $translator;
         $this->permissionApi = $permissionApi;

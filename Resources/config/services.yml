@@ -1,7 +1,11 @@
 services:
   _defaults:
-    autowire: true
-    autoconfigure: true
-    public: false
-    bind:
-      $extension: '@Zikula\EZCommentsModule\ZikulaEZCommentsModule'
+      autowire: true
+      autoconfigure: true
+      public: false
+      bind:
+          $extension: '@Zikula\EZCommentsModule\ZikulaEZCommentsModule'
+
+  Zikula\EZCommentsModule\:
+      resource: '../../*'
+      exclude: '../../{bootstrap.php,Tests,vendor}'

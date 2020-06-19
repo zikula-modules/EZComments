@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Zikula\EZCommentsModule\HookProvider;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -16,6 +17,7 @@ use Zikula\Bundle\HookBundle\HookProviderInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\EZCommentsModule\Entity\EZCommentsEntity;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Api\CurrentUserApi;
 
 /**
@@ -69,11 +71,11 @@ class UiHooksProvider implements HookProviderInterface
         TranslatorInterface $translator,
         PermissionApiInterface $permissionApi,
         Environment $twig,
-        EntityManager $entityManager,
+        EntityManagerInterface $entityManager,
         RequestStack $requestStack,
         RouterInterface $router,
         VariableApiInterface $variableApi,
-        CurrentUserApi $currentUserApi
+        CurrentUserApiInterface $currentUserApi
     ) {
         $this->translator = $translator;
         $this->permissionApi = $permissionApi;
