@@ -12,15 +12,16 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\EZCommentsModule\Entity\EZCommentsEntity;
+use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
  * @Route("/admin")
  */
-
 class AdminController extends AbstractController
 {
     /**
      * @Route("")
+     * @Theme("admin")
      * @param $request - the incoming request.
      * The main entry point. List a page of comments
      *
@@ -45,6 +46,7 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/edit", options={"expose"=true}, methods={"POST"})
+     * @Theme("admin")
      * @param request
      * @return JsonResponse bid or Ajax error
      *
@@ -75,6 +77,7 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/delete", options={"expose"=true}, methods={"POST"})
+     * @Theme("admin")
      * @param Request $request
      * @return JsonResponse bid or Ajax error
      *
@@ -109,6 +112,7 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/deleteall/{comment}")
+     * @Theme("admin")
      * @param Request $request
      * @param EZCommentsEntity $comment
      * block users that are being annoying
@@ -119,6 +123,7 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/blockuser/{comment}")
+     * @Theme("admin")
      * @param Request $request
      * @param EZCommentsEntity $comment
      * @return redirectResponse|JsonResponse
@@ -165,6 +170,7 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/blockcomment/{comment}")
+     * @Theme("admin")
      * @param Request $request
      * @param EZCommentsEntity $comment
      * @return RedirectResponse|JsonResponse
@@ -198,6 +204,7 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/commentstats")
+     * @Theme("admin")
      * @param $request
      *
      * @author Mark West
@@ -209,6 +216,7 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/modulestats")
+     * @Theme("admin")
      * @param $request
      *
      * display all comments for a module
@@ -221,9 +229,9 @@ class AdminController extends AbstractController
         $repo = $this->getDoctrine()->getManager()->getRepository(EZCommentsEntity::class);
         //an array to store the data in
         $counts = [];
-        $counts['modules'] = $repo->count('modname', '', true);
-        $counts['totalComments'] = $repo->count('modname');
-        $counts['users'] = $repo->count('ownerid', '', true);
+        $counts['modules'] = $repo->countComments('modname', '', true);
+        $counts['totalComments'] = $repo->countComments('modname');
+        $counts['users'] = $repo->countComments('ownerid', '', true);
         $counts['lastPost'] = $repo->getLatestPost();
         $counts['firstPost'] = $repo->getEarliestPost();
         $counts['mostActive'] = $repo->mostActivePosters();
@@ -235,6 +243,7 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/deletemodule")
+     * @Theme("admin")
      * @param $request
      * @param $moduleName
      *

@@ -13,21 +13,26 @@ class Config extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('allowanon', CheckboxType::class, ['label' => 'Allow non-users to post comments', 'required' => false])
-        ->add('save', SubmitType::class, [
-        'label' => 'Save',
-        'icon' => 'fa-check',
-        'attr' => [
-            'class' => 'btn btn-success'
-        ]
-    ])
-        ->add('cancel', SubmitType::class, [
-            'label' => 'Cancel',
-            'icon' => 'fa-times',
-            'attr' => [
-                'class' => 'btn btn-default'
-            ]
-        ]);
+        $builder
+            ->add('allowanon', CheckboxType::class, [
+                'label' => 'Allow non-users to post comments',
+                'required' => false
+            ])
+            ->add('save', SubmitType::class, [
+                'label' => 'Save',
+                'icon' => 'fa-check',
+                'attr' => [
+                    'class' => 'btn btn-success'
+                ]
+            ])
+            ->add('cancel', SubmitType::class, [
+                'label' => 'Cancel',
+                'icon' => 'fa-times',
+                'attr' => [
+                    'class' => 'btn btn-secondary'
+                ]
+            ])
+        ;
     }
 
     public function getName()

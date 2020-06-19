@@ -163,7 +163,7 @@ class EZCommentsEntityRepository extends ServiceEntityRepository
         return $dateItem[0];
     }
 
-    public function count($row, $parameter = '', $distinct = false)
+    public function countComments($row, $parameter = '', $distinct = false)
     {
         $qb = $this->_em->createQueryBuilder();
         if ($distinct) {
@@ -181,7 +181,7 @@ class EZCommentsEntityRepository extends ServiceEntityRepository
         return $query->getSingleScalarResult();
     }
 
-    public function mostActivePosters($number)
+    public function mostActivePosters($number = 5)
     {
         if ($number < 1) {
             return [];
@@ -189,7 +189,7 @@ class EZCommentsEntityRepository extends ServiceEntityRepository
         $uniqueUsers = $this->findUniqueUsers();
         $userCounts= [];
         foreach ($uniqueUsers as $user) {
-            $currCount = $this->count('anonname', $user['anonname']);
+            $currCount = $this->countComments('anonname', $user['anonname']);
             $userCounts[$user['anonname']] = $currCount;
         }
         //use rsort to get the array sorted.
@@ -214,11 +214,11 @@ class EZCommentsEntityRepository extends ServiceEntityRepository
         //get the min post
         $firstDate = $this->getPostBorder(self::MINDATE);
         $lastDate = $this > $this->getPostBorder(self::MAXDATE);
-        $firstDay = new \DateTime($firstDate[1]);
-        $lastDay = new \DateTime($lastDate[1]);
+        $firstDay = new \DateTime($firstDate[1] ?? 'now');
+        $lastDay = new \DateTime($lastDate[1] ?? 'now');
         $interval = $firstDay->diff($lastDay);
 
-        $totalPosts = $this->count('modname');
+        $totalPosts = $this->countComments('modname');
         $days = $interval->days + 1;
 
         return $totalPosts / $days;
@@ -227,8 +227,8 @@ class EZCommentsEntityRepository extends ServiceEntityRepository
     public function getLatestComments($properties)
     {
         //Grab all comments after the set date
-        $cutOffTime = new \DateTime("now");
-        $cutOffTime->sub(new \DateInterval("P" . $properties['numdays'] . "D"));
+        $cutOffTime = new \DateTime('now');
+        $cutOffTime->sub(new \DateInterval("P" . $properties['numdays'] . 'D'));
         $qb = $this->_em->createQueryBuilder();
         $qb->select('b');
         $qb->from($this->_entityName, 'b')

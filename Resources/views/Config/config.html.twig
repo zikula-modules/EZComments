@@ -1,30 +1,22 @@
-{% form_theme form with [
-    'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
-    'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
-] %}
-<div class="container-fluid">
-    <div class="row">
-        <h3>
-            <span class="fa fa-wrench"></span>
-            {% trans %}Settings{% endtrans %}
-            {{ pageSetVar('title', __('Group settings')) }}
-        </h3>
+<h3>
+    <span class="fa fa-wrench"></span>
+    {% trans %}Settings{% endtrans %}
+    {{ pageSetVar('title', 'Settings'|trans) }}
+</h3>
 
-        {{ form_start(form) }}
-        {{ form_errors(form) }}
+{{ form_start(form) }}
+{{ form_errors(form) }}
 
-        <fieldset>
-            <legend>{% trans %}General settings{% endtrans %}</legend>
-            {{ form_row(form.allowanon) }}
-        </fieldset>
+<fieldset>
+    <legend>{% trans %}General settings{% endtrans %}</legend>
+    {{ form_row(form.allowanon) }}
+</fieldset>
 
-        <div class="form-group">
-            <div class="col-sm-offset-3 col-sm-9">
-                {{ form_widget(form.save) }}
-                {{ form_widget(form.cancel) }}
-            </div>
-        </div>
-
-        {{ form_end(form) }}
+<div class="form-group">
+    <div class="col-sm-offset-3 col-sm-9">
+        {{ form_widget(form.save) }}
+        {{ form_widget(form.cancel) }}
     </div>
 </div>
+
+{{ form_end(form) }}

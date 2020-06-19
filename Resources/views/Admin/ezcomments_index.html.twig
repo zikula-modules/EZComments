@@ -25,7 +25,7 @@
             <td id="id_{{ item.id }}">{{ item.id }}</td>
             <td id="modname_{{ item.id }}">{{ item.modname }}</td>
             <td id="subject_{{ item.id }}">{{ item.subject }}</td>
-            <td id="comment_{{ item.id }}">{{ item.comment|truncate(30) }}</td>
+            <td id="comment_{{ item.id }}">{{ item.comment|u.truncate(30) }}</td>
             <td id="date_{{ item.id }}">{{ item.date|date("m/d/Y") }}</td>
             <td id="name_{{ item.id }}">{{ item.anonname }}</td>
             <td id="status_{{ item.id }}">{% if item.status %}<span class="fa fa-ban"></span>{% endif %}</td>

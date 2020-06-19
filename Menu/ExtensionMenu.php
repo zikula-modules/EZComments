@@ -22,6 +22,9 @@ class ExtensionMenu extends AbstractExtensionMenu
     {
         $menu = $this->factory->createItem('ezCommentsAdminMenu');
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
+            $menu->addChild('Comments list', [
+                'route' => 'zikulaezcommentsmodule_admin_index',
+            ])->setAttribute('icon', 'fas fa-list');
             $menu->addChild('Module Stats', [
                 'route' => 'zikulaezcommentsmodule_admin_modulestats',
             ])->setAttribute('icon', 'fas fa-chart-bar');
