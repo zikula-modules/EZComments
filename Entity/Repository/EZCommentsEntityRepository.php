@@ -50,9 +50,7 @@ class EZCommentsEntityRepository extends ServiceEntityRepository
         $status = -1,
         $uid = 0,
         $ownerid = 0
-    )
-    {
-        //I do not do security checking here. That is the job of the controller.
+    ) {
         $qb = $this->_em->createQueryBuilder();
         $qb->select('u')
             ->from($this->_entityName, 'u');
