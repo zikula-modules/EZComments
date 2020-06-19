@@ -1,37 +1,39 @@
 {
-  "name": "zikula/ezcomments-module",
-  "version": "5.0.0",
-  "description": "Attach comments to every kind of content using hooks",
-  "type": "zikula-module",
-  "license": "LGPL-3.0+",
-  "authors": [
-    {
-      "name": "Zikula",
-      "homepage": "http://zikula.org/"
+    "name": "zikula/ezcomments-module",
+    "version": "5.0.0",
+    "description": "Attach comments to every kind of content using hooks",
+    "type": "zikula-module",
+    "license": "LGPL-3.0+",
+    "authors": [
+        {
+            "name": "Zikula",
+            "homepage": "https://ziku.la"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "Zikula\\EZCommentsModule\\": "" }
+    },
+    "require": {
+        "php": "^7.2.5"
+    },
+    "extra": {
+        "zikula": {
+            "class": "Zikula\\EZCommentsModule\\ZikulaEZCommentsModule",
+            "core-compatibility": ">=3.0.0 <4.0.0",
+            "displayname": "EZComments Module",
+            "url": "comments",
+            "icon": "far fa-comments",
+            "capabilities": {
+                "admin": {
+                    "route": "zikulaezcommentsmodule_admin_index"
+                }
+            },
+            "securityschema": {
+                "ZikulaEZCommentsModule::": "Module:Item ID:Comment ID",
+                "ZikulaEZComments:EZCommentsBlock:": "Module:Item ID:",
+                "ZikulaEZComments:MostCommentsBlock": "Module:Item ID:"
+            }
+        }
     }
-  ],
-  "autoload": {
-    "psr-4": { "Zikula\\EZCommentsModule\\": "" }
-  },
-  "require": {
-    "php": "^7.2.5"
-  },
-  "extra": {
-    "zikula": {
-      "url": "comments",
-      "icon": "far fa-comments",
-      "class": "Zikula\\EZCommentsModule\\ZikulaEZCommentsModule",
-      "core-compatibility": ">=3.0.0 <4.0.0",
-      "displayname": "EZComments Module",
-      "capabilities": {
-        "admin": {"route": "zikulaezcommentsmodule_admin_index"}
-      },
-      "securityschema": {
-        "ZikulaEZCommentsModule::": "Module:Item ID:Comment ID",
-        "ZikulaEZComments:EZCommentsBlock:": "Module:Item ID:",
-        "ZikulaEZComments:MostCommentsBlock": "Module:Item ID:"
-      }
-    }
-  }
 }
 
