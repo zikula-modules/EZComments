@@ -159,9 +159,21 @@ class AdminController extends AbstractController
             }
             $em->flush();
             if ($blocked) {
-                $this->addFlash('status', $this->trans("User " . $comment->getAnonname() . "'s comments are banned. You can unban them by clicking on the ban icon again."));
+                $this->addFlash(
+                    'status',
+                    $this->trans(
+                        'User %username%\'s comments are banned. You can un-ban them by clicking on the ban icon again.',
+                            ['%username%' => $comment->getAnonname()]
+                        )
+                    );
             } else {
-                $this->addFlash('status', $this->trans("User ". $comment->getAnonname() . "'s comments are unbanned."));
+                $this->addFlash(
+                    'status',
+                    $this->trans(
+                        'User %username%\'s comments are unbanned.',
+                        ['%username%' => $comment->getAnonname()]
+                    )
+                );
             }
         }
 
@@ -194,9 +206,9 @@ class AdminController extends AbstractController
         $em->persist($comment);
         $em->flush();
         if ($blocked) {
-            $this->addFlash('status', $this->trans('Comment is banned. You can unban the comment by clicking on the ban icon again.'));
+            $this->addFlash('status', 'Comment is banned. You can un-ban the comment by clicking on the ban icon again.');
         } else {
-            $this->addFlash('status', $this->trans('Comment is unbanned.'));
+            $this->addFlash('status', 'Comment is unbanned.');
         }
 
         return $this->redirect($this->generateUrl('zikulaezcommentsmodule_admin_index'));
