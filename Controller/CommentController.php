@@ -16,51 +16,55 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
+use Zikula\ExtensionsModule\AbstractExtension;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\EZCommentsModule\Entity\EZCommentsEntity;
+use Zikula\EZCommentsModule\Entity\Repository\EZCommentsEntityRepository;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 
 class CommentController extends AbstractController
 {
     /**
-     * @Route("")
-     * Return to index page
-     *
-     * This is the default function called when EZComments is called
-     * as a module. As we do not intend to output anything for users, we just
-     * redirect to the admin page.
+     * @var EZCommentsEntityRepository
      */
-    public function indexAction()
-    {
-        return $this->redirect($this->generateUrl('zikulaezcomments_admin_index'));
+    private $repository;
+
+    public function __construct(
+        AbstractExtension $extension,
+        PermissionApiInterface $permissionApi,
+        VariableApiInterface $variableApi,
+        TranslatorInterface $translator,
+        EZCommentsEntityRepository $repository
+    ) {
+        parent::__construct($extension, $permissionApi, $variableApi, $translator);
+        $this->repository = $repository;
     }
 
     /**
      * @Route("/comment")
-     * @param $request
      */
     public function commentAction(
         CurrentUserApiInterface $currentUserApi,
         Request $request
-    ) {
+    ): Response {
         if (!$this->hasPermission($this->name . '::', '::', ACCESS_COMMENT)) {
             return new JsonResponse($this->trans('Access forbidden since you cannot add comments.'), Response::HTTP_FORBIDDEN);
         }
 
-        return $this->_persistComment($request, $currentUserApi->get('uid'), 'HTML');
+        return $this->_persistComment($request, $currentUserApi->get('uid'));
     }
 
     /**
-     * @param $id
-     * @return bool
      * Find out if this is a banned poster. If this is true, the number of posts by this user will be equal
      * to the number of banned posts. This saves having to keep track of this with another database.
      */
-    private function _bannedPoster($id)
+    private function _bannedPoster(int $id): bool
     {
-        $repo = $this->getDoctrine()->getManager()->getRepository(EZCommentsEntity::class);
-        $postsByUser = $repo->findBy(['ownerid' => $id]);
-        $postsBannedByUser = $repo->findBy(['ownerid' => $id, 'status' => 1]);
+        $postsByUser = $this->repository->findBy(['ownerid' => $id]);
+        $postsBannedByUser = $this->repository->findBy(['ownerid' => $id, 'status' => 1]);
         $countPosts = count($postsByUser);
         //if they don't have any posts or just 1, they cannot be banned.
         if ($countPosts <= 1) {
@@ -71,13 +75,9 @@ class CommentController extends AbstractController
     }
 
     /**
-     * @param $request
-     * @param string $responseRet
-     * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
-     *
      * Save a comment to the database. We check for banned posters and prevent them from adding comments.
      */
-    private function _persistComment($request, $ownerId, $responseRet = 'JSON')
+    private function _persistComment(Request $request, int $ownerId): Response
     {
         //check to see if commenter is banned. This will happen if the number of comments they have is
         //equal to the number of banned comments. (NOTE if they only posted one comment and it was banned, but you still
@@ -91,7 +91,7 @@ class CommentController extends AbstractController
         $commentObj = null;
         $isEdit = false;
         if (isset($id) && (0 !== $id)) {
-            $commentObj = $em->getRepository(EZCommentsEntity::class)->findOneBy(['id' => $id]);
+            $commentObj = $this->repository->findOneBy(['id' => $id]);
             $isEdit = true;
         } else {
             $commentObj = new EZCommentsEntity();
@@ -142,7 +142,7 @@ class CommentController extends AbstractController
                 'uid' => $commentObj->getOwnerid(),
                 'isEdit' => $isEdit];
 
-            return  new JsonResponse($jsonReply);
+            return new JsonResponse($jsonReply);
         }
 
         return $this->redirect($retURL);
@@ -150,30 +150,26 @@ class CommentController extends AbstractController
 
     /**
      * @Route("/setcomment", options={"expose"=true}, methods={"POST"})
-     * @param Request $request
-     * @return JsonResponse bid or Ajax error
      */
     public function setcommentAction(
         CurrentUserApiInterface $currentUserApi,
         Request $request
-    ) {
+    ): Response {
         $allowAnon = $this->getVar('allowanon');
         if (!$this->hasPermission($this->name . '::', '::', ACCESS_COMMENT) && !$allowAnon) {
             return new JsonResponse($this->trans('Access forbidden since you cannot add comments.'), Response::HTTP_FORBIDDEN);
         }
 
-        return $this->_persistComment($request, $currentUserApi->get('uid'), 'JSON');
+        return $this->_persistComment($request, $currentUserApi->get('uid'));
     }
 
     /**
      * @Route("/verifycomment", options={"expose"=true}, methods={"POST"})
-     * @param Request $request
-     * @return JsonResponse
      */
     public function verifycommentAction(
         CurrentUserApiInterface $currentUserApi,
         Request $request
-    ) {
+    ): JsonResponse {
         $allowAnon = $this->getVar('allowanon');
         if (!$this->hasPermission($this->name . '::', '::', ACCESS_COMMENT) && !$allowAnon) {
             return new JsonResponse($this->trans('Access forbidden since you cannot add comments.'), Response::HTTP_FORBIDDEN);
@@ -248,13 +244,10 @@ class CommentController extends AbstractController
 
     /**
      * @Route("/getuserid", options={"expose"=true}, methods={"GET"})
-     * @param Request $request
-     * @return JsonResponse bid or Ajax error
      */
     public function getuseridAction(
-        CurrentUserApiInterface $currentUserApi,
-        Request $request
-    ) {
+        CurrentUserApiInterface $currentUserApi
+    ): JsonResponse {
         if (!$this->hasPermission($this->name . '::', '::', ACCESS_READ)) {
             return new JsonResponse($this->trans('Access forbidden since you cannot read comments.'), Response::HTTP_FORBIDDEN);
         }
@@ -266,13 +259,11 @@ class CommentController extends AbstractController
 
     /**
      * @Route("/getreplies", options={"expose"=true}, methods={"GET"})
-     * @param Request $request
-     * @return JsonResponse bid or Ajax error
      *
      * Grab all comments associated with this module and item ID and return them to the caller
      * The caller is a javascript, see the javascripts in Resources/public/js directory
      */
-    public function getrepliesAction(Request $request)
+    public function getrepliesAction(Request $request): JsonResponse
     {
         if (!$this->hasPermission($this->name . '::', '::', ACCESS_READ)) {
             return new JsonResponse($this->trans('Access forbidden since you cannot read comments.'), Response::HTTP_FORBIDDEN);
@@ -281,10 +272,9 @@ class CommentController extends AbstractController
         $mod = $request->query->get('module');
         $id = $request->query->get('id');
         $parentId = $request->query->get('parentId');
-        $repo = $this->getDoctrine()->getManager()->getRepository(EZCommentsEntity::class);
         //find the child items to the root parent comment (parentID). Order them in ASC order
         //todo: make the order user configurable.
-        $items = $repo->findBy(['modname' => $mod, 'objectid' => $id, 'replyto'=> $parentId], ['date' => 'DESC']);
+        $items = $this->repository->findBy(['modname' => $mod, 'objectid' => $id, 'replyto'=> $parentId], ['date' => 'DESC']);
         //Package this in a JSON object.
         $jsonReply = [];
         foreach ($items as $item) {
@@ -307,13 +297,11 @@ class CommentController extends AbstractController
 
     /**
      * @Route("/deletecomment", options={"expose"=true}, methods={"POST"})
-     * @param Request $request
-     * @return JsonResponse bid or Ajax error
      */
     public function deletecommentAction(
         CurrentUserApiInterface $currentUserApi,
         Request $request
-    ) {
+    ): JsonResponse {
         //get the current user
         $uid = $currentUserApi->get('uid');
         $userId = $request->request->get('uid');
@@ -325,9 +313,8 @@ class CommentController extends AbstractController
         if (!isset($commentId) || !isset($userId)) {
             return new JsonResponse($this->trans('Access Denied.'), Response::HTTP_FORBIDDEN);
         }
-        $repo = $this->getDoctrine()->getManager()->getRepository(EZCommentsEntity::class);
         //find the comment
-        $comment = $repo->findOneBy(['id' => $commentId]);
+        $comment = $this->repository->findOneBy(['id' => $commentId]);
         $isAdmin = $this->hasPermission('EZComments::', '::', ACCESS_ADMIN);
         $jsonReply = ['comdel' => false];
         if (null !== $comment) {
@@ -339,9 +326,9 @@ class CommentController extends AbstractController
             $parentId = $comment->getReplyto();
             $em->remove($comment);
             //we may need to get rid of replies, do it
-            $repo->deleteReplies($commentId);
+            $this->repository->deleteReplies($commentId);
             $em->flush();
-            $items = $repo->findOneBy(['replyto' => $parentId]);
+            $items = $this->repository->findOneBy(['replyto' => $parentId]);
             if (null !== $items) {
                 //there are other replies to this item, set parentId to -1
                 $parentId = -1;

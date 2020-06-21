@@ -25,6 +25,9 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
  */
 class AdminController extends AbstractController
 {
+    /**
+     * @var EZCommentsEntityRepository
+     */
     private $repository;
 
     public function __construct(
@@ -42,14 +45,8 @@ class AdminController extends AbstractController
      * @Route("")
      * @Theme("admin")
      * @PermissionCheck("admin")
-     *
-     * @return Response
-     *
-     * The rendered output consisting mainly of the admin menu and a table of comments
-     *
-     * @throws AccessDeniedException thrown if the user does not have the appropriate access level for the function
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request): Response
     {
         $items = $this->repository->findAll();
 
@@ -61,14 +58,8 @@ class AdminController extends AbstractController
      * @Route("/edit", options={"expose"=true}, methods={"POST"})
      * @Theme("admin")
      * @param request
-     * @return JsonResponse bid or Ajax error
-     *
-     * Modify a comment
-     * This is a standard function that is called whenever an administrator
-     * wishes to modify a comment. This returns the comment data for editing
-     * Should I provide this functionality? This could be abused.
      */
-    public function editAction(Request $request)
+    public function editAction(Request $request): JsonResponse
     {
         $id = $request->request->get('id');
         if (!$this->hasPermission($this->name . '::', $id . "::", ACCESS_EDIT)) {
@@ -91,12 +82,8 @@ class AdminController extends AbstractController
      * @Route("/delete", options={"expose"=true}, methods={"POST"})
      * @Theme("admin")
      * @param Request $request
-     * @return JsonResponse bid or Ajax error
-     *
-     * Delete item
-     * This function is called when an admin wants to delete a comment
      */
-    public function deleteAction(Request $request)
+    public function deleteAction(Request $request): JsonResponse
     {
         $id = $request->request->get('id');
         if (!$this->hasPermission($this->name . '::', $id . "::", ACCESS_DELETE)) {
@@ -127,7 +114,6 @@ class AdminController extends AbstractController
      * @Theme("admin")
      * @param Request $request
      * @param EZCommentsEntity $comment
-     * block users that are being annoying
      */
     public function deleteallAction(Request $request, EZCommentsEntity $comment)
     {
@@ -136,12 +122,9 @@ class AdminController extends AbstractController
     /**
      * @Route("/blockuser/{comment}")
      * @Theme("admin")
-     * @param Request $request
-     * @param EZCommentsEntity $comment
-     * @return redirectResponse|JsonResponse
      * block users that are being annoying
      */
-    public function blockuserAction(Request $request, EZCommentsEntity $comment)
+    public function blockuserAction(EZCommentsEntity $comment): Response
     {
         //I don't know if I have to have this error checking in here, but just in case
         if (null === $comment) {
@@ -194,12 +177,9 @@ class AdminController extends AbstractController
     /**
      * @Route("/blockcomment/{comment}")
      * @Theme("admin")
-     * @param Request $request
-     * @param EZCommentsEntity $comment
-     * @return RedirectResponse|JsonResponse
      * block comment that is annoying
      */
-    public function blockCommentAction(Request $request, EZCommentsEntity $comment)
+    public function blockCommentAction(EZCommentsEntity $comment): Response
     {
         //I don't know if I have to have this error checking in here, but just in case
         if (null === $comment) {
@@ -229,9 +209,6 @@ class AdminController extends AbstractController
      * @Route("/commentstats")
      * @Theme("admin")
      * @param $request
-     *
-     * @author Mark West
-     * @return string html output
      */
     public function commentStatsAction(Request $request)
     {
@@ -243,11 +220,8 @@ class AdminController extends AbstractController
      * @PermissionCheck("admin")
      *
      * display all comments for a module
-     *
-     * @author Mark West
-     * @return string html output
      */
-    public function modulestatsAction(Request $request)
+    public function modulestatsAction(): Response
     {
         $counts = [];
         $counts['modules'] = $this->repository->countComments('modname', '', true);
@@ -268,9 +242,6 @@ class AdminController extends AbstractController
      * @PermissionCheck("admin")
      *
      * delete all comments attached to a module
-     *
-     * @param  modname the name of the module to delete all comments for
-     * @return bool true on sucess, false on failure
      */
     public function deletemoduleAction(Request $request, $moduleName)
     {

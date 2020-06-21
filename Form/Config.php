@@ -11,7 +11,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class Config extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('allowanon', CheckboxType::class, [
@@ -35,7 +35,7 @@ class Config extends AbstractType
         ;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'zikulaezcommentsmodule_config';
     }

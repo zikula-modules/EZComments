@@ -39,17 +39,17 @@ class EZCommentsEntityRepository extends ServiceEntityRepository
      * @return array array of items, or false on failure
      */
     public function getComments(
-        $mod = "",
-        $objectid = -1,
-        $replyTo = -1,
-        $search = null,
-        $startnum = 1,
-        $numitems = -1,
-        $sortorder = 'ASC',
-        $sortby = 'date',
-        $status = -1,
-        $uid = 0,
-        $ownerid = 0
+        string $mod = "",
+        int $objectid = -1,
+        int $replyTo = -1,
+        ?array $search = null,
+        int $startnum = 1,
+        int $numitems = -1,
+        string $sortorder = 'ASC',
+        string $sortby = 'date',
+        int $status = -1,
+        int $uid = 0,
+        int $ownerid = 0
     ) {
         $qb = $this->_em->createQueryBuilder();
         $qb->select('u')
@@ -112,7 +112,7 @@ class EZCommentsEntityRepository extends ServiceEntityRepository
      * @param $commentId
      * @return mixed
      */
-    public function deleteReplies($commentId)
+    public function deleteReplies(int $commentId)
     {
         //This call may not delete any replies, that's just fine.
         $q = $this->_em->createQuery("delete from 'ZikulaEZCommentsModule:EZCommentsEntity' m where m.replyto = " . $commentId);
@@ -129,7 +129,7 @@ class EZCommentsEntityRepository extends ServiceEntityRepository
         return $this->getPostWithDate($date);
     }
 
-    public function getPostWithDate($inDate)
+    public function getPostWithDate(\DateTime $inDate)
     {
         $qb2 = $this->_em->createQueryBuilder();
         $qb2->select('b')
@@ -147,7 +147,7 @@ class EZCommentsEntityRepository extends ServiceEntityRepository
         return $this->getPostWithDate($date);
     }
 
-    public function getPostBorder($inPostBorder)
+    public function getPostBorder(int $inPostBorder)
     {
         $qb = $this->_em->createQueryBuilder();
         $qb->from($this->_entityName, 'a');
@@ -161,7 +161,7 @@ class EZCommentsEntityRepository extends ServiceEntityRepository
         return $dateItem[0];
     }
 
-    public function countComments($row, $parameter = '', $distinct = false)
+    public function countComments(string $row, string $parameter = '', bool $distinct = false)
     {
         $qb = $this->_em->createQueryBuilder();
         if ($distinct) {
@@ -179,7 +179,7 @@ class EZCommentsEntityRepository extends ServiceEntityRepository
         return $query->getSingleScalarResult();
     }
 
-    public function mostActivePosters($number = 5)
+    public function mostActivePosters(int $number = 5)
     {
         if ($number < 1) {
             return [];
@@ -222,7 +222,7 @@ class EZCommentsEntityRepository extends ServiceEntityRepository
         return $totalPosts / $days;
     }
 
-    public function getLatestComments($properties)
+    public function getLatestComments(array $properties)
     {
         //Grab all comments after the set date
         $cutOffTime = new \DateTime('now');

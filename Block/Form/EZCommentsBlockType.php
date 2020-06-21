@@ -11,7 +11,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class EZCommentsBlockType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('numcomments', IntegerType::class, [
@@ -68,7 +68,7 @@ class EZCommentsBlockType extends AbstractType
         ;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'zikulaezcommentsmodule_commentblock';
     }

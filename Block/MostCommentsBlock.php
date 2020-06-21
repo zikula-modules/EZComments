@@ -28,11 +28,6 @@ class MostCommentsBlock extends AbstractBlockHandler
      */
     private $commentsRepository;
 
-    /**
-     * display block
-     *
-     * @param array       $blockinfo     a blockinfo structure
-     */
     public function display(array $properties): string
     {
         if (!$this->hasPermission('ZikulaEZComments:EZCommentsBlock:', $properties['bid'] . '::', ACCESS_OVERVIEW)) {
@@ -65,7 +60,7 @@ class MostCommentsBlock extends AbstractBlockHandler
         return '@ZikulaEZCommentsModule/Block/most_comments.html.twig';
     }
 
-    public function getDefaults()
+    public function getDefaults(): array
     {
         return [
             'numcommenters' => 5,
@@ -76,7 +71,7 @@ class MostCommentsBlock extends AbstractBlockHandler
     /**
      * @required
      */
-    public function setCurrentUserApi(CurrentUserApiInterface $currentUserApi)
+    public function setCurrentUserApi(CurrentUserApiInterface $currentUserApi): void
     {
         $this->currentUserApi = $currentUserApi;
     }
@@ -84,7 +79,7 @@ class MostCommentsBlock extends AbstractBlockHandler
     /**
      * @required
      */
-    public function setCommentsRepository(EZCommentsEntityRepository $commentsEntityRepository)
+    public function setCommentsRepository(EZCommentsEntityRepository $commentsEntityRepository): void
     {
         $this->commentsRepository = $commentsEntityRepository;
     }

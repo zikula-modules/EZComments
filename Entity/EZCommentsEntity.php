@@ -17,8 +17,6 @@ use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 class EZCommentsEntity extends EntityAccess
 {
     /**
-     * id
-     *
      * @ORM\Id
      * @ORM\Column(type="integer", length=11)
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -26,87 +24,64 @@ class EZCommentsEntity extends EntityAccess
     private $id;
 
     /**
-     * modname
-     *
      * @ORM\Column(type="string", length=64)
      * @Assert\NotBlank()
      */
     private $modname;
 
     /**
-     * objectid
-     *
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
      */
     private $objectid;
 
     /**
-     * areaid
-     *
      * @ORM\Column(type="integer", length=11)
      */
     private $areaid = 0;
 
     /**
-     * url
-     *
      * @ORM\Column(type="text")
      */
     private $url;
 
     /**
-     * date
      * @ORM\Column(type="datetime")
      * @Assert\DateTime()
      */
     private $date;
 
     /**
-     * uid
-     *
      * @ORM\Column(type="integer", length=11)
      */
     private $uid = 0;
 
     /**
-     * ownerid
-     *
      * @ORM\Column(type="integer", length=11)
      */
     private $ownerid = 0;
 
     /**
-     * comment
-     *
      * @ORM\Column(type="text")
      */
     private $comment;
 
     /**
-     * subject
-     *
      * @ORM\Column(type="text")
      */
     private $subject;
 
     /**
-     * replyto
-     *
      * @ORM\Column(type="integer", length=11)
      */
     private $replyto = 0;
 
     /**
-     * anonname
-     *
      * @ORM\Column(type="string", length=255)
      */
     private $anonname;
 
     /**
-     * anonmail
-     *
      * @ORM\Column(type="string", length=255)
      */
     private $anonmail;
@@ -119,22 +94,16 @@ class EZCommentsEntity extends EntityAccess
     private $status = 0;
 
     /**
-     * ipaddr
-     *
      * @ORM\Column(type="string", length=85)
      */
     private $ipaddr;
 
     /**
-     * type
-     *
      * @ORM\Column(type="string", length=64)
      */
     private $type;
 
     /**
-     * anonwebsite
-     *
      * @ORM\Column(type="string", length=255)
      */
     private $anonwebsite;
@@ -144,274 +113,172 @@ class EZCommentsEntity extends EntityAccess
         $this->date = new \DateTime();
     }
 
-    /**
-     * @return mixed
-     */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @param mixed $id
-     */
-    public function setId($id)
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getModname()
+    public function getModname(): string
     {
         return $this->modname;
     }
 
-    /**
-     * @param mixed $modname
-     */
-    public function setModname($modname)
+    public function setModname(string $modname): void
     {
         $this->modname = $modname;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getObjectid()
+    public function getObjectid(): int
     {
         return $this->objectid;
     }
 
-    /**
-     * @param mixed $objectid
-     */
-    public function setObjectid($objectid)
+    public function setObjectid(int $objectid): void
     {
         $this->objectid = $objectid;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getAreaid()
+    public function getAreaid(): int
     {
         return $this->areaid;
     }
 
-    /**
-     * @param mixed $areaid
-     */
-    public function setAreaid($areaid)
+    public function setAreaid(int $areaid): void
     {
         $this->areaid = $areaid;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getUrl()
+    public function getUrl(): string
     {
         return $this->url;
     }
 
-    /**
-     * @param mixed $url
-     */
-    public function setUrl($url)
+    public function setUrl(string $url): void
     {
         $this->url = $url;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getDate()
+    public function getDate(): \DateTime
     {
         return $this->date;
     }
 
-    /**
-     * @param mixed $date
-     */
-    public function setDate($date)
+    public function setDate(\DateTime $date): void
     {
         $this->date = $date;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getUid()
+    public function getUid(): int
     {
         return $this->uid;
     }
 
-    /**
-     * @param mixed $uid
-     */
-    public function setUid($uid)
+    public function setUid(int $uid): void
     {
         $this->uid = $uid;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getOwnerid()
+    public function getOwnerid(): int
     {
         return $this->ownerid;
     }
 
-    /**
-     * @param mixed $ownerid
-     */
-    public function setOwnerid($ownerid)
+    public function setOwnerid(int $ownerid): void
     {
         $this->ownerid = $ownerid;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getComment()
+    public function getComment(): string
     {
         return $this->comment;
     }
 
-    /**
-     * @param mixed $comment
-     */
-    public function setComment($comment)
+    public function setComment(string $comment): void
     {
         $this->comment = $comment;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSubject()
+    public function getSubject(): string
     {
         return $this->subject;
     }
 
-    /**
-     * @param mixed $subject
-     */
-    public function setSubject($subject)
+    public function setSubject(string $subject): void
     {
         $this->subject = $subject;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getReplyto()
+    public function getReplyto(): int
     {
         return $this->replyto;
     }
 
-    /**
-     * @param mixed $replyto
-     */
-    public function setReplyto($replyto)
+    public function setReplyto(int $replyto): void
     {
         $this->replyto = $replyto;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getAnonname()
+    public function getAnonname(): string
     {
         return $this->anonname;
     }
 
-    /**
-     * @param mixed $anonname
-     */
-    public function setAnonname($anonname)
+    public function setAnonname(string $anonname): void
     {
         $this->anonname = $anonname;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getAnonmail()
+    public function getAnonmail(): string
     {
         return $this->anonmail;
     }
 
-    /**
-     * @param mixed $anonmail
-     */
-    public function setAnonmail($anonmail)
+    public function setAnonmail(string $anonmail): void
     {
         $this->anonmail = $anonmail;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getStatus()
+    public function getStatus(): int
     {
         return $this->status;
     }
 
-    /**
-     * @param mixed $status
-     */
-    public function setStatus($status)
+    public function setStatus(int $status): void
     {
         $this->status = $status;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getIpaddr()
+    public function getIpaddr(): string
     {
         return $this->ipaddr;
     }
 
-    /**
-     * @param mixed $ipaddr
-     */
-    public function setIpaddr($ipaddr)
+    public function setIpaddr(string $ipaddr): void
     {
         $this->ipaddr = $ipaddr;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
 
-    /**
-     * @param mixed $type
-     */
-    public function setType($type)
+    public function setType(string $type): void
     {
         $this->type = $type;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getAnonwebsite()
+    public function getAnonwebsite(): string
     {
         return $this->anonwebsite;
     }
 
-    /**
-     * @param mixed $anonwebsite
-     */
-    public function setAnonwebsite($anonwebsite)
+    public function setAnonwebsite(string $anonwebsite): void
     {
         $this->anonwebsite = $anonwebsite;
     }

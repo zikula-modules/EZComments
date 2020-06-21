@@ -11,7 +11,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class MostCommentsBlockType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('numcommenters', IntegerType::class, [
                 'label' => 'Number Comments',
@@ -36,7 +36,7 @@ class MostCommentsBlockType extends AbstractType
         ;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'zikulaezcommentsmodule_mostcommentsblock';
     }

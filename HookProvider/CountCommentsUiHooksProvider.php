@@ -82,7 +82,8 @@ class CountCommentsUiHooksProvider implements HookProviderInterface
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function uiView(DisplayHook $hook)
+    public function uiView(DisplayHook $hook): void
+
     {
         $mod = $hook->getCaller();
         $id = $hook->getId();
