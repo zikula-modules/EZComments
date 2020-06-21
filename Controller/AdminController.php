@@ -10,8 +10,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
+use Zikula\ExtensionsModule\AbstractExtension;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\EZCommentsModule\Entity\EZCommentsEntity;
+use Zikula\EZCommentsModule\Entity\Repository\EZCommentsEntityRepository;
+use Zikula\PermissionsModule\Annotation\PermissionCheck;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
@@ -19,11 +25,23 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
  */
 class AdminController extends AbstractController
 {
+    private $repository;
+
+    public function __construct(
+        AbstractExtension $extension,
+        PermissionApiInterface $permissionApi,
+        VariableApiInterface $variableApi,
+        TranslatorInterface $translator,
+        EZCommentsEntityRepository $repository
+    ) {
+        parent::__construct($extension, $permissionApi, $variableApi, $translator);
+        $this->repository = $repository;
+    }
+
     /**
      * @Route("")
      * @Theme("admin")
-     * @param $request - the incoming request.
-     * The main entry point. List a page of comments
+     * @PermissionCheck("admin")
      *
      * @return Response
      *
@@ -33,12 +51,7 @@ class AdminController extends AbstractController
      */
     public function indexAction(Request $request)
     {
-        if (!$this->hasPermission($this->name . '::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException($this->trans('You do not have pemission to access the EZComments admin interface.'));
-        }
-        $repo = $this->getDoctrine()->getManager()->getRepository(EZCommentsEntity::class);
-
-        $items = $repo->findAll();
+        $items = $this->repository->findAll();
 
         return $this->render('@ZikulaEZCommentsModule/Admin/ezcomments_index.html.twig', [
             'items' => $items]);
@@ -61,8 +74,7 @@ class AdminController extends AbstractController
         if (!$this->hasPermission($this->name . '::', $id . "::", ACCESS_EDIT)) {
             return new JsonResponse($this->trans('Access forbidden since you cannot delete comments.'), Response::HTTP_FORBIDDEN);
         }
-        $em = $this->getDoctrine()->getManager();
-        $comment = $em->find(EZCommentsEntity::class, $id);
+        $comment = $this->repository->find($id);
         if (null === $comment) {
             return new JsonResponse($this->trans('That comment for some reason does not exist.'), Response::HTTP_NOT_FOUND);
         }
@@ -90,14 +102,14 @@ class AdminController extends AbstractController
         if (!$this->hasPermission($this->name . '::', $id . "::", ACCESS_DELETE)) {
             return new JsonResponse($this->trans('Access forbidden since you cannot delete comments.'), Response::HTTP_FORBIDDEN);
         }
-        $em = $this->getDoctrine()->getManager();
-        $comment = $em->find(EZCommentsEntity::class, $id);
+        $comment = $this->repository->find($id);
         if (null === $comment) {
             return new JsonResponse($this->trans('That comment for some reason does not exist.'), Response::HTTP_NOT_FOUND);
         }
         $success = true;
         $message = "Success";
         try {
+            $em = $this->getDoctrine()->getManager();
             $em->remove($comment);
             $em->flush();
         } catch (\Exception $e) {
@@ -148,8 +160,7 @@ class AdminController extends AbstractController
             $this->addFlash('status', $this->trans("Banning the anonymous user will block all comments by any anonymous posters. If you want to block all anonymous comments, change the global setting. You will need to block each inappropriate comment individually"));
         } else {
             //Find all comments with this uid
-            $repo = $em->getRepository(EZCommentsEntity::class);
-            $userComments = $repo->findBy(['ownerid' => $userToBlock]);
+            $userComments = $this->repository->findBy(['ownerid' => $userToBlock]);
             //determine the goal (to ban or unban, based upon the first comment)
             $blocked = !$userComments[0]->getStatus();
             //walk each comment and change it's block status.
@@ -229,7 +240,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/modulestats")
      * @Theme("admin")
-     * @param $request
+     * @PermissionCheck("admin")
      *
      * display all comments for a module
      *
@@ -238,16 +249,14 @@ class AdminController extends AbstractController
      */
     public function modulestatsAction(Request $request)
     {
-        $repo = $this->getDoctrine()->getManager()->getRepository(EZCommentsEntity::class);
-        //an array to store the data in
         $counts = [];
-        $counts['modules'] = $repo->countComments('modname', '', true);
-        $counts['totalComments'] = $repo->countComments('modname');
-        $counts['users'] = $repo->countComments('ownerid', '', true);
-        $counts['lastPost'] = $repo->getLatestPost();
-        $counts['firstPost'] = $repo->getEarliestPost();
-        $counts['mostActive'] = $repo->mostActivePosters();
-        $counts['postRate'] = $repo->findPostRate();
+        $counts['modules'] = $this->repository->countComments('modname', '', true);
+        $counts['totalComments'] = $this->repository->countComments('modname');
+        $counts['users'] = $this->repository->countComments('ownerid', '', true);
+        $counts['lastPost'] = $this->repository->getLatestPost();
+        $counts['firstPost'] = $this->repository->getEarliestPost();
+        $counts['mostActive'] = $this->repository->mostActivePosters();
+        $counts['postRate'] = $this->repository->findPostRate();
 
         return $this->render('@ZikulaEZCommentsModule/Admin/ezcomments_modulestats.html.twig', [
             'counts' => $counts]);
@@ -256,8 +265,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/deletemodule")
      * @Theme("admin")
-     * @param $request
-     * @param $moduleName
+     * @PermissionCheck("admin")
      *
      * delete all comments attached to a module
      *

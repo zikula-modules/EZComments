@@ -11,29 +11,23 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\EZCommentsModule\Form\Config;
+use Zikula\PermissionsModule\Annotation\PermissionCheck;
 
 /**
- * Class ConfigController
  * @Route("/config")
  */
 class ConfigController extends AbstractController
 {
     /**
      * @Route("/config")
+     * @PermissionCheck("admin")
      *
-     * This is a standard function to modify the configuration parameters of the module.
-     *
-     * @param Request $request
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      * @Template("@ZikulaEZCommentsModule/Config/config.html.twig")
      * @return array|RedirectResponse
      */
     public function configAction(Request $request)
     {
-        if (!$this->hasPermission($this->name . '::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException($this->trans('You do not have pemission to access the EZComments admin interface.'));
-        }
-
         $form = $this->createForm(Config::class, $this->getVars());
         $form->handleRequest($request);
 
