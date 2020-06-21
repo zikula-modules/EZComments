@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Zikula\EZCommentsModule\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -190,7 +191,7 @@ class AdminController extends AbstractController
         }
         //right now this is a toggle. In the future it may have to be more sophisticated.
         $blocked = !$comment->getStatus();
-        $comment->setStatus($blocked);
+        $comment->setStatus((int) $blocked);
         $em = $this->getDoctrine()->getManager();
         //presist the comment and flush
         $em->persist($comment);

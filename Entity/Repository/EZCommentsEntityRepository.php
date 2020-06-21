@@ -129,7 +129,7 @@ class EZCommentsEntityRepository extends ServiceEntityRepository
         return $this->getPostWithDate($date);
     }
 
-    public function getPostWithDate(\DateTime $inDate)
+    public function getPostWithDate(?\DateTime $inDate)
     {
         $qb2 = $this->_em->createQueryBuilder();
         $qb2->select('b')
@@ -158,7 +158,7 @@ class EZCommentsEntityRepository extends ServiceEntityRepository
             $dateItem =  $qb->select($qb->expr()->max('a.date'))->getQuery()->getResult();
         }
 
-        return $dateItem[0];
+        return $dateItem[0][1];
     }
 
     public function countComments(string $row, string $parameter = '', bool $distinct = false)
@@ -207,7 +207,7 @@ class EZCommentsEntityRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
-    public function findPostRate()
+    public function findPostRate(): float
     {
         //get the min post
         $firstDate = $this->getPostBorder(self::MINDATE);

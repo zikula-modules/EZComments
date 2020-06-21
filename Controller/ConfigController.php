@@ -8,10 +8,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\EZCommentsModule\Form\Config;
 use Zikula\PermissionsModule\Annotation\PermissionCheck;
+use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
  * @Route("/config")
@@ -20,9 +20,8 @@ class ConfigController extends AbstractController
 {
     /**
      * @Route("/config")
+     * @Theme("admin")
      * @PermissionCheck("admin")
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      * @Template("@ZikulaEZCommentsModule/Config/config.html.twig")
      * @return array|RedirectResponse
      */
