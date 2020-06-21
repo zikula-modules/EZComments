@@ -35,8 +35,9 @@ class ConfigController extends AbstractController
         }
 
         $form = $this->createForm(Config::class, $this->getVars());
+        $form->handleRequest($request);
 
-        if ($form->handleRequest($request)->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $this->setVars($form->getData());
                 $this->addFlash('status', $this->trans('Done! Module configuration updated.'));

@@ -28,13 +28,13 @@
             <td id="comment_{{ item.id }}">{{ item.comment|u.truncate(30) }}</td>
             <td id="date_{{ item.id }}">{{ item.date|date("m/d/Y") }}</td>
             <td id="name_{{ item.id }}">{{ item.anonname }}</td>
-            <td id="status_{{ item.id }}">{% if item.status %}<span class="fa fa-ban"></span>{% endif %}</td>
-            <td id="actions"><a href="{{ item.url }}#itemComment_{{ item.id }}" class="fa fa-eye" title="View Comment in Context"></a>&nbsp;
-                <span id="edit_{{ item.id }}" class="fa fa-pencil" title="Edit Comment"></span>
-                <span id="delete_{{ item.id }}" class="fa fa-trash" title="Delete Comment"></span>
-                <a href="{{ path('zikulaezcommentsmodule_admin_deleteall', {comment: item.id}) }}" class="fa fa-trash-o" title="Delete All Users Comments" onclick="return confirm('Are you sure you want to delete all comments by this user?')"></a>
-                <a href="{{ path('zikulaezcommentsmodule_admin_blockcomment', {comment: item.id}) }}" class="fa fa-hand-stop-o" title="Ban/Unban Comment"></a>
-                <a href="{{ path('zikulaezcommentsmodule_admin_blockuser', {comment: item.id}) }}" class="fa fa-ban" title="Ban/Unban User"></a>
+            <td id="status_{{ item.id }}">{% if item.status %}<span class="fas fa-ban"></span>{% endif %}</td>
+            <td id="actions"><a href="{{ item.url }}#itemComment_{{ item.id }}" class="far fa-eye" title="View Comment in Context"></a>&nbsp;
+                <span id="edit_{{ item.id }}" class="fas fa-pencil-alt" title="Edit Comment"></span>
+                <span id="delete_{{ item.id }}" class="far fa-trash-alt" title="Delete Comment"></span>
+                <a href="{{ path('zikulaezcommentsmodule_admin_deleteall', {comment: item.id}) }}" class="fas fa-trash-alt" title="Delete All Users Comments" onclick="return confirm('Are you sure you want to delete all comments by this user?')"></a>
+                <a href="{{ path('zikulaezcommentsmodule_admin_blockcomment', {comment: item.id}) }}" class="far fa-hand-paper" title="Ban/Unban Comment"></a>
+                <a href="{{ path('zikulaezcommentsmodule_admin_blockuser', {comment: item.id}) }}" class="fas fa-ban" title="Ban/Unban User"></a>
                 </td>
         </tr>
     {% endfor %}

@@ -13,19 +13,19 @@
                 <p> <span id="avatar" class="avatar">{{ userAvatar(item.ownerid, {rating: 'g'}) }}</span><i class="username" id="itemName_{{ item.id }}">{{ item.anonname}}</i>
                     {% if item.replyto == 0 %}
                         {%  if item.areaid == 1 %}
-                            <span id="twiddle_{{ item.id }}" title="View Replies" class="fa fa-toggle-left fa-lg"></span>
+                            <span id="twiddle_{{ item.id }}" title="View Replies" class="far fa-caret-square-left fa-lg"></span>
                             {% else %}
-                            <span id="twiddle_{{ item.id }}" title="View Replies" class="hidden fa fa-toggle-left fa-lg"></span>
+                            <span id="twiddle_{{ item.id }}" title="View Replies" class="d-none far fa-caret-square-left fa-lg"></span>
                         {% endif %}
                     {% endif %}
                     {% if currentUser.uid == item.ownerid or isAdmin %}
-                        <span id="edit_{{ item.id }}" title="Edit Comment" class="fa fa-pencil fa-lg"></span>
-                        <span id="trash_{{ item.id }}" title="Delete Comment" class="fa fa-trash fa-lg"></span>
+                        <span id="edit_{{ item.id }}" title="Edit Comment" class="fas fa-pencil-alt fa-lg"></span>
+                        <span id="trash_{{ item.id }}" title="Delete Comment" class="far fa-trash-alt fa-lg"></span>
                     {% endif %}
                 </p>
                 <p id="itemComment_{{ item.id }}" class="commentBox">{{ item.comment|raw }}</p>
                 <p id="replyPara">
-                    <span id="reply_{{ item.id }}" title="reply" class="fa fa-mail-reply fa-large"></span>
+                    <span id="reply_{{ item.id }}" title="reply" class="fas fa-reply fa-large"></span>
                 </p>
                 <div id="itemChild_{{ item.id }}"></div>
             </div>
@@ -35,16 +35,16 @@
                 <p><span id="avatar" class="avatar">{{ userAvatar(item.ownerid, {rating: 'g'}) }}</span><i class="username" id="itemName_{{ item.id }}"> {{ item.anonname }}</i>
                     {% if item.replyto == 0 %}
                         {%  if item.areaid == 1 %}
-                            <span id="twiddle_{{ item.id }}" title="View Replies" class="fa fa-toggle-left fa-lg"></span>
+                            <span id="twiddle_{{ item.id }}" title="View Replies" class="far fa-caret-square-left fa-lg"></span>
                         {% else %}
-                            <span id="twiddle_{{ item.id }}" title="View Replies" class="hidden fa fa-toggle-left fa-lg"></span>
+                            <span id="twiddle_{{ item.id }}" title="View Replies" class="d-none far fa-caret-square-left fa-lg"></span>
                         {% endif %}
                     {% endif %}
                 </p>
                 <p id="itemComment_{{ item.id }}" class="alert commentBox">{{ item.comment |raw }}</p>
                 {% if doAnon %}
                 <p id="replyPara">
-                    <span id="reply_{{ item.id }}" title="reply" class="fa fa-mail-reply fa-large"></span>
+                    <span id="reply_{{ item.id }}" title="reply" class="fas fa-reply fa-large"></span>
                 </p>
                 {%  endif %}
                 <div id="itemChild_{{ item.id }}"></div>
@@ -53,21 +53,21 @@
     {% endfor %}
     <p>
         {% if doAnon %}
-        <span id="newComment" title="Add a comment" class="fa fa-plus fa-large"></span>
+        <span id="newComment" title="Add a comment" class="fas fa-plus fa-large"></span>
         {%  endif %}
     </p>
     <!-- add another divs comment section for JS to grab to add new comments dynamically -->
-    <div class="hidden itemComment">
+    <div class="d-none itemComment">
         <h3 id="itemSubject"></h3>
         <p><span id="avatar"></span><i class="username" id="itemName"></i>
-            <span id="twiddle" title="View Replies" class="fa fa-toggle-left fa-lg"></span>
-            <span id="edit" title="Edit Comment" class="fa fa-pencil fa-lg"></span>
-            <span id="trash" title="Delete Comment" class="fa fa-trash fa-lg"></span>
+            <span id="twiddle" title="View Replies" class="far fa-caret-square-left fa-lg"></span>
+            <span id="edit" title="Edit Comment" class="fas fa-pencil-alt fa-lg"></span>
+            <span id="trash" title="Delete Comment" class="far fa-trash-alt fa-lg"></span>
         </p>
         <p id="itemComment" class="commentBox"></p>
         {% if doAnon %}
             <p id="replyPara">
-                <span id="reply" title="reply" class="fa fa-mail-reply fa-large"></span>
+                <span id="reply" title="reply" class="fas fa-reply fa-large"></span>
             </p>
         {%  endif %}
     </div>
@@ -104,20 +104,20 @@
                 <textarea id="comment-area" rows="3" cols="56" name="comment" class="ezcomments-text-box"></textarea>
             <div class="form-group ezcomments-align-right">
                 <button id="addComment" type="submit" class="btn btn-primary btn-sm" name="addComment" value="addComment">
-                    <span title="{% trans %}Add Comment{% endtrans %}" class="fa fa-check"></span>
+                    <span title="{% trans %}Add Comment{% endtrans %}" class="fas fa-check"></span>
                 </button>
                 <button id="cancelComment" type="submit" class="btn btn-warning btn-sm" name="cancelComment">
-                    <span title="{% trans %}Cancel Comment{% endtrans %}" class="fa fa-ban"></span>
+                    <span title="{% trans %}Cancel Comment{% endtrans %}" class="fas fa-ban"></span>
                 </button>
                 <button title="{% trans %}Reset Form{% endtrans %}" type="reset" class="btn btn-default btn-sm" name="btn-danger" onclick="this.form.reset()">
-                    <span class="fa fa-refresh"></span>
+                    <span class="fas fa-redo-alt"></span>
                 </button>
             </div>
         </form>
     </div>
 </div>
 <!-- comment form -->
-<div class="alert alert-danger hidden" id="no_replies">{% trans %}No replies to show!{% endtrans %}</div>
+<div class="alert alert-danger d-none" id="no_replies">{% trans %}No replies to show!{% endtrans %}</div>
 
 <div id="dialog-message" title="There was a problem with your comment?">
     <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span><span id="comment_message"></span></p>

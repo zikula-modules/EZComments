@@ -1,5 +1,5 @@
 <h3>
-    <span class="fa fa-wrench"></span>
+    <span class="fas fa-wrench"></span>
     {% trans %}Settings{% endtrans %}
     {{ pageSetVar('title', 'Settings'|trans) }}
 </h3>
@@ -12,8 +12,8 @@
     {{ form_row(form.allowanon) }}
 </fieldset>
 
-<div class="form-group">
-    <div class="col-sm-offset-3 col-sm-9">
+<div class="form-group row">
+    <div class="col-md-9 offset-md-3">
         {{ form_widget(form.save) }}
         {{ form_widget(form.cancel) }}
     </div>
