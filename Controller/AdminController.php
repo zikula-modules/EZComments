@@ -162,7 +162,7 @@ class AdminController extends AbstractController
                 $this->addFlash(
                     'status',
                     $this->trans(
-                    'User %username%\'s comments are banned. You can un-ban them by clicking on the ban icon again.',
+                        'User %username%\'s comments are banned. You can un-ban them by clicking on the ban icon again.',
                         ['%username%' => $comment->getAnonname()]
                     )
                 );
