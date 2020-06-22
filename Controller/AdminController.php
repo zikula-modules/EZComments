@@ -45,7 +45,7 @@ class AdminController extends AbstractController
      * @Theme("admin")
      * @PermissionCheck("admin")
      */
-    public function indexAction(Request $request): Response
+    public function indexAction(): Response
     {
         $items = $this->repository->findAll();
 
@@ -54,7 +54,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/edit", options={"expose"=true}, methods={"POST"})
+     * @Route("/edit", options={"expose"=true, "i18n"=false}, methods={"POST"})
      * @Theme("admin")
      * @param request
      */
@@ -78,7 +78,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/delete", options={"expose"=true}, methods={"POST"})
+     * @Route("/delete", options={"expose"=true, "i18n"=false}, methods={"POST"})
      * @Theme("admin")
      * @param Request $request
      */

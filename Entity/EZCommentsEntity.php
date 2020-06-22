@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Zikula\EZCommentsModule\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
+use Zikula\UsersModule\Constant;
 
 /**
  * EZComments entity class.
@@ -281,5 +283,23 @@ class EZCommentsEntity extends EntityAccess
     public function setAnonwebsite(string $anonwebsite): void
     {
         $this->anonwebsite = $anonwebsite;
+    }
+
+    public function setFromRequest(Request $request, int $ownerId): void
+    {
+        $params = $request->request->all();
+        $this->setUrl($params['retUrl']);
+        $this->setObjectid((int) $params['artId']);
+        $this->setAreaid((int) $params['areaId']);
+        $this->setModname($params['module']);
+        $this->setOwnerid($ownerId);
+        if (isset($params['parentId'])) {
+            $this->setReplyto((int) $params['parentId']);
+        }
+        $this->setType('safe');
+        $this->setIpaddr($request->getClientIp());
+        $this->setAnonmail(Constant::USER_ID_ANONYMOUS === $ownerId ? $params['anonEmail'] : '');
+        $this->setAnonwebsite(Constant::USER_ID_ANONYMOUS === $ownerId ? $params['anonWebsite'] : '');
+        $this->setAnonname($params['user']);
     }
 }

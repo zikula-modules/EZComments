@@ -44,7 +44,7 @@ class CommentController extends AbstractController
     }
 
     /**
-     * @Route("/comment")
+     * @Route("/comment", options={"expose"=true, "i18n"=false})
      */
     public function commentAction(
         CurrentUserApiInterface $currentUserApi,
@@ -54,7 +54,7 @@ class CommentController extends AbstractController
             return new JsonResponse($this->trans('Access forbidden since you cannot add comments.'), Response::HTTP_FORBIDDEN);
         }
 
-        return $this->_persistComment($request, $currentUserApi->get('uid'));
+        return $this->_persistComment($request, $currentUserApi->get('uid'), 'HTML');
     }
 
     /**
@@ -77,12 +77,12 @@ class CommentController extends AbstractController
     /**
      * Save a comment to the database. We check for banned posters and prevent them from adding comments.
      */
-    private function _persistComment(Request $request, int $ownerId): Response
+    private function _persistComment(Request $request, int $ownerId, $responseRet = 'JSON'): Response
     {
         //check to see if commenter is banned. This will happen if the number of comments they have is
         //equal to the number of banned comments. (NOTE if they only posted one comment and it was banned, but you still
         //want them to be able to post, then just delete that comment and communicate with them.
-        $id = $request->request->get('id');
+        $id = $request->request->getInt('id');
         $comment = $request->request->get('comment');
         $subject = $request->request->get('subject');
         $user= $request->request->get('user');
@@ -95,35 +95,7 @@ class CommentController extends AbstractController
             $isEdit = true;
         } else {
             $commentObj = new EZCommentsEntity();
-            $artId = $request->request->get('artId');
-            $module = $request->request->get('module');
-            $areaId = $request->request->get('areaId');
-            $parentID = $request->request->get('parentID');
-            $retURL = $request->request->get('retUrl');
-            $ipaddr = $request->getClientIp();
-            if (1 === $ownerId) { //This happens when not logged in.
-                //this is not a logged in user.
-                $anonEmail = $request->request->get('anonEmail');
-                $anonWebsite = $request->request->get('anonWebsite');
-            } else {
-                $anonEmail = "";
-                $anonWebsite = "";
-            }
-            $commentObj->setUrl($retURL);
-            $commentObj->setObjectid($artId);
-            $commentObj->setAreaid($areaId);
-            $commentObj->setModname($module);
-            $commentObj->setOwnerid($ownerId);
-            if (isset($parentID)) {
-                $commentObj->setReplyto($parentID);
-            }
-            //type is either trackback, pingback, or safe. Right now this is not implemented until Akismet is upated to 2.0
-            $commentObj->setType("safe");
-            $commentObj->setIpaddr($ipaddr);
-
-            $commentObj->setAnonmail($anonEmail);
-            $commentObj->setAnonwebsite($anonWebsite);
-            $commentObj->setAnonname($user);
+            $commentObj->setFromRequest($request, $ownerId);
         }
         $commentObj->setComment($comment);
         $commentObj->setSubject($subject);
@@ -132,7 +104,7 @@ class CommentController extends AbstractController
         $em->flush();
         //If this has come from a JSON response, then return the data to be inserted into the form
         //else this is coming from an HTML POST request. Then return a redirect response
-        if ($responseRet = 'JSON') {
+        if ('JSON' === $responseRet) {
             $jsonReply = ['author' => $user,
                 'comment' => $comment,
                 'subject' => $subject,
@@ -140,16 +112,17 @@ class CommentController extends AbstractController
                 'id' => $commentObj->getId(),
                 'parentID' => $commentObj->getReplyto(),
                 'uid' => $commentObj->getOwnerid(),
-                'isEdit' => $isEdit];
+                'isEdit' => $isEdit
+            ];
 
             return new JsonResponse($jsonReply);
         }
 
-        return $this->redirect($retURL);
+        return $this->redirect($commentObj->getUrl());
     }
 
     /**
-     * @Route("/setcomment", options={"expose"=true}, methods={"POST"})
+     * @Route("/setcomment", options={"expose"=true, "i18n"=false}, methods={"POST"})
      */
     public function setcommentAction(
         CurrentUserApiInterface $currentUserApi,
@@ -160,11 +133,11 @@ class CommentController extends AbstractController
             return new JsonResponse($this->trans('Access forbidden since you cannot add comments.'), Response::HTTP_FORBIDDEN);
         }
 
-        return $this->_persistComment($request, $currentUserApi->get('uid'));
+        return $this->_persistComment($request, $currentUserApi->get('uid'), 'JSON');
     }
 
     /**
-     * @Route("/verifycomment", options={"expose"=true}, methods={"POST"})
+     * @Route("/verifycomment", options={"expose"=true, "i18n"=false}, methods={"POST"})
      */
     public function verifycommentAction(
         CurrentUserApiInterface $currentUserApi,
@@ -243,7 +216,7 @@ class CommentController extends AbstractController
     }
 
     /**
-     * @Route("/getuserid", options={"expose"=true}, methods={"GET"})
+     * @Route("/getuserid", options={"expose"=true, "i18n"=false}, methods={"GET"})
      */
     public function getuseridAction(
         CurrentUserApiInterface $currentUserApi
@@ -258,7 +231,7 @@ class CommentController extends AbstractController
     }
 
     /**
-     * @Route("/getreplies", options={"expose"=true}, methods={"GET"})
+     * @Route("/getreplies", options={"expose"=true, "i18n"=false}, methods={"GET"})
      *
      * Grab all comments associated with this module and item ID and return them to the caller
      * The caller is a javascript, see the javascripts in Resources/public/js directory
@@ -296,7 +269,7 @@ class CommentController extends AbstractController
     }
 
     /**
-     * @Route("/deletecomment", options={"expose"=true}, methods={"POST"})
+     * @Route("/deletecomment", options={"expose"=true, "i18n"=false}, methods={"POST"})
      */
     public function deletecommentAction(
         CurrentUserApiInterface $currentUserApi,
