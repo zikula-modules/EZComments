@@ -125,7 +125,7 @@ class UiHooksProvider implements HookProviderInterface
         }
         $repo = $this->entityManager->getRepository(EZCommentsEntity::class);
 
-        $is_admin = $this->permissionApi->hasPermission('EZComments::', '::', ACCESS_ADMIN);
+        $isAdmin = $this->permissionApi->hasPermission('EZComments::', '::', ACCESS_ADMIN);
         $url = $hook->getUrl();
         $urlString = $this->router->generate($url->getRoute(), $url->getArgs());
         //get the comments that correspond to this object, but only the parent ones (replyTo set to 0)
@@ -147,8 +147,9 @@ class UiHooksProvider implements HookProviderInterface
 
         $content = $this->twig->render(
             '@ZikulaEZCommentsModule/Hook/ezcomments_hook_uiview.html.twig',
-            ['items' => $items,
-                'isAdmin' =>  $is_admin,
+            [
+                'items' => $items,
+                'isAdmin' => $isAdmin,
                 'artId' => $id,
                 'module' => $mod,
                 'areaId' => $areaID,

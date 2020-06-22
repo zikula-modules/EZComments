@@ -45,8 +45,10 @@ class MostCommentsBlock extends AbstractBlockHandler
 
         return $this->renderView(
             "@ZikulaEZCommentsModule\\Block\\list_most_commenters.html.twig",
-            ['activeposters' => $activePosters,
-                'showcount' => 'yes' === $properties['showcount']]
+            [
+                'activeposters' => $activePosters,
+                'showcount' => 'yes' === $properties['showcount']
+            ]
         );
     }
 

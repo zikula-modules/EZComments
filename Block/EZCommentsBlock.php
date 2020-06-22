@@ -45,13 +45,16 @@ class EZCommentsBlock extends AbstractBlockHandler
         //return the desired items based upon how the properties have been set
         $items = $this->commentsRepository->getLatestComments($properties);
 
-        return $this->renderView("@ZikulaEZCommentsModule\\Block\\list_latest_comments.html.twig", [
-            'items' => $items,
-            'days' => $properties['numdays'],
-            'showdate' => 'yes' === $properties['showdate'],
-            'showuser' => 'yes' === $properties['showuser'],
-            'linkuser' => 'yes' === $properties['linkuser']
-        ]);
+        return $this->renderView(
+            "@ZikulaEZCommentsModule\\Block\\list_latest_comments.html.twig",
+            [
+                'items' => $items,
+                'days' => $properties['numdays'],
+                'showdate' => 'yes' === $properties['showdate'],
+                'showuser' => 'yes' === $properties['showuser'],
+                'linkuser' => 'yes' === $properties['linkuser']
+            ]
+        );
     }
 
     public function getFormClassName(): string

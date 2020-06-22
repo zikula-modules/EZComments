@@ -83,7 +83,6 @@ class CountCommentsUiHooksProvider implements HookProviderInterface
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function uiView(DisplayHook $hook): void
-
     {
         $mod = $hook->getCaller();
         $id = $hook->getId();
@@ -103,7 +102,8 @@ class CountCommentsUiHooksProvider implements HookProviderInterface
                 ->getSingleScalarResult();
         $content = $this->twig->render(
             '@ZikulaEZCommentsModule/Hook/ezcomments_hook_comment_counts.html.twig',
-            ['count' => $commentCount
+            [
+                'count' => $commentCount
             ]
         );
         $response = new DisplayHookResponse($this->getAreaName(), $content);
