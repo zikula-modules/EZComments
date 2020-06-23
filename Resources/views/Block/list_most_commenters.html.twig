@@ -1,7 +1,7 @@
 <div>
-    {%  for poster,commentcount in activeposters %}
-        <p><b>{{ poster }}</b> {% if showcount %} -  <i>{{ commentcount }} posts</i>{% endif %}</p>
+    {% for poster, amountOfComments in activeposters %}
+        <p><strong>{{ poster }}</strong>{% if showcount %} - <em>{% trans with {'%amount%': amountOfComments} %}%amount% posts{% endtrans %}</em>{% endif %}</p>
     {% else %}
-        <p>{% trans %}No comments found in last .{% endtrans %}{{ days }}{% trans %} days{% endtrans %}</p>
+        <p>{% trans with {'%amount%': days} %}No comments found in last %amount% days.{% endtrans %}</p>
     {% endfor %}
 </div>

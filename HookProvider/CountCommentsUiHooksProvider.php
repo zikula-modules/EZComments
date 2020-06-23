@@ -88,18 +88,19 @@ class CountCommentsUiHooksProvider implements HookProviderInterface
         $id = $hook->getId();
         // Security checks
         // first check if the user is allowed to do any comments for this module/objectid
-        if (!$this->permissionApi->hasPermission('EZComments::', "${mod}:${id}:", ACCESS_READ)) {
+        if (!$this->permissionApi->hasPermission('ZikulaEZCommentsModule::', "${mod}:${id}:", ACCESS_READ)) {
             return;
         }
 
         $repo = $this->entityManager->getRepository(EZCommentsEntity::class);
         $commentCount = $repo->createQueryBuilder('a')
-                ->select('count(a.objectid)')
-                ->where('a.status = 0')
-                ->andWhere('a.objectid = :id')
-                ->setParameter('id', $id)
-                ->getQuery()
-                ->getSingleScalarResult();
+            ->select('count(a.objectid)')
+            ->where('a.status = 0')
+            ->andWhere('a.objectid = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
         $content = $this->twig->render(
             '@ZikulaEZCommentsModule/Hook/ezcomments_hook_comment_counts.html.twig',
             [

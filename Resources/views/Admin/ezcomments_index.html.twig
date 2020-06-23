@@ -5,37 +5,52 @@
 {{ pageAddAsset('javascript', 'https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js') }}
 {{ pageAddAsset('javascript', zasset('@ZikulaEZCommentsModule:js/Zikula.EZComments.tablesorter.js')) }}
 
-<h3> {% trans %}Current Comments{% endtrans %}</h3>
-<table id="tableToSort" class="table table-striped">
+<h3>
+    <i class="fas fa-list"></i>
+    {% trans %}Current comments{% endtrans %}
+    {{ pageSetVar('title', 'Current comments'|trans) }}
+</h3>
+<table id="tableToSort" class="table table-bordered table-striped">
+    <colgroup>
+        <col id="cId" />
+        <col id="cModuleName" />
+        <col id="cSubject" />
+        <col id="cComment" />
+        <col id="cDate" />
+        <col id="cName" />
+        <col id="cStatus" />
+        <col id="cActions" />
+    </colgroup>
     <thead>
     <tr>
-        <th id="id">{% trans %}id{% endtrans %}</th>
-        <th id="moduleName">{% trans %}Module Name{% endtrans %}</th>
-        <th id="subject">{% trans %}Subject{% endtrans %}</th>
-        <th id="comment">{% trans %}Comment{% endtrans %}</th>
-        <th id="date">{% trans %}Date{% endtrans %}</th>
-        <th id="name">{% trans %}Name{% endtrans %}</th>
-        <th id="name">{% trans %}Status{% endtrans %}</th>
-        <th>{% trans %}Actions{% endtrans %}</th>
+        <th id="hId" scope="col">{% trans %}ID{% endtrans %}</th>
+        <th id="hModuleName" scope="col">{% trans %}Module name{% endtrans %}</th>
+        <th id="hSubject" scope="col">{% trans %}Subject{% endtrans %}</th>
+        <th id="hComment" scope="col">{% trans %}Comment{% endtrans %}</th>
+        <th id="hDate" scope="col">{% trans %}Date{% endtrans %}</th>
+        <th id="hName" scope="col">{% trans %}Name{% endtrans %}</th>
+        <th id="hStatus" scope="col">{% trans %}Status{% endtrans %}</th>
+        <th id="hActions" scope="col">{% trans %}Actions{% endtrans %}</th>
     </tr>
     </thead>
     <tbody>
     {% for item in items %}
         <tr id="{{ item.id }}">
-            <td id="id_{{ item.id }}">{{ item.id }}</td>
-            <td id="modname_{{ item.id }}">{{ item.modname }}</td>
-            <td id="subject_{{ item.id }}">{{ item.subject }}</td>
-            <td id="comment_{{ item.id }}">{{ item.comment|u.truncate(30) }}</td>
-            <td id="date_{{ item.id }}">{{ item.date|date("m/d/Y") }}</td>
-            <td id="name_{{ item.id }}">{{ item.anonname }}</td>
-            <td id="status_{{ item.id }}">{% if item.status %}<span class="fas fa-ban"></span>{% endif %}</td>
-            <td id="actions"><a href="{{ item.url }}#itemComment_{{ item.id }}" class="far fa-eye" title="View Comment in Context"></a>&nbsp;
-                <span id="edit_{{ item.id }}" class="fas fa-pencil-alt" title="Edit Comment"></span>
-                <span id="delete_{{ item.id }}" class="far fa-trash-alt" title="Delete Comment"></span>
-                <a href="{{ path('zikulaezcommentsmodule_admin_deleteall', {comment: item.id}) }}" class="fas fa-trash-alt" title="Delete All Users Comments" onclick="return confirm('Are you sure you want to delete all comments by this user?')"></a>
-                <a href="{{ path('zikulaezcommentsmodule_admin_blockcomment', {comment: item.id}) }}" class="far fa-hand-paper" title="Ban/Unban Comment"></a>
-                <a href="{{ path('zikulaezcommentsmodule_admin_blockuser', {comment: item.id}) }}" class="fas fa-ban" title="Ban/Unban User"></a>
-                </td>
+            <td id="id_{{ item.id }}" headers="hId">{{ item.id }}</td>
+            <td id="modname_{{ item.id }}" headers="hModuleName">{{ item.modname }}</td>
+            <td id="subject_{{ item.id }}" headers="hSubject">{{ item.subject }}</td>
+            <td id="comment_{{ item.id }}" headers="hComment">{{ item.comment|u.truncate(30) }}</td>
+            <td id="date_{{ item.id }}" headers="hDate">{{ item.date|format_date('short') }}</td>
+            <td id="name_{{ item.id }}" headers="hName">{{ item.anonname }}</td>
+            <td id="status_{{ item.id }}" headers="hStatus">{% if item.status %}<span class="fas fa-ban"></span>{% endif %}</td>
+            <td id="actions_{{ item.id }}" headers="hActions">
+                <a href="{{ item.url }}#itemComment_{{ item.id }}" class="far fa-eye" title="{{ 'View comment in context'|trans|e('html_attr') }}"></a>&nbsp;
+                <span id="edit_{{ item.id }}" class="fas fa-pencil-alt" title="{{ 'Edit comment'|trans|e('html_attr') }}"></span>
+                <span id="delete_{{ item.id }}" class="far fa-trash-alt" title="{{ 'Delete comment'|trans|e('html_attr') }}"></span>
+                <a href="{{ path('zikulaezcommentsmodule_admin_deleteall', {comment: item.id}) }}" class="fas fa-trash-alt" title="{{ 'Delete all users comments'|trans|e('html_attr') }}" onclick="return confirm('{{ 'Are you sure you want to delete all comments by this user?'|trans|e('html_attr') }}')"></a>
+                <a href="{{ path('zikulaezcommentsmodule_admin_blockcomment', {comment: item.id}) }}" class="far fa-hand-paper" title="{{ 'Ban/Unban comment'|trans|e('html_attr') }}"></a>
+                <a href="{{ path('zikulaezcommentsmodule_admin_blockuser', {comment: item.id}) }}" class="fas fa-ban" title="{{ 'Ban/Unban user'|trans|e('html_attr') }}"></a>
+            </td>
         </tr>
     {% endfor %}
     </tbody>

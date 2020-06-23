@@ -7,67 +7,52 @@
 <div id="Comments">
     <h3>{% trans %}Comments{% endtrans %}</h3>
     {% for item in items %}
-        {% if currentUser.loggedin %}
-            <div id="itemComment_{{ item.id }}">
+        <div id="itemComment_{{ item.id }}">
+            {% if currentUser.loggedin %}
                 <h4 id="itemSubject_{{ item.id }}" class="comment-text">{{ item.subject }}</h4>
-                <p> <span id="avatar" class="avatar">{{ userAvatar(item.ownerid, {rating: 'g'}) }}</span><i class="username" id="itemName_{{ item.id }}">{{ item.anonname}}</i>
-                    {% if item.replyto == 0 %}
-                        {%  if item.areaid == 1 %}
-                            <span id="twiddle_{{ item.id }}" title="View Replies" class="far fa-caret-square-left fa-lg"></span>
-                            {% else %}
-                            <span id="twiddle_{{ item.id }}" title="View Replies" class="d-none far fa-caret-square-left fa-lg"></span>
-                        {% endif %}
-                    {% endif %}
-                    {% if currentUser.uid == item.ownerid or isAdmin %}
-                        <span id="edit_{{ item.id }}" title="Edit Comment" class="fas fa-pencil-alt fa-lg"></span>
-                        <span id="trash_{{ item.id }}" title="Delete Comment" class="far fa-trash-alt fa-lg"></span>
-                    {% endif %}
-                </p>
-                <p id="itemComment_{{ item.id }}" class="commentBox">{{ item.comment|raw }}</p>
-                <p id="replyPara">
-                    <span id="reply_{{ item.id }}" title="reply" class="fas fa-reply fa-large"></span>
-                </p>
-                <div id="itemChild_{{ item.id }}"></div>
-            </div>
-        {% else %}
-            <div id="itemComment_{{ item.id }}">
+            {% else %}
                 <h3 id="itemSubject_{{ item.id }}">{{ item.subject }}</h3>
-                <p><span id="avatar" class="avatar">{{ userAvatar(item.ownerid, {rating: 'g'}) }}</span><i class="username" id="itemName_{{ item.id }}"> {{ item.anonname }}</i>
-                    {% if item.replyto == 0 %}
-                        {%  if item.areaid == 1 %}
-                            <span id="twiddle_{{ item.id }}" title="View Replies" class="far fa-caret-square-left fa-lg"></span>
-                        {% else %}
-                            <span id="twiddle_{{ item.id }}" title="View Replies" class="d-none far fa-caret-square-left fa-lg"></span>
-                        {% endif %}
+            {% endif %}
+            <p>
+                <span id="avatar" class="avatar">{{ userAvatar(item.ownerid, {rating: 'g'}) }}</span><i class="username" id="itemName_{{ item.id }}">{{ item.anonname }}</i>
+                {% if item.replyto == 0 %}
+                    {% if item.areaid == 1 %}
+                        <span id="twiddle_{{ item.id }}" title="{{ 'View replies'|trans|e('html_attr') }}" class="far fa-caret-square-left fa-lg"></span>
+                    {% else %}
+                        <span id="twiddle_{{ item.id }}" title="{{ 'View replies'|trans|e('html_attr') }}" class="d-none far fa-caret-square-left fa-lg"></span>
                     {% endif %}
-                </p>
-                <p id="itemComment_{{ item.id }}" class="alert commentBox">{{ item.comment |raw }}</p>
-                {% if doAnon %}
+                {% endif %}
+                {% if (currentUser.loggedin and currentUser.uid == item.ownerid) or isAdmin %}
+                    <span id="edit_{{ item.id }}" title="{{ 'Edit comment'|trans|e('html_attr') }}" class="fas fa-pencil-alt fa-lg"></span>
+                    <span id="trash_{{ item.id }}" title="{{ 'Delete comment'|trans|e('html_attr') }}" class="far fa-trash-alt fa-lg"></span>
+                {% endif %}
+            </p>
+            <p id="itemComment_{{ item.id }}" class="alert commentBox">{{ item.comment|raw }}</p>
+            {% if currentUser.loggedin or doAnon %}
                 <p id="replyPara">
-                    <span id="reply_{{ item.id }}" title="reply" class="fas fa-reply fa-large"></span>
+                    <span id="reply_{{ item.id }}" title="{{ 'Reply'|trans|e('html_attr') }}" class="fas fa-reply fa-large"></span>
                 </p>
-                {%  endif %}
-                <div id="itemChild_{{ item.id }}"></div>
-            </div>
-        {% endif %}
+            {% endif %}
+            <div id="itemChild_{{ item.id }}"></div>
+        </div>
     {% endfor %}
-    <p>
-        {% if doAnon %}
-        <span id="newComment" title="Add a comment" class="fas fa-plus fa-large"></span>
-        {%  endif %}
-    </p>
-    <!-- add another divs comment section for JS to grab to add new comments dynamically -->
+    {% if doAnon %}
+        <p>
+            <span id="newComment" title="{{ 'Add a comment'|trans|e('html_attr') }}" class="fas fa-plus fa-large"></span>
+        </p>
+    {% endif %}
+    {# add another divs comment section for JS to grab to add new comments dynamically #}
     <div class="d-none itemComment">
         <h3 id="itemSubject"></h3>
         <p><span id="avatar"></span><i class="username" id="itemName"></i>
-            <span id="twiddle" title="View Replies" class="far fa-caret-square-left fa-lg"></span>
-            <span id="edit" title="Edit Comment" class="fas fa-pencil-alt fa-lg"></span>
-            <span id="trash" title="Delete Comment" class="far fa-trash-alt fa-lg"></span>
+            <span id="twiddle" title="{{ 'View replies'|trans|e('html_attr') }}" class="far fa-caret-square-left fa-lg"></span>
+            <span id="edit" title="{{ 'Edit comment'|trans|e('html_attr') }}" class="fas fa-pencil-alt fa-lg"></span>
+            <span id="trash" title="{{ 'Delete comment'|trans|e('html_attr') }}" class="far fa-trash-alt fa-lg"></span>
         </p>
         <p id="itemComment" class="commentBox"></p>
         {% if doAnon %}
             <p id="replyPara">
-                <span id="reply" title="reply" class="fas fa-reply fa-large"></span>
+                <span id="reply" title="{{ 'Reply'|trans|e('html_attr') }}" class="fas fa-reply fa-large"></span>
             </p>
         {%  endif %}
     </div>
@@ -81,44 +66,65 @@
             <input type="hidden" name="retUrl" value="{{ retUrl }}">
             <input type="hidden" name="areaId" value="{{ areaId }}">
             <input type="hidden" name="parentID" value="0">
-            <table class="ezcomments-form-table">
             {% if currentUser.loggedIn %}
-                <tr>
-                    <td class="ezcomments-pretty-name">{% trans %}Name: {% endtrans %}</td><td><input name="user" value="{{ currentUser.uname }}" maxlengh="100" class="ezcomments-form-box"/></td>
-                </tr>
+                <div class="form-group row">
+                    <label for="user" class="col-md-3 col-form-label">{% trans %}Name:{% endtrans %}</label>
+                    <div class="col-md-9">
+                        <input type="text" id="user" name="user" value="{{ currentUser.uname }}" maxlengh="100" class="form-control"/>
+                    </div>
+                </div>
             {% else %}
-                <tr>
-                    <td class="ezcomments-pretty-name">{% trans %}Name: {% endtrans %}</td><td><input name="user" value="Anonymous Coward" maxlengh="100" class="ezcomments-form-box"/></td>
-                </tr>
-                <tr>
-                    <td class="ezcomments-pretty-name">{% trans %}Email: {% endtrans %}</td><td><input name="anonEmail" value="Anonymous Coward's Email" maxlengh="100" size="51" class="ezcomments-form-box"/></td>
-                </tr>
-                <tr>
-                    <td class="ezcomments-pretty-name">{% trans %}Website: {% endtrans %}</td><td><input name="anonWebsite" value="Anonymous Coward's Website" maxlengh="100" size="46" class="ezcomments-form-box"/></td>
-                </tr>
-             {% endif %}
-                <tr>
-                    <td class="ezcomments-pretty-name">{% trans %}Subject: {% endtrans %}</td><td><input id="subject-area" name="subject" maxlength="100" size="47" class="ezcomments-form-box"/></td>
-                </tr>
-            </table>
-                <textarea id="comment-area" rows="3" cols="56" name="comment" class="ezcomments-text-box"></textarea>
-            <div class="form-group ezcomments-align-right">
-                <button id="addComment" type="submit" class="btn btn-primary btn-sm" name="addComment" value="addComment">
-                    <span title="{% trans %}Add Comment{% endtrans %}" class="fas fa-check"></span>
-                </button>
-                <button id="cancelComment" type="submit" class="btn btn-warning btn-sm" name="cancelComment">
-                    <span title="{% trans %}Cancel Comment{% endtrans %}" class="fas fa-ban"></span>
-                </button>
-                <button title="{% trans %}Reset Form{% endtrans %}" type="reset" class="btn btn-default btn-sm" name="btn-danger" onclick="this.form.reset()">
-                    <span class="fas fa-redo-alt"></span>
-                </button>
+                <div class="form-group row">
+                    <label for="user" class="col-md-3 col-form-label">{% trans %}Name:{% endtrans %}</label>
+                    <div class="col-md-9">
+                        <input type="text" id="user" name="user" placeholder="{{ 'Your name'|trans|e('html_attr') }}" maxlengh="100" class="form-control"/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="anonEmail" class="col-md-3 col-form-label">{% trans %}Email:{% endtrans %}</label>
+                    <div class="col-md-9">
+                        <input type="email" id="anonEmail" name="anonEmail" placeholder="{{ 'Your email address'|trans|e('html_attr') }}" maxlengh="100" size="51" class="form-control"/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="anonWebsite" class="col-md-3 col-form-label">{% trans %}Website:{% endtrans %}</label>
+                    <div class="col-md-9">
+                        <input type="url" id="anonWebsite" name="anonWebsite" placeholder="{{ 'Your website'|trans|e('html_attr') }}" maxlengh="100" size="46" class="form-control"/>
+                    </div>
+                </div>
+            {% endif %}
+            <div class="form-group row">
+                <label for="subject-area" class="col-md-3 col-form-label">{% trans %}Subject:{% endtrans %}</label>
+                <div class="col-md-9">
+                    <input type="text" id="subject-area" name="subject" maxlength="100" size="47" class="form-control"/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <textarea id="comment-area" rows="3" cols="56" name="comment" class="form-control"></textarea>
+                </div>
+            </div>
+            <div class="form-group text-right">
+                <div class="btn-group" role="group">
+                    <button id="addComment" type="submit" class="btn btn-primary btn-sm" name="addComment" value="addComment">
+                        <span title="{{ 'Add comment'|trans|e('html_attr') }}" class="fas fa-check"></span>
+                    </button>
+                    <button id="cancelComment" type="submit" class="btn btn-warning btn-sm" name="cancelComment">
+                        <span title="{{ 'Cancel comment'|trans|e('html_attr') }}" class="fas fa-ban"></span>
+                    </button>
+                    <button title="{{ 'Reset form'|trans|e('html_attr') }}" type="reset" class="btn btn-secondary btn-sm" name="btn-danger" onclick="this.form.reset()">
+                        <span class="fas fa-redo-alt"></span>
+                    </button>
+                </div>
             </div>
         </form>
     </div>
 </div>
-<!-- comment form -->
 <div class="alert alert-danger d-none" id="no_replies">{% trans %}No replies to show!{% endtrans %}</div>
 
-<div id="dialog-message" title="There was a problem with your comment?">
-    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span><span id="comment_message"></span></p>
+<div id="dialog-message" title="{{ 'There was a problem with your comment?'|trans|e('html_attr') }}">
+    <p>
+        <span class="ui-icon ui-icon-alert" style="float: left; margin: 12px 12px 20px 0"></span>
+        <span id="comment_message"></span>
+    </p>
 </div>

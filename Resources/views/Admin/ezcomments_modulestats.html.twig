@@ -2,38 +2,46 @@
 {{ pageAddAsset('stylesheet', asset('jquery-ui/themes/base/jquery-ui.min.css')) }}
 {{ pageAddAsset('stylesheet', zasset('@ZikulaEZCommentsModule:css/style.css')) }}
 
-<h3>{% trans %}Comments Stats{% endtrans %}</h3>
-<table class="table table-striped">
+<h3>
+    <i class="fas fa-chart-bar"></i>
+    {% trans %}Comments stats{% endtrans %}
+    {{ pageSetVar('title', 'Comments stats'|trans) }}
+</h3>
+<table class="table table-bordered table-striped">
+    <colgroup>
+        <col id="cCategory" />
+        <col id="cResult" />
+    </colgroup>
     <thead>
-    <tr>
-        <th>{% trans %}Category{% endtrans %}</th>
-        <th>{% trans %}Result{% endtrans %}</th>
-    </tr>
+        <tr>
+            <th id="hCategory" scope="col">{% trans %}Category{% endtrans %}</th>
+            <th id="hResult" scope="col">{% trans %}Result{% endtrans %}</th>
+        </tr>
     </thead>
     <tbody>
-    <tr>
-        <td>{% trans %}Total Comments{% endtrans %}</td>
-        <td>{{ counts.totalComments }}</td>
-    </tr>
-    <tr>
-        <td>{% trans %}Modules that have comments{% endtrans %}</td>
-        <td>{{ counts.modules }}</td>
-    </tr>
-    <tr>
-        <td>{% trans %}Users with Comments{% endtrans %}</td>
-        <td>{{ counts.users }}</td>
-    </tr>
-    <tr>
-        <td>{% trans %}Last Post By{% endtrans %}</td>
-        <td>{{ counts.lastPost.0.anonname }}</td>
-    </tr>
-    <tr>
-        <td>{% trans %}Most Active Poster{% endtrans %}</td>
-        <td>{{ counts.mostActive.name }} {% trans %}with{% endtrans %} {{ counts.mostActive.number}} {% trans %}posts{% endtrans %}</td>
-    </tr>
-    <tr>
-        <td>{% trans %}Post Rate{% endtrans %}</td>
-        <td> {{ counts.postRate|number_format(3) }} {% trans %} posts per day.{% endtrans %}</td>
-    </tr>
+        <tr>
+            <th id="hTotalComments" scope="row" headers="hCategory">{% trans %}Total comments{% endtrans %}</th>
+            <td headers="hResult hTotalComments">{{ counts.totalComments }}</td>
+        </tr>
+        <tr>
+            <th id="hModulesWithComments" scope="row" headers="hCategory">{% trans %}Modules that have comments{% endtrans %}</th>
+            <td headers="hResult hModulesWithComments">{{ counts.modules }}</td>
+        </tr>
+        <tr>
+            <th id="hUsersWithComments" scope="row" headers="hCategory">{% trans %}Users with comments{% endtrans %}</th>
+            <td headers="hResult hUsersWithComments">{{ counts.users }}</td>
+        </tr>
+        <tr>
+            <th id="hLastPoster" scope="row" headers="hCategory">{% trans %}Last post by{% endtrans %}</th>
+            <td headers="hResult hLastPoster">{{ counts.lastPost.0.anonname }}</td>
+        </tr>
+        <tr>
+            <th id="hMostActivePoster" scope="row" headers="hCategory">{% trans %}Most active poster{% endtrans %}</th>
+            <td headers="hResult hMostActivePoster">{% trans with {'%userName%': counts.mostActive.name, '%amount%': counts.mostActive.number} %}%userName% with %amount% posts{% endtrans %}</td>
+        </tr>
+        <tr>
+            <th id="hPostRate" scope="row" headers="hCategory">{% trans %}Post rate{% endtrans %}</th>
+            <td headers="hResult hPostRate">{% trans with {'%amount%': counts.postRate|number_format(3)} %}%amount% posts per day{% endtrans %}</td>
+        </tr>
     </tbody>
 </table>

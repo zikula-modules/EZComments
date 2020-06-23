@@ -1,9 +1,9 @@
 <div>
-    {%  for item in items %}
+    {% for item in items %}
         <h4>{{ item.subject }}</h4>
-    <p>{% if showuser %}<b>{{ item.anonname }}</b>{% endif %} {% if showdate %} <i>{{ item.date | date("F j, Y, g:i a") }}</i>{% endif %}</p>
-    <p>{{ item.comment|striptags|u.truncate(50, true, '…') }}</p>
+        <p>{% if showuser %}<strong>{{ item.anonname }}</strong>{% endif %} {% if showdate %} <em>{{ item.date|date('F j, Y, g:i a') }}</em>{% endif %}</p>
+        <p>{{ item.comment|striptags|u.truncate(50, true, '…') }}</p>
     {% else %}
-    <p>{% trans %}No comments found in last .{% endtrans %}{{ days }}{% trans %} days{% endtrans %}</p>
+        <p>{% trans with {'%amount%': days} %}No comments found in last %amount% days.{% endtrans %}</p>
     {% endfor %}
 </div>

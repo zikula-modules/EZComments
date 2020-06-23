@@ -120,22 +120,22 @@ class UiHooksProvider implements HookProviderInterface
         $areaID = $hook->getAreaId();
         // Security checks
         // first check if the user is allowed to do any comments for this module/objectid
-        if (!$this->permissionApi->hasPermission('EZComments::', "${mod}:${id}:", ACCESS_READ)) {
+        if (!$this->permissionApi->hasPermission('ZikulaEZCommentsModule::', "${mod}:${id}:", ACCESS_READ)) {
             return;
         }
-        $repo = $this->entityManager->getRepository(EZCommentsEntity::class);
 
-        $isAdmin = $this->permissionApi->hasPermission('EZComments::', '::', ACCESS_ADMIN);
+        $repo = $this->entityManager->getRepository(EZCommentsEntity::class);
+        $isAdmin = $this->permissionApi->hasPermission('ZikulaEZCommentsModule::', '::', ACCESS_ADMIN);
         $url = $hook->getUrl();
         $urlString = $this->router->generate($url->getRoute(), $url->getArgs());
         //get the comments that correspond to this object, but only the parent ones (replyTo set to 0)
         //child comments will be retrieved when the users opens the arrow
         //also do not get banned comments
-        $items = $repo->findBy(['modname' => $mod, 'objectid' => $id, 'replyto'=> 0, 'status' => 0]);
+        $items = $repo->findBy(['modname' => $mod, 'objectid' => $id, 'replyto' => 0, 'status' => 0]);
 
         //walk the items and see if they have replies
         foreach ($items as $item) {
-            $replies = $repo->findOneBy(['modname' => $mod, 'objectid' => $id, 'replyto'=> $item->getId(), 'status' => 0]);
+            $replies = $repo->findOneBy(['modname' => $mod, 'objectid' => $id, 'replyto' => $item->getId(), 'status' => 0]);
             if ($replies) {
                 //this marks it as having replies.
                 $item->setAreaid(1);
