@@ -289,7 +289,7 @@ class EZCommentsEntity extends EntityAccess
     {
         $params = $request->request->all();
         $this->setUrl($params['retUrl']);
-        $this->setObjectid((int) $params['artId']);
+        $this->setObjectid((string) $params['artId']);
         $this->setAreaid((int) $params['areaId']);
         $this->setModname($params['module']);
         $this->setOwnerid($ownerId);

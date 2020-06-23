@@ -270,10 +270,10 @@
             //Is this a subcomment?
             if (result.parentID > 0) {
                 var subComments = this.subComments[result.parentID];
-                //if There are not subcomments, then create the div they live in and add the ez_indent class to make sure it's indented.
+                //if There are not subcomments, then create the div they live in and add the ml-4 class to make sure it's indented.
                 if(!subComments){
                     subComments = $('<div id="subComments_' + result.parentID + '"></div>');
-                    subComments.addClass('ez_indent');
+                    subComments.addClass('ml-4');
                     //There were no subcomments to this comment.
                     //we need to add this to the DOM since it wasn't there, right after the <div id="itemchild_"> tag.
                     $('#itemChild_' + result.parentID).prepend(subComments);
@@ -456,7 +456,7 @@
             lastComment.after(this.$comForm);
             this.$comForm.removeClass('d-none');
             //since this is a new comment, we don't want the comment box indented.
-            this.$comForm.removeClass('ez_indent')
+            this.$comForm.removeClass('ml-4')
             this.$newCommentButton.addClass('d-none');
             //since this is a new comment, the id is 0
             this.currentId = 0;
@@ -545,7 +545,7 @@
                 //Is this a memory leak? No it should not be, since remove takes it all out of the DOM including events
                 subComments.prepend(divBlock);
             }
-            subComments.addClass('ez_indent');
+            subComments.addClass('ml-4');
             //remember this set of objects for deletion when the twiddle box is closed
             this.subComments[this.currentId] = subComments;
             //finally add the comments to the right spot in the page
@@ -589,7 +589,7 @@
             //enter the form after the comment
             target.append(comForm);
             //indent since this is a reply
-            comForm.addClass('ez_indent');
+            comForm.addClass('ml-4');
             //finally show the form
             comForm.removeClass('d-none');
             //The comment form may have been ready to add a root comment

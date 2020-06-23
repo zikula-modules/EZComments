@@ -8,11 +8,7 @@
     <h3>{% trans %}Comments{% endtrans %}</h3>
     {% for item in items %}
         <div id="itemComment_{{ item.id }}">
-            {% if currentUser.loggedin %}
-                <h4 id="itemSubject_{{ item.id }}" class="comment-text">{{ item.subject }}</h4>
-            {% else %}
-                <h3 id="itemSubject_{{ item.id }}">{{ item.subject }}</h3>
-            {% endif %}
+            <h4 id="itemSubject_{{ item.id }}" class="comment-text">{{ item.subject }}</h4>
             <p>
                 <span id="avatar" class="avatar">{{ userAvatar(item.ownerid, {rating: 'g'}) }}</span><i class="username" id="itemName_{{ item.id }}">{{ item.anonname }}</i>
                 {% if item.replyto == 0 %}
@@ -22,13 +18,13 @@
                         <span id="twiddle_{{ item.id }}" title="{{ 'View replies'|trans|e('html_attr') }}" class="d-none far fa-caret-square-left fa-lg"></span>
                     {% endif %}
                 {% endif %}
-                {% if (currentUser.loggedin and currentUser.uid == item.ownerid) or isAdmin %}
+                {% if (currentUser.loggedIn and currentUser.uid == item.ownerid) or isAdmin %}
                     <span id="edit_{{ item.id }}" title="{{ 'Edit comment'|trans|e('html_attr') }}" class="fas fa-pencil-alt fa-lg"></span>
                     <span id="trash_{{ item.id }}" title="{{ 'Delete comment'|trans|e('html_attr') }}" class="far fa-trash-alt fa-lg"></span>
                 {% endif %}
             </p>
             <p id="itemComment_{{ item.id }}" class="alert commentBox">{{ item.comment|raw }}</p>
-            {% if currentUser.loggedin or doAnon %}
+            {% if currentUser.loggedIn or doAnon %}
                 <p id="replyPara">
                     <span id="reply_{{ item.id }}" title="{{ 'Reply'|trans|e('html_attr') }}" class="fas fa-reply fa-large"></span>
                 </p>
