@@ -39,7 +39,7 @@
             <td id="id_{{ item.id }}" headers="hId">{{ item.id }}</td>
             <td id="modname_{{ item.id }}" headers="hModuleName">{{ item.modname }}</td>
             <td id="subject_{{ item.id }}" headers="hSubject">{{ item.subject }}</td>
-            <td id="comment_{{ item.id }}" headers="hComment">{{ item.comment|u.truncate(30) }}</td>
+            <td id="comment_{{ item.id }}" headers="hComment">{{ item.comment|striptags|u.truncate(30, true, '…') }}</td>
             <td id="date_{{ item.id }}" headers="hDate">{{ item.date|format_date('short') }}</td>
             <td id="name_{{ item.id }}" headers="hName">{{ item.anonname }}</td>
             <td id="status_{{ item.id }}" headers="hStatus">{% if item.status %}<span class="fas fa-ban"></span>{% endif %}</td>

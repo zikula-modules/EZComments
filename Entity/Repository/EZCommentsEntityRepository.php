@@ -39,7 +39,7 @@ class EZCommentsEntityRepository extends ServiceEntityRepository
      * @return array array of items, or false on failure
      */
     public function getComments(
-        string $mod = "",
+        string $mod = '',
         int $objectid = -1,
         int $replyTo = -1,
         ?array $search = null,
@@ -115,7 +115,10 @@ class EZCommentsEntityRepository extends ServiceEntityRepository
     public function deleteReplies(int $commentId)
     {
         //This call may not delete any replies, that's just fine.
-        $q = $this->_em->createQuery("delete from 'ZikulaEZCommentsModule:EZCommentsEntity' m where m.replyto = " . $commentId);
+        $q = $this->_em->createQuery(
+            'DELETE FROM \'ZikulaEZCommentsModule:EZCommentsEntity\' m
+            WHERE m.replyto = ' . $commentId
+        );
         $numDeleted = $q->execute();
 
         return $numDeleted;
@@ -126,7 +129,7 @@ class EZCommentsEntityRepository extends ServiceEntityRepository
         //find the last date of the comment
         $date = $this->getPostBorder(self::MAXDATE);
 
-        return $this->getPostWithDate($date);
+        return $this->getPostWithDate(new \DateTime($date ?? 'now'));
     }
 
     public function getPostWithDate(?\DateTime $inDate)
@@ -144,7 +147,7 @@ class EZCommentsEntityRepository extends ServiceEntityRepository
     {
         $date = $this->getPostBorder(self::MINDATE);
 
-        return $this->getPostWithDate($date);
+        return $this->getPostWithDate(new \DateTime($date ?? 'now'));
     }
 
     public function getPostBorder(int $inPostBorder)
@@ -153,9 +156,9 @@ class EZCommentsEntityRepository extends ServiceEntityRepository
         $qb->from($this->_entityName, 'a');
         $dateItem = null;
         if (self::MINDATE === $inPostBorder) {
-            $dateItem =  $qb->select($qb->expr()->min('a.date'))->getQuery()->getResult();
+            $dateItem = $qb->select($qb->expr()->min('a.date'))->getQuery()->getResult();
         } else {
-            $dateItem =  $qb->select($qb->expr()->max('a.date'))->getQuery()->getResult();
+            $dateItem = $qb->select($qb->expr()->max('a.date'))->getQuery()->getResult();
         }
 
         return $dateItem[0][1];
@@ -190,6 +193,7 @@ class EZCommentsEntityRepository extends ServiceEntityRepository
             $currCount = $this->countComments('anonname', $user['anonname']);
             $userCounts[$user['anonname']] = $currCount;
         }
+
         //use rsort to get the array sorted.
         arsort($userCounts);
         $sliceNo = min(count($userCounts), $number);
@@ -211,9 +215,9 @@ class EZCommentsEntityRepository extends ServiceEntityRepository
     {
         //get the min post
         $firstDate = $this->getPostBorder(self::MINDATE);
-        $lastDate = $this > $this->getPostBorder(self::MAXDATE);
-        $firstDay = new \DateTime($firstDate[1] ?? 'now');
-        $lastDay = new \DateTime($lastDate[1] ?? 'now');
+        $lastDate = $this->getPostBorder(self::MAXDATE);
+        $firstDay = new \DateTime($firstDate ?? 'now');
+        $lastDay = new \DateTime($lastDate ?? 'now');
         $interval = $firstDay->diff($lastDay);
 
         $totalPosts = $this->countComments('modname');
@@ -233,8 +237,9 @@ class EZCommentsEntityRepository extends ServiceEntityRepository
             ->andWhere($qb->expr()->gte('b.date', '?1'))
             ->setParameter(1, $cutOffTime)
             ->orderBy('b.date', 'DESC')
-            ->setMaxResults($properties['numcomments']);
+            ->setMaxResults($properties['numcomments'])
+        ;
 
-        return  $qb->getQuery()->getResult();
+        return $qb->getQuery()->getResult();
     }
 }

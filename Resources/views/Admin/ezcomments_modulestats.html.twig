@@ -35,10 +35,14 @@
             <th id="hLastPoster" scope="row" headers="hCategory">{% trans %}Last post by{% endtrans %}</th>
             <td headers="hResult hLastPoster">{{ counts.lastPost.0.anonname }}</td>
         </tr>
-        <tr>
-            <th id="hMostActivePoster" scope="row" headers="hCategory">{% trans %}Most active poster{% endtrans %}</th>
-            <td headers="hResult hMostActivePoster">{% trans with {'%userName%': counts.mostActive.name, '%amount%': counts.mostActive.number} %}%userName% with %amount% posts{% endtrans %}</td>
-        </tr>
+        {% for mostActiveName, mostActiveNumber in counts.mostActive %}
+            {% if loop.first %}
+                <tr>
+                    <th id="hMostActivePoster" scope="row" headers="hCategory">{% trans %}Most active poster{% endtrans %}</th>
+                    <td headers="hResult hMostActivePoster">{% trans with {'%userName%': mostActiveName, '%amount%': mostActiveNumber} %}%userName% with %amount% posts{% endtrans %}</td>
+                </tr>
+            {% endif %}
+        {% endfor %}
         <tr>
             <th id="hPostRate" scope="row" headers="hCategory">{% trans %}Post rate{% endtrans %}</th>
             <td headers="hResult hPostRate">{% trans with {'%amount%': counts.postRate|number_format(3)} %}%amount% posts per day{% endtrans %}</td>
