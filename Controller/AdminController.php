@@ -231,8 +231,11 @@ class AdminController extends AbstractController
         $counts['mostActive'] = $this->repository->mostActivePosters();
         $counts['postRate'] = $this->repository->findPostRate();
 
-        return $this->render('@ZikulaEZCommentsModule/Admin/ezcomments_modulestats.html.twig', [
-            'counts' => $counts]
+        return $this->render(
+            '@ZikulaEZCommentsModule/Admin/ezcomments_modulestats.html.twig',
+            [
+                'counts' => $counts
+            ]
         );
     }
 
