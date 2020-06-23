@@ -135,12 +135,12 @@ class EZCommentsEntity extends EntityAccess
         $this->modname = $modname;
     }
 
-    public function getObjectid(): int
+    public function getObjectid(): string
     {
         return $this->objectid;
     }
 
-    public function setObjectid(int $objectid): void
+    public function setObjectid(string $objectid): void
     {
         $this->objectid = $objectid;
     }
