@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Zikula\EZCommentsModule\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -111,11 +112,36 @@ class AdminController extends AbstractController
     /**
      * @Route("/deleteall/{comment}")
      * @Theme("admin")
+     *
      * @param Request $request
      * @param EZCommentsEntity $comment
+     * @return RedirectResponse
      */
-    public function deleteallAction(Request $request, EZCommentsEntity $comment)
+    public function deleteallAction(Request $request, EZCommentsEntity $comment) : RedirectResponse
     {
+        if (!$this->hasPermission($this->name . '::',"::", ACCESS_DELETE)) {
+            throw new AccessDeniedException($this->trans("You do not have permission to delete comments."));
+        }
+
+        $user = $comment->getOwnerid();
+        //Do not allow the deletion of all anonymous comments
+        if($user !== 0){
+            $comments = $this->repository->findBy(['ownerid' => $user]);
+            if($comments){
+                $em = $this->getDoctrine()->getManager();
+                foreach($comments as $commentItem){
+                    $em->remove($commentItem);
+                }
+                $em->flush();
+            }
+        }
+        $this->addFlash(
+            'status',
+            $this->trans(
+                'User %username%\'s comments were deleted.',
+                ['%username%' => $comment->getAnonname()]));
+        return $this->redirect($this->generateUrl('zikulaezcommentsmodule_admin_index'));
+
     }
 
     /**

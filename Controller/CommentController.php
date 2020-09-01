@@ -86,7 +86,10 @@ class CommentController extends AbstractController
         $comment = $request->request->get('comment');
         $subject = $request->request->get('subject');
         $user= $request->request->get('user');
-
+        $parentID = (int)$request->request->get('parentID');
+        if(!isset($parentID)){
+            $parentID = 0;
+        }
         $em = $this->getDoctrine()->getManager();
         $commentObj = null;
         $isEdit = false;
@@ -99,6 +102,7 @@ class CommentController extends AbstractController
         }
         $commentObj->setComment($comment);
         $commentObj->setSubject($subject);
+        $commentObj->setReplyto($parentID);
         //Now record the comment
         $em->persist($commentObj);
         $em->flush();
@@ -299,7 +303,7 @@ class CommentController extends AbstractController
             $parentId = $comment->getReplyto();
             $em->remove($comment);
             //we may need to get rid of replies, do it
-            $this->repository->deleteReplies($commentId);
+            $this->repository->deleteReplies((int)$commentId);
             $em->flush();
             $items = $this->repository->findOneBy(['replyto' => $parentId]);
             if (null !== $items) {

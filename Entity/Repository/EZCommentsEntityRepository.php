@@ -115,13 +115,12 @@ class EZCommentsEntityRepository extends ServiceEntityRepository
     public function deleteReplies(int $commentId)
     {
         //This call may not delete any replies, that's just fine.
-        $q = $this->_em->createQuery(
-            'DELETE FROM \'ZikulaEZCommentsModule:EZCommentsEntity\' m
-            WHERE m.replyto = ' . $commentId
-        );
-        $numDeleted = $q->execute();
-
-        return $numDeleted;
+        $qb = $this->_em->createQueryBuilder();
+        $qb->delete()
+            ->from($this->_entityName, 'u')
+            ->andWhere($qb->expr()->eq('u.replyto', '?1'))
+            ->setParameter(1, $commentId);
+        return $qb->getQuery()->getResult();
     }
 
     public function getLatestPost()
