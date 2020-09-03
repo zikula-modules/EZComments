@@ -55,7 +55,7 @@ class EZCommentsBlockType extends AbstractType
                 'expanded' => true
             ])
             ->add('linkuser', ChoiceType::class, [
-                'label' => 'Show Date',
+                'label' => 'Link to User',
                 'label_attr' => ['class' => 'radio-inline'],
                 'empty_data' => 'default',
                 'choices' => [
