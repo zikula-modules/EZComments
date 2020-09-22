@@ -46,7 +46,7 @@ class CommentController extends AbstractController
     /**
      * @Route("/comment", options={"expose"=true, "i18n"=false})
      */
-    public function commentAction(
+    public function comment(
         CurrentUserApiInterface $currentUserApi,
         Request $request
     ): Response {
@@ -128,7 +128,7 @@ class CommentController extends AbstractController
     /**
      * @Route("/setcomment", options={"expose"=true, "i18n"=false}, methods={"POST"})
      */
-    public function setcommentAction(
+    public function setComment(
         CurrentUserApiInterface $currentUserApi,
         Request $request
     ): Response {
@@ -143,7 +143,7 @@ class CommentController extends AbstractController
     /**
      * @Route("/verifycomment", options={"expose"=true, "i18n"=false}, methods={"POST"})
      */
-    public function verifycommentAction(
+    public function verifyComment(
         CurrentUserApiInterface $currentUserApi,
         Request $request
     ): JsonResponse {
@@ -222,7 +222,7 @@ class CommentController extends AbstractController
     /**
      * @Route("/getuserid", options={"expose"=true, "i18n"=false}, methods={"GET"})
      */
-    public function getuseridAction(
+    public function getUserId(
         CurrentUserApiInterface $currentUserApi
     ): JsonResponse {
         if (!$this->hasPermission($this->name . '::', '::', ACCESS_READ)) {
@@ -240,7 +240,7 @@ class CommentController extends AbstractController
      * Grab all comments associated with this module and item ID and return them to the caller
      * The caller is a javascript, see the javascripts in Resources/public/js directory
      */
-    public function getrepliesAction(Request $request): JsonResponse
+    public function getReplies(Request $request): JsonResponse
     {
         if (!$this->hasPermission($this->name . '::', '::', ACCESS_READ)) {
             return new JsonResponse($this->trans('Access forbidden since you cannot read comments.'), Response::HTTP_FORBIDDEN);
@@ -275,7 +275,7 @@ class CommentController extends AbstractController
     /**
      * @Route("/deletecomment", options={"expose"=true, "i18n"=false}, methods={"POST"})
      */
-    public function deletecommentAction(
+    public function deleteComment(
         CurrentUserApiInterface $currentUserApi,
         Request $request
     ): JsonResponse {

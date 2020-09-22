@@ -46,7 +46,7 @@ class AdminController extends AbstractController
      * @Theme("admin")
      * @PermissionCheck("admin")
      */
-    public function indexAction(): Response
+    public function index(): Response
     {
         $items = $this->repository->findAll();
 
@@ -59,7 +59,7 @@ class AdminController extends AbstractController
      * @Theme("admin")
      * @param request
      */
-    public function editAction(Request $request): JsonResponse
+    public function edit(Request $request): JsonResponse
     {
         $id = $request->request->get('id');
         if (!$this->hasPermission($this->name . '::', $id . "::", ACCESS_EDIT)) {
@@ -83,7 +83,7 @@ class AdminController extends AbstractController
      * @Theme("admin")
      * @param Request $request
      */
-    public function deleteAction(Request $request): JsonResponse
+    public function delete(Request $request): JsonResponse
     {
         $id = $request->request->get('id');
         if (!$this->hasPermission($this->name . '::', $id . "::", ACCESS_DELETE)) {
@@ -117,7 +117,7 @@ class AdminController extends AbstractController
      * @param EZCommentsEntity $comment
      * @return RedirectResponse
      */
-    public function deleteallAction(Request $request, EZCommentsEntity $comment) : RedirectResponse
+    public function deleteAll(Request $request, EZCommentsEntity $comment) : RedirectResponse
     {
         if (!$this->hasPermission($this->name . '::',"::", ACCESS_DELETE)) {
             throw new AccessDeniedException($this->trans("You do not have permission to delete comments."));
@@ -149,7 +149,7 @@ class AdminController extends AbstractController
      * @Theme("admin")
      * block users that are being annoying
      */
-    public function blockuserAction(EZCommentsEntity $comment): Response
+    public function blockUser(EZCommentsEntity $comment): Response
     {
         //I don't know if I have to have this error checking in here, but just in case
         if (null === $comment) {
@@ -204,7 +204,7 @@ class AdminController extends AbstractController
      * @Theme("admin")
      * block comment that is annoying
      */
-    public function blockCommentAction(EZCommentsEntity $comment): Response
+    public function blockComment(EZCommentsEntity $comment): Response
     {
         //I don't know if I have to have this error checking in here, but just in case
         if (null === $comment) {
@@ -235,7 +235,7 @@ class AdminController extends AbstractController
      * @Theme("admin")
      * @param $request
      */
-    public function commentStatsAction(Request $request)
+    public function commentStats(Request $request)
     {
     }
 
@@ -246,7 +246,7 @@ class AdminController extends AbstractController
      *
      * display all comments for a module
      */
-    public function modulestatsAction(): Response
+    public function moduleStats(): Response
     {
         $counts = [];
         $counts['modules'] = $this->repository->countComments('modname', '', true);
@@ -272,7 +272,7 @@ class AdminController extends AbstractController
      *
      * delete all comments attached to a module
      */
-    public function deletemoduleAction(Request $request, $moduleName)
+    public function deleteModule(Request $request, $moduleName)
     {
     }
 }

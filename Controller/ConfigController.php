@@ -25,7 +25,7 @@ class ConfigController extends AbstractController
      * @Template("@ZikulaEZCommentsModule/Config/config.html.twig")
      * @return array|RedirectResponse
      */
-    public function configAction(Request $request)
+    public function config(Request $request)
     {
         $form = $this->createForm(Config::class, $this->getVars());
         $form->handleRequest($request);
