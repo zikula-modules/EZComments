@@ -1,5 +1,4 @@
-EZComments
-==========
+## EZComments
 
 EZComments is a hookable commenting module for the Zikula Application Framework.
 
