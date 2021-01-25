@@ -111,7 +111,6 @@ class UiHooksProvider implements HookProviderInterface
 
     /**
      * uiView - Display a view that is hook to the module.
-     * @param DisplayHook $hook
      */
     public function uiView(DisplayHook $hook): void
     {

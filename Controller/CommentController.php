@@ -86,8 +86,8 @@ class CommentController extends AbstractController
         $comment = $request->request->get('comment');
         $subject = $request->request->get('subject');
         $user= $request->request->get('user');
-        $parentID = (int)$request->request->get('parentID');
-        if(!isset($parentID)){
+        $parentID = (int) $request->request->get('parentID');
+        if (!isset($parentID)) {
             $parentID = 0;
         }
         $em = $this->getDoctrine()->getManager();
@@ -154,7 +154,7 @@ class CommentController extends AbstractController
         $ownerId = $currentUserApi->get('uid');
         if ($this->_bannedPoster($ownerId)) {
             //send back a different JSON reqeust.
-            return  new JsonResponse(['verified' => false,
+            return new JsonResponse(['verified' => false,
                 'reason' => 'ban',
                 'message' => $this->trans("You have been banned by the administrator of this web site to post comments")
             ]);
@@ -176,7 +176,7 @@ class CommentController extends AbstractController
             $anonWebsite = $request->request->get('anonWebsite');
         } else {
             if ("" === $user) {
-                return  new JsonResponse(['verified' => false,
+                return new JsonResponse(['verified' => false,
                     'reason' => 'user',
                     'message' => $this->trans("Please provide a username for your comment.")
                 ]);
@@ -184,13 +184,13 @@ class CommentController extends AbstractController
         }
         if (!isset($artId)) {
             //There is a problem with the comment. Hopefuly this never happens
-            return  new JsonResponse(['verified' => false,
+            return new JsonResponse(['verified' => false,
                 'reason' => 'struct',
                 'message' => $this->trans("There is a problem with how the reply structure was set. Please reload the page and try again.")
             ]);
         }
         if ("" === $comment) {
-            return  new JsonResponse(['verified' => false,
+            return new JsonResponse(['verified' => false,
                 'reason' => 'comment',
                 'message' => $this->trans("Your comment is empty, please enter some text before submitting your comment.")
             ]);
@@ -205,7 +205,7 @@ class CommentController extends AbstractController
         }*/
         $id = $request->request->get('id');
 
-        return  new JsonResponse(['verified' => true,
+        return new JsonResponse(['verified' => true,
             'comment' => $comment,
             'subject' => $subject,
             'user' => $user,
@@ -269,7 +269,7 @@ class CommentController extends AbstractController
             }
         }
 
-        return  new JsonResponse($jsonReply);
+        return new JsonResponse($jsonReply);
     }
 
     /**
@@ -303,7 +303,7 @@ class CommentController extends AbstractController
             $parentId = $comment->getReplyto();
             $em->remove($comment);
             //we may need to get rid of replies, do it
-            $this->repository->deleteReplies((int)$commentId);
+            $this->repository->deleteReplies((int) $commentId);
             $em->flush();
             $items = $this->repository->findOneBy(['replyto' => $parentId]);
             if (null !== $items) {
