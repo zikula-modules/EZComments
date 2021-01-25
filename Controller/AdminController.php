@@ -81,7 +81,6 @@ class AdminController extends AbstractController
     /**
      * @Route("/delete", options={"expose"=true, "i18n"=false}, methods={"POST"})
      * @Theme("admin")
-     * @param Request $request
      */
     public function delete(Request $request): JsonResponse
     {
@@ -112,24 +111,20 @@ class AdminController extends AbstractController
     /**
      * @Route("/deleteall/{comment}")
      * @Theme("admin")
-     *
-     * @param Request $request
-     * @param EZCommentsEntity $comment
-     * @return RedirectResponse
      */
-    public function deleteAll(Request $request, EZCommentsEntity $comment) : RedirectResponse
+    public function deleteAll(Request $request, EZCommentsEntity $comment): RedirectResponse
     {
-        if (!$this->hasPermission($this->name . '::',"::", ACCESS_DELETE)) {
+        if (!$this->hasPermission($this->name . '::', "::", ACCESS_DELETE)) {
             throw new AccessDeniedException($this->trans("You do not have permission to delete comments."));
         }
 
         $user = $comment->getOwnerid();
         //Do not allow the deletion of all anonymous comments
-        if($user !== 0){
+        if (0 !== $user) {
             $comments = $this->repository->findBy(['ownerid' => $user]);
-            if($comments){
+            if ($comments) {
                 $em = $this->getDoctrine()->getManager();
-                foreach($comments as $commentItem){
+                foreach ($comments as $commentItem) {
                     $em->remove($commentItem);
                 }
                 $em->flush();
@@ -140,8 +135,8 @@ class AdminController extends AbstractController
             $this->trans(
                 'User %username%\'s comments were deleted.',
                 ['%username%' => $comment->getAnonname()]));
-        return $this->redirect($this->generateUrl('zikulaezcommentsmodule_admin_index'));
 
+        return $this->redirect($this->generateUrl('zikulaezcommentsmodule_admin_index'));
     }
 
     /**

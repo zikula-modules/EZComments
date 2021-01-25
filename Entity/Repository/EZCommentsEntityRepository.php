@@ -120,6 +120,7 @@ class EZCommentsEntityRepository extends ServiceEntityRepository
             ->from($this->_entityName, 'u')
             ->andWhere($qb->expr()->eq('u.replyto', '?1'))
             ->setParameter(1, $commentId);
+
         return $qb->getQuery()->getResult();
     }
 
