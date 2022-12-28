@@ -21,6 +21,8 @@
             this.getUserId();
             this.$comForm.addClass('d-none');
             this.setUpMessageDialog();
+            //Show an initial new comment
+            this.newComment(null);
         },
         cacheDom: function () {
             this.$comForm = $('#commentFormDiv');
@@ -99,6 +101,7 @@
                     delete this.subComments[this.currentId];
                 }
                 this.clearAndHideForm();
+                this.newComment(null);
             } else {
                 $('#' + itemName).removeClass('fa-caret-square-left');
                 $('#' + itemName).addClass('fa-caret-square-down');
@@ -299,6 +302,7 @@
                 currForm.before(divBlock);
             }
             this.clearAndHideForm();
+            this.newComment(null);
         },
         hookUpButtons: function (target, result) {
             //only add these buttons if the user id is the same
@@ -329,7 +333,7 @@
             var currForm = this.$comForm;
             currForm.find('textarea').val('');
             currForm.find('input[name=subject]').val('');
-            currForm.addClass('d-none');
+            //currForm.addClass('d-none');
         },
 
         cancelComment :function(evt) {
